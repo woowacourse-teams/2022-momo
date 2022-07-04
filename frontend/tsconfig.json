@@ -20,6 +20,6 @@
     "noEmit": true,
     "baseUrl": "./src/"
   },
-  "include": ["./src/"],
+  "include": ["./src/", "./src/declare.d.ts"],
   "exclude": ["node_modules/*"]
 }
