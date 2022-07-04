@@ -41,6 +41,7 @@ module.exports = {
       types: path.resolve(__dirname, 'src/types'),
       utils: path.resolve(__dirname, 'src/utils'),
       constants: path.resolve(__dirname, 'src/constants'),
+      mocks: path.resolve(__dirname, 'src/mocks'),
     },
   },
   output: {
@@ -55,7 +56,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: path.resolve(__dirname, './dist'),
+    static: path.resolve(__dirname, 'public'),
     port: 3000,
     client: {
       logging: 'none',
