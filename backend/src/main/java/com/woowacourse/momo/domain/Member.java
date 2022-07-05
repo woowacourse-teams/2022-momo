@@ -1,12 +1,23 @@
 package com.woowacourse.momo.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
 public class Member {
 
-    private final long id;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Member(final long id, final String name) {
-        this.id = id;
+    @Column(length = 30, nullable = false)
+    private String name;
+
+    public Member(String name) {
         this.name = name;
     }
 }

@@ -12,7 +12,7 @@ public enum Day {
 
     private final String value;
 
-    Day(final String value) {
+    Day(String value) {
         this.value = value;
     }
 }

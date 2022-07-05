@@ -1,18 +1,28 @@
 package com.woowacourse.momo.domain;
 
+import lombok.Getter;
+
+import javax.persistence.*;
 import java.time.LocalTime;
 
+@Getter
+@Entity
 public class Schedule {
 
-    private final long id;
-    private final Day day;
-    private final LocalTime startTime;
-    private final LocalTime endTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Schedule(final long id, final Day day, final LocalTime startTime, final LocalTime endTime) {
-        this.id = id;
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    @Enumerated(EnumType.STRING)
+    private Day reservationDay;
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
+    private LocalTime endTime;
 }

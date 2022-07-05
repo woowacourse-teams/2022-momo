@@ -1,31 +1,42 @@
 package com.woowacourse.momo.domain;
 
+import lombok.Getter;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Entity
 public class Group {
 
-    private final long id;
-    private final Member host;
-    private final Category category;
-    private final boolean regular;
-    private final Duration duration;
-    private final LocalDateTime deadline;
-    private final List<Schedule> schedules;
-    private final String location;
-    private final String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Group(final long id, final Member host, final Category category, final boolean regular,
-                 final Duration duration, final LocalDateTime deadline, final List<Schedule> schedules,
-                 final String location, final String description) {
-        this.id = id;
-        this.host = host;
-        this.category = category;
-        this.regular = regular;
-        this.duration = duration;
-        this.deadline = deadline;
-        this.schedules = schedules;
-        this.location = location;
-        this.description = description;
-    }
+    @Column(nullable = false)
+    private Long hostId;
+
+    @Column(nullable = false)
+    private Long categoryId;
+
+    @Column(nullable = false)
+    private boolean regular;
+
+    @Column(nullable = false)
+    @Embedded
+    private Duration duration;
+
+    @Column(nullable = false)
+    private LocalDateTime deadline;
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Schedule> schedules;
+
+    @Column(nullable = false)
+    private String location;
+
+    @Lob
+    @Column(nullable = false)
+    private String description;
 }

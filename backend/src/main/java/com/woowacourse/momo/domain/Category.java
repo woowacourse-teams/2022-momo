@@ -1,12 +1,17 @@
 package com.woowacourse.momo.domain;
 
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Getter
+@Entity
 public class Category {
 
-    private final long id;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Category(final long id, final String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @Column(length = 30, nullable = false)
+    private String name;
 }
