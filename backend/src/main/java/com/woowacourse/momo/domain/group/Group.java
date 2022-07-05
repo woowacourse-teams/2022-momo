@@ -1,4 +1,4 @@
-package com.woowacourse.momo.domain;
+package com.woowacourse.momo.domain.group;
 
 import lombok.Getter;
 

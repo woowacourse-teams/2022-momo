@@ -1,14 +1,12 @@
-package com.woowacourse.momo.domain;
+package com.woowacourse.momo.domain.category;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
-public class Member {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +14,4 @@ public class Member {
 
     @Column(length = 30, nullable = false)
     private String name;
-
-    public Member(String name) {
-        this.name = name;
-    }
 }
