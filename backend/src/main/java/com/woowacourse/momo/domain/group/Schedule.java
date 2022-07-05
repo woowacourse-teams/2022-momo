@@ -1,11 +1,13 @@
 package com.woowacourse.momo.domain.group;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 
 @Getter
+@NoArgsConstructor
 @Entity
 public class Schedule {
 
@@ -25,4 +27,15 @@ public class Schedule {
 
     @Column(nullable = false)
     private LocalTime endTime;
+
+    public Schedule(Day reservationDay, LocalTime startTime, LocalTime endTime) {
+        this.reservationDay = reservationDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public void appendToGroup(Group group) {
+        this.group = group;
+        group.appendSchedule(this);
+    }
 }

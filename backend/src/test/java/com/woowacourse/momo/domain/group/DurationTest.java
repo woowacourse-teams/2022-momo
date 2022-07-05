@@ -1,6 +1,5 @@
 package com.woowacourse.momo.domain.group;
 
-import com.woowacourse.momo.domain.group.Duration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
