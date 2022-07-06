@@ -2,6 +2,7 @@ package com.woowacourse.momo.domain.group;
 
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
@@ -9,7 +10,10 @@ import java.time.LocalDate;
 @Embeddable
 public class Duration {
 
+    @Column(nullable = false)
     private LocalDate startDate;
+
+    @Column(nullable = false)
     private LocalDate endDate;
 
     public Duration(LocalDate startDate, LocalDate endDate) {
