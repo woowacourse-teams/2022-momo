@@ -33,9 +33,11 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
+      apis: path.resolve(__dirname, 'src/apis'),
       assets: path.resolve(__dirname, 'src/assets'),
       components: path.resolve(__dirname, 'src/components'),
       pages: path.resolve(__dirname, 'src/pages'),
+      layouts: path.resolve(__dirname, 'src/layouts'),
       hooks: path.resolve(__dirname, 'src/hooks'),
       styles: path.resolve(__dirname, 'src/styles'),
       types: path.resolve(__dirname, 'src/types'),
@@ -58,6 +60,7 @@ module.exports = {
   devServer: {
     static: path.resolve(__dirname, 'public'),
     port: 3000,
+    historyApiFallback: true,
     client: {
       logging: 'none',
     },
