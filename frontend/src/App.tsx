@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import PageLayout from 'layouts/Page';
-import { Main } from 'pages';
+import { Main, Detail } from 'pages';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
@@ -21,6 +21,7 @@ function App() {
             <Router>
               <Routes>
                 <Route path={BROWSER_PATH.BASE} element={<Main />} />
+                <Route path={BROWSER_PATH.DETAIL} element={<Detail />} />
               </Routes>
             </Router>
           </PageLayout>
