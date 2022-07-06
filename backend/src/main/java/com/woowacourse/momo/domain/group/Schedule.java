@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
@@ -34,8 +35,13 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    public void appendToGroup(Group group) {
+    public static Schedule of(Day reservationDay, String startTime, String endTime) {
+        return new Schedule(reservationDay,
+                LocalTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_TIME),
+                LocalTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_TIME));
+    }
+
+    public void belongTo(Group group) {
         this.group = group;
-        group.appendSchedule(this);
     }
 }

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,8 +32,8 @@ public class Group {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-    private List<Schedule> schedules = new ArrayList<>();
+    @Embedded
+    private Schedules schedules;
 
     @Column(nullable = false)
     private String location;
@@ -44,17 +43,14 @@ public class Group {
     private String description;
 
     public Group(Long hostId, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
-                 String location, String description) {
+                 List<Schedule> schedules, String location, String description) {
         this.hostId = hostId;
         this.categoryId = categoryId;
         this.regular = regular;
         this.duration = duration;
         this.deadline = deadline;
+        this.schedules = new Schedules(schedules, this);
         this.location = location;
         this.description = description;
-    }
-
-    public void appendSchedule(Schedule schedule) {
-        this.schedules.add(schedule);
     }
 }

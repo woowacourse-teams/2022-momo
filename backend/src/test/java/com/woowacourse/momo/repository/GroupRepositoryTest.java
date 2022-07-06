@@ -11,8 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +30,9 @@ class GroupRepositoryTest {
         LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(), "", "");
 
-        List<Schedule> schedules = List.of(new Schedule(Day.MONDAY,
-                LocalTime.parse("11:00:00", DateTimeFormatter.ISO_LOCAL_TIME),
-                LocalTime.parse("11:00:00", DateTimeFormatter.ISO_LOCAL_TIME)));
-
-        for (Schedule schedule : schedules) {
-            schedule.appendToGroup(group);
-        }
+        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group actual = groupRepository.save(group);
 
@@ -53,7 +47,9 @@ class GroupRepositoryTest {
         LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(), "", "");
+
+        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+                Collections.emptyList(), "", "");
 
         Group actual = groupRepository.save(group);
 
@@ -68,15 +64,9 @@ class GroupRepositoryTest {
         LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(), "", "");
 
-        List<Schedule> schedules = List.of(new Schedule(Day.MONDAY,
-                LocalTime.parse("11:00:00", DateTimeFormatter.ISO_LOCAL_TIME),
-                LocalTime.parse("11:00:00", DateTimeFormatter.ISO_LOCAL_TIME)));
-
-        for (Schedule schedule : schedules) {
-            schedule.appendToGroup(group);
-        }
+        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group expected = groupRepository.save(group);
         Optional<Group> actual = groupRepository.findById(expected.getId());
@@ -92,8 +82,11 @@ class GroupRepositoryTest {
         LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
-        Group group1 = new Group(1L, 1L, false, duration, LocalDateTime.now(), "", "");
-        Group group2 = new Group(2L, 1L, false, duration, LocalDateTime.now(), "", "");
+
+        Group group1 = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+        Group group2 = new Group(2L, 1L, false, duration, LocalDateTime.now(),
+                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group expected1 = groupRepository.save(group1);
         Group expected2 = groupRepository.save(group2);
@@ -108,7 +101,9 @@ class GroupRepositoryTest {
         LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(), "", "");
+
+        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
         Long groupId = groupRepository.save(group).getId();
 
         groupRepository.deleteById(groupId);
