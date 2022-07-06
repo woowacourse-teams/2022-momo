@@ -31,7 +31,7 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+        Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group actual = groupRepository.save(group);
@@ -48,7 +48,7 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+        Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 Collections.emptyList(), "", "");
 
         Group actual = groupRepository.save(group);
@@ -65,7 +65,7 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+        Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group expected = groupRepository.save(group);
@@ -83,9 +83,9 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        Group group1 = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+        Group group1 = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
-        Group group2 = new Group(2L, 1L, false, duration, LocalDateTime.now(),
+        Group group2 = new Group("momo 회의", 2L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
 
         Group expected1 = groupRepository.save(group1);
@@ -102,7 +102,7 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        Group group = new Group(1L, 1L, false, duration, LocalDateTime.now(),
+        Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
         Long groupId = groupRepository.save(group).getId();
 

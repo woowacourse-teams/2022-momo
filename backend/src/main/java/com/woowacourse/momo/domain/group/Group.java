@@ -17,6 +17,9 @@ public class Group {
     private Long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private Long hostId;
 
     @Column(nullable = false)
@@ -42,8 +45,9 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(Long hostId, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
+    public Group(String name, Long hostId, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
                  List<Schedule> schedules, String location, String description) {
+        this.name = name;
         this.hostId = hostId;
         this.categoryId = categoryId;
         this.regular = regular;
