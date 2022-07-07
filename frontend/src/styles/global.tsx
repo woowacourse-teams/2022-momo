@@ -2,6 +2,7 @@ import { Global, css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
 
 import { fontStyle } from './font';
+import theme from './theme';
 
 // Heading => SuseongDotum
 // Basic => GangwonEdu_OTFBoldA, GangwonEdu_OTFLightA
@@ -21,6 +22,11 @@ const style = css`
   h4,
   h5 {
     font-family: 'SuseongDotum';
+  }
+
+  a {
+    text-decoration: none;
+    color: ${theme.colors.black002};
   }
 
   button {

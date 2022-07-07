@@ -1,13 +1,13 @@
 import { ThemeProvider } from '@emotion/react';
-import PageLayout from 'layouts/Page';
-import { Main, Detail } from 'pages';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import GlobalStyle from 'styles/global';
-import theme from 'styles/theme';
 
 import { BROWSER_PATH } from 'constants/path';
+import PageLayout from 'layouts/Page';
+import { Main, Detail, Create } from 'pages/index';
+import GlobalStyle from 'styles/global';
+import theme from 'styles/theme';
 
 const queryClient = new QueryClient();
 
@@ -17,14 +17,17 @@ function App() {
       <GlobalStyle />
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <PageLayout>
-            <Router>
+          <Router>
+            <PageLayout>
               <Routes>
                 <Route path={BROWSER_PATH.BASE} element={<Main />} />
-                <Route path={BROWSER_PATH.DETAIL} element={<Detail />} />
+                <Route path={BROWSER_PATH.DETAIL}>
+                  <Route path=":id" element={<Detail />} />
+                </Route>
+                <Route path={BROWSER_PATH.CREATE} element={<Create />} />
               </Routes>
-            </Router>
-          </PageLayout>
+            </PageLayout>
+          </Router>
         </QueryClientProvider>
       </RecoilRoot>
     </ThemeProvider>

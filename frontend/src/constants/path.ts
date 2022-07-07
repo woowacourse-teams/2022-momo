@@ -1,6 +1,7 @@
 const BROWSER_PATH = {
   BASE: '/',
   DETAIL: '/detail',
+  CREATE: '/create',
 };
 
 const API_PATH = {

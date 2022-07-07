@@ -73,7 +73,7 @@ const Deadline = styled.div`
   min-width: 40%;
   max-width: 80%;
 
-  color: ${({ theme: { colors } }) => colors.red001};
+  color: ${({ theme: { colors } }) => colors.red002};
 
   font-weight: 700;
   font-size: 1rem;
