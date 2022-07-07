@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
@@ -25,5 +26,10 @@ public class GroupController {
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupResponse> findById(@PathVariable Long groupId) {
         return ResponseEntity.ok(groupService.findById(groupId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GroupResponse>> findAll() {
+        return ResponseEntity.ok(groupService.findAll());
     }
 }

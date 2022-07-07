@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.*;
 
 @Sql("classpath:init.sql")
 @SuppressWarnings("NonAsciiCharacters")
@@ -59,5 +58,17 @@ public class GroupAcceptanceTest extends AcceptanceTest {
                 .body("deadline", is("2022-06-30 23:59"))
                 .body("location", is("루터회관 1층"))
                 .body("description", is("팀프로젝트 진행"));
+    }
+
+    @Test
+    void 모임_전체_조회() {
+        int expected = 5;
+        for (int i = 0; i < expected; i++) {
+            모임_생성();
+        }
+
+        RestAssuredConvenienceMethod.getRequest("/api/groups")
+                .statusCode(HttpStatus.OK.value())
+                .body("", hasSize(expected));
     }
 }
