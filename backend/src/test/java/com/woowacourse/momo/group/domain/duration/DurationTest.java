@@ -19,19 +19,13 @@ class DurationTest {
     @ParameterizedTest
     @CsvSource(value = {"2020-05-08,2020-05-08", "2020-05-07,2020-05-08"})
     void construct(final String start, final String end) {
-        LocalDate startDate = LocalDate.parse(start, DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse(end, DateTimeFormatter.ISO_LOCAL_DATE);
-
-        assertDoesNotThrow(() -> new Duration(startDate, endDate));
+        assertDoesNotThrow(() -> Duration.of(start, end));
     }
 
     @DisplayName("시작일은 종료일 이후가 될 수 없다")
     @Test
     void validateEndIsNotBeforeStart() {
-        LocalDate startDate = LocalDate.of(2020, 5, 8);
-        LocalDate endDate = LocalDate.of(2020, 5, 7);
-
-        assertThatThrownBy(() -> new Duration(startDate, endDate))
+        assertThatThrownBy(() -> Duration.of("2020-05-08", "2020-05-07"))
                 .isInstanceOf(InvalidDurationException.class);
     }
 }

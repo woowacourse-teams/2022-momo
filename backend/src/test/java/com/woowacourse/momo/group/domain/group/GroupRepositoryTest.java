@@ -119,9 +119,7 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(List<Schedule> schedules) {
-        LocalDate startDate = LocalDate.of(2022, 7, 8);
-        LocalDate endDate = LocalDate.of(2022, 7, 8);
-        Duration duration = new Duration(startDate, endDate);
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
 
         return new Group("momo 회의", 1L, 1L, duration, LocalDateTime.now(),
                 schedules, "", "");

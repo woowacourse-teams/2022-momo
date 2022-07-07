@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.domain.duration;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -25,6 +26,14 @@ public class Duration {
         validateEndIsNotBeforeStart(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public static Duration of(String startDate, String endDate) {
+        return new Duration(parseLocalDate(startDate), parseLocalDate(endDate));
+    }
+
+    private static LocalDate parseLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
