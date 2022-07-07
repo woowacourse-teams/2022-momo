@@ -59,4 +59,18 @@ public class Group {
         this.location = location;
         this.description = description;
     }
+
+    public void update(String name, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
+                 List<Schedule> schedules, String location, String description) {
+        this.name = name;
+        this.categoryId = categoryId;
+        this.regular = regular;
+        this.duration = duration;
+        this.deadline = deadline;
+        this.location = location;
+        this.description = description;
+
+        this.schedules.clear();
+        schedules.forEach(schedule -> this.schedules.add(this, schedule));
+    }
 }

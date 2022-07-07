@@ -24,6 +24,16 @@ public class RestAssuredConvenienceMethod {
                 .then().log().all();
     }
 
+    public static ValidatableResponse putRequest(Object body, String path) {
+        return RestAssured.given().log().all()
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(body)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .put(path)
+                .then().log().all();
+    }
+
     public static ValidatableResponse postRequestWithToken(String accessToken, Object body, String path) {
         return RestAssured.given().log().all()
                 .auth().oauth2(accessToken)

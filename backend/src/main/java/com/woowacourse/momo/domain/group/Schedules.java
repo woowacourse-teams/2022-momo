@@ -32,4 +32,13 @@ public class Schedules {
     private void belongTo(Group group) {
         value.forEach(v -> v.belongTo(group));
     }
+
+    public void clear() {
+        value.clear();
+    }
+
+    public void add(Group group, Schedule schedule) {
+        this.value.add(schedule);
+        schedule.belongTo(group);
+    }
 }

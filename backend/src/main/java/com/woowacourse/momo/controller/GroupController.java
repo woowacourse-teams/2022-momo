@@ -2,6 +2,7 @@ package com.woowacourse.momo.controller;
 
 import com.woowacourse.momo.service.GroupService;
 import com.woowacourse.momo.service.dto.request.GroupRequest;
+import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.service.dto.response.GroupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,11 @@ public class GroupController {
     @GetMapping
     public ResponseEntity<List<GroupResponse>> findAll() {
         return ResponseEntity.ok(groupService.findAll());
+    }
+
+    @PutMapping("/{groupId}")
+    public ResponseEntity<Void> update(@PathVariable Long groupId, @RequestBody GroupUpdateRequest groupUpdateRequest) {
+        groupService.update(groupId, groupUpdateRequest);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,16 +1,20 @@
 package com.woowacourse.momo.service;
 
 import com.woowacourse.momo.domain.group.Group;
+import com.woowacourse.momo.domain.group.Schedule;
 import com.woowacourse.momo.domain.member.Member;
 import com.woowacourse.momo.repository.GroupRepository;
 import com.woowacourse.momo.repository.MemberRepository;
 import com.woowacourse.momo.service.dto.request.GroupRequest;
+import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
+import com.woowacourse.momo.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.service.dto.response.GroupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,10 +32,15 @@ public class GroupService {
     }
 
     public GroupResponse findById(Long id) {
-        Group group = groupRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+        Group group = findGroup(id);
 
         return convertToGroupResponse(group);
+    }
+
+    private Group findGroup(Long id) {
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+        return group;
     }
 
     private GroupResponse convertToGroupResponse(Group group) {
@@ -46,5 +55,17 @@ public class GroupService {
         return groups.stream()
                 .map(this::convertToGroupResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void update(Long groupId, GroupUpdateRequest request) {
+        Group group = findGroup(groupId);
+        List<Schedule> schedules = request.getSchedules().stream()
+                .map(ScheduleRequest::toEntity)
+                .collect(Collectors.toList());
+
+        group.update(request.getName(), request.getCategoryId(), request.getRegular(),
+                request.getDuration().toEntity(), request.getDeadline(),
+                schedules, request.getLocation(), request.getDescription());
     }
 }
