@@ -1,11 +1,13 @@
 package com.woowacourse.momo.domain.group;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
+@Getter
 @NoArgsConstructor
 @Embeddable
 public class Duration {

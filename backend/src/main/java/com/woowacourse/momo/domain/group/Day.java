@@ -1,5 +1,10 @@
 package com.woowacourse.momo.domain.group;
 
+import lombok.Getter;
+
+import java.util.Arrays;
+
+@Getter
 public enum Day {
 
     MONDAY("월"),
@@ -14,5 +19,12 @@ public enum Day {
 
     Day(String value) {
         this.value = value;
+    }
+
+    public static Day from(String value) {
+        return Arrays.stream(values())
+                .filter(day -> day.value.equals(value))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 요일입니다."));
     }
 }
