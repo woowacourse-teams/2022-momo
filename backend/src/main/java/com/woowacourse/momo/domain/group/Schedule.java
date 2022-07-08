@@ -29,16 +29,20 @@ public class Schedule {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    public Schedule(Day reservationDay, LocalTime startTime, LocalTime endTime) {
+    private Schedule(Day reservationDay, LocalTime startTime, LocalTime endTime) {
         this.reservationDay = reservationDay;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public static Schedule of(Day reservationDay, String startTime, String endTime) {
-        return new Schedule(reservationDay,
+    public static Schedule of(String reservationDay, String startTime, String endTime) {
+        return new Schedule(Day.from(reservationDay),
                 LocalTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_TIME),
                 LocalTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_TIME));
+    }
+
+    public static Schedule of(String reservationDay, LocalTime startTime, LocalTime endTime) {
+        return new Schedule(Day.from(reservationDay), startTime, endTime);
     }
 
     public void belongTo(Group group) {

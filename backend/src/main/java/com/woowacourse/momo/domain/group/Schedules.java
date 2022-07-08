@@ -1,6 +1,7 @@
 package com.woowacourse.momo.domain.group;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedules {
@@ -29,5 +31,14 @@ public class Schedules {
 
     private void belongTo(Group group) {
         value.forEach(v -> v.belongTo(group));
+    }
+
+    public void clear() {
+        value.clear();
+    }
+
+    public void add(Group group, Schedule schedule) {
+        this.value.add(schedule);
+        schedule.belongTo(group);
     }
 }

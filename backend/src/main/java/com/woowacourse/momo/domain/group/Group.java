@@ -1,5 +1,6 @@
 package com.woowacourse.momo.domain.group;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Group {
 
@@ -56,5 +58,19 @@ public class Group {
         this.schedules = new Schedules(schedules, this);
         this.location = location;
         this.description = description;
+    }
+
+    public void update(String name, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
+                 List<Schedule> schedules, String location, String description) {
+        this.name = name;
+        this.categoryId = categoryId;
+        this.regular = regular;
+        this.duration = duration;
+        this.deadline = deadline;
+        this.location = location;
+        this.description = description;
+
+        this.schedules.clear();
+        schedules.forEach(schedule -> this.schedules.add(this, schedule));
     }
 }

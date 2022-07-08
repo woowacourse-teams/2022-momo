@@ -1,6 +1,5 @@
 package com.woowacourse.momo.repository;
 
-import com.woowacourse.momo.domain.group.Day;
 import com.woowacourse.momo.domain.group.Duration;
 import com.woowacourse.momo.domain.group.Group;
 import com.woowacourse.momo.domain.group.Schedule;
@@ -32,7 +31,7 @@ class GroupRepositoryTest {
         Duration duration = new Duration(startDate, endDate);
 
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
-                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+                List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
 
         Group actual = groupRepository.save(group);
 
@@ -66,7 +65,7 @@ class GroupRepositoryTest {
         Duration duration = new Duration(startDate, endDate);
 
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
-                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+                List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
 
         Group expected = groupRepository.save(group);
         Optional<Group> actual = groupRepository.findById(expected.getId());
@@ -84,9 +83,9 @@ class GroupRepositoryTest {
         Duration duration = new Duration(startDate, endDate);
 
         Group group1 = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
-                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+                List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
         Group group2 = new Group("momo 회의", 2L, 1L, false, duration, LocalDateTime.now(),
-                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+                List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
 
         Group expected1 = groupRepository.save(group1);
         Group expected2 = groupRepository.save(group2);
@@ -103,7 +102,7 @@ class GroupRepositoryTest {
         Duration duration = new Duration(startDate, endDate);
 
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
-                List.of(Schedule.of(Day.MONDAY, "11:00:00", "11:00:00")), "", "");
+                List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
         Long groupId = groupRepository.save(group).getId();
 
         groupRepository.deleteById(groupId);
