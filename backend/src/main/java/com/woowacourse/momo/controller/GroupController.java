@@ -39,4 +39,10 @@ public class GroupController {
         groupService.update(groupId, groupUpdateRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<Void> delete(@PathVariable Long groupId) {
+        groupService.delete(groupId);
+        return ResponseEntity.noContent().build();
+    }
 }

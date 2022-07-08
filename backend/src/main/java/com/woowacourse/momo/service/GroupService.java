@@ -68,4 +68,9 @@ public class GroupService {
                 request.getDuration().toEntity(), request.getDeadline(),
                 schedules, request.getLocation(), request.getDescription());
     }
+
+    @Transactional
+    public void delete(Long groupId) {
+        groupRepository.deleteById(groupId);
+    }
 }

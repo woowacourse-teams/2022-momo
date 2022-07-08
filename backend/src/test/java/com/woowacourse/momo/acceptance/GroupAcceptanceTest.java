@@ -116,4 +116,13 @@ public class GroupAcceptanceTest extends AcceptanceTest {
                 .body("location", is("루터회관 1층"))
                 .body("description", is("팀프로젝트 진행"));
     }
+
+    @Test
+    void 모임_삭제() {
+        모임_생성();
+
+        RestAssuredConvenienceMethod.deleteRequest("/api/groups/1")
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
 }
