@@ -1,14 +1,16 @@
 package com.woowacourse.momo.controller;
 
-import com.woowacourse.momo.service.CategoryService;
-import com.woowacourse.momo.service.dto.CategoryResponse;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+
+import com.woowacourse.momo.service.CategoryService;
+import com.woowacourse.momo.service.dto.CategoryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/categories")

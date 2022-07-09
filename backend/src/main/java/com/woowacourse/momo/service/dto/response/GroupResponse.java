@@ -1,17 +1,19 @@
 package com.woowacourse.momo.service.dto.response;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.momo.domain.group.Group;
-import com.woowacourse.momo.domain.group.Schedules;
-import com.woowacourse.momo.domain.member.Member;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.woowacourse.momo.domain.group.Group;
+import com.woowacourse.momo.domain.group.Schedules;
+import com.woowacourse.momo.domain.member.Member;
 
 @Getter
 @Builder

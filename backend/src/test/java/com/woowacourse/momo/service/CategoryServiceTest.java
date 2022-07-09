@@ -1,17 +1,18 @@
 package com.woowacourse.momo.service;
 
-import com.woowacourse.momo.domain.category.Category;
-import com.woowacourse.momo.repository.CategoryRepository;
-import com.woowacourse.momo.service.dto.CategoryResponse;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.woowacourse.momo.domain.category.Category;
+import com.woowacourse.momo.repository.CategoryRepository;
+import com.woowacourse.momo.service.dto.CategoryResponse;
 
 @SpringBootTest
 class CategoryServiceTest {
