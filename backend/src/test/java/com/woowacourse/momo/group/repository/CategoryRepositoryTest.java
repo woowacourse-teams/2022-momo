@@ -1,44 +1,48 @@
 package com.woowacourse.momo.group.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.Optional;
-
-import com.woowacourse.momo.group.repository.CategoryRepository;
+import com.woowacourse.momo.group.domain.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
-import com.woowacourse.momo.group.domain.Category;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
+@Sql("classpath:init.sql")
 class CategoryRepositoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @DisplayName("식별자를 통해 카테고리를 조회한다")
-    @Test
-    void findById() {
-        Category expected = categoryRepository.save(new Category("카테고리"));
-
-        Optional<Category> actual = categoryRepository.findById(expected.getId());
-
-        assertThat(actual).isPresent();
-        assertThat(actual.get()).usingRecursiveComparison()
-                .isEqualTo(expected);
-    }
-
     @DisplayName("카테고리 목록을 조회한다")
     @Test
     void findAll() {
-        Category category1 = categoryRepository.save(new Category("카테고리1"));
-        Category category2 = categoryRepository.save(new Category("카테고리2"));
-
         List<Category> categories = categoryRepository.findAll();
 
-        assertThat(categories).contains(category1, category2);
+        assertThat(categories).hasSize(5);
+    }
+
+    @DisplayName("식별자를 가진 데이터가 존재하지 않으면 True를 반환한다.")
+    @Test
+    void existsByExistId() {
+        Long id = 1L;
+        boolean actual = categoryRepository.existsById(id);
+
+        assertThat(actual).isTrue();
+    }
+
+    @DisplayName("식별자를 가진 데이터가 존재하면 False를 반환한다.")
+    @Test
+    void existsByNotExistId() {
+        Long id = 100L;
+        boolean actual = categoryRepository.existsById(id);
+
+        assertThat(actual).isFalse();
     }
 }
