@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.woowacourse.momo.group.exception.InvalidDurationException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +28,7 @@ public class Duration {
 
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("시작일은 종료일 이후가 될 수 없습니다.");
+            throw new InvalidDurationException();
         }
     }
 }

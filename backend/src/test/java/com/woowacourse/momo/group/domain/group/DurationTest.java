@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.woowacourse.momo.group.domain.Duration;
+import com.woowacourse.momo.group.exception.InvalidDurationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +32,6 @@ class DurationTest {
         LocalDate endDate = LocalDate.parse("2020-05-07", DateTimeFormatter.ISO_LOCAL_DATE);
 
         assertThatThrownBy(() -> new Duration(startDate, endDate))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("시작일은 종료일 이후가 될 수 없습니다.");
+                .isInstanceOf(InvalidDurationException.class);
     }
 }
