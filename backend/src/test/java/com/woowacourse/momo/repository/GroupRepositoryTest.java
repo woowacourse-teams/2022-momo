@@ -2,9 +2,7 @@ package com.woowacourse.momo.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -27,10 +25,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration duration = new Duration(startDate, endDate);
-
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
 
@@ -44,10 +39,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정되지 않은 모임을 저장한다")
     @Test
     void saveGroupWithoutSchedules() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration duration = new Duration(startDate, endDate);
-
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 Collections.emptyList(), "", "");
 
@@ -61,10 +53,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 스케줄을 조회한다")
     @Test
     void findById() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration duration = new Duration(startDate, endDate);
-
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
 
@@ -79,10 +68,7 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration duration = new Duration(startDate, endDate);
-
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
         Group group1 = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
         Group group2 = new Group("momo 회의", 2L, 1L, false, duration, LocalDateTime.now(),
@@ -98,10 +84,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration duration = new Duration(startDate, endDate);
-
+        Duration duration = Duration.of("2022-07-08", "2022-07-08");
         Group group = new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
                 List.of(Schedule.of("월", "11:00:00", "11:00:00")), "", "");
         Long groupId = groupRepository.save(group).getId();

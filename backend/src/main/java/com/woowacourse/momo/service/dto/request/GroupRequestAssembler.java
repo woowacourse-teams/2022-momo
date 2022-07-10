@@ -20,7 +20,7 @@ public class GroupRequestAssembler {
     }
 
     public static Duration duration(DurationRequest durationRequest) {
-        return new Duration(durationRequest.getStart(), durationRequest.getEnd());
+        return Duration.of(durationRequest.getStart(), durationRequest.getEnd());
     }
 
     private static List<Schedule> schedules(List<ScheduleRequest> scheduleRequests) {
