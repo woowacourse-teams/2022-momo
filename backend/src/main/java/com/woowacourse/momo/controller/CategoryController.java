@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.service.CategoryService;
-import com.woowacourse.momo.service.dto.CategoryResponse;
+import com.woowacourse.momo.service.dto.response.category.CategoryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/categories")

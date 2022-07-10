@@ -2,6 +2,8 @@ package com.woowacourse.momo.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static com.woowacourse.momo.service.dto.response.category.CategoryResponseAssembler.categoryResponse;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.woowacourse.momo.domain.category.Category;
 import com.woowacourse.momo.repository.CategoryRepository;
-import com.woowacourse.momo.service.dto.CategoryResponse;
+import com.woowacourse.momo.service.dto.response.category.CategoryResponse;
 
 @SpringBootTest
 class CategoryServiceTest {
@@ -36,8 +38,8 @@ class CategoryServiceTest {
     @Test
     void findAll() {
         List<CategoryResponse> actual = categoryService.findAll();
-        CategoryResponse categoryStudyResponse = CategoryResponse.from(CATEGORY_STUDY);
-        CategoryResponse categoryTravelResponse = CategoryResponse.from(CATEGORY_TRAVEL);
+        CategoryResponse categoryStudyResponse = categoryResponse(CATEGORY_STUDY);
+        CategoryResponse categoryTravelResponse = categoryResponse(CATEGORY_TRAVEL);
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .contains(categoryStudyResponse, categoryTravelResponse);

@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.service.GroupService;
 import com.woowacourse.momo.service.dto.request.GroupRequest;
 import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.service.dto.response.GroupResponse;
+import com.woowacourse.momo.service.dto.response.group.GroupResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")

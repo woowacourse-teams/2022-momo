@@ -1,6 +1,6 @@
-package com.woowacourse.momo.service.dto.response;
+package com.woowacourse.momo.service.dto.response.group;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TimeResponse {
+public class DurationResponse {
 
     @DateTimeFormat
-    private LocalTime start;
+    private LocalDate start;
     @DateTimeFormat
-    private LocalTime end;
+    private LocalDate end;
 }

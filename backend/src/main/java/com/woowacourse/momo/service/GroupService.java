@@ -16,7 +16,8 @@ import com.woowacourse.momo.repository.MemberRepository;
 import com.woowacourse.momo.service.dto.request.GroupRequest;
 import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.service.dto.response.GroupResponse;
+import com.woowacourse.momo.service.dto.response.group.GroupResponse;
+import com.woowacourse.momo.service.dto.response.group.GroupResponseAssembler;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -48,7 +49,7 @@ public class GroupService {
         Member host = memberRepository.findById(group.getHostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        return GroupResponse.toResponse(group, host);
+        return GroupResponseAssembler.groupResponse(group, host);
     }
 
     public List<GroupResponse> findAll() {
