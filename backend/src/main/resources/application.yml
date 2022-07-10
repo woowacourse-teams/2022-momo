@@ -11,9 +11,6 @@ spring:
       ddl-auto: create
       naming:
         physical-strategy: com.woowacourse.momo.CustomNamingStrategy
-  h2:
-    console:
-      enable: 'true'
 logging:
   level:
     org:
