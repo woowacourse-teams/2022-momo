@@ -3,6 +3,8 @@ package com.woowacourse.momo.group.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.woowacourse.momo.group.exception.InvalidCategoryException;
+import com.woowacourse.momo.group.repository.CategoryRepository;
 import com.woowacourse.momo.group.repository.GroupRepository;
 import com.woowacourse.momo.member.repository.MemberRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -25,10 +27,16 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public long create(GroupRequest groupRequest) {
         Group group = groupRepository.save(groupRequest.toEntity());
+
+        boolean isExist = categoryRepository.existsById(group.getCategoryId());
+        if (!isExist) {
+            throw new InvalidCategoryException();
+        }
         return group.getId();
     }
 
