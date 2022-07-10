@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain;
 
 import java.util.Arrays;
 
+import com.woowacourse.momo.group.exception.InvalidDayException;
 import lombok.Getter;
 
 @Getter
@@ -25,6 +26,6 @@ public enum Day {
         return Arrays.stream(values())
                 .filter(day -> day.value.equals(value))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 요일입니다."));
+                .orElseThrow(InvalidDayException::new);
     }
 }
