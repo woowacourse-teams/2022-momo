@@ -1,5 +1,13 @@
 package com.woowacourse.momo.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+
 import com.woowacourse.momo.domain.group.Group;
 import com.woowacourse.momo.domain.group.Schedule;
 import com.woowacourse.momo.domain.member.Member;
@@ -9,13 +17,6 @@ import com.woowacourse.momo.service.dto.request.GroupRequest;
 import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.service.dto.response.GroupResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

@@ -1,8 +1,9 @@
 package com.woowacourse.momo.service.dto.response;
 
-import com.woowacourse.momo.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import com.woowacourse.momo.domain.member.Member;
 
 @Getter
 @AllArgsConstructor

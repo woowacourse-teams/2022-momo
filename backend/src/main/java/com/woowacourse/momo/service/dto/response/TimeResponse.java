@@ -1,11 +1,12 @@
 package com.woowacourse.momo.service.dto.response;
 
+import java.time.LocalTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor

@@ -1,8 +1,9 @@
 package com.woowacourse.momo.acceptance;
 
+import org.springframework.http.MediaType;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import org.springframework.http.MediaType;
 
 public class RestAssuredConvenienceMethod {
 

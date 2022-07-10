@@ -1,15 +1,13 @@
 package com.woowacourse.momo.service.dto.request;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.momo.domain.group.Group;
-import com.woowacourse.momo.domain.group.Schedule;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor

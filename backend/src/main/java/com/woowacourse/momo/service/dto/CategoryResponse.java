@@ -1,8 +1,9 @@
 package com.woowacourse.momo.service.dto;
 
-import com.woowacourse.momo.domain.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import com.woowacourse.momo.domain.category.Category;
 
 @Getter
 @AllArgsConstructor

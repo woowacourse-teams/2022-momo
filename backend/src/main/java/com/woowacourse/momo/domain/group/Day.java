@@ -1,8 +1,8 @@
 package com.woowacourse.momo.domain.group;
 
-import lombok.Getter;
-
 import java.util.Arrays;
+
+import lombok.Getter;
 
 @Getter
 public enum Day {

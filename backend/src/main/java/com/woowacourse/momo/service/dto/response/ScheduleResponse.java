@@ -1,9 +1,10 @@
 package com.woowacourse.momo.service.dto.response;
 
-import com.woowacourse.momo.domain.group.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import com.woowacourse.momo.domain.group.Schedule;
 
 @Getter
 @NoArgsConstructor

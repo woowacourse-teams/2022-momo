@@ -1,11 +1,12 @@
 package com.woowacourse.momo.domain.group;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.time.LocalDate;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor

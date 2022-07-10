@@ -1,10 +1,12 @@
 package com.woowacourse.momo.acceptance;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.hamcrest.Matchers.*;
 
 @Sql("classpath:init.sql")
 @SuppressWarnings("NonAsciiCharacters")
