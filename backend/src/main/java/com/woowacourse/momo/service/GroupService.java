@@ -14,6 +14,7 @@ import com.woowacourse.momo.domain.member.Member;
 import com.woowacourse.momo.repository.GroupRepository;
 import com.woowacourse.momo.repository.MemberRepository;
 import com.woowacourse.momo.service.dto.request.GroupRequest;
+import com.woowacourse.momo.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.service.dto.response.group.GroupResponse;
@@ -29,7 +30,7 @@ public class GroupService {
 
     @Transactional
     public long create(GroupRequest groupRequest) {
-        Group group = groupRepository.save(groupRequest.toEntity());
+        Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
         return group.getId();
     }
 
@@ -67,7 +68,7 @@ public class GroupService {
                 .collect(Collectors.toList());
 
         group.update(request.getName(), request.getCategoryId(), request.getRegular(),
-                request.getDuration().toEntity(), request.getDeadline(),
+                GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(),
                 schedules, request.getLocation(), request.getDescription());
     }
 
