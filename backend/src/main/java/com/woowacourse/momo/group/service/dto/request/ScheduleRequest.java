@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Schedule;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
@@ -12,9 +15,12 @@ import com.woowacourse.momo.group.domain.Schedule;
 public class ScheduleRequest {
 
     private String day;
-    private TimeRequest time;
+    @DateTimeFormat
+    private LocalTime startTime;
+    @DateTimeFormat
+    private LocalTime endTime;
 
     public Schedule toEntity() {
-        return Schedule.of(day, time.getStart(), time.getEnd());
+        return Schedule.of(day, startTime, endTime);
     }
 }
