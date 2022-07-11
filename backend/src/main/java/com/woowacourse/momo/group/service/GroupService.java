@@ -15,8 +15,8 @@ import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.exception.InvalidCategoryException;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -33,7 +33,7 @@ public class GroupService {
 
     @Transactional
     public long create(GroupRequest groupRequest) {
-        Group group = groupRepository.save(groupRequest.toEntity());
+        Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
 
         boolean isExist = categoryRepository.existsById(group.getCategoryId());
         if (!isExist) {
@@ -70,11 +70,9 @@ public class GroupService {
     @Transactional
     public void update(Long groupId, GroupUpdateRequest request) {
         Group group = findGroup(groupId);
-        List<Schedule> schedules = request.getSchedules().stream()
-                .map(ScheduleRequest::toEntity)
-                .collect(Collectors.toList());
+        List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
-        group.update(request.getName(), request.getCategoryId(), request.getDuration().toEntity(),
+        group.update(request.getName(), request.getCategoryId(), GroupRequestAssembler.duration(request.getDuration()),
                 request.getDeadline(), schedules, request.getLocation(), request.getDescription());
     }
 

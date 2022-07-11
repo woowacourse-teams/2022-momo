@@ -23,5 +23,4 @@ public class GroupUpdateRequest {
     private LocalDateTime deadline;
     private String location;
     private String description;
-
 }
