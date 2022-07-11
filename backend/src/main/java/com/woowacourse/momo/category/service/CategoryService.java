@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.category.domain.CategoryRepository;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponse;
+import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssembler;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,7 +24,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
 
         return categories.stream()
-                .map(CategoryResponse::from)
+                .map(CategoryResponseAssembler::categoryResponse)
                 .collect(Collectors.toList());
     }
 }
