@@ -11,18 +11,14 @@ import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.domain.schedule.Schedules;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
     public static GroupResponse groupResponse(Group group, Member member) {
-        return new GroupResponse(group.getName(), memberResponse(member), group.getCategoryId(), durationResponse(group.getDuration()),
+        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(member), group.getCategoryId(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(), group.getDescription());
-    }
-
-    private static MemberResponse memberResponse(Member member) {
-        return new MemberResponse(member.getId(), member.getName());
     }
 
     private static DurationResponse durationResponse(Duration duration) {
