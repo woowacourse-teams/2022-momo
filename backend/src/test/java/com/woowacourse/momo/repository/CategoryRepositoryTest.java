@@ -4,9 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -31,13 +35,16 @@ class CategoryRepositoryTest {
     }
 
     @DisplayName("카테고리 목록을 조회한다")
-    @Test
-    void findAll() {
-        Category category1 = categoryRepository.save(new Category("카테고리1"));
-        Category category2 = categoryRepository.save(new Category("카테고리2"));
+    @ParameterizedTest
+    @ValueSource(ints = {3})
+    void findAll(int count) {
+        List<Category> expected = IntStream.rangeClosed(0, count)
+                .mapToObj(i -> categoryRepository.save(new Category("카테고리" + i)))
+                .collect(Collectors.toList());
 
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> actual = categoryRepository.findAll();
 
-        assertThat(categories).contains(category1, category2);
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 }
