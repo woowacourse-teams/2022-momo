@@ -52,3 +52,7 @@ VALUES ('운동'),
 
 INSERT INTO momo_member (name)
 VALUES ('momo');
+
+INSERT INTO momo_group (categoryId, deadline, description, endDate, startDate, hostId, location, name, regular)
+VALUES (1, '2022-07-11T00:52:01.456770', '', '2022-07-08', '2022-07-08', 1, '', '튼튼이 클럽', false),
+       (2, '2022-07-12T10:30:01.456770', '', '2022-07-18', '2022-07-18', 1, '', 'CS 리뷰 스터디', false)
