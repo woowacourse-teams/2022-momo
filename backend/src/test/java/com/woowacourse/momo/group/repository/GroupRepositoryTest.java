@@ -127,7 +127,7 @@ class GroupRepositoryTest {
         LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
         Duration duration = new Duration(startDate, endDate);
 
-        return new Group("momo 회의", 1L, 1L, false, duration, LocalDateTime.now(),
+        return new Group("momo 회의", 1L, 1L, duration, LocalDateTime.now(),
                 schedules, "", "");
     }
 }

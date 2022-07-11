@@ -74,9 +74,8 @@ public class GroupService {
                 .map(ScheduleRequest::toEntity)
                 .collect(Collectors.toList());
 
-        group.update(request.getName(), request.getCategoryId(), request.getRegular(),
-                request.getDuration().toEntity(), request.getDeadline(),
-                schedules, request.getLocation(), request.getDescription());
+        group.update(request.getName(), request.getCategoryId(), request.getDuration().toEntity(),
+                request.getDeadline(), schedules, request.getLocation(), request.getDescription());
     }
 
     @Transactional

@@ -35,8 +35,8 @@ class GroupServiceTest {
                 LocalDate.of(2022, 7, 8));
         List<ScheduleRequest> schedules = List.of(new ScheduleRequest(LocalDate.of(2022, 7, 8),
                 LocalTime.of(11, 0), LocalTime.of(14, 0)));
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, 1L, false,
-                duration, schedules, LocalDateTime.now(), "", "");
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, 1L, duration,
+                schedules, LocalDateTime.now(), "", "");
 
         assertDoesNotThrow(() -> groupService.create(request));
     }
@@ -49,8 +49,8 @@ class GroupServiceTest {
                 LocalDate.of(2022, 7, 8));
         List<ScheduleRequest> schedules = List.of(new ScheduleRequest(LocalDate.of(2022, 7, 8),
                 LocalTime.of(11, 0), LocalTime.of(14, 0)));
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, false,
-                duration, schedules, LocalDateTime.now(), "", "");
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, duration,
+                schedules, LocalDateTime.now(), "", "");
 
         assertThatThrownBy(() -> groupService.create(request))
                 .isInstanceOf(InvalidCategoryException.class);

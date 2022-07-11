@@ -21,7 +21,6 @@ public class GroupRequest {
     private String name;
     private Long hostId;
     private Long categoryId;
-    private Boolean regular;
     private DurationRequest duration;
     private List<ScheduleRequest> schedules;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -30,7 +29,7 @@ public class GroupRequest {
     private String description;
 
     public Group toEntity() {
-        return new Group(name, hostId, categoryId, regular, duration.toEntity(), deadline,
+        return new Group(name, hostId, categoryId, duration.toEntity(), deadline,
                 convertSchedulesToEntity(), location, description);
     }
 

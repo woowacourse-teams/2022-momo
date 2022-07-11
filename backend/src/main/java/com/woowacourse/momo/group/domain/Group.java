@@ -35,9 +35,6 @@ public class Group {
     private Long categoryId;
 
     @Column(nullable = false)
-    private boolean regular;
-
-    @Column(nullable = false)
     @Embedded
     private Duration duration;
 
@@ -54,12 +51,11 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Long hostId, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
+    public Group(String name, Long hostId, Long categoryId, Duration duration, LocalDateTime deadline,
                  List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.hostId = hostId;
         this.categoryId = categoryId;
-        this.regular = regular;
         this.duration = duration;
         this.deadline = deadline;
         this.schedules = new Schedules(schedules, this);
@@ -67,11 +63,10 @@ public class Group {
         this.description = description;
     }
 
-    public void update(String name, Long categoryId, boolean regular, Duration duration, LocalDateTime deadline,
+    public void update(String name, Long categoryId, Duration duration, LocalDateTime deadline,
                  List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.categoryId = categoryId;
-        this.regular = regular;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;

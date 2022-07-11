@@ -24,7 +24,6 @@ public class GroupResponse {
     private String name;
     private MemberResponse host;
     private Long categoryId;
-    private Boolean regular;
     private DurationResponse duration;
     private List<ScheduleResponse> schedules;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -37,7 +36,6 @@ public class GroupResponse {
                 .name(group.getName())
                 .host(MemberResponse.toResponse(host))
                 .categoryId(group.getCategoryId())
-                .regular(group.isRegular())
                 .duration(DurationResponse.toResponse(group.getDuration()))
                 .schedules(convertSchedulesToResponse(group.getSchedules()))
                 .deadline(group.getDeadline())
