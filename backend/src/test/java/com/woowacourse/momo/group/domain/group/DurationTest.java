@@ -6,12 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.woowacourse.momo.group.domain.Duration;
-import com.woowacourse.momo.group.exception.InvalidDurationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import com.woowacourse.momo.group.domain.Duration;
+import com.woowacourse.momo.group.exception.InvalidDurationException;
 
 class DurationTest {
 

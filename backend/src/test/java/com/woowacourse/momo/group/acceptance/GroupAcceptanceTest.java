@@ -4,11 +4,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 
-import com.woowacourse.momo.acceptance.AcceptanceTest;
-import com.woowacourse.momo.acceptance.RestAssuredConvenienceMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
+
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.RestAssuredConvenienceMethod;
 
 @Sql("classpath:init.sql")
 @SuppressWarnings("NonAsciiCharacters")

@@ -1,23 +1,23 @@
 package com.woowacourse.momo.group.repository;
 
-import com.woowacourse.momo.group.domain.Duration;
-import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.Schedule;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import com.woowacourse.momo.group.domain.Duration;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.Schedule;
 
 @DataJpaTest
 class GroupRepositoryTest {

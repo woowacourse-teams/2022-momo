@@ -1,9 +1,10 @@
 package com.woowacourse.momo.group.repository;
 
-import com.woowacourse.momo.group.domain.Schedule;
+import java.util.List;
+
 import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import com.woowacourse.momo.group.domain.Schedule;
 
 public interface ScheduleRepository extends Repository<Schedule, Long> {
 

@@ -2,13 +2,14 @@ package com.woowacourse.momo.group.acceptance;
 
 import static org.hamcrest.Matchers.is;
 
-import com.woowacourse.momo.acceptance.AcceptanceTest;
-import com.woowacourse.momo.acceptance.RestAssuredConvenienceMethod;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.RestAssuredConvenienceMethod;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Sql("classpath:init.sql")

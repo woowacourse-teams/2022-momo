@@ -1,17 +1,16 @@
 package com.woowacourse.momo.group.repository;
 
-import com.woowacourse.momo.group.domain.Category;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import com.woowacourse.momo.group.domain.Category;
 
 @DataJpaTest
 @Sql("classpath:init.sql")

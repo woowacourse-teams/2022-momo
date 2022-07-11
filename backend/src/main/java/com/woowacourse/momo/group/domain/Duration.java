@@ -5,9 +5,10 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import com.woowacourse.momo.group.exception.InvalidDurationException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import com.woowacourse.momo.group.exception.InvalidDurationException;
 
 @Getter
 @NoArgsConstructor

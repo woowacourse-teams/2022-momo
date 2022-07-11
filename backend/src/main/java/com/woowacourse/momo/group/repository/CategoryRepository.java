@@ -1,9 +1,10 @@
 package com.woowacourse.momo.group.repository;
 
-import com.woowacourse.momo.group.domain.Category;
+import java.util.List;
+
 import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import com.woowacourse.momo.group.domain.Category;
 
 public interface CategoryRepository extends Repository<Category, Long> {
 

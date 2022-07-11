@@ -1,25 +1,26 @@
 package com.woowacourse.momo.group.service;
 
-import com.woowacourse.momo.group.exception.InvalidCategoryException;
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
-import com.woowacourse.momo.group.service.dto.request.DurationRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupResponse;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+
+import com.woowacourse.momo.group.exception.InvalidCategoryException;
+import com.woowacourse.momo.group.exception.NotFoundGroupException;
+import com.woowacourse.momo.group.service.dto.request.DurationRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 
 @SpringBootTest
 @Sql("classpath:init.sql")
