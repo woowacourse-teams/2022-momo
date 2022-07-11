@@ -2,22 +2,16 @@ package com.woowacourse.momo.group.service.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.schedule.Schedules;
-import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupResponse {
@@ -31,24 +25,4 @@ public class GroupResponse {
     private LocalDateTime deadline;
     private String location;
     private String description;
-
-    public static GroupResponse toResponse(Group group, Member host) {
-        return GroupResponse.builder()
-                .name(group.getName())
-                .host(MemberResponse.toResponse(host))
-                .categoryId(group.getCategoryId())
-                .duration(DurationResponse.toResponse(group.getDuration()))
-                .schedules(convertSchedulesToResponse(group.getSchedules()))
-                .deadline(group.getDeadline())
-                .location(group.getLocation())
-                .description(group.getDescription())
-                .build();
-    }
-
-    private static List<ScheduleResponse> convertSchedulesToResponse(Schedules schedules) {
-        return schedules.getValue()
-                .stream()
-                .map(ScheduleResponse::toResponse)
-                .collect(Collectors.toList());
-    }
 }

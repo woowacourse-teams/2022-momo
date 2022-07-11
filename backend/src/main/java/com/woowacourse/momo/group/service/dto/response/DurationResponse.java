@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.duration.Duration;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +17,4 @@ public class DurationResponse {
     private LocalDate start;
     @DateTimeFormat
     private LocalDate end;
-
-    public static DurationResponse toResponse(Duration duration) {
-        return new DurationResponse(duration.getStartDate(), duration.getEndDate());
-    }
 }

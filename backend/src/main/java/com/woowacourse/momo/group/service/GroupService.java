@@ -18,6 +18,7 @@ import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
@@ -57,7 +58,7 @@ public class GroupService {
         Member host = memberRepository.findById(group.getHostId())
                 .orElseThrow(NotFoundMemberException::new);
 
-        return GroupResponse.toResponse(group, host);
+        return GroupResponseAssembler.groupResponse(group, host);
     }
 
     public List<GroupResponse> findAll() {
