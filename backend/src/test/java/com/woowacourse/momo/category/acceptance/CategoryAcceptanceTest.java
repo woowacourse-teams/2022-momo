@@ -20,11 +20,16 @@ class CategoryAcceptanceTest extends AcceptanceTest {
         RestAssuredConvenienceMethod.getRequest("/api/categories")
                 .statusCode(HttpStatus.OK.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("", Matchers.hasSize(5))
-                .body("[0].id", is(1)).body("[0].name", is("운동"))
+                .body("", Matchers.hasSize(10))
+                .body("[0].id", is(1)).body("[0].name", is("전체"))
                 .body("[1].id", is(2)).body("[1].name", is("스터디"))
-                .body("[2].id", is(3)).body("[2].name", is("한 잔"))
-                .body("[3].id", is(4)).body("[3].name", is("영화"))
-                .body("[4].id", is(5)).body("[4].name", is("모각코"));
+                .body("[2].id", is(3)).body("[2].name", is("모각코"))
+                .body("[3].id", is(4)).body("[3].name", is("식사"))
+                .body("[4].id", is(5)).body("[4].name", is("카페"))
+                .body("[5].id", is(6)).body("[5].name", is("술"))
+                .body("[6].id", is(7)).body("[6].name", is("운동"))
+                .body("[7].id", is(8)).body("[7].name", is("게임"))
+                .body("[8].id", is(9)).body("[8].name", is("여행"))
+                .body("[9].id", is(10)).body("[9].name", is("기타"));
     }
 }
