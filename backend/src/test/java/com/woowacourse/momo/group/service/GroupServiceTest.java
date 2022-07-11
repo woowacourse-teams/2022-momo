@@ -15,7 +15,6 @@ import org.springframework.test.context.jdbc.Sql;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,11 +31,12 @@ class GroupServiceTest {
     @DisplayName("모임을 생성한다.")
     @Test
     void create() {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        DurationRequest duration = new DurationRequest(startDate, endDate);
-        List<ScheduleRequest> schedules = List.of(new ScheduleRequest("월", LocalTime.of(11, 0), LocalTime.of(14, 0)));
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, 1L, false, duration, schedules, LocalDateTime.now(), "", "");
+        DurationRequest duration = new DurationRequest(LocalDate.of(2022, 7, 8),
+                LocalDate.of(2022, 7, 8));
+        List<ScheduleRequest> schedules = List.of(new ScheduleRequest(LocalDate.of(2022, 7, 8),
+                LocalTime.of(11, 0), LocalTime.of(14, 0)));
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, 1L, false,
+                duration, schedules, LocalDateTime.now(), "", "");
 
         assertDoesNotThrow(() -> groupService.create(request));
     }
@@ -45,11 +45,12 @@ class GroupServiceTest {
     @Test
     void createWithInvalidCategoryId() {
         Long categoryId = 100L;
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        DurationRequest duration = new DurationRequest(startDate, endDate);
-        List<ScheduleRequest> schedules = List.of(new ScheduleRequest("월", LocalTime.of(11, 0), LocalTime.of(14, 0)));
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, false, duration, schedules, LocalDateTime.now(), "", "");
+        DurationRequest duration = new DurationRequest(LocalDate.of(2022, 7, 8),
+                LocalDate.of(2022, 7, 8));
+        List<ScheduleRequest> schedules = List.of(new ScheduleRequest(LocalDate.of(2022, 7, 8),
+                LocalTime.of(11, 0), LocalTime.of(14, 0)));
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, false,
+                duration, schedules, LocalDateTime.now(), "", "");
 
         assertThatThrownBy(() -> groupService.create(request))
                 .isInstanceOf(InvalidCategoryException.class);

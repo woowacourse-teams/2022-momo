@@ -10,13 +10,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
@@ -31,7 +31,8 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
-        List<Schedule> schedules = List.of(Schedule.of("월", "11:00:00", "11:00:00"));
+        List<Schedule> schedules = List.of(new Schedule(LocalDate.of(2022, 7, 1),
+                LocalTime.of(10, 0), LocalTime.of(12, 0)));
         Group group = constructGroup(schedules);
 
         Group savedGroup = groupRepository.save(group);
@@ -67,8 +68,10 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 스케줄을 조회한다")
     @Test
     void findById() {
-        List<Schedule> schedules = List.of(Schedule.of("월", "11:00:00", "11:00:00"),
-                Schedule.of("화", "11:00:00", "11:00:00"));
+        List<Schedule> schedules = List.of(new Schedule(LocalDate.of(2022, 7, 1),
+                        LocalTime.of(10, 0), LocalTime.of(12, 0)),
+                new Schedule(LocalDate.of(2022, 7, 3),
+                        LocalTime.of(10, 0), LocalTime.of(12, 0)));
         Group group = constructGroup(schedules);
         Group savedGroup = groupRepository.save(group);
 
@@ -87,7 +90,8 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        List<Schedule> schedules = List.of(Schedule.of("월", "11:00:00", "11:00:00"));
+        List<Schedule> schedules = List.of(new Schedule(LocalDate.of(2022, 7, 1),
+                LocalTime.of(10, 0), LocalTime.of(12, 0)));
         Group group1 = constructGroup(schedules);
         Group group2 = constructGroup(schedules);
         Group savedGroup1 = groupRepository.save(group1);
@@ -102,7 +106,8 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
-        List<Schedule> schedules = List.of(Schedule.of("월", "11:00:00", "11:00:00"));
+        List<Schedule> schedules = List.of(new Schedule(LocalDate.of(2022, 7, 1),
+                LocalTime.of(10, 0), LocalTime.of(12, 0)));
         Group group = constructGroup(schedules);
         groupRepository.save(group);
 

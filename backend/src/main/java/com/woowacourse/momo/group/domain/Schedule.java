@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.domain;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,8 +31,8 @@ public class Schedule {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @Enumerated(EnumType.STRING)
-    private Day reservationDay;
+    @Column(nullable = false)
+    private LocalDate date;
 
     @Column(nullable = false)
     private LocalTime startTime;
@@ -39,20 +40,10 @@ public class Schedule {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    private Schedule(Day reservationDay, LocalTime startTime, LocalTime endTime) {
-        this.reservationDay = reservationDay;
+    public Schedule(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public static Schedule of(String reservationDay, String startTime, String endTime) {
-        return new Schedule(Day.from(reservationDay),
-                LocalTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_TIME),
-                LocalTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_TIME));
-    }
-
-    public static Schedule of(String reservationDay, LocalTime startTime, LocalTime endTime) {
-        return new Schedule(Day.from(reservationDay), startTime, endTime);
     }
 
     public void belongTo(Group group) {

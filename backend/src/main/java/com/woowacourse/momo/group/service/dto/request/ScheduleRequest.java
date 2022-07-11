@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.Schedule;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
@@ -14,13 +15,14 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ScheduleRequest {
 
-    private String day;
+    @DateTimeFormat
+    private LocalDate date;
     @DateTimeFormat
     private LocalTime startTime;
     @DateTimeFormat
     private LocalTime endTime;
 
     public Schedule toEntity() {
-        return Schedule.of(day, startTime, endTime);
+        return new Schedule(date, startTime, endTime);
     }
 }
