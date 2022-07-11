@@ -20,13 +20,12 @@ class MemberRepositoryTest {
     @DisplayName("식별자를 통해 회원을 조회한다.")
     @Test
     void findById() {
-        Member member = new Member("모모");
-        Member expected = memberRepository.save(member);
+        Member expected = memberRepository.save(new Member("모모"));
 
         Optional<Member> actual = memberRepository.findById(expected.getId());
 
         assertThat(actual).isPresent();
         assertThat(actual.get()).usingRecursiveComparison()
-                        .isEqualTo(expected);
+                .isEqualTo(expected);
     }
 }
