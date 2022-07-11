@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.woowacourse.momo.group.exception.InvalidCategoryException;
+import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.repository.CategoryRepository;
 import com.woowacourse.momo.group.repository.GroupRepository;
+import com.woowacourse.momo.member.exception.NotFoundMemberException;
 import com.woowacourse.momo.member.repository.MemberRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -47,14 +49,13 @@ public class GroupService {
     }
 
     private Group findGroup(Long id) {
-        Group group = groupRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
-        return group;
+        return groupRepository.findById(id)
+                .orElseThrow(NotFoundGroupException::new);
     }
 
     private GroupResponse convertToGroupResponse(Group group) {
         Member host = memberRepository.findById(group.getHostId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NotFoundMemberException::new);
 
         return GroupResponse.toResponse(group, host);
     }
