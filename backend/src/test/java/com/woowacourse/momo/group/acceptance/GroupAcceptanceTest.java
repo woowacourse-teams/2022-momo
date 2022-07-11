@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.woowacourse.momo.acceptance.AcceptanceTest;
-import com.woowacourse.momo.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
 
 @Sql("classpath:init.sql")
 @SuppressWarnings("NonAsciiCharacters")

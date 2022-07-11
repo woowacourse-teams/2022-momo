@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.Schedule;
+import com.woowacourse.momo.group.domain.schedule.Schedule;
 
 @Getter
 @NoArgsConstructor

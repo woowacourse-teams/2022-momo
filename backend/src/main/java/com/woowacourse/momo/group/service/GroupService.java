@@ -8,19 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.Schedule;
+import com.woowacourse.momo.category.domain.CategoryRepository;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.exception.InvalidCategoryException;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
-import com.woowacourse.momo.group.repository.CategoryRepository;
-import com.woowacourse.momo.group.repository.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
-import com.woowacourse.momo.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

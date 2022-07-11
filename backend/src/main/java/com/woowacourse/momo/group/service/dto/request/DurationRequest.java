@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.Duration;
+import com.woowacourse.momo.group.domain.duration.Duration;
 
 @Getter
 @NoArgsConstructor
