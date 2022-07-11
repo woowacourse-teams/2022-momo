@@ -10,7 +10,7 @@ spring:
     hibernate:
       ddl-auto: create
       naming:
-        physical-strategy: com.woowacourse.momo.CustomNamingStrategy
+        physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
 logging:
   level:
     org:
