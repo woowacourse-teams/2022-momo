@@ -123,8 +123,8 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(List<Schedule> schedules) {
-        LocalDate startDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2022-07-08", DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate startDate = LocalDate.of(2022, 7, 8);
+        LocalDate endDate = LocalDate.of(2022, 7, 8);
         Duration duration = new Duration(startDate, endDate);
 
         return new Group("momo 회의", 1L, 1L, duration, LocalDateTime.now(),

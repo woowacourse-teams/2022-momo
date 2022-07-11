@@ -28,8 +28,8 @@ class DurationTest {
     @DisplayName("시작일은 종료일 이후가 될 수 없다")
     @Test
     void validateEndIsNotBeforeStart() {
-        LocalDate startDate = LocalDate.parse("2020-05-08", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse("2020-05-07", DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate startDate = LocalDate.of(2020, 5, 8);
+        LocalDate endDate = LocalDate.of(2020, 5, 7);
 
         assertThatThrownBy(() -> new Duration(startDate, endDate))
                 .isInstanceOf(InvalidDurationException.class);
