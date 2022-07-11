@@ -23,6 +23,6 @@ class CategoryServiceTest {
     void findAll() {
         List<CategoryResponse> actual = categoryService.findAll();
 
-        assertThat(actual).hasSize(5);
+        assertThat(actual).hasSize(10);
     }
 }

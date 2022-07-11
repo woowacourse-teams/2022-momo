@@ -25,7 +25,7 @@ class CategoryRepositoryTest {
     void findAll() {
         List<Category> categories = categoryRepository.findAll();
 
-        assertThat(categories).hasSize(5);
+        assertThat(categories).hasSize(10);
     }
 
     @DisplayName("식별자를 가진 데이터가 존재하지 않으면 True를 반환한다.")
