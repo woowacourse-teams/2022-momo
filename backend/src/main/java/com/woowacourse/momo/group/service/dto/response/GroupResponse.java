@@ -11,9 +11,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.Schedules;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.schedule.Schedules;
 import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @Getter
 @Builder
