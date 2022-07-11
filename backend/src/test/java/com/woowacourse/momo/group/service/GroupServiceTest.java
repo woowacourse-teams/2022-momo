@@ -79,4 +79,15 @@ class GroupServiceTest {
 
         assertThat(groups).hasSize(2);
     }
+
+    @DisplayName("식별자를 통해 모임을 삭제한다.")
+    @Test
+    void delete() {
+        Long groupId = 1L;
+
+        groupService.delete(groupId);
+
+        assertThatThrownBy(() -> groupService.findById(groupId))
+                .isInstanceOf(NotFoundGroupException.class);
+    }
 }

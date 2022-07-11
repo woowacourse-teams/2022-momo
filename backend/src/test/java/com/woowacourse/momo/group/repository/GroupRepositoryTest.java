@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
@@ -107,9 +108,13 @@ class GroupRepositoryTest {
 
         groupRepository.deleteById(group.getId());
         groupRepository.flush();
-        Optional<Group> actual = groupRepository.findById(group.getId());
+        Optional<Group> foundGroup = groupRepository.findById(group.getId());
+        List<Schedule> foundSchedules = scheduleRepository.findByGroupId(group.getId());
 
-        assertThat(actual).isEmpty();
+        assertAll(
+                () -> assertThat(foundGroup).isEmpty(),
+                () -> assertThat(foundSchedules).isEmpty()
+        );
     }
 
     private Group constructGroup(List<Schedule> schedules) {
