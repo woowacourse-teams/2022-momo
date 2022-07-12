@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,18 @@ public class Schedule {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public static Schedule of(String date, String startTime, String endTime) {
+        return new Schedule(parseLocalDate(date), parseLocalTime(startTime), parseLocalTime(endTime));
+    }
+
+    private static LocalDate parseLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    private static LocalTime parseLocalTime(String time) {
+        return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
     }
 
     public void belongTo(Group group) {
