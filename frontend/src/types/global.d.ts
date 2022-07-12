@@ -18,10 +18,12 @@ declare module '@emotion/react' {
       gray004: string;
       gray005: string;
       yellow001: string;
+      yellow002: string;
       green001: string;
       blue001: string;
       blue002: string;
       red001: string;
+      red002: string;
     };
   }
 }

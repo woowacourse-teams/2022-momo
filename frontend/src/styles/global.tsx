@@ -2,6 +2,7 @@ import { Global, css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
 
 import { fontStyle } from './font';
+import theme from './theme';
 
 // Heading => SuseongDotum
 // Basic => GangwonEdu_OTFBoldA, GangwonEdu_OTFLightA
@@ -23,6 +24,11 @@ const style = css`
     font-family: 'SuseongDotum';
   }
 
+  a {
+    text-decoration: none;
+    color: ${theme.colors.black002};
+  }
+
   button {
     border: none;
 
@@ -32,11 +38,24 @@ const style = css`
   }
 
   input {
+    padding: 0 0.5rem;
+
+    background: ${theme.colors.white001};
+
+    border: 1px solid ${theme.colors.gray003};
+    border-radius: 0.5rem;
+
     font-family: 'GangwonEdu_Bold';
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 
     &:focus {
+      border: 1.5px solid ${theme.colors.green001};
+
       outline: none;
+    }
+
+    &::placeholder {
+      color: ${theme.colors.gray003};
     }
   }
 `;
