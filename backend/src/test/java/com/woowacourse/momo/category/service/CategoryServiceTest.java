@@ -8,12 +8,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.woowacourse.momo.category.service.dto.response.CategoryResponse;
 
 @SpringBootTest
-@Sql("classpath:init.sql")
 class CategoryServiceTest {
 
     @Autowired

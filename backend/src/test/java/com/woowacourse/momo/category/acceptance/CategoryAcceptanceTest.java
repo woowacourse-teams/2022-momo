@@ -6,13 +6,11 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Sql("classpath:init.sql")
 class CategoryAcceptanceTest extends AcceptanceTest {
 
     @Test

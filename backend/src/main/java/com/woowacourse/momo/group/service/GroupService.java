@@ -8,11 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.category.domain.CategoryRepository;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.group.exception.InvalidCategoryException;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
@@ -30,16 +29,11 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
 
     @Transactional
     public long create(GroupRequest groupRequest) {
         Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
 
-        boolean isExist = categoryRepository.existsById(group.getCategoryId());
-        if (!isExist) {
-            throw new InvalidCategoryException();
-        }
         return group.getId();
     }
 
@@ -73,8 +67,9 @@ public class GroupService {
         Group group = findGroup(groupId);
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
-        group.update(request.getName(), request.getCategoryId(), GroupRequestAssembler.duration(request.getDuration()),
-                request.getDeadline(), schedules, request.getLocation(), request.getDescription());
+        group.update(request.getName(), Category.from(request.getCategoryId()),
+                GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(), schedules,
+                request.getLocation(), request.getDescription());
     }
 
     @Transactional

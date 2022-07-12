@@ -16,8 +16,10 @@ import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 public class GroupResponseAssembler {
 
     public static GroupResponse groupResponse(Group group, Member member) {
-        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(member), group.getCategoryId(), durationResponse(group.getDuration()),
-                scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(), group.getDescription());
+        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(member),
+                group.getCategory().getId(), durationResponse(group.getDuration()),
+                scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(),
+                group.getDescription());
     }
 
     private static DurationResponse durationResponse(Duration duration) {

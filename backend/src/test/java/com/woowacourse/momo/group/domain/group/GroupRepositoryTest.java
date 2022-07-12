@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.domain.schedule.ScheduleRepository;
@@ -115,7 +116,7 @@ class GroupRepositoryTest {
     private Group constructGroup(List<Schedule> schedules) {
         Duration duration = Duration.of("2022-07-08", "2022-07-08");
 
-        return new Group("momo 회의", 1L, 1L, duration, LocalDateTime.now(),
+        return new Group("momo 회의", 1L, Category.STUDY, duration, LocalDateTime.now(),
                 schedules, "", "");
     }
 }

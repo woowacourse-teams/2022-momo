@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 
@@ -43,7 +46,8 @@ public class Group {
     private Long hostId;
 
     @Column(nullable = false)
-    private Long categoryId;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column(nullable = false)
     @Embedded
@@ -65,11 +69,11 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Long hostId, Long categoryId, Duration duration, LocalDateTime deadline,
+    public Group(String name, Long hostId, Category category, Duration duration, LocalDateTime deadline,
                  List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.hostId = hostId;
-        this.categoryId = categoryId;
+        this.category = category;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -78,10 +82,10 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(String name, Long categoryId, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
-        this.categoryId = categoryId;
+        this.category = category;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -106,7 +110,7 @@ public class Group {
 
         private String name;
         private Long hostId;
-        private Long categoryId;
+        private Category category;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -126,8 +130,13 @@ public class Group {
             return this;
         }
 
-        public Builder categoryId(Long categoryId) {
-            this.categoryId = categoryId;
+        public Builder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder categoryId(long categoryId) {
+            this.category = Category.from(categoryId);
             return this;
         }
 
@@ -158,13 +167,13 @@ public class Group {
 
         public Group build() {
             validateNonNull();
-            return new Group(name, hostId, categoryId, duration, deadline, schedules, location, description);
+            return new Group(name, hostId, category, duration, deadline, schedules, location, description);
         }
 
         private void validateNonNull() {
             Objects.requireNonNull(name);
             Objects.requireNonNull(hostId);
-            Objects.requireNonNull(categoryId);
+            Objects.requireNonNull(category);
             Objects.requireNonNull(duration);
             Objects.requireNonNull(deadline);
             Objects.requireNonNull(schedules);
