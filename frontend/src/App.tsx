@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+import ScrollToTop from 'components/@shared/ScrollToTop';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
 import { Main, Detail, Create } from 'pages/index';
@@ -18,6 +19,7 @@ function App() {
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <Router>
+            <ScrollToTop />
             <PageLayout>
               <Routes>
                 <Route path={BROWSER_PATH.BASE} element={<Main />} />
