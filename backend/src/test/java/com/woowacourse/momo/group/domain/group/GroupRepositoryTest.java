@@ -68,7 +68,8 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 스케줄을 조회한다")
     @Test
     void findById() {
-        List<Schedule> schedules = List.of(new Schedule(LocalDate.of(2022, 7, 1),
+        List<Schedule> schedules = List.of(
+                new Schedule(LocalDate.of(2022, 7, 1),
                         LocalTime.of(10, 0), LocalTime.of(12, 0)),
                 new Schedule(LocalDate.of(2022, 7, 3),
                         LocalTime.of(10, 0), LocalTime.of(12, 0)));
@@ -76,15 +77,10 @@ class GroupRepositoryTest {
         Group savedGroup = groupRepository.save(group);
 
         Optional<Group> foundGroup = groupRepository.findById(savedGroup.getId());
-        List<Schedule> savedSchedules = scheduleRepository.findByGroupId(savedGroup.getId());
 
         assertThat(foundGroup).isPresent();
-        assertAll(
-                () -> assertThat(foundGroup.get()).isEqualTo(savedGroup),
-                () -> assertThat(savedSchedules).usingRecursiveComparison()
-                        .ignoringFields("id")
-                        .isEqualTo(schedules)
-        );
+        assertThat(foundGroup.get()).usingRecursiveComparison()
+                .isEqualTo(savedGroup);
     }
 
     @DisplayName("모임 리스트를 조회한다")

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.group.domain.schedule.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 
@@ -25,9 +24,8 @@ public class GroupResponseAssembler {
         return new DurationResponse(duration.getStartDate(), duration.getEndDate());
     }
 
-    private static List<ScheduleResponse> scheduleResponses(Schedules schedules) {
-        return schedules.getValue()
-                .stream()
+    private static List<ScheduleResponse> scheduleResponses(List<Schedule> schedules) {
+        return schedules.stream()
                 .map(GroupResponseAssembler::scheduleResponse)
                 .collect(Collectors.toList());
     }
