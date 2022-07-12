@@ -36,8 +36,9 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getPayload(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    public Long getPayload(String token) {
+        return Long.valueOf(
+                Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject());
     }
 
     public boolean validateToken(String token) {

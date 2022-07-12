@@ -4,6 +4,8 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.woowacourse.momo.auth.exception.AuthFailException;
+
 public class AuthorizationExtractor {
 
     public static final String AUTHORIZATION = "Authorization";
@@ -24,6 +26,7 @@ public class AuthorizationExtractor {
                 return authHeaderValue;
             }
         }
-        return null;
+
+        throw new AuthFailException("토큰이 존재하지 않습니다");
     }
 }
