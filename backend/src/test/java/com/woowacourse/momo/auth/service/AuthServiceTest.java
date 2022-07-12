@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.dto.SignInRequest;
+import com.woowacourse.momo.auth.dto.LoginRequest;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.MemberService;
@@ -37,17 +37,17 @@ class AuthServiceTest {
     @DisplayName("로그인을 성공한다")
     @Test
     void signIn() {
-        SignInRequest request = new SignInRequest(EMAIL, PASSWORD);
+        LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
 
-        assertDoesNotThrow(() -> authService.signIn(request));
+        assertDoesNotThrow(() -> authService.login(request));
     }
 
     @DisplayName("로그인에 실패한다")
     @Test
     void signInFail() {
-        SignInRequest request = new SignInRequest(EMAIL, "wrongPassword");
+        LoginRequest request = new LoginRequest(EMAIL, "wrongPassword");
 
-        assertThatThrownBy(() -> authService.signIn(request))
+        assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(AuthFailException.class);
     }
 }

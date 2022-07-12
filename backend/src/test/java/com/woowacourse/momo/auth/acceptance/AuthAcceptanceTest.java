@@ -4,7 +4,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.auth.dto.SignInRequest;
+import com.woowacourse.momo.auth.dto.LoginRequest;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
@@ -19,7 +19,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     public void 로그인() {
         회원_가입(EMAIL, PASSWORD, "모모");
 
-        SignInRequest request = new SignInRequest(EMAIL, PASSWORD);
+        LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
         RestAssuredConvenienceMethod.postRequest(request, "/api/auth/login")
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());

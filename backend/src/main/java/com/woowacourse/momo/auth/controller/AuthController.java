@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.dto.SignInRequest;
-import com.woowacourse.momo.auth.dto.SignInResponse;
+import com.woowacourse.momo.auth.dto.LoginRequest;
+import com.woowacourse.momo.auth.dto.LoginResponse;
 import com.woowacourse.momo.auth.service.AuthService;
 
 @RequiredArgsConstructor
@@ -21,8 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<SignInResponse> login(@RequestBody SignInRequest request) {
-        SignInResponse response = authService.signIn(request);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
 
         return ResponseEntity.ok(response);
     }
