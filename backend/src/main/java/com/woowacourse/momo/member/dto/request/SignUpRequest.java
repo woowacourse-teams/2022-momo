@@ -4,12 +4,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class SignUpRequest {
 
     @Email

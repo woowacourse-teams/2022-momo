@@ -54,8 +54,8 @@ VALUES ('전체'),
        ('여행'),
        ('기타');
 
-INSERT INTO momo_member (name)
-VALUES ('momo');
+INSERT INTO momo_member (email, name, password)
+VALUES ('woowa@woowa.com','momo', 'password');
 
 INSERT INTO momo_group (categoryId, deadline, description, endDate, startDate, hostId, location, name)
 VALUES (1, '2022-07-11T00:52:01.456770', '', '2022-07-08', '2022-07-08', 1, '', '튼튼이 클럽'),
