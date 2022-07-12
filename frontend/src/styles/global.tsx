@@ -38,11 +38,24 @@ const style = css`
   }
 
   input {
+    padding: 0 0.5rem;
+
+    background: ${theme.colors.white001};
+
+    border: 1px solid ${theme.colors.gray003};
+    border-radius: 0.5rem;
+
     font-family: 'GangwonEdu_Bold';
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 
     &:focus {
+      border: 1.5px solid ${theme.colors.green001};
+
       outline: none;
+    }
+
+    &::placeholder {
+      color: ${theme.colors.gray003};
     }
   }
 `;
