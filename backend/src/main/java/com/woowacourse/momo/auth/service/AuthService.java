@@ -2,6 +2,7 @@ package com.woowacourse.momo.auth.service;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,8 +13,9 @@ import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
-@Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Service
 public class AuthService {
 
     private final MemberRepository memberRepository;
@@ -27,5 +29,4 @@ public class AuthService {
 
         return new LoginResponse(token);
     }
-
 }
