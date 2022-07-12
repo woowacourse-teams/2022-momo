@@ -11,11 +11,9 @@ spring:
       ddl-auto: create
       naming:
         physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
+    defer-datasource-initialization: true
+  sql.init.mode: always
+
 logging:
   level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
