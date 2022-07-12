@@ -14,9 +14,16 @@ import com.woowacourse.momo.group.domain.schedule.Schedule;
 public class GroupRequestAssembler {
 
     public static Group group(GroupRequest request) {
-        return new Group(request.getName(), request.getHostId(), request.getCategoryId(),
-                duration(request.getDuration()), request.getDeadline(), schedules(request.getSchedules()),
-                request.getLocation(), request.getDescription());
+        return new Group.Builder()
+                .name(request.getName())
+                .hostId(request.getHostId())
+                .categoryId(request.getCategoryId())
+                .duration(duration(request.getDuration()))
+                .deadline(request.getDeadline())
+                .schedules(schedules(request.getSchedules()))
+                .location(request.getLocation())
+                .description(request.getDescription())
+                .build();
     }
 
     public static Duration duration(DurationRequest request) {

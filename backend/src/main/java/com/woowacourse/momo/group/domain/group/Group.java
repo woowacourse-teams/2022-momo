@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -99,5 +100,76 @@ public class Group {
 
     public List<Schedule> getSchedules() {
         return new ArrayList<>(schedules.values());
+    }
+
+    public static class Builder {
+
+        private String name;
+        private Long hostId;
+        private Long categoryId;
+        private Duration duration;
+        private LocalDateTime deadline;
+        private List<Schedule> schedules;
+        private String location;
+        private String description;
+
+        public Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder hostId(Long hostId) {
+            this.hostId = hostId;
+            return this;
+        }
+
+        public Builder categoryId(Long categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder duration(Duration duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public Builder deadline(LocalDateTime deadline) {
+            this.deadline = deadline;
+            return this;
+        }
+
+        public Builder schedules(List<Schedule> schedules) {
+            this.schedules = schedules;
+            return this;
+        }
+
+        public Builder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Group build() {
+            validateNonNull();
+            return new Group(name, hostId, categoryId, duration, deadline, schedules, location, description);
+        }
+
+        private void validateNonNull() {
+            Objects.requireNonNull(name);
+            Objects.requireNonNull(hostId);
+            Objects.requireNonNull(categoryId);
+            Objects.requireNonNull(duration);
+            Objects.requireNonNull(deadline);
+            Objects.requireNonNull(schedules);
+            Objects.requireNonNull(location);
+            Objects.requireNonNull(description);
+        }
     }
 }
