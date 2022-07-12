@@ -18,4 +18,5 @@ public class MemberService {
         Member savedMember = memberRepository.save(request.toMember());
         return savedMember.getId();
     }
+
 }
