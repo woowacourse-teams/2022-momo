@@ -19,10 +19,12 @@ const theme: Theme = {
     gray004: '#E7E7E7',
     gray005: '#EEEEEE',
     yellow001: '#FFC500',
+    yellow002: '#FFE47A',
     green001: '#A5CC82',
     blue001: '#00467F',
     blue002: '#3D7EAA',
-    red001: '#F7797D',
+    red001: '#C21500',
+    red002: '#F7797D',
   },
 };
 

@@ -1,14 +1,19 @@
+import NavLink from 'components/@shared/NavLink';
+import { BROWSER_PATH } from 'constants/path';
+
 import * as S from './index.styled';
 
 function Header() {
   return (
     <S.Container>
-      <S.Logo>Momo</S.Logo>
+      <NavLink to={BROWSER_PATH.BASE}>
+        <S.Logo>Momo</S.Logo>
+      </NavLink>
       <S.Nav>
-        <div>모임 생성</div>
-        <div>내 모임</div>
-        <div>회원가입</div>
-        <div>로그인</div>
+        <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
+        <NavLink to={'NOT_THING'}>내 모임</NavLink>
+        <NavLink to={'NOT_THING'}>회원가입</NavLink>
+        <NavLink to={'NOT_THING'}>로그인</NavLink>
       </S.Nav>
     </S.Container>
   );
