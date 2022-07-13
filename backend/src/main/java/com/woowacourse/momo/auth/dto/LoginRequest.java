@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest {
 
-    @Email
-    @NotBlank
+    @Email(message = "잘못된 이메일 형식입니다.")
+    @NotBlank(message = "이메일은 빈 값일 수 없습니다.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "패스워드는 빈 값일 수 없습니다.")
     private String password;
 }
