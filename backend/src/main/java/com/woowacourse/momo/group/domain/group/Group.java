@@ -1,11 +1,8 @@
 package com.woowacourse.momo.group.domain.group;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -14,11 +11,12 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -56,11 +54,10 @@ public class Group {
     @Column(nullable = false)
     private LocalDateTime deadline;
 
-    @OneToMany(mappedBy = "group",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
-    @MapKeyColumn(name = "date")
-    private Map<LocalDate, Schedule> schedules = new HashMap<>();
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "group_id")
+    private List<Schedule> schedules = new ArrayList<>();
 
     @Column(nullable = false)
     private String location;
@@ -96,14 +93,11 @@ public class Group {
     }
 
     private void belongTo(List<Schedule> schedules) {
-        for (Schedule schedule : schedules) {
-            this.schedules.put(schedule.getDate(), schedule);
-            schedule.belongTo(this);
-        }
+        this.schedules.addAll(schedules);
     }
 
     public List<Schedule> getSchedules() {
-        return new ArrayList<>(schedules.values());
+        return schedules;
     }
 
     public static class Builder {
