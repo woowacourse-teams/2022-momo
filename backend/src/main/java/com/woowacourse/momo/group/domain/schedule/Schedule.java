@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.domain.schedule;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,10 +43,18 @@ public class Schedule {
     }
 
     private static LocalDate parseLocalDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("날짜는 yyyy-MM-dd 형식이어야 합니다.");
+        }
     }
 
     private static LocalTime parseLocalTime(String time) {
-        return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
+        try {
+            return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("시간은 hh:mm 형식이어야 합니다.");
+        }
     }
 }
