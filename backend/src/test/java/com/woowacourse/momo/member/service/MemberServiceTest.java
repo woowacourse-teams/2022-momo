@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
-@SpringBootTest
 @Transactional
+@SpringBootTest
 class MemberServiceTest {
 
     @Autowired

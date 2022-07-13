@@ -15,8 +15,8 @@ import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.MemberService;
 
-@SpringBootTest
 @Transactional
+@SpringBootTest
 class AuthServiceTest {
 
     private static final String EMAIL = "woowa@woowa.com";
