@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.domain.group;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -16,16 +15,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.group.domain.schedule.ScheduleRepository;
 
 @DataJpaTest
 class GroupRepositoryTest {
 
     @Autowired
     private GroupRepository groupRepository;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
 
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
@@ -34,16 +29,11 @@ class GroupRepositoryTest {
         Group group = constructGroup(schedules);
 
         Group savedGroup = groupRepository.save(group);
-        List<Schedule> savedSchedules = scheduleRepository.findByGroupId(savedGroup.getId());
 
         assertThat(savedGroup.getId()).isNotNull();
-        assertAll(
-                () -> assertThat(savedGroup).usingRecursiveComparison()
-                        .isEqualTo(group),
-                () -> assertThat(savedSchedules).usingRecursiveComparison()
-                        .ignoringFields("id")
-                        .isEqualTo(schedules)
-        );
+        assertThat(savedGroup).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(group);
     }
 
     @DisplayName("스케쥴이 지정되지 않은 모임을 저장한다")
@@ -53,17 +43,14 @@ class GroupRepositoryTest {
         Group group = constructGroup(schedules);
 
         Group savedGroup = groupRepository.save(group);
-        List<Schedule> savedSchedules = scheduleRepository.findByGroupId(savedGroup.getId());
 
         assertThat(savedGroup.getId()).isNotNull();
-        assertAll(
-                () -> assertThat(savedGroup).usingRecursiveComparison()
-                        .isEqualTo(group),
-                () -> assertThat(savedSchedules).isEmpty()
-        );
+        assertThat(savedGroup).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(group);
     }
 
-    @DisplayName("식별자를 통해 스케줄을 조회한다")
+    @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
         List<Schedule> schedules = List.of(
@@ -105,12 +92,8 @@ class GroupRepositoryTest {
         groupRepository.deleteById(group.getId());
         groupRepository.flush();
         Optional<Group> foundGroup = groupRepository.findById(group.getId());
-        List<Schedule> foundSchedules = scheduleRepository.findByGroupId(group.getId());
 
-        assertAll(
-                () -> assertThat(foundGroup).isEmpty(),
-                () -> assertThat(foundSchedules).isEmpty()
-        );
+        assertThat(foundGroup).isEmpty();
     }
 
     private Group constructGroup(List<Schedule> schedules) {
