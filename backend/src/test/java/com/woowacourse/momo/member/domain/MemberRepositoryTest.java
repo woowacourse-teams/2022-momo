@@ -25,6 +25,6 @@ class MemberRepositoryTest {
 
         assertThat(actual).isPresent();
         assertThat(actual.get()).usingRecursiveComparison()
-                        .isEqualTo(expected);
+                .isEqualTo(expected);
     }
 }
