@@ -3,9 +3,20 @@ package com.woowacourse.momo.common.acceptance;
 import org.springframework.http.MediaType;
 
 import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
 public class RestAssuredConvenienceMethod {
+
+    public static ExtractableResponse<Response> getRequest2(String path) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get(path)
+                .then().log().all()
+                .extract();
+    }
 
     public static ValidatableResponse getRequest(String path) {
         return RestAssured.given().log().all()
