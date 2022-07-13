@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.auth.support.SHA256Encoder;
+import com.woowacourse.momo.member.domain.PasswordEncoder;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
@@ -17,15 +19,18 @@ import com.woowacourse.momo.member.dto.response.MemberResponse;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        Member savedMember = memberRepository.save(request.toMember());
+        String password = passwordEncoder.encrypt(request.getPassword());
+        Member member = new Member(request.getEmail(), password, request.getName());
+        Member savedMember = memberRepository.save(member);
+
         return savedMember.getId();
     }
 
     public MemberResponse findById(Long id) {
-        // Long? dto?
         Member member = memberRepository.findById(id)
                 .orElseThrow(NotFoundGroupException::new);
 

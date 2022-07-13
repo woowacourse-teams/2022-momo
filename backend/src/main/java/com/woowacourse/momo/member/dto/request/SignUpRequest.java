@@ -2,6 +2,7 @@ package com.woowacourse.momo.member.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,4 @@ public class SignUpRequest {
     private String password;
     @NotBlank(message = "이름은 빈 값일 수 없습니다.")
     private String name;
-
-    public Member toMember() {
-        return new Member(email, password, name);
-    }
 }

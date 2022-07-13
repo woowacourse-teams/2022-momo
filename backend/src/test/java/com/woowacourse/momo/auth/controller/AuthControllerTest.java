@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.woowacourse.momo.auth.dto.LoginRequest;
-import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -34,12 +34,12 @@ class AuthControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
     @BeforeEach
     void setUp() {
-        Member member = new Member("woowa@woowa.com", "Woowa1!", "모모");
-        memberRepository.save(member);
+        SignUpRequest request = new SignUpRequest("woowa@woowa.com", "Woowa1!", "모모");
+        memberService.signUp(request);
     }
 
     @DisplayName("정상적으로 로그인될 시 토큰이 발급된다.")
