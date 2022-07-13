@@ -43,7 +43,8 @@ class GroupServiceTest {
 
     private static final LocalDateTime NOW_DATE_TIME = LocalDateTime.of(2022, 7, 12, 16, 37);
     private static final LocalDate NOW_DATE = LocalDate.of(2022, 7, 12);
-    private static final LocalTime NOW_TIME = LocalTime.of(16, 37);
+    private static final LocalTime START_TIME = LocalTime.of(16, 37);
+    private static final LocalTime END_TIME = LocalTime.of(16, 38);
 
     @Autowired
     private GroupService groupService;
@@ -64,7 +65,7 @@ class GroupServiceTest {
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
                 new Duration(NOW_DATE, NOW_DATE), NOW_DATE_TIME,
-                List.of(new Schedule(NOW_DATE, NOW_TIME, NOW_TIME)), "", ""));
+                List.of(new Schedule(NOW_DATE, START_TIME, END_TIME)), "", ""));
     }
 
     @DisplayName("모임을 생성한다")

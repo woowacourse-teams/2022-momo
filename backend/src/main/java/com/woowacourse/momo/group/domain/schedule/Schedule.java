@@ -33,6 +33,7 @@ public class Schedule {
     private LocalTime endTime;
 
     public Schedule(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        validateStartIsBeforeEnd(startTime, endTime);
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -55,6 +56,12 @@ public class Schedule {
             return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("시간은 hh:mm 형식이어야 합니다.");
+        }
+    }
+
+    private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
+        if (!endTime.isAfter(startTime)) {
+            throw new IllegalArgumentException("시작 시간은 종료 시간 이전이어야 합니다.");
         }
     }
 }

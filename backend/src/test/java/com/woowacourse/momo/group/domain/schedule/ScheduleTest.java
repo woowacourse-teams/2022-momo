@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class ScheduleTest {
@@ -33,5 +34,14 @@ class ScheduleTest {
         assertThatThrownBy(() -> Schedule.of("2022-01-01", "11:11", time))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("시간은 hh:mm 형식이어야 합니다.");
+    }
+
+    @DisplayName("시작 시간은 종료 시간 이전이어야 한다")
+    @ParameterizedTest
+    @CsvSource(value = {"10:00,10:00", "10:00,09:59"})
+    void validateStartIsBeforeEnd(String startTime, String endTime) {
+        assertThatThrownBy(() -> Schedule.of("2022-01-01", startTime, endTime))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("시작 시간은 종료 시간 이전이어야 합니다.");
     }
 }
