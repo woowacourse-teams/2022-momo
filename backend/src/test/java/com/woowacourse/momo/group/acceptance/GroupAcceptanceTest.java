@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.acceptance;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Sql("classpath:init.sql")
+@Sql(value = "classpath:clear.sql", executionPhase = AFTER_TEST_METHOD)
 class GroupAcceptanceTest extends AcceptanceTest {
 
     @Test
