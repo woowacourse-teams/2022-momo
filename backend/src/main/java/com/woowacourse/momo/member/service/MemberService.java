@@ -36,4 +36,9 @@ public class MemberService {
 
         return MemberResponse.toResponse(member);
     }
+
+    @Transactional
+    public void deleteById(Long id) {
+        memberRepository.deleteById(id);
+    }
 }

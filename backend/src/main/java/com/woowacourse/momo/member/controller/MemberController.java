@@ -6,6 +6,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +39,12 @@ public class MemberController {
         MemberResponse response = memberService.findById(id);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal Long id) {
+        memberService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

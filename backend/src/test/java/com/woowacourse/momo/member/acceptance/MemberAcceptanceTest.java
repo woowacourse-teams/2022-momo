@@ -39,4 +39,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .body("email", is(EMAIL))
                 .body("name", is("모모"));
     }
+
+    @Test
+    void 회원_탈퇴_테스트() {
+        회원_가입(EMAIL, PASSWORD, NAME);
+        String token = 로그인(EMAIL, PASSWORD);
+
+        RestAssuredConvenienceMethod.deleteRequestWithToken(token, "/api/members/")
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
