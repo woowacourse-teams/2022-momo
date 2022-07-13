@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.member.domain.PasswordEncoder;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;

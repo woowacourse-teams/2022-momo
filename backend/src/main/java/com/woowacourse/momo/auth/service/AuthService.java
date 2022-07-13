@@ -12,7 +12,6 @@ import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.member.domain.PasswordEncoder;
 
 @RequiredArgsConstructor

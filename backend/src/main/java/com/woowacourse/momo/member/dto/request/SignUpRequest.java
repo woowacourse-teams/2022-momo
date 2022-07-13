@@ -2,13 +2,10 @@ package com.woowacourse.momo.member.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor
 @AllArgsConstructor
