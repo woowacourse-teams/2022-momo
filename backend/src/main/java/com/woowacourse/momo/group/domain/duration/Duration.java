@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.duration;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -33,7 +34,11 @@ public class Duration {
     }
 
     private static LocalDate parseLocalDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("날짜는 yyyy-MM-dd 형식이어야 합니다.");
+        }
     }
 
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
