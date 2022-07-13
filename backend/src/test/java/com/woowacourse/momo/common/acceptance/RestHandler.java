@@ -7,7 +7,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
-public class RestAssuredConvenienceMethod {
+public class RestHandler {
 
     public static ExtractableResponse<Response> getRequest2(String path) {
         return RestAssured.given().log().all()

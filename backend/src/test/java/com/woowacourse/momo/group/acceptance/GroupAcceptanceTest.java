@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.common.acceptance.RestHandler;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Sql("classpath:init.sql")
@@ -39,7 +39,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
 
-        RestAssuredConvenienceMethod.postRequest(body, "/api/groups")
+        RestHandler.postRequest(body, "/api/groups")
                 .statusCode(HttpStatus.CREATED.value())
                 .header("Location", startsWith("/api/groups/"));
     }
@@ -47,7 +47,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
     @Test
     void 모임_단일_조회() {
         모임_생성();
-        RestAssuredConvenienceMethod.getRequest("/api/groups/3")
+        RestHandler.getRequest("/api/groups/3")
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의"))
                 .body("host.id", is(1))
@@ -70,7 +70,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
             모임_생성();
         }
 
-        RestAssuredConvenienceMethod.getRequest("/api/groups")
+        RestHandler.getRequest("/api/groups")
                 .statusCode(HttpStatus.OK.value())
                 .body("", hasSize(expected + 2));
     }
@@ -98,10 +98,10 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
 
-        RestAssuredConvenienceMethod.putRequest(body, "/api/groups/3")
+        RestHandler.putRequest(body, "/api/groups/3")
                 .statusCode(HttpStatus.OK.value());
 
-        RestAssuredConvenienceMethod.getRequest("/api/groups/3")
+        RestHandler.getRequest("/api/groups/3")
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의222"))
                 .body("host.id", is(1))
@@ -121,7 +121,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
     void 모임_삭제() {
         모임_생성();
 
-        RestAssuredConvenienceMethod.deleteRequest("/api/groups/3")
+        RestHandler.deleteRequest("/api/groups/3")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

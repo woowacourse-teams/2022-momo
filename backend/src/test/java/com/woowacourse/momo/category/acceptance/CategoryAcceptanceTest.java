@@ -15,7 +15,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponse;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssembler;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.common.acceptance.RestHandler;
 
 @SuppressWarnings("NonAsciiCharacters")
 class CategoryAcceptanceTest extends AcceptanceTest {
@@ -24,7 +24,7 @@ class CategoryAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 카테고리_목록_조회() {
-        ExtractableResponse<Response> response = RestAssuredConvenienceMethod.getRequest2(BASE_URL);
+        ExtractableResponse<Response> response = RestHandler.getRequest2(BASE_URL);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
         List<CategoryResponse> expected = Category.getAll()
