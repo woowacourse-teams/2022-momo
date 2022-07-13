@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.domain.group;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -30,10 +31,12 @@ class GroupRepositoryTest {
 
         Group savedGroup = groupRepository.save(group);
 
-        assertThat(savedGroup.getId()).isNotNull();
-        assertThat(savedGroup).usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(group);
+        assertAll(
+                () -> assertThat(savedGroup.getId()).isNotNull(),
+                () -> assertThat(savedGroup).usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(group)
+        );
     }
 
     @DisplayName("스케쥴이 지정되지 않은 모임을 저장한다")
@@ -44,10 +47,12 @@ class GroupRepositoryTest {
 
         Group savedGroup = groupRepository.save(group);
 
-        assertThat(savedGroup.getId()).isNotNull();
-        assertThat(savedGroup).usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(group);
+        assertAll(
+                () -> assertThat(savedGroup.getId()).isNotNull(),
+                () -> assertThat(savedGroup).usingRecursiveComparison()
+                        .ignoringFields("id")
+                        .isEqualTo(group)
+        );
     }
 
     @DisplayName("식별자를 통해 모임을 조회한다")
@@ -70,15 +75,14 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        List<Schedule> schedules = List.of(Schedule.of("2022-07-01", "10:00", "12:00"));
-        Group group1 = constructGroup(schedules);
-        Group group2 = constructGroup(schedules);
+        Group group1 = constructGroup(List.of(Schedule.of("2022-07-01", "10:00", "12:00")));
+        Group group2 = constructGroup(List.of(Schedule.of("2022-07-01", "10:00", "12:00")));
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
         List<Group> actual = groupRepository.findAll();
 
-        assertThat(actual).usingRecursiveComparison()
+        assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(List.of(savedGroup1, savedGroup2));
     }
 
