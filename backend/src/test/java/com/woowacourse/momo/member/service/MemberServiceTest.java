@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @Transactional
 @SpringBootTest
@@ -51,6 +51,6 @@ class MemberServiceTest {
         memberService.deleteById(memberId);
 
         assertThatThrownBy(() -> memberService.findById(memberId))
-                .isInstanceOf(NotFoundGroupException.class);
+                .isInstanceOf(NotFoundMemberException.class);
     }
 }

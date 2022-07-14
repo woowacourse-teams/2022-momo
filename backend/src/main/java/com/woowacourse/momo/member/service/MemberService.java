@@ -5,12 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.PasswordEncoder;
 import com.woowacourse.momo.member.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,7 +31,7 @@ public class MemberService {
 
     public MemberResponse findById(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(NotFoundGroupException::new);
+                .orElseThrow(NotFoundMemberException::new);
 
         return MemberResponse.toResponse(member);
     }
