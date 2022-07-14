@@ -7,12 +7,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class GroupResponse {
 
