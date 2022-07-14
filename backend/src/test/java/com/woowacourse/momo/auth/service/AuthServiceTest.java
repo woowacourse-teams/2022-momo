@@ -40,7 +40,7 @@ class AuthServiceTest {
         createMember(EMAIL, PASSWORD, NAME);
         LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
 
-        assertDoesNotThrow(() -> authService.login(request));
+        assertThat(authService.login(request).getAccessToken()).isNotNull();
     }
 
     @DisplayName("로그인에 실패한다")
