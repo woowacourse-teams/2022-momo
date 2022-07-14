@@ -79,7 +79,7 @@ class GroupServiceTest {
     @Test
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, DURATION_REQUEST,
+        GroupRequest request = new GroupRequest("모모의 스터디", savedMember.getId(), categoryId, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         assertThatThrownBy(() -> groupService.create(request))
