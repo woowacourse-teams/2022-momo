@@ -5,6 +5,10 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
+import static com.woowacourse.momo.common.acceptance.Fixture.로그인;
+import static com.woowacourse.momo.common.acceptance.Fixture.회원_가입;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
@@ -16,6 +20,14 @@ import com.woowacourse.momo.common.acceptance.RestHandler;
 @Sql("classpath:init.sql")
 @Sql(value = "classpath:clear.sql", executionPhase = AFTER_TEST_METHOD)
 class GroupAcceptanceTest extends AcceptanceTest {
+
+    private static String token;
+
+    @BeforeEach
+    void init() {
+        회원_가입("email@woowacoure.com", "1234asdf!", "모모");
+        token = 로그인("email@woowacoure.com", "1234asdf!");
+    }
 
     @Test
     void 모임_생성() {
@@ -47,11 +59,11 @@ class GroupAcceptanceTest extends AcceptanceTest {
     @Test
     void 모임_단일_조회() {
         모임_생성();
-        RestHandler.getRequest("/api/groups/3")
+        RestHandler.getRequest("/api/groups/1")
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의"))
                 .body("host.id", is(1))
-                .body("host.name", is("momo"))
+                .body("host.name", is("모모"))
                 .body("categoryId", is(1))
                 .body("duration.start", is("2022-07-01"))
                 .body("duration.end", is("2022-07-01"))
@@ -72,7 +84,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
 
         RestHandler.getRequest("/api/groups")
                 .statusCode(HttpStatus.OK.value())
-                .body("", hasSize(expected + 2));
+                .body("", hasSize(expected));
     }
 
     @Test
@@ -98,14 +110,14 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
 
-        RestHandler.putRequest(body, "/api/groups/3")
+        RestHandler.putRequest(body, "/api/groups/1")
                 .statusCode(HttpStatus.OK.value());
 
-        RestHandler.getRequest("/api/groups/3")
+        RestHandler.getRequest("/api/groups/1")
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의222"))
                 .body("host.id", is(1))
-                .body("host.name", is("momo"))
+                .body("host.name", is("모모"))
                 .body("categoryId", is(1))
                 .body("duration.start", is("2022-07-01"))
                 .body("duration.end", is("2022-07-01"))
@@ -121,7 +133,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
     void 모임_삭제() {
         모임_생성();
 
-        RestHandler.deleteRequest("/api/groups/3")
+        RestHandler.deleteRequest("/api/groups/1")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

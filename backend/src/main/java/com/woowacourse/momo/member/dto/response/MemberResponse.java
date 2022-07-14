@@ -9,10 +9,10 @@ import com.woowacourse.momo.member.domain.Member;
 @AllArgsConstructor
 public class MemberResponse {
 
-    private String email;
+    private long id;
     private String name;
 
     public static MemberResponse toResponse(Member member) {
-        return new MemberResponse(member.getEmail(), member.getName());
+        return new MemberResponse(member.getId(), member.getName());
     }
 }

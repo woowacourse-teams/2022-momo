@@ -56,7 +56,7 @@ class GroupServiceTest {
 
     @BeforeEach
     void setUp() {
-        savedMember = memberRepository.save(new Member("회원"));
+        savedMember = memberRepository.save(new Member("회원", "password", "momo"));
     }
 
     private Group saveGroup() {

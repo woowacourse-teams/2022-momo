@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.common.acceptance.RestHandler;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 
@@ -25,7 +25,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestAssuredConvenienceMethod.getRequestWithToken(token, "/api/members")
+        RestHandler.getRequestWithToken(token, "/api/members")
                 .statusCode(HttpStatus.OK.value())
                 .body("email", is(EMAIL))
                 .body("name", is("모모"));
@@ -37,7 +37,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         String token = 로그인(EMAIL, PASSWORD);
 
         ChangePasswordRequest request = new ChangePasswordRequest("newPassword1!");
-        RestAssuredConvenienceMethod.patchRequestWithToken(token, request, "/api/members/password")
+        RestHandler.patchRequestWithToken(token, request, "/api/members/password")
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -47,7 +47,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         String token = 로그인(EMAIL, PASSWORD);
 
         ChangeNameRequest request = new ChangeNameRequest("새로운 이름");
-        RestAssuredConvenienceMethod.patchRequestWithToken(token, request, "/api/members/name")
+        RestHandler.patchRequestWithToken(token, request, "/api/members/name")
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -56,7 +56,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestAssuredConvenienceMethod.deleteRequestWithToken(token, "/api/members")
+        RestHandler.deleteRequestWithToken(token, "/api/members")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
