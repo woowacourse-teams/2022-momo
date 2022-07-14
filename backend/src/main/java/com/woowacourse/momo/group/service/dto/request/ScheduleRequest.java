@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.schedule.Schedule;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,8 +20,4 @@ public class ScheduleRequest {
     private LocalTime startTime;
     @DateTimeFormat
     private LocalTime endTime;
-
-    public Schedule toEntity() {
-        return new Schedule(date, startTime, endTime);
-    }
 }

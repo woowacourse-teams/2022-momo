@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.service.MemberService;
 
 @RequiredArgsConstructor
@@ -28,8 +26,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<MemberResponse> find(@AuthenticationPrincipal Long id) {
-        MemberResponse response = memberService.findById(id);
+    public ResponseEntity<MyInfoResponse> find(@AuthenticationPrincipal Long id) {
+        MyInfoResponse response = memberService.findById(id);
 
         return ResponseEntity.ok(response);
     }

@@ -1,23 +1,35 @@
 package com.woowacourse.momo.category.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@Entity
-public class Category {
+public enum Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    STUDY(1, "스터디"),
+    MOCO(2, "모각코"),
+    EAT(3, "식사"),
+    CAFE(4, "카페"),
+    DRINK(5, "술"),
+    HEALTH(6, "운동"),
+    GAME(7, "게임"),
+    TRAVEL(8, "여행"),
+    ETC(9, "기타");
 
-    @Column(length = 30, nullable = false)
-    private String name;
+    private final long id;
+    private final String name;
+
+    Category(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public static Category from(long id) {
+        return Arrays.stream(values())
+                .filter(category -> category.id == id)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("카테고리를 찾을 수 없습니다."));
+    }
 }

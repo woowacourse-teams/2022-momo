@@ -10,7 +10,8 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
+import com.woowacourse.momo.member.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @RequiredArgsConstructor
@@ -21,11 +22,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberResponse findById(Long id) {
+    public MyInfoResponse findById(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(NotFoundMemberException::new);
 
-        return MemberResponse.toResponse(member);
+        return MemberResponseAssembler.myInfoResponse(member);
     }
 
     @Transactional

@@ -15,7 +15,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @Transactional
@@ -37,7 +37,7 @@ class MemberServiceTest {
         SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
         Long memberId = authService.signUp(request);
 
-        MemberResponse response = memberService.findById(memberId);
+        MyInfoResponse response = memberService.findById(memberId);
 
         assertThat(response).usingRecursiveComparison()
                 .ignoringFields("password")

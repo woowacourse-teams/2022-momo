@@ -2,16 +2,12 @@ package com.woowacourse.momo.group.service.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
 
 @Getter
 @NoArgsConstructor
@@ -27,15 +23,4 @@ public class GroupRequest {
     private LocalDateTime deadline;
     private String location;
     private String description;
-
-    public Group toEntity() {
-        return new Group(name, hostId, categoryId, duration.toEntity(), deadline,
-                convertSchedulesToEntity(), location, description);
-    }
-
-    private List<Schedule> convertSchedulesToEntity() {
-        return schedules.stream()
-                .map(ScheduleRequest::toEntity)
-                .collect(Collectors.toList());
-    }
 }

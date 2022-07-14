@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import com.woowacourse.momo.auth.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.common.acceptance.RestHandler;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthAcceptanceTest extends AcceptanceTest {
@@ -21,7 +21,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     void 회원_가입_테스트() {
         SignUpRequest request = new SignUpRequest(EMAIL, PASSWORD, "모모");
 
-        RestAssuredConvenienceMethod.postRequest(request, "/api/auth/signup")
+        RestHandler.postRequest(request, "/api/auth/signup")
                 .statusCode(HttpStatus.CREATED.value());
     }
 
@@ -30,7 +30,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, "모모");
 
         LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
-        RestAssuredConvenienceMethod.postRequest(request, "/api/auth/login")
+        RestHandler.postRequest(request, "/api/auth/login")
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }

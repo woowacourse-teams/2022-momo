@@ -8,16 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.category.domain.CategoryRepository;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.group.exception.InvalidCategoryException;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
@@ -29,16 +29,11 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
 
     @Transactional
     public long create(GroupRequest groupRequest) {
-        Group group = groupRepository.save(groupRequest.toEntity());
+        Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
 
-        boolean isExist = categoryRepository.existsById(group.getCategoryId());
-        if (!isExist) {
-            throw new InvalidCategoryException();
-        }
         return group.getId();
     }
 
@@ -57,7 +52,7 @@ public class GroupService {
         Member host = memberRepository.findById(group.getHostId())
                 .orElseThrow(NotFoundMemberException::new);
 
-        return GroupResponse.toResponse(group, host);
+        return GroupResponseAssembler.groupResponse(group, host);
     }
 
     public List<GroupResponse> findAll() {
@@ -70,12 +65,11 @@ public class GroupService {
     @Transactional
     public void update(Long groupId, GroupUpdateRequest request) {
         Group group = findGroup(groupId);
-        List<Schedule> schedules = request.getSchedules().stream()
-                .map(ScheduleRequest::toEntity)
-                .collect(Collectors.toList());
+        List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
-        group.update(request.getName(), request.getCategoryId(), request.getDuration().toEntity(),
-                request.getDeadline(), schedules, request.getLocation(), request.getDescription());
+        group.update(request.getName(), Category.from(request.getCategoryId()),
+                GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(), schedules,
+                request.getLocation(), request.getDescription());
     }
 
     @Transactional
