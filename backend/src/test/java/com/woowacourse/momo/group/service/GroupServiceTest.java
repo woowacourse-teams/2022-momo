@@ -3,9 +3,14 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDate;
+import static com.woowacourse.momo.group.fixture.GroupFixture._10시_00분;
+import static com.woowacourse.momo.group.fixture.GroupFixture._12시_00분;
+import static com.woowacourse.momo.group.fixture.GroupFixture._6월_30일_23시_59분;
+import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일;
+import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일부터_2일까지;
+import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -19,10 +24,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -36,15 +39,9 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION = new DurationRequest(LocalDate.of(2022, 7, 8),
-            LocalDate.of(2022, 7, 8));
-    private static final List<ScheduleRequest> SCHEDULES = List.of(new ScheduleRequest(LocalDate.of(2022, 7, 8),
-            LocalTime.of(11, 0), LocalTime.of(14, 0)));
-
-    private static final LocalDateTime NOW_DATE_TIME = LocalDateTime.of(2022, 7, 12, 16, 37);
-    private static final LocalDate NOW_DATE = LocalDate.of(2022, 7, 12);
-    private static final LocalTime START_TIME = LocalTime.of(16, 37);
-    private static final LocalTime END_TIME = LocalTime.of(16, 38);
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
+    private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
+            new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
 
     @Autowired
     private GroupService groupService;
@@ -64,15 +61,14 @@ class GroupServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
-                new Duration(NOW_DATE, NOW_DATE), NOW_DATE_TIME,
-                List.of(new Schedule(NOW_DATE, START_TIME, END_TIME)), "", ""));
+                _7월_1일부터_2일까지, _6월_30일_23시_59분, List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
     }
 
     @DisplayName("모임을 생성한다")
     @Test
     void create() {
         GroupRequest request = new GroupRequest("모모의 스터디", savedMember.getId(), Category.STUDY.getId(),
-                DURATION, SCHEDULES, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         groupService.create(request);
 
@@ -83,8 +79,8 @@ class GroupServiceTest {
     @Test
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
-        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, DURATION,
-                SCHEDULES, LocalDateTime.now(), "", "");
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, categoryId, DURATION_REQUEST,
+                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         assertThatThrownBy(() -> groupService.create(request))
                 .isInstanceOf(NoSuchElementException.class)

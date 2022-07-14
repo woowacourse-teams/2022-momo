@@ -2,8 +2,6 @@ package com.woowacourse.momo.group.domain.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,26 +35,6 @@ public class Schedule {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public static Schedule of(String date, String startTime, String endTime) {
-        return new Schedule(parseLocalDate(date), parseLocalTime(startTime), parseLocalTime(endTime));
-    }
-
-    private static LocalDate parseLocalDate(String date) {
-        try {
-            return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("날짜는 yyyy-MM-dd 형식이어야 합니다.");
-        }
-    }
-
-    private static LocalTime parseLocalTime(String time) {
-        try {
-            return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("시간은 hh:mm 형식이어야 합니다.");
-        }
     }
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {

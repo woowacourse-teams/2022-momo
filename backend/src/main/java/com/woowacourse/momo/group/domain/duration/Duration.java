@@ -29,18 +29,6 @@ public class Duration {
         this.endDate = endDate;
     }
 
-    public static Duration of(String startDate, String endDate) {
-        return new Duration(parseLocalDate(startDate), parseLocalDate(endDate));
-    }
-
-    private static LocalDate parseLocalDate(String date) {
-        try {
-            return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("날짜는 yyyy-MM-dd 형식이어야 합니다.");
-        }
-    }
-
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidDurationException();
