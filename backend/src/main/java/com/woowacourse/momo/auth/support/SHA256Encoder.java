@@ -10,16 +10,20 @@ import org.springframework.stereotype.Component;
 public class SHA256Encoder implements PasswordEncoder {
 
     private static final String PASSWORD_ENCRYPT_ALGORITHM = "SHA-256";
+    private static final MessageDigest messageDigest;
 
-    @Override
-    public String encrypt(String text) {
+    static {
         try {
-            MessageDigest md = MessageDigest.getInstance(PASSWORD_ENCRYPT_ALGORITHM);
-            md.update(text.getBytes());
-            return bytesToHex(md.digest());
+            messageDigest = MessageDigest.getInstance(PASSWORD_ENCRYPT_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
             throw new NoSuchElementException("비밀번호 암호화 알고리즘을 찾을 수 없습니다.");
         }
+    }
+
+    @Override
+    public String encrypt(String text) {
+        messageDigest.update(text.getBytes());
+        return bytesToHex(messageDigest.digest());
     }
 
     private String bytesToHex(byte[] bytes) {
