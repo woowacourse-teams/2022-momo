@@ -1,10 +1,9 @@
 package com.woowacourse.momo.member.controller;
 
 
-import java.net.URI;
-
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +28,9 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequest request) {
-        Long id = memberService.signUp(request);
+        memberService.signUp(request);
 
-        return ResponseEntity.created(URI.create("/api/members/" + id)).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/info")

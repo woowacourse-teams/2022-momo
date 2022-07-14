@@ -2,7 +2,6 @@ package com.woowacourse.momo.member.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,7 +37,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/api/members")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-        ).andExpect(header().string("location", "/api/members/1"));
+        ).andExpect(status().isCreated());
     }
 
     @DisplayName("잘못된 이메일 형식으로 회원가입시 400코드가 반환된다.")

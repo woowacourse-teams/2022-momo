@@ -1,7 +1,6 @@
 package com.woowacourse.momo.member.acceptance;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
 
 import static com.woowacourse.momo.common.acceptance.Fixture.로그인;
 import static com.woowacourse.momo.common.acceptance.Fixture.회원_가입;
@@ -25,8 +24,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
 
         RestAssuredConvenienceMethod.postRequest(request, "/api/members")
-                .statusCode(HttpStatus.CREATED.value())
-                .header("Location", startsWith("/api/members"));
+                .statusCode(HttpStatus.CREATED.value());
     }
 
     @Test
