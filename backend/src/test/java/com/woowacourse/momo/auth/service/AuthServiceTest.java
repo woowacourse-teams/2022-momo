@@ -36,7 +36,7 @@ class AuthServiceTest {
 
     @DisplayName("로그인을 성공한다")
     @Test
-    void signIn() {
+    void login() {
         LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
 
         assertDoesNotThrow(() -> authService.login(request));
@@ -44,7 +44,7 @@ class AuthServiceTest {
 
     @DisplayName("로그인에 실패한다")
     @Test
-    void signInFail() {
+    void loginFail() {
         LoginRequest request = new LoginRequest(EMAIL, "wrongPassword");
 
         assertThatThrownBy(() -> authService.login(request))
