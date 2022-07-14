@@ -39,7 +39,7 @@ class AuthControllerTest {
     @Autowired
     private AuthService authService;
 
-    @DisplayName("정상적으로 회원가입이 되는 경우를 테스트한다.")
+    @DisplayName("정상적으로 회원가입이 되는 경우를 테스트한다")
     @Test
     void signUp() throws Exception {
         SignUpRequest request = new SignUpRequest(EMAIL, PASSWORD, NAME);
@@ -50,7 +50,7 @@ class AuthControllerTest {
         ).andExpect(status().isCreated());
     }
 
-    @DisplayName("잘못된 이메일 형식으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("잘못된 이메일 형식으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithInvalidEmailPattern() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa", PASSWORD, NAME);
@@ -62,7 +62,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("잘못된 이메일 형식입니다.")));
     }
 
-    @DisplayName("비어있는 이메일 값으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("비어있는 이메일 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankEmail() throws Exception {
         SignUpRequest request = new SignUpRequest("", PASSWORD, NAME);
@@ -74,7 +74,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("이메일은 빈 값일 수 없습니다.")));
     }
 
-    @DisplayName("비어있는 비밀번호 값으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("비어있는 비밀번호 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankPassword() throws Exception {
         SignUpRequest request = new SignUpRequest(EMAIL, "", NAME);
@@ -86,7 +86,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("패스워드는 빈 값일 수 없습니다.")));
     }
 
-    @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithInvalidPasswordPattern() throws Exception {
         SignUpRequest request = new SignUpRequest(EMAIL, "woowa", NAME);
@@ -98,7 +98,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("패스워드는 소문자와 하나 이상의 숫자, 문자를 갖고 있어야 합니다.")));
     }
 
-    @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithInvalidPasswordPattern1() throws Exception {
         SignUpRequest request = new SignUpRequest(EMAIL, "woowacourse1", NAME);
@@ -110,7 +110,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("패스워드는 소문자와 하나 이상의 숫자, 문자를 갖고 있어야 합니다.")));
     }
 
-    @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다.")
+    @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankName() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa@woowa.com", PASSWORD, "");
@@ -122,7 +122,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("이름은 빈 값일 수 없습니다.")));
     }
 
-    @DisplayName("정상적으로 로그인될 시 토큰이 발급된다.")
+    @DisplayName("정상적으로 로그인될 시 토큰이 발급된다")
     @Test
     void login() throws Exception {
         createNewMember(EMAIL, PASSWORD, NAME);
@@ -135,7 +135,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.accessToken", notNullValue()));
     }
 
-    @DisplayName("잘못된 이메일 형식으로 로그인시 400코드가 반환된다.")
+    @DisplayName("잘못된 이메일 형식으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithInvalidEmailPattern() throws Exception {
         LoginRequest request = new LoginRequest("woowa", PASSWORD);
@@ -147,7 +147,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("잘못된 이메일 형식입니다.")));
     }
 
-    @DisplayName("비어있는 이메일 값으로 로그인시 400코드가 반환된다.")
+    @DisplayName("비어있는 이메일 값으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithBlankEmail() throws Exception {
         createNewMember(EMAIL, PASSWORD, NAME);
@@ -160,7 +160,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("이메일은 빈 값일 수 없습니다.")));
     }
 
-    @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다.")
+    @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithBlankPassword() throws Exception {
         createNewMember(EMAIL, PASSWORD, NAME);

@@ -29,7 +29,7 @@ class MemberRepositoryTest {
         assertThat(id).isNotNull();
     }
 
-    @DisplayName("식별자를 통해 회원을 조회한다.")
+    @DisplayName("식별자를 통해 회원을 조회한다")
     @Test
     void findById() {
         Member member = new Member("aa@bb.com", "1q2w3e4r!", "모모");
@@ -43,7 +43,7 @@ class MemberRepositoryTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("Email과 Password가 일치하는 회원을 조회한다.")
+    @DisplayName("Email과 Password가 일치하는 회원을 조회한다")
     @Test
     void findByEmailAndPassword() {
         String email = "aa@bb.com";

@@ -24,7 +24,7 @@ class MemberServiceTest {
     @Autowired
     private AuthService authService;
 
-    @DisplayName("회원 정보를 조회한다.")
+    @DisplayName("회원 정보를 조회한다")
     @Test
     void findById() {
         SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
@@ -37,7 +37,7 @@ class MemberServiceTest {
                 .isEqualTo(request);
     }
 
-    @DisplayName("회원 정보를 삭제한다.")
+    @DisplayName("회원 정보를 삭제한다")
     @Test
     void delete() {
         SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");

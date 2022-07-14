@@ -9,7 +9,7 @@ class SHA256EncoderTest {
 
     private final PasswordEncoder passwordEncoder = new SHA256Encoder();
 
-    @DisplayName("SHA256 알고리즘으로 암호화를 진행한다면 길이가 64인 문자열이 생성된다.")
+    @DisplayName("SHA256 알고리즘으로 암호화를 진행한다면 길이가 64인 문자열이 생성된다")
     @Test
     void encrypt() {
         String plainText = "aabb";
