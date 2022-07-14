@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.momo.member.domain.PasswordEncoder;
-
 class SHA256EncoderTest {
 
     private final PasswordEncoder passwordEncoder = new SHA256Encoder();

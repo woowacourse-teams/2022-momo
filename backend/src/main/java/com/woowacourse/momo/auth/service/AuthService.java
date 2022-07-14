@@ -5,13 +5,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.dto.LoginRequest;
-import com.woowacourse.momo.auth.dto.LoginResponse;
+import com.woowacourse.momo.auth.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
+import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.domain.PasswordEncoder;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,5 +30,14 @@ public class AuthService {
         String token = JwtTokenProvider.createToken(member.getId());
 
         return new LoginResponse(token);
+    }
+
+    @Transactional
+    public Long signUp(SignUpRequest request) {
+        String password = passwordEncoder.encrypt(request.getPassword());
+        Member member = new Member(request.getEmail(), password, request.getName());
+        Member savedMember = memberRepository.save(member);
+
+        return savedMember.getId();
     }
 }

@@ -6,8 +6,6 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Component;
 
-import com.woowacourse.momo.member.domain.PasswordEncoder;
-
 @Component
 public class SHA256Encoder implements PasswordEncoder {
 

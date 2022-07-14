@@ -1,4 +1,4 @@
-package com.woowacourse.momo.auth.dto;
+package com.woowacourse.momo.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

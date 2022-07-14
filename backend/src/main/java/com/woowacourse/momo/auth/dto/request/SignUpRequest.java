@@ -1,4 +1,4 @@
-package com.woowacourse.momo.member.dto.request;
+package com.woowacourse.momo.auth.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

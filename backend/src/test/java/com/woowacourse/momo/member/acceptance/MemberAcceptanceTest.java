@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
-import com.woowacourse.momo.member.dto.request.SignUpRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class MemberAcceptanceTest extends AcceptanceTest {
@@ -20,19 +19,11 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private static final String NAME = "모모";
 
     @Test
-    void 회원_가입_테스트() {
-        SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
-
-        RestAssuredConvenienceMethod.postRequest(request, "/api/members")
-                .statusCode(HttpStatus.CREATED.value());
-    }
-
-    @Test
     void 회원_정보_조회_테스트() {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestAssuredConvenienceMethod.getRequestWithToken(token, "/api/members/info")
+        RestAssuredConvenienceMethod.getRequestWithToken(token, "/api/members")
                 .statusCode(HttpStatus.OK.value())
                 .body("email", is(EMAIL))
                 .body("name", is("모모"));
@@ -43,7 +34,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestAssuredConvenienceMethod.deleteRequestWithToken(token, "/api/members/")
+        RestAssuredConvenienceMethod.deleteRequestWithToken(token, "/api/members")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

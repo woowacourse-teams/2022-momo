@@ -20,7 +20,6 @@ class MemberRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
-
     @DisplayName("회원을 저장한다.")
     @Test
     void save() {

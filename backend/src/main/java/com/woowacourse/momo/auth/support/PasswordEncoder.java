@@ -1,4 +1,4 @@
-package com.woowacourse.momo.member.domain;
+package com.woowacourse.momo.auth.support;
 
 public interface PasswordEncoder {
 
