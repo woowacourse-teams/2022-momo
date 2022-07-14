@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestAssuredConvenienceMethod;
+import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class MemberAcceptanceTest extends AcceptanceTest {
@@ -27,6 +29,26 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("email", is(EMAIL))
                 .body("name", is("모모"));
+    }
+
+    @Test
+    void 회원_비밀번호_수정() {
+        회원_가입(EMAIL, PASSWORD, NAME);
+        String token = 로그인(EMAIL, PASSWORD);
+
+        ChangePasswordRequest request = new ChangePasswordRequest("newPassword1!");
+        RestAssuredConvenienceMethod.patchRequestWithToken(token, request, "/api/members/password")
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 회원_이름_수정() {
+        회원_가입(EMAIL, PASSWORD, NAME);
+        String token = 로그인(EMAIL, PASSWORD);
+
+        ChangeNameRequest request = new ChangeNameRequest("새로운 이름");
+        RestAssuredConvenienceMethod.patchRequestWithToken(token, request, "/api/members/name")
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test

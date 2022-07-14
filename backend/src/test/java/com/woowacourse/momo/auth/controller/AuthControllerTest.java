@@ -98,18 +98,6 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$", containsString("패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다.")));
     }
 
-    @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
-    @Test
-    void signUpWithInvalidPasswordPattern1() throws Exception {
-        SignUpRequest request = new SignUpRequest(EMAIL, "woowacourse1", NAME);
-
-        mockMvc.perform(post("/api/auth/signup")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$", containsString("패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다.")));
-    }
-
     @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankName() throws Exception {

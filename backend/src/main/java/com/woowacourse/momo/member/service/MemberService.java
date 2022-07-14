@@ -5,8 +5,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
@@ -16,6 +19,7 @@ import com.woowacourse.momo.member.exception.NotFoundMemberException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResponse findById(Long id) {
         Member member = memberRepository.findById(id)
@@ -27,5 +31,22 @@ public class MemberService {
     @Transactional
     public void deleteById(Long id) {
         memberRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updatePassword(Long id, ChangePasswordRequest request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NotFoundMemberException::new);
+
+        String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
+        member.changePassword(encryptedPassword);
+    }
+
+    @Transactional
+    public void updateName(Long id, ChangeNameRequest request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NotFoundMemberException::new);
+
+        member.changeName(request.getName());
     }
 }
