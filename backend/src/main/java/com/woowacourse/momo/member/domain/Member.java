@@ -6,11 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
 
@@ -18,15 +19,26 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, length = 30)
     private String name;
 
-    public Member(String name) {
+    public Member(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
         this.name = name;
     }
 
-    public Member(Long id, String name) {
-        this.id = id;
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeName(String name) {
         this.name = name;
     }
 }
