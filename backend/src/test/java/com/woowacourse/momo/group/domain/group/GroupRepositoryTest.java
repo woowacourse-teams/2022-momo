@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ class GroupRepositoryTest {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
@@ -65,6 +70,8 @@ class GroupRepositoryTest {
         Group group = constructGroup(schedules);
         Group savedGroup = groupRepository.save(group);
 
+        synchronize();
+
         Optional<Group> foundGroup = groupRepository.findById(savedGroup.getId());
 
         assertThat(foundGroup).isPresent();
@@ -80,9 +87,11 @@ class GroupRepositoryTest {
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
+        synchronize();
+
         List<Group> actual = groupRepository.findAll();
 
-        assertThat(actual).usingRecursiveFieldByFieldElementComparator()
+        assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(savedGroup1, savedGroup2));
     }
 
@@ -93,8 +102,12 @@ class GroupRepositoryTest {
         Group group = constructGroup(schedules);
         groupRepository.save(group);
 
+        synchronize();
+
         groupRepository.deleteById(group.getId());
-        groupRepository.flush();
+
+        synchronize();
+
         Optional<Group> foundGroup = groupRepository.findById(group.getId());
 
         assertThat(foundGroup).isEmpty();
@@ -103,5 +116,10 @@ class GroupRepositoryTest {
     private Group constructGroup(List<Schedule> schedules) {
         return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지, LocalDateTime.now(),
                 schedules, "", "");
+    }
+
+    private void synchronize() {
+        entityManager.flush();
+        entityManager.clear();
     }
 }
