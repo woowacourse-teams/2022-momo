@@ -1,6 +1,5 @@
 package com.woowacourse.momo.member.controller;
 
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
