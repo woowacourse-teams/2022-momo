@@ -59,4 +59,18 @@ class MemberRepositoryTest {
         assertThat(actual.get()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
+
+    @DisplayName("회원을 삭제한다")
+    @Test
+    void deleteById() {
+        String email = "aa@bb.com";
+        String password = "1q2w3e4r!";
+        Member member = new Member(email, password, "모모");
+        Member savedMember = memberRepository.save(member);
+        entityManager.clear();
+
+        memberRepository.deleteById(savedMember.getId());
+        Optional<Member> foundMember = memberRepository.findById(savedMember.getId());
+        assertThat(foundMember).isEmpty();
+    }
 }
