@@ -1,8 +1,6 @@
 package com.woowacourse.momo.group.domain.duration;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
