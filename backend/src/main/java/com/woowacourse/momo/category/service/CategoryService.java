@@ -1,5 +1,6 @@
 package com.woowacourse.momo.category.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,8 +19,7 @@ import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssemb
 public class CategoryService {
 
     public List<CategoryResponse> findAll() {
-        return Category.getAll()
-                .stream()
+        return Arrays.stream(Category.values())
                 .map(CategoryResponseAssembler::categoryResponse)
                 .collect(Collectors.toList());
     }

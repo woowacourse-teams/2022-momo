@@ -1,7 +1,6 @@
 package com.woowacourse.momo.category.domain;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import lombok.Getter;
@@ -32,9 +31,5 @@ public enum Category {
                 .filter(category -> category.id == id)
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("카테고리를 찾을 수 없습니다."));
-    }
-
-    public static List<Category> getAll() {
-        return List.of(values());
     }
 }

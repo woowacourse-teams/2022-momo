@@ -2,6 +2,7 @@ package com.woowacourse.momo.category.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,7 @@ class CategoryAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestHandler.getRequest2(BASE_URL);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
-        List<CategoryResponse> expected = Category.getAll()
-                .stream()
+        List<CategoryResponse> expected = Arrays.stream(Category.values())
                 .map(CategoryResponseAssembler::categoryResponse)
                 .collect(Collectors.toList());
 
