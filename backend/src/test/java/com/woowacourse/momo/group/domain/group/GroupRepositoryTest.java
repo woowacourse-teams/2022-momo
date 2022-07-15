@@ -21,12 +21,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.MemberRepository;
 
 @DataJpaTest
 class GroupRepositoryTest {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -111,6 +116,38 @@ class GroupRepositoryTest {
         Optional<Group> foundGroup = groupRepository.findById(group.getId());
 
         assertThat(foundGroup).isEmpty();
+    }
+
+    @DisplayName("식별자를 통해 참여자가 있는 모임을 삭제한다")
+    @Test
+    void deleteIncludedParticipants() {
+        Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
+        Group savedGroup = groupRepository.save(constructGroup(Collections.emptyList()));
+
+        savedGroup.participate(participant);
+        synchronize();
+
+        groupRepository.deleteById(savedGroup.getId());
+        synchronize();
+
+        Optional<Group> deletedGroup = groupRepository.findById(savedGroup.getId());
+        assertThat(deletedGroup).isEmpty();
+    }
+
+    @DisplayName("모임에 참여자를 추가한다")
+    @Test
+    void saveParticipant() {
+        Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
+        Group savedGroup = groupRepository.save(constructGroup(Collections.emptyList()));
+
+        savedGroup.participate(participant);
+        synchronize();
+
+        Optional<Group> foundGroup = groupRepository.findById(savedGroup.getId());
+
+        assertThat(foundGroup).isPresent();
+        assertThat(foundGroup.get().getParticipants()).usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(List.of(participant));
     }
 
     private Group constructGroup(List<Schedule> schedules) {

@@ -16,7 +16,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.member.domain.Member;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,6 +48,13 @@ public class Group {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @ManyToMany
+    @JoinTable(
+            name = "participation",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id"))
+    private List<Member> participants = new ArrayList<>();
 
     @Column(nullable = false)
     @Embedded
@@ -89,6 +99,10 @@ public class Group {
 
         this.schedules.clear();
         belongTo(schedules);
+    }
+
+    public void participate(Member participant) {
+        this.participants.add(participant);
     }
 
     private void belongTo(List<Schedule> schedules) {
