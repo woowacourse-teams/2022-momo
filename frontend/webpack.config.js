@@ -41,6 +41,7 @@ module.exports = {
       hooks: path.resolve(__dirname, 'src/hooks'),
       styles: path.resolve(__dirname, 'src/styles'),
       types: path.resolve(__dirname, 'src/types'),
+      store: path.resolve(__dirname, 'src/store'),
       utils: path.resolve(__dirname, 'src/utils'),
       constants: path.resolve(__dirname, 'src/constants'),
       mocks: path.resolve(__dirname, 'src/mocks'),

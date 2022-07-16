@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const CategoryContainer = styled.div`
+const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,18 +12,18 @@ const CategoryContainer = styled.div`
   background: ${({ theme: { colors } }) => colors.gray004};
 `;
 
-const Category = styled.button`
+const Button = styled.button`
   width: 5rem;
   height: 2rem;
 
-  background: ${({ theme: { colors } }) => colors.white001};
-  color: ${({ theme: { colors } }) => colors.black002};
-
   border: none;
   border-radius: 5px;
+
+  background: ${({ theme: { colors } }) => colors.white001};
+  color: ${({ theme: { colors } }) => colors.black002};
 
   font-weight: 700;
   font-size: 0.84rem;
 `;
 
-export { CategoryContainer, Category };
+export { Box, Button };

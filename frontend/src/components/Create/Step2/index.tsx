@@ -1,41 +1,60 @@
-import { Container, Heading } from '../@shared/styled';
+import { forwardRef, LegacyRef, memo } from 'react';
+
+import useCategory from 'hooks/useCategory';
+import { CategoryType } from 'types/data';
+import { isEqualObject } from 'utils/compare';
+
+import { Container, ErrorColor, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
-const categories = [
-  '운동',
-  '스터디',
-  '한 잔',
-  '영화',
-  '모각코',
-  '맛집',
-  '카페',
-  '쇼핑',
-  '등산',
-  '문화생활',
-];
+interface Step2Props {
+  useSelectedCategoryState: () => {
+    selectedCategory: CategoryType;
+    setSelectedCategory: (category: CategoryType) => void;
+  };
+  gotoAdjacentPage: (direction: 'next' | 'prev') => void;
+}
 
-function Step2() {
-  const activeCategory = categories[2];
+function Step2(
+  { useSelectedCategoryState, gotoAdjacentPage }: Step2Props,
+  ref: LegacyRef<HTMLDivElement>,
+) {
+  const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
+  const { categories, isLoading, isError } = useCategory();
+
+  const selectCategory = (newSelectedCategory: CategoryType) => () => {
+    setSelectedCategory(newSelectedCategory);
+
+    gotoAdjacentPage('next');
+  };
+
+  if (isLoading) return <h2>카테고리 로딩 중...</h2>;
+
+  if (isError) return <h2>에러 발생</h2>;
 
   return (
-    <Container>
+    <Container ref={ref}>
       <Heading>
-        <span>어떤</span> 모임인가요?
+        <span>어떤</span> 모임인가요? <ErrorColor>*</ErrorColor>
         <p>(카테고리 선택)</p>
       </Heading>
       <S.Options>
-        {categories.map(category => (
-          <S.Button
-            type="button"
-            key={category}
-            className={activeCategory === category ? 'isActive' : ''}
-          >
-            {category}
-          </S.Button>
-        ))}
+        {categories &&
+          categories.map(category => (
+            <S.Button
+              type="button"
+              key={category.id}
+              className={
+                isEqualObject(selectedCategory, category) ? 'isActive' : ''
+              }
+              onClick={selectCategory(category)}
+            >
+              {category.name}
+            </S.Button>
+          ))}
       </S.Options>
     </Container>
   );
 }
 
-export default Step2;
+export default memo(forwardRef(Step2));
