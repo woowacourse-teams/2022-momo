@@ -46,12 +46,12 @@ function Navigator({
 
   return (
     <S.Container>
-      <button type="button" onClick={goToPrevPage}>
+      <S.SideButton type="button" onClick={goToPrevPage}>
         <LeftArrow
           width={40}
           color={page === 1 ? inactiveColor : activeColor}
         />
-      </button>
+      </S.SideButton>
       {totalPage.map(({ number, content }) => (
         <button
           type="button"
@@ -63,16 +63,16 @@ function Navigator({
         </button>
       ))}
       {page < totalPage.length ? (
-        <button type="button" onClick={goToNextPage}>
+        <S.SideButton type="button" onClick={goToNextPage}>
           <RightArrow
             width={40}
             color={page === totalPage.length ? inactiveColor : activeColor}
           />
-        </button>
+        </S.SideButton>
       ) : (
-        <button type="button" onClick={createNewGroup}>
+        <S.SideButton type="button" onClick={createNewGroup}>
           <CompleteSVG />
-        </button>
+        </S.SideButton>
       )}
     </S.Container>
   );
