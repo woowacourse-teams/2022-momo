@@ -1,27 +1,22 @@
+import useCategory from 'hooks/useCategory';
+
 import * as S from './index.styled';
 
-const categories = [
-  '운동',
-  '스터디',
-  '한 잔',
-  '영화',
-  '모각코',
-  '맛집',
-  '카페',
-  '쇼핑',
-  '등산',
-  '문화생활',
-];
-
 function Category() {
+  const { categories, isLoading, isError } = useCategory();
+
+  if (isLoading) return <h2>카테고리 로딩 중...</h2>;
+
+  if (isError) return <h2>에러 발생</h2>;
+
   return (
-    <S.CategoryContainer>
-      {categories.map(category => (
-        <S.Category type="button" key={category}>
-          {category}
-        </S.Category>
+    <S.Box>
+      {categories.map(({ id, name }) => (
+        <S.Button type="button" key={id}>
+          {name}
+        </S.Button>
       ))}
-    </S.CategoryContainer>
+    </S.Box>
   );
 }
 

@@ -21,7 +21,8 @@ const Button = styled.button`
   font-size: 1.2rem;
 
   &.isActive {
-    transform: scale(1.05);
+    transform: scale(1.1);
+    transition: 0.2s;
 
     background: ${({ theme: { colors } }) => colors.yellow002};
   }
