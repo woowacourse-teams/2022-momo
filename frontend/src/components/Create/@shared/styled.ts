@@ -34,6 +34,11 @@ const LabelContainer = styled.label`
   gap: 0.5rem;
 `;
 
+const Label = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Input = styled.input`
   text-align: center;
 
@@ -41,4 +46,25 @@ const Input = styled.input`
   height: 3rem;
 `;
 
-export { Container, Heading, LabelContainer, Input };
+const ErrorColor = styled.b`
+  color: ${({ theme: { colors } }) => colors.red002};
+`;
+
+const WarningColor = styled.b`
+  color: ${({ theme: { colors } }) => colors.yellow002};
+`;
+
+const SuccessColor = styled.b`
+  color: ${({ theme: { colors } }) => colors.green001};
+`;
+
+export {
+  Container,
+  Heading,
+  LabelContainer,
+  Label,
+  Input,
+  ErrorColor,
+  WarningColor,
+  SuccessColor,
+};
