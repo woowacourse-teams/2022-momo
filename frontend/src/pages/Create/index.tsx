@@ -79,8 +79,10 @@ function Create() {
   };
 
   const createNewGroup = () => {
+    const groupData = getGroupState();
+
     try {
-      validator(getGroupState());
+      validator(groupData);
     } catch (error) {
       if (!(error instanceof PageError)) return;
 
@@ -89,7 +91,7 @@ function Create() {
       return;
     }
 
-    requestCreateGroup()
+    requestCreateGroup(groupData)
       .then(res => {
         const id = 1;
         navigate(`${BROWSER_PATH.DETAIL}/${id}`);
