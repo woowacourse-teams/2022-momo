@@ -1,3 +1,8 @@
+import React, { useRef, useState } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
+import { requestCreateGroup } from 'apis/request/group';
 import {
   Step1,
   Step2,
@@ -7,54 +12,132 @@ import {
   Step6,
   Step7,
 } from 'components/Create';
-import Dot from 'components/Dot';
-import LeftArrow from 'components/svg/LeftArrow';
-import RightArrow from 'components/svg/RightArrow';
-import theme from 'styles/theme';
+import Navigator from 'components/Create/Navigator';
+import { BROWSER_PATH } from 'constants/path';
+import useCreateState from 'hooks/useCreateState';
+import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
+import validator from './validate';
+
+const totalPage = [
+  { number: 1, content: '이름 입력' },
+  { number: 2, content: '카테고리 선택' },
+  { number: 3, content: '진행 날짜 선택' },
+  { number: 4, content: '날짜, 시간대 상세 입력' },
+  { number: 5, content: '모집 마감일자 입력' },
+  { number: 6, content: '장소 입력' },
+  { number: 7, content: '상세 설명 입력' },
+];
 
 function Create() {
+  const {
+    useNameState,
+    useSelectedCategoryState,
+    useDateState,
+    useDeadlineState,
+    useLocationState,
+    useDescriptionState,
+    getGroupState,
+  } = useCreateState();
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
+  const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  const getPageRef = (page: number) => (element: HTMLDivElement | null) => {
+    pageRefs.current[page] = element;
+
+    return pageRefs.current[page];
+  };
+
+  const gotoAdjacentPage = (direction: 'next' | 'prev') => {
+    if (
+      (direction === 'next' && page === totalPage.length) ||
+      (direction === 'prev' && page === 1)
+    )
+      return;
+
+    setPage(prevState => {
+      const target = prevState + (direction === 'next' ? 1 : -1);
+
+      changeScroll(target);
+
+      return target;
+    });
+  };
+
+  const pressEnterToNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+
+    gotoAdjacentPage('next');
+  };
+
+  const changeScroll = (page: number) => {
+    pageRefs.current[page]?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
+  const createNewGroup = () => {
+    try {
+      validator(getGroupState());
+    } catch (error) {
+      if (!(error instanceof PageError)) return;
+
+      alert(error.message);
+
+      return;
+    }
+
+    requestCreateGroup()
+      .then(res => {
+        const id = 1;
+        navigate(`${BROWSER_PATH.DETAIL}/${id}`);
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  };
+
   return (
     <S.PageContainer>
       <S.ScrollContainer>
-        <Step1 />
-        <Step2 />
-        <Step3 />
-        <Step4 />
-        <Step5 />
-        <Step6 />
-        <Step7 />
+        <Step1
+          useNameState={useNameState}
+          ref={getPageRef(1)}
+          pressEnterToNext={pressEnterToNext}
+        />
+        <Step2
+          useSelectedCategoryState={useSelectedCategoryState}
+          ref={getPageRef(2)}
+          gotoAdjacentPage={gotoAdjacentPage}
+        />
+        <Step3
+          useDateState={useDateState}
+          ref={getPageRef(3)}
+          pressEnterToNext={pressEnterToNext}
+        />
+        <Step4 ref={getPageRef(4)} pressEnterToNext={pressEnterToNext} />
+        <Step5
+          useDeadlineState={useDeadlineState}
+          ref={getPageRef(5)}
+          pressEnterToNext={pressEnterToNext}
+        />
+        <Step6
+          useLocationState={useLocationState}
+          ref={getPageRef(6)}
+          pressEnterToNext={pressEnterToNext}
+        />
+        <Step7 useDescriptionState={useDescriptionState} ref={getPageRef(7)} />
       </S.ScrollContainer>
-      <S.Navigator>
-        <button type="button">
-          <LeftArrow width={40} color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.green001} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <Dot color={theme.colors.gray003} />
-        </button>
-        <button type="button">
-          <RightArrow width={40} color={theme.colors.green001} />
-        </button>
-      </S.Navigator>
+      <Navigator
+        page={page}
+        setPage={setPage}
+        totalPage={totalPage}
+        changeScroll={changeScroll}
+        gotoAdjacentPage={gotoAdjacentPage}
+        createNewGroup={createNewGroup}
+      />
     </S.PageContainer>
   );
 }
