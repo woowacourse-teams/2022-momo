@@ -1,21 +1,53 @@
-import { Container, Heading, Input, LabelContainer } from '../@shared/styled';
-import * as S from './index.styled';
+import { forwardRef, LegacyRef, memo } from 'react';
 
-function Step5() {
+import { convertRemainTime, getNewDateString } from 'utils/date';
+
+import {
+  Container,
+  ErrorColor,
+  Heading,
+  Input,
+  LabelContainer,
+  Label,
+} from '../@shared/styled';
+
+interface Step5Props {
+  useDeadlineState: () => {
+    deadline: string;
+    setDeadline: (deadline: string) => void;
+  };
+  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+function Step5(
+  { useDeadlineState, pressEnterToNext }: Step5Props,
+  ref: LegacyRef<HTMLDivElement>,
+) {
+  const { deadline, setDeadline } = useDeadlineState();
+  const changeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDeadline(e.target.value);
+  };
+
   return (
-    <Container>
+    <Container ref={ref}>
       <Heading>
-        <span>언제까지</span> 모집할까요?
+        <span>언제까지</span> 모집할까요? <ErrorColor>*</ErrorColor>
       </Heading>
       <LabelContainer>
-        <S.Label>
+        <Label>
           <p>날짜</p>
-          <p>D-14</p>
-        </S.Label>
-        <Input type="date" />
+          <p>{deadline && `${convertRemainTime(deadline)} 후`}</p>
+        </Label>
+        <Input
+          type="datetime-local"
+          value={deadline}
+          onChange={changeDeadline}
+          onKeyPress={pressEnterToNext}
+          min={getNewDateString('min')}
+        />
       </LabelContainer>
     </Container>
   );
 }
 
-export default Step5;
+export default memo(forwardRef(Step5));
