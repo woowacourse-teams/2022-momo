@@ -27,17 +27,4 @@ const ScrollContainer = styled.div`
   }
 `;
 
-const Navigator = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-
-  margin-bottom: 5rem;
-
-  button {
-    background: none;
-  }
-`;
-
-export { PageContainer, ScrollContainer, Navigator };
+export { PageContainer, ScrollContainer };
