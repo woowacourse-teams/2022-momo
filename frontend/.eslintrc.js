@@ -33,6 +33,7 @@ module.exports = {
           { pattern: 'hooks/**', group: 'internal' },
           { pattern: 'styles/**', group: 'internal' },
           { pattern: 'types/**', group: 'internal' },
+          { pattern: 'store/**', group: 'internal' },
           { pattern: 'utils/**', group: 'internal' },
           { pattern: 'constants/**', group: 'internal' },
           { pattern: 'mocks/**', group: 'internal' },
