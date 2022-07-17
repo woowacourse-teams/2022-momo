@@ -1,9 +1,20 @@
+import { forwardRef, LegacyRef, memo } from 'react';
+
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
-function Step4() {
+// TODO: 달력은 나중에 ^^
+
+interface Step4Props {
+  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+function Step4(
+  { pressEnterToNext }: Step4Props,
+  ref: LegacyRef<HTMLDivElement>,
+) {
   return (
-    <Container>
+    <Container ref={ref}>
       <Heading>
         <span>언제</span> 만날건가요?
       </Heading>
@@ -23,7 +34,7 @@ function Step4() {
           <S.InputWrapper>
             <S.Input type="time" />
             부터
-            <S.Input type="time" />
+            <S.Input type="time" onKeyPress={pressEnterToNext} />
             까지
           </S.InputWrapper>
           <S.AddButton type="button">달력에 추가하기</S.AddButton>
@@ -33,4 +44,4 @@ function Step4() {
   );
 }
 
-export default Step4;
+export default memo(forwardRef(Step4));

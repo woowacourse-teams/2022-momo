@@ -1,3 +1,4 @@
+import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const DotWrapper = styled.div`
@@ -15,7 +16,18 @@ const Dot = styled.div`
 
   border-radius: 50%;
 
-  background: ${({ color }) => color};
+  ${({ isFocused, theme }: { isFocused: boolean; theme: Theme }) => css`
+    ${isFocused
+      ? `
+      background: ${theme.colors.green001};
+      transform: scale(1.5);
+    `
+      : `
+      background: ${theme.colors.gray003};
+      transform: scale(1);
+    `}
+    transition: 0.2s;
+  `};
 `;
 
 export { DotWrapper, Dot };
