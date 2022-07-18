@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
@@ -27,6 +26,7 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.participant.GroupParticipant;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -49,12 +49,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToMany
-    @JoinTable(
-            name = "participation",
-            joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id"))
-    private List<Member> participants = new ArrayList<>();
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<GroupParticipant> participants = new ArrayList<>();
 
     @Column(nullable = false)
     @Embedded
@@ -101,8 +98,8 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void participate(Member participant) {
-        this.participants.add(participant);
+    public void participate(Member member) {
+        this.participants.add(new GroupParticipant(this, member));
     }
 
     private void belongTo(List<Schedule> schedules) {
@@ -113,11 +110,18 @@ public class Group {
         return schedules;
     }
 
+    public List<Member> getParticipants() {
+        return participants.stream()
+                .map(GroupParticipant::getMember)
+                .collect(Collectors.toList());
+    }
+
     public static class Builder {
 
         private String name;
         private Long hostId;
         private Category category;
+        private List<GroupParticipant> participants;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -144,6 +148,11 @@ public class Group {
 
         public Builder categoryId(long categoryId) {
             this.category = Category.from(categoryId);
+            return this;
+        }
+
+        public Builder participants(List<GroupParticipant> participants) {
+            this.participants = participants;
             return this;
         }
 
