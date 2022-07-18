@@ -1,7 +1,7 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
-import { CategoryType } from 'types/data';
+import { CreateGroupData } from 'types/data';
 
 const requestCreateGroup = async ({
   name,
@@ -11,15 +11,7 @@ const requestCreateGroup = async ({
   deadline,
   location,
   description,
-}: {
-  name: string;
-  selectedCategory: CategoryType;
-  startDate: string;
-  endDate: string;
-  deadline: string;
-  location: string;
-  description: string;
-}) => {
+}: CreateGroupData) => {
   const data = {
     name,
     categoryId: selectedCategory.id,
@@ -48,7 +40,7 @@ const requestCreateGroup = async ({
   axios
     .post(API_PATH.GROUP, data)
     .then(res => {
-      // 요청: body에 생성된 모임의 id를 줘!
+      // 요청: body에 생성된 모임의 id를 줘! (줄 예정)
       return res;
     })
     .catch(() => {
