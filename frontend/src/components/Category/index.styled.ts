@@ -23,7 +23,7 @@ const Button = styled.button`
   color: ${({ theme: { colors } }) => colors.black002};
 
   font-weight: 700;
-  font-size: 0.84rem;
+  font-size: 1.25rem;
 `;
 
 export { Box, Button };

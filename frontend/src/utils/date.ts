@@ -1,10 +1,12 @@
+import { DetailData } from 'types/data';
+
 const convertRemainTime = (deadline: string) => {
   const deadlineDate = new Date(deadline);
   const now = new Date();
 
   const gap = Number(deadlineDate) - Number(now);
 
-  if (gap <= 0) return '';
+  if (gap <= 0 || Number.isNaN(gap)) return null;
 
   const dayGap = Math.floor(gap / (1000 * 60 * 60 * 24));
   const hourGap = Math.floor((gap / (1000 * 60 * 60)) % 24);
@@ -16,6 +18,14 @@ const convertRemainTime = (deadline: string) => {
   if (minGap > 0) return `${minGap}분`;
 
   return `${secGap}초`;
+};
+
+const convertDeadlineToRemainTime = (deadline: DetailData['deadline']) => {
+  const remainTime = convertRemainTime(deadline);
+
+  if (!remainTime) return '마감 완료';
+
+  return `마감까지 ${remainTime}`;
 };
 
 const getNewDateString = (until: 'day' | 'min') => {
@@ -33,4 +43,9 @@ const resetDateToMidnight = (date: Date) => {
   return date;
 };
 
-export { convertRemainTime, getNewDateString, resetDateToMidnight };
+export {
+  convertRemainTime,
+  convertDeadlineToRemainTime,
+  getNewDateString,
+  resetDateToMidnight,
+};

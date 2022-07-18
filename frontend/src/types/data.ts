@@ -8,6 +8,16 @@ export interface PageType {
   content: string;
 }
 
+export interface CreateGroupData {
+  name: string;
+  selectedCategory: CategoryType;
+  startDate: string;
+  endDate: string;
+  deadline: string;
+  location: string;
+  description: string;
+}
+
 export interface DetailData {
   name: string;
   host: {
