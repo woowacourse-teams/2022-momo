@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.9'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.woowacourse'
@@ -12,6 +13,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt
 }
 
 repositories {
@@ -32,10 +34,39 @@ dependencies {
 
 	runtimeOnly 'com.h2database:h2'
 
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+	dependsOn test
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+bootJar {
+	dependsOn asciidoctor
+	copy {
+		from "${asciidoctor.outputDir}"
+		into 'src/main/resources/static/docs'
+	}
 }
