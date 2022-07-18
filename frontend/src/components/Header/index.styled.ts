@@ -19,6 +19,8 @@ const Container = styled.div`
     ${({ theme: { colors } }) => colors.green001}cc 100%
   );
 
+  backdrop-filter: saturate(150%) blur(5px);
+
   box-sizing: border-box;
   padding: 0.5rem 2rem;
 `;
