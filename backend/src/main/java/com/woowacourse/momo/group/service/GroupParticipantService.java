@@ -22,6 +22,7 @@ public class GroupParticipantService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void participate(Long groupId, Long memberId) {
         Group group = findGroupById(groupId);
         Member participant = findMemberById(memberId);
