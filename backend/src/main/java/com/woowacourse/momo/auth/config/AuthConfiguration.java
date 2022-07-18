@@ -19,9 +19,7 @@ public class AuthConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TokenInterceptor(jwtTokenProvider))
-                .addPathPatterns("/api/members/info");
-        // 패턴 수정 필요
+        registry.addInterceptor(new AuthInterceptor(jwtTokenProvider));
     }
 
     @Override
