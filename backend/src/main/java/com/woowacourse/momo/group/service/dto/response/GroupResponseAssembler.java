@@ -22,6 +22,10 @@ public class GroupResponseAssembler {
                 group.getDescription());
     }
 
+    public static GroupIdResponse groupIdResponse(Group group) {
+        return new GroupIdResponse(group.getId());
+    }
+
     private static DurationResponse durationResponse(Duration duration) {
         return new DurationResponse(duration.getStartDate(), duration.getEndDate());
     }

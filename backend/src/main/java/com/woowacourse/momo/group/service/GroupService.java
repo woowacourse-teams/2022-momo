@@ -16,6 +16,7 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
+import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
@@ -31,10 +32,10 @@ public class GroupService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public long create(GroupRequest groupRequest) {
+    public GroupIdResponse create(GroupRequest groupRequest) {
         Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
 
-        return group.getId();
+        return GroupResponseAssembler.groupIdResponse(group);
     }
 
     public GroupResponse findById(Long id) {
