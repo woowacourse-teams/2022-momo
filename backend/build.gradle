@@ -43,14 +43,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+
+	outputs.dir snippetsDir
 }
 
 ext {
 	snippetsDir = file('build/generated-snippets')
-}
-
-test {
-	outputs.dir snippetsDir
 }
 
 asciidoctor {
@@ -60,11 +58,12 @@ asciidoctor {
 }
 
 asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+	delete file('src/main/resources/static/docs/*')
 }
 
 bootJar {
 	dependsOn asciidoctor
+
 	copy {
 		from "${asciidoctor.outputDir}"
 		into 'src/main/resources/static/docs'

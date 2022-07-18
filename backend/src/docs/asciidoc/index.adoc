@@ -1,0 +1,7 @@
+== API Document
+
+==== Request Sample
+include::{snippets}/member/http-request.adoc[]
+
+==== Response Sample
+include::{snippets}/member/http-response.adoc[]
