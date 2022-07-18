@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 
 import { BROWSER_PATH } from 'constants/path';
 import { Group } from 'types/data';
+import { getCategoryImage } from 'utils/category';
+import { convertDeadlineToRemainTime } from 'utils/date';
 
 import * as S from './index.styled';
 
@@ -13,7 +15,7 @@ function Card({ group }: CardProps) {
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${group.id}`}>
       <S.Container>
-        <S.Image />
+        <S.Image src={getCategoryImage(group.categoryId)} alt="category" />
         <S.Description>
           <S.Left>
             <S.Title>{group.name}</S.Title>
@@ -24,7 +26,7 @@ function Card({ group }: CardProps) {
             ))}
           </S.HashtagBox> */}
           </S.Left>
-          <S.Deadline>마감까지 06:30:33</S.Deadline>
+          <S.Deadline>{convertDeadlineToRemainTime(group.deadline)}</S.Deadline>
         </S.Description>
       </S.Container>
     </Link>

@@ -1,0 +1,10 @@
+export { default as CategoryImage1 } from './1.jpg';
+export { default as CategoryImage2 } from './2.jpg';
+export { default as CategoryImage3 } from './3.jpg';
+export { default as CategoryImage4 } from './4.jpg';
+export { default as CategoryImage5 } from './5.jpg';
+export { default as CategoryImage6 } from './6.jpg';
+export { default as CategoryImage7 } from './7.jpg';
+export { default as CategoryImage8 } from './8.jpg';
+export { default as CategoryImage9 } from './9.jpg';
+export { default as CategoryImage10 } from './10.jpg';

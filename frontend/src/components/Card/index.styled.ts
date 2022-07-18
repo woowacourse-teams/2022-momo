@@ -13,11 +13,9 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const Image = styled.div`
+const Image = styled.img`
   width: 100%;
   height: 60%;
-
-  background: ${({ theme: { colors } }) => colors.gray001};
 
   border-radius: 20px 20px 0 0;
 `;
@@ -26,10 +24,15 @@ const Description = styled.div`
   display: flex;
   justify-content: space-between;
 
+  line-height: 1.4em;
+
   padding: 1rem;
 `;
 
 const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+
   max-width: 58%;
 `;
 
@@ -43,14 +46,14 @@ const Title = styled.div`
   -webkit-box-orient: vertical;
 
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.2rem;
 `;
 
 const HostName = styled.div`
-  color: ${({ theme: { colors } }) => colors.black002};
+  color: ${({ theme: { colors } }) => colors.gray001};
 
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.1rem;
 `;
 
 const HashtagBox = styled.div`

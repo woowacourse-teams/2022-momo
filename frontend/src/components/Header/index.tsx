@@ -1,3 +1,4 @@
+import { ReactComponent as LogoSVG } from 'assets/logo.svg';
 import NavLink from 'components/@shared/NavLink';
 import { BROWSER_PATH } from 'constants/path';
 
@@ -7,7 +8,9 @@ function Header() {
   return (
     <S.Container>
       <NavLink to={BROWSER_PATH.BASE}>
-        <S.Logo>Momo</S.Logo>
+        <S.Logo>
+          <LogoSVG />
+        </S.Logo>
       </NavLink>
       <S.Nav>
         <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
