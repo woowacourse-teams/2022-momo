@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -27,6 +28,7 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @Authenticated
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody GroupRequest groupRequest) {
         long groupId = groupService.create(groupRequest);
@@ -43,12 +45,14 @@ public class GroupController {
         return ResponseEntity.ok(groupService.findAll());
     }
 
+    @Authenticated
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@PathVariable Long groupId, @RequestBody GroupUpdateRequest groupUpdateRequest) {
         groupService.update(groupId, groupUpdateRequest);
         return ResponseEntity.ok().build();
     }
 
+    @Authenticated
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> delete(@PathVariable Long groupId) {
         groupService.delete(groupId);

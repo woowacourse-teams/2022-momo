@@ -51,7 +51,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
 
-        RestHandler.postRequest(body, "/api/groups")
+        RestHandler.postRequestWithToken(token, body, "/api/groups")
                 .statusCode(HttpStatus.CREATED.value())
                 .header("Location", startsWith("/api/groups/"));
     }
@@ -110,7 +110,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
 
-        RestHandler.putRequest(body, "/api/groups/1")
+        RestHandler.putRequestWithToken(token, body, "/api/groups/1")
                 .statusCode(HttpStatus.OK.value());
 
         RestHandler.getRequest("/api/groups/1")
@@ -133,7 +133,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
     void 모임_삭제() {
         모임_생성();
 
-        RestHandler.deleteRequest("/api/groups/1")
+        RestHandler.deleteRequestWithToken(token, "/api/groups/1")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
