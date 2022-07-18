@@ -60,7 +60,10 @@ class GroupParticipantServiceTest {
 
         groupParticipantService.participate(savedGroup.getId(), savedMember.getId());
 
-        assertThat(groupParticipantRepository.findAll()).hasSize(1);
+        List<MemberResponse> participants = groupParticipantService.findParticipants(savedGroup.getId());
+
+        assertThat(participants).usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(List.of(savedMember));
     }
 
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
