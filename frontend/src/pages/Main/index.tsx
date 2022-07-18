@@ -1,57 +1,23 @@
+import { useQuery } from 'react-query';
+
+import { getGroups } from 'apis/request/group';
 import Card from 'components/Card';
 import Category from 'components/Category';
 import Search from 'components/Search';
+import { QUERY_KEY } from 'constants/key';
 
 import * as S from './index.styled';
 
-const groups = [
-  {
-    id: 1,
-    name: '오늘 끝나고 맥주 드실 분',
-    host: {
-      id: 1,
-      name: '4기 이프',
-    },
-    categoryId: 1,
-    isRegular: false,
-    deadline: new Date(),
-  },
-  {
-    id: 2,
-    name: '주말에 같이 야구 봐요',
-    host: {
-      id: 2,
-      name: '4기 유세지',
-    },
-    categoryId: 1,
-    isRegular: false,
-    deadline: new Date(),
-  },
-  {
-    id: 3,
-    name: 'Git 브랜칭 전략 스터디 모집',
-    host: {
-      id: 3,
-      name: '4기 렉스',
-    },
-    categoryId: 1,
-    isRegular: true,
-    deadline: new Date(),
-  },
-  {
-    id: 4,
-    name: '토르 러브 앤 썬더 달리실 분',
-    host: {
-      id: 4,
-      name: '4기 콤피',
-    },
-    categoryId: 1,
-    isRegular: false,
-    deadline: new Date(),
-  },
-];
-
 function Main() {
+  const { data, isLoading, isError } = useQuery(
+    QUERY_KEY.GROUP_SUMMARIES,
+    getGroups,
+  );
+
+  if (isLoading) return <h2>잠시만 기다려주세요... 🔎</h2>;
+
+  if (isError) return <h2>에러가 발생했습니다!!!! 👿</h2>;
+
   return (
     <>
       <Search />
@@ -59,7 +25,7 @@ function Main() {
       <S.Content>
         <S.Heading>이런 모임, 어때요?</S.Heading>
         <S.GroupListBox>
-          {groups.map(group => (
+          {data?.map(group => (
             <Card group={group} key={group.id} />
           ))}
         </S.GroupListBox>

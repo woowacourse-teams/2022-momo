@@ -1,7 +1,7 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
-import { CreateGroupData } from 'types/data';
+import { CreateGroupData, Group } from 'types/data';
 
 const requestCreateGroup = async ({
   name,
@@ -48,4 +48,8 @@ const requestCreateGroup = async ({
     });
 };
 
-export { requestCreateGroup };
+const getGroups = (): Promise<Group[]> => {
+  return axios.get(`${API_PATH.GROUP}`).then(response => response.data);
+};
+
+export { requestCreateGroup, getGroups };
