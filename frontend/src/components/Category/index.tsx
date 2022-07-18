@@ -13,7 +13,7 @@ function Category() {
     <S.Box>
       {categories.map(({ id, name }) => (
         <S.Button type="button" key={id}>
-          {name}
+          <p>{name}</p>
         </S.Button>
       ))}
     </S.Box>
