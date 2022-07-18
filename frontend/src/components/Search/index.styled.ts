@@ -9,12 +9,12 @@ const Container = styled.div`
   position: relative;
 
   width: 100%;
-  height: 20rem;
+  height: 15rem;
 
   padding-bottom: 2.5rem;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -24,7 +24,11 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
 
-  filter: blur(2px) brightness(50%);
+  background: linear-gradient(
+    90deg,
+    ${({ theme: { colors } }) => colors.blue001}cc 0%,
+    ${({ theme: { colors } }) => colors.green001}cc 100%
+  );
 `;
 
 const Heading = styled.h2`
@@ -48,6 +52,10 @@ const Input = styled.input`
   border-radius: 10px 0 0 10px;
 
   padding: 0 0.5rem;
+
+  &:focus {
+    border: none;
+  }
 `;
 
 const Button = styled.button`
