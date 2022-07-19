@@ -2,28 +2,27 @@ import { ReactComponent as ClockSVG } from 'assets/clock.svg';
 import { ReactComponent as LocationSVG } from 'assets/location.svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
-import { DetailData } from 'types/data';
+import { CategoryType, DetailData } from 'types/data';
 
 import * as S from './index.styled';
 
-// TODO: 카테고리 가져오기
-const category = (categoryId: number) => '식사';
-
-// TODO: 스케줄 기반 날짜 파싱
+// TODO: 시간 제외 날짜 파싱, 이후에 달력과 함께 표기
 const parsedDate = (schedules: DetailData['schedules']) =>
-  '2022년 7월 8일 오후 6 ~ 10시';
-
-// TODO: 참여 로직
-const join = () => {
-  alert('모임에 참여하였습니다!');
-};
+  '2022년 12월 25일 오후 6 ~ 10시';
 
 function Info({
   name,
   schedules,
-  categoryId,
+  categoryName,
   location,
-}: Pick<DetailData, 'name' | 'schedules' | 'categoryId' | 'location'>) {
+}: Pick<DetailData, 'name' | 'schedules' | 'location'> & {
+  categoryName: CategoryType['name'];
+}) {
+  // TODO: 모임 참여 로직
+  const join = () => {
+    alert('모임에 참여하였습니다!');
+  };
+
   return (
     <S.Container>
       <S.Wrapper>
@@ -36,7 +35,7 @@ function Info({
       </S.Wrapper>
       <S.Wrapper>
         <CategorySVG width={32} />
-        <S.Text>{category(categoryId)}</S.Text>
+        <S.Text>{categoryName}</S.Text>
       </S.Wrapper>
       <S.Wrapper>
         <PersonSVG width={32} />

@@ -1,5 +1,5 @@
 export interface CategoryType {
-  id: string;
+  id: DetailData['categoryId'];
   name: string;
 }
 
@@ -18,7 +18,9 @@ export interface CreateGroupData {
   description: string;
 }
 
+// TODO: GroupDetailData
 export interface DetailData {
+  id: number;
   name: string;
   host: {
     id: number;
@@ -46,7 +48,8 @@ export interface DurationDate {
   endDate: DetailData['duration']['end'];
 }
 
+// TODO: GroupSummary으로 이름 변경 필요
 export type Group = Pick<
   DetailData,
-  'name' | 'host' | 'categoryId' | 'deadline'
-> & { id: number };
+  'id' | 'name' | 'host' | 'categoryId' | 'deadline'
+>;
