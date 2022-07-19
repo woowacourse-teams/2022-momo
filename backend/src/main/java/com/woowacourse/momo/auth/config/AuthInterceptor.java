@@ -22,6 +22,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/docs")) {
+            return true;
+        }
         Optional<Authenticated> authenticated = parseAnnotation((HandlerMethod) handler, Authenticated.class);
         if (authenticated.isPresent()) {
             validateToken(request);
