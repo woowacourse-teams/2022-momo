@@ -123,7 +123,7 @@ public class GroupControllerTest {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", hostId, 1L, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
-        return groupService.create(groupRequest);
+        return groupService.create(groupRequest).getGroupId();
     }
 
     String accessToken() {
