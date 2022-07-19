@@ -16,6 +16,7 @@ import io.restassured.response.Response;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestHandler;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class ParticipantAcceptanceTest extends AcceptanceTest {
 
     private static String token;
@@ -69,7 +70,7 @@ public class ParticipantAcceptanceTest extends AcceptanceTest {
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.body().jsonPath().getString("message")).isEqualTo("존재하지 않는 사용자입니다.")
+                () -> assertThat(response.body().jsonPath().getString("message")).isEqualTo("존재하지 않는 회원입니다.")
         );
     }
 

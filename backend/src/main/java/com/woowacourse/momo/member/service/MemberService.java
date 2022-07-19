@@ -12,19 +12,18 @@ import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.dto.response.MyInfoResponse;
-import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
 
+    private final MemberFindService memberFindService;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public MyInfoResponse findById(Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(NotFoundMemberException::new);
+        Member member = memberFindService.findMember(id);
 
         return MemberResponseAssembler.myInfoResponse(member);
     }
@@ -36,8 +35,7 @@ public class MemberService {
 
     @Transactional
     public void updatePassword(Long id, ChangePasswordRequest request) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(NotFoundMemberException::new);
+        Member member = memberFindService.findMember(id);
 
         String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
         member.changePassword(encryptedPassword);
@@ -45,8 +43,7 @@ public class MemberService {
 
     @Transactional
     public void updateName(Long id, ChangeNameRequest request) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(NotFoundMemberException::new);
+        Member member = memberFindService.findMember(id);
 
         member.changeName(request.getName());
     }
