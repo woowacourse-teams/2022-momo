@@ -46,16 +46,6 @@ public class RestHandler {
                 .then().log().all();
     }
 
-    public static ValidatableResponse putRequest(Object body, String path) {
-        return RestAssured.given().log().all()
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body(body)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .put(path)
-                .then().log().all();
-    }
-
     public static ValidatableResponse putRequestWithToken(String accessToken, Object body, String path) {
         return RestAssured.given().log().all()
                 .auth().oauth2(accessToken)
@@ -75,14 +65,6 @@ public class RestHandler {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .patch(path)
-                .then().log().all();
-    }
-
-    public static ValidatableResponse deleteRequest(String path) {
-        return RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .delete(path)
                 .then().log().all();
     }
 
