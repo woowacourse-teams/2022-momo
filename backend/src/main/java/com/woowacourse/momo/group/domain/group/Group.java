@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +26,9 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.participant.domain.Participant;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.member.domain.Member;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,6 +48,10 @@ public class Group {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Participant> participants = new ArrayList<>();
 
     @Column(nullable = false)
     @Embedded
@@ -91,6 +98,10 @@ public class Group {
         belongTo(schedules);
     }
 
+    public void participate(Member member) {
+        this.participants.add(new Participant(this, member));
+    }
+
     private void belongTo(List<Schedule> schedules) {
         this.schedules.addAll(schedules);
     }
@@ -99,11 +110,18 @@ public class Group {
         return schedules;
     }
 
+    public List<Member> getParticipants() {
+        return participants.stream()
+                .map(Participant::getMember)
+                .collect(Collectors.toList());
+    }
+
     public static class Builder {
 
         private String name;
         private Long hostId;
         private Category category;
+        private List<Participant> participants;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -130,6 +148,11 @@ public class Group {
 
         public Builder categoryId(long categoryId) {
             this.category = Category.from(categoryId);
+            return this;
+        }
+
+        public Builder participants(List<Participant> participants) {
+            this.participants = participants;
             return this;
         }
 

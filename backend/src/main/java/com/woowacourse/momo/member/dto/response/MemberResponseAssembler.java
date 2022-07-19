@@ -1,5 +1,8 @@
 package com.woowacourse.momo.member.dto.response;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -14,5 +17,11 @@ public class MemberResponseAssembler {
 
     public static MemberResponse memberResponse(Member member) {
         return new MemberResponse(member.getId(), member.getName());
+    }
+
+    public static List<MemberResponse> memberResponses(List<Member> members) {
+        return members.stream()
+                .map(MemberResponseAssembler::memberResponse)
+                .collect(Collectors.toList());
     }
 }
