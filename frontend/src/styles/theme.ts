@@ -26,6 +26,9 @@ const theme: Theme = {
     red001: '#C21500',
     red002: '#F7797D',
   },
+  filter: {
+    darken001: '#0000004d',
+  },
 };
 
 export default theme;

@@ -5,7 +5,7 @@ import { CategoryType, Group } from 'types/data';
 const useCreateState = () => {
   const [name, setName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
-    id: '',
+    id: -1,
     name: '',
   });
   const [startDate, setStartDate] = useState('');

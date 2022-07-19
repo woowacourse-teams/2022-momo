@@ -1,7 +1,7 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
-import { CreateGroupData, Group } from 'types/data';
+import { CreateGroupData, DetailData, Group } from 'types/data';
 
 const requestCreateGroup = async ({
   name,
@@ -11,7 +11,7 @@ const requestCreateGroup = async ({
   deadline,
   location,
   description,
-}: CreateGroupData) => {
+}: CreateGroupData): Promise<DetailData['id']> => {
   const data = {
     name,
     categoryId: selectedCategory.id,
@@ -37,11 +37,10 @@ const requestCreateGroup = async ({
     description,
   };
 
-  axios
+  return axios
     .post(API_PATH.GROUP, data)
-    .then(res => {
-      // 요청: body에 생성된 모임의 id를 줘! (줄 예정)
-      return res;
+    .then(response => {
+      return response.data.groupId;
     })
     .catch(() => {
       throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
@@ -49,7 +48,11 @@ const requestCreateGroup = async ({
 };
 
 const getGroups = (): Promise<Group[]> => {
-  return axios.get(`${API_PATH.GROUP}`).then(response => response.data);
+  return axios.get(API_PATH.GROUP).then(response => response.data);
 };
 
-export { requestCreateGroup, getGroups };
+const getGroupDetail = (id: DetailData['id']): Promise<DetailData> => {
+  return axios.get(`${API_PATH.GROUP}/${id}`).then(response => response.data);
+};
+
+export { requestCreateGroup, getGroups, getGroupDetail };
