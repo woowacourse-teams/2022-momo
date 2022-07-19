@@ -1,6 +1,10 @@
 package com.woowacourse.momo.member.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -10,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -27,6 +32,7 @@ import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
 public class MemberControllerTest {
@@ -57,7 +63,13 @@ public class MemberControllerTest {
     void find() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/members")
                 .header("authorization", "bearer " + accessToken))
-                .andExpect(jsonPath("email", is(ID)));
+                .andExpect(jsonPath("email", is(ID)))
+                .andDo(
+                        document("memberfind",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("정상적으로 비밀번호를 수정한 경우를 테스트한다")
@@ -69,7 +81,13 @@ public class MemberControllerTest {
                         .header("authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(passwordRequest)))
-                .andExpect(status().is(HttpStatus.OK.value()));
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andDo(
+                        document("memberupdatepassword",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("정상적으로 이름을 수정한 경우를 테스트한다")
@@ -81,7 +99,13 @@ public class MemberControllerTest {
                         .header("authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(nameRequest)))
-                .andExpect(status().is(HttpStatus.OK.value()));
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andDo(
+                        document("memberupdatename",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("정상적으로 사용자를 삭제한 경우를 테스트한다.")
@@ -89,7 +113,13 @@ public class MemberControllerTest {
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/members")
                         .header("authorization", "bearer " + accessToken))
-                .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+                .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
+                .andDo(
+                        document("memberdelete",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     String login() {
