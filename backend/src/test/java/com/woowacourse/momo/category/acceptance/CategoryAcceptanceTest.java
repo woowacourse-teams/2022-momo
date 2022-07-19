@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -18,13 +19,13 @@ import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssemb
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestHandler;
 
-@SuppressWarnings("NonAsciiCharacters")
 class CategoryAcceptanceTest extends AcceptanceTest {
 
     private static final String BASE_URL = "/api/categories";
 
+    @DisplayName("카테고리 목록을 조회하다")
     @Test
-    void 카테고리_목록_조회() {
+    void findCategories() {
         ExtractableResponse<Response> response = RestHandler.getRequest(BASE_URL).extract();
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
@@ -34,6 +35,6 @@ class CategoryAcceptanceTest extends AcceptanceTest {
 
         List<CategoryResponse> actual = List.of(response.as(CategoryResponse[].class));
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
-                        .isEqualTo(expected);
+                .isEqualTo(expected);
     }
 }

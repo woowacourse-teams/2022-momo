@@ -15,14 +15,14 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
     private final AuthRestHandler authRestHandler = new AuthRestHandler();
 
-    @DisplayName("회원가입을 성공하다")
+    @DisplayName("회원가입을 하다")
     @Test
     void signUp() {
         authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME)
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    @DisplayName("로그인을 성공하다")
+    @DisplayName("로그인을 하다")
     @Test
     void login() {
         authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME);
