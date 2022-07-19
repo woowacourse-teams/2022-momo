@@ -17,7 +17,10 @@ const TitleWrapper = styled.div`
 
   min-height: 300px;
 
-  background: ${({ theme: { colors } }) => colors.gray003};
+  background: ${({ theme: { filter } }) =>
+      `linear-gradient(${filter.darken001}, ${filter.darken001})`},
+    url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background-size: cover;
 
   border-radius: 10px 10px 0 0;
 `;
@@ -32,7 +35,7 @@ const DescriptionContainer = styled.div`
 `;
 
 const Hashtag = styled.p`
-  color: ${({ theme: { colors } }) => colors.blue002};
+  color: ${({ theme: { colors } }) => colors.yellow001};
 
   font-weight: 700;
 `;
@@ -70,6 +73,7 @@ const Description = styled(DescriptionBox)`
   align-items: flex-start;
 
   line-height: 2rem;
+  white-space: pre-wrap;
 
   color: ${({ theme: { colors } }) => colors.black002};
 `;
@@ -78,7 +82,8 @@ const LocationMap = styled.div`
   width: 32rem;
   height: 32rem;
 
-  background: ${({ theme: { colors } }) => colors.gray005};
+  background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background-size: cover;
 `;
 
 export {
