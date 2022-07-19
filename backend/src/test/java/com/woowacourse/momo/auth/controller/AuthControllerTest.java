@@ -60,7 +60,7 @@ class AuthControllerTest {
                 )
                 .andExpect(status().isCreated())
                 .andDo(
-                        document("member",
+                        document("membersignup",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -139,7 +139,7 @@ class AuthControllerTest {
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken", notNullValue()))
                 .andDo(
-                        document("member",
+                        document("memberlogin",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
