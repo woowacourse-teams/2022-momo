@@ -5,14 +5,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
-import static com.woowacourse.momo.common.acceptance.Fixture.로그인;
-import static com.woowacourse.momo.common.acceptance.Fixture.회원_가입;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.woowacourse.momo.auth.acceptance.AuthRestHandler;
+import com.woowacourse.momo.auth.acceptance.User;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestHandler;
 
@@ -21,12 +20,15 @@ import com.woowacourse.momo.common.acceptance.RestHandler;
 @Sql(value = "classpath:clear.sql", executionPhase = AFTER_TEST_METHOD)
 class GroupAcceptanceTest extends AcceptanceTest {
 
-    private static String token;
+    private static final User USER = User.MOMO;
+
+    private final AuthRestHandler authRestHandler = new AuthRestHandler();
+
+    private String token;
 
     @BeforeEach
-    void init() {
-        회원_가입("email@woowacoure.com", "1234asdf!", "모모");
-        token = 로그인("email@woowacoure.com", "1234asdf!");
+    void setUp() {
+        token = authRestHandler.로그인을_하다(USER);
     }
 
     @Test
@@ -63,7 +65,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의"))
                 .body("host.id", is(1))
-                .body("host.name", is("모모"))
+                .body("host.name", is(USER.getName()))
                 .body("categoryId", is(1))
                 .body("duration.start", is("2022-07-01"))
                 .body("duration.end", is("2022-07-01"))
@@ -117,7 +119,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("name", is("모두 모여라 회의222"))
                 .body("host.id", is(1))
-                .body("host.name", is("모모"))
+                .body("host.name", is(USER.getName()))
                 .body("categoryId", is(1))
                 .body("duration.start", is("2022-07-01"))
                 .body("duration.end", is("2022-07-01"))

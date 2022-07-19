@@ -1,36 +1,33 @@
 package com.woowacourse.momo.auth.acceptance;
 
-import static com.woowacourse.momo.common.acceptance.Fixture.회원_가입;
-
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestHandler;
 
-@SuppressWarnings("NonAsciiCharacters")
 public class AuthAcceptanceTest extends AcceptanceTest {
 
     private static final String EMAIL = "woowa@woowa.com";
-    private static final String PASSWORD = "1q2w3e4R!";
+    private static final String PASSWORD = "qwe123!@#";
+    private static final String NAME = "MOMO";
 
+    private final AuthRestHandler authRestHandler = new AuthRestHandler();
+
+    @DisplayName("회원가입을 성공하다")
     @Test
-    void 회원_가입_테스트() {
-        SignUpRequest request = new SignUpRequest(EMAIL, PASSWORD, "모모");
-
-        RestHandler.postRequest(request, "/api/auth/signup")
+    void signUp() {
+        authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME)
                 .statusCode(HttpStatus.CREATED.value());
     }
 
+    @DisplayName("로그인을 성공하다")
     @Test
-    public void 로그인_테스트() {
-        회원_가입(EMAIL, PASSWORD, "모모");
+    void login() {
+        authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME);
 
-        LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
-        RestHandler.postRequest(request, "/api/auth/login")
+        authRestHandler.로그인을_하다(EMAIL, PASSWORD)
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }

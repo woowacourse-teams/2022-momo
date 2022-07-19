@@ -17,7 +17,7 @@ public class AcceptanceTest {
     int port;
 
     @BeforeEach
-    public void setUp() {
+    public void init() {
         RestAssured.port = port;
     }
 }
