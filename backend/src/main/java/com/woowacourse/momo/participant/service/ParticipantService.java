@@ -17,7 +17,7 @@ import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class GroupParticipantService {
+public class ParticipantService {
 
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;

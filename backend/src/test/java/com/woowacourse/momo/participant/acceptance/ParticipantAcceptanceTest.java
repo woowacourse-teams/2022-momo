@@ -16,7 +16,7 @@ import io.restassured.response.Response;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 import com.woowacourse.momo.common.acceptance.RestHandler;
 
-public class GroupParticipantAcceptanceTest extends AcceptanceTest {
+public class ParticipantAcceptanceTest extends AcceptanceTest {
 
     private static String token;
     private static final String BODY = "{\n" +

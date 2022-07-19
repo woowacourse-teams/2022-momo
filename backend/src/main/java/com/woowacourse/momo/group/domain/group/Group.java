@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
-import com.woowacourse.momo.participant.domain.GroupParticipant;
+import com.woowacourse.momo.participant.domain.Participant;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -51,7 +51,7 @@ public class Group {
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<GroupParticipant> participants = new ArrayList<>();
+    private List<Participant> participants = new ArrayList<>();
 
     @Column(nullable = false)
     @Embedded
@@ -99,7 +99,7 @@ public class Group {
     }
 
     public void participate(Member member) {
-        this.participants.add(new GroupParticipant(this, member));
+        this.participants.add(new Participant(this, member));
     }
 
     private void belongTo(List<Schedule> schedules) {
@@ -112,7 +112,7 @@ public class Group {
 
     public List<Member> getParticipants() {
         return participants.stream()
-                .map(GroupParticipant::getMember)
+                .map(Participant::getMember)
                 .collect(Collectors.toList());
     }
 
@@ -121,7 +121,7 @@ public class Group {
         private String name;
         private Long hostId;
         private Category category;
-        private List<GroupParticipant> participants;
+        private List<Participant> participants;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -151,7 +151,7 @@ public class Group {
             return this;
         }
 
-        public Builder participants(List<GroupParticipant> participants) {
+        public Builder participants(List<Participant> participants) {
             this.participants = participants;
             return this;
         }

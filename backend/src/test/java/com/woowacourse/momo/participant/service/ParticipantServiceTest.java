@@ -23,14 +23,13 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
-import com.woowacourse.momo.participant.service.GroupParticipantService;
 
 @Transactional
 @SpringBootTest
-class GroupParticipantServiceTest {
+class ParticipantServiceTest {
 
     @Autowired
-    private GroupParticipantService groupParticipantService;
+    private ParticipantService participantService;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -55,9 +54,9 @@ class GroupParticipantServiceTest {
     void participate() {
         Group savedGroup = saveGroup();
 
-        groupParticipantService.participate(savedGroup.getId(), savedMember.getId());
+        participantService.participate(savedGroup.getId(), savedMember.getId());
 
-        List<MemberResponse> participants = groupParticipantService.findParticipants(savedGroup.getId());
+        List<MemberResponse> participants = participantService.findParticipants(savedGroup.getId());
 
         assertThat(participants).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(List.of(savedMember));
@@ -66,7 +65,7 @@ class GroupParticipantServiceTest {
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
     @Test
     void participateNotExistGroup() {
-        assertThatThrownBy(() -> groupParticipantService.participate(0L, savedMember.getId()))
+        assertThatThrownBy(() -> participantService.participate(0L, savedMember.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -76,7 +75,7 @@ class GroupParticipantServiceTest {
     void participateNotExistMember() {
         Group savedGroup = saveGroup();
 
-        assertThatThrownBy(() -> groupParticipantService.participate(savedGroup.getId(), 0L))
+        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), 0L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 사용자입니다.");
     }
@@ -85,9 +84,9 @@ class GroupParticipantServiceTest {
     @Test
     void findParticipants() {
         Group savedGroup = saveGroup();
-        groupParticipantService.participate(savedGroup.getId(), savedMember.getId());
+        participantService.participate(savedGroup.getId(), savedMember.getId());
 
-        List<MemberResponse> actual = groupParticipantService.findParticipants(savedGroup.getId());
+        List<MemberResponse> actual = participantService.findParticipants(savedGroup.getId());
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(List.of(savedMember));
@@ -96,7 +95,7 @@ class GroupParticipantServiceTest {
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")
     @Test
     void findParticipantsNotExistGroup() {
-        assertThatThrownBy(() -> groupParticipantService.findParticipants(0L))
+        assertThatThrownBy(() -> participantService.findParticipants(0L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }

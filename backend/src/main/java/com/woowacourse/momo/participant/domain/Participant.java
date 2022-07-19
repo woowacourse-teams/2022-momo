@@ -17,7 +17,7 @@ import com.woowacourse.momo.member.domain.Member;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class GroupParticipant {
+public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class GroupParticipant {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public GroupParticipant(Group group, Member member) {
+    public Participant(Group group, Member member) {
         this.group = group;
         this.member = member;
     }

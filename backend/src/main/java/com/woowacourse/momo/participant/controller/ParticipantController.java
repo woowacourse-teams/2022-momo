@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.participant.service.GroupParticipantService;
+import com.woowacourse.momo.participant.service.ParticipantService;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/participants")
 @RestController
-public class GroupParticipantController {
+public class ParticipantController {
 
-    private final GroupParticipantService groupParticipantService;
+    private final ParticipantService participantService;
 
     @PostMapping
     public ResponseEntity<Void> participate(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        groupParticipantService.participate(groupId, memberId);
+        participantService.participate(groupId, memberId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<List<MemberResponse>> findParticipants(@PathVariable Long groupId) {
-        return ResponseEntity.ok(groupParticipantService.findParticipants(groupId));
+        return ResponseEntity.ok(participantService.findParticipants(groupId));
     }
 }
