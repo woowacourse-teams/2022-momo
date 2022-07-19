@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
@@ -19,6 +20,7 @@ import com.woowacourse.momo.member.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.service.MemberService;
 
 @RequiredArgsConstructor
+@Authenticated
 @RequestMapping("/api/members")
 @RestController
 public class MemberController {
