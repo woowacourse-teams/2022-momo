@@ -1,4 +1,4 @@
-import { DetailData } from 'types/data';
+import { CategoryType, DetailData } from 'types/data';
 
 import * as S from './index.styled';
 import Info from './Info';
@@ -7,16 +7,18 @@ import Participants from './Participants';
 function DetailSideBar({
   name,
   schedules,
-  categoryId,
   location,
-}: Pick<DetailData, 'name' | 'schedules' | 'categoryId' | 'location'>) {
+  categoryName,
+}: Pick<DetailData, 'name' | 'schedules' | 'location'> & {
+  categoryName: CategoryType['name'];
+}) {
   return (
     <S.Container>
       <Info
         name={name}
         schedules={schedules}
-        categoryId={categoryId}
         location={location}
+        categoryName={categoryName}
       />
       <Participants />
     </S.Container>
