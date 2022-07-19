@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.domain.participant.GroupParticipantRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
@@ -34,9 +33,6 @@ class GroupParticipantServiceTest {
 
     @Autowired
     private GroupRepository groupRepository;
-
-    @Autowired
-    private GroupParticipantRepository groupParticipantRepository;
 
     @Autowired
     private MemberRepository memberRepository;
