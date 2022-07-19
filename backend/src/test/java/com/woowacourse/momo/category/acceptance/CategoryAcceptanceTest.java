@@ -25,7 +25,7 @@ class CategoryAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 카테고리_목록_조회() {
-        ExtractableResponse<Response> response = RestHandler.getRequest2(BASE_URL);
+        ExtractableResponse<Response> response = RestHandler.getRequest(BASE_URL).extract();
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
         List<CategoryResponse> expected = Arrays.stream(Category.values())

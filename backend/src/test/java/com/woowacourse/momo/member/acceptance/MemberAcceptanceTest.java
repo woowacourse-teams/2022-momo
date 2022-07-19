@@ -25,7 +25,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestHandler.getRequestWithToken(token, "/api/members")
+        RestHandler.getRequest(token, "/api/members")
                 .statusCode(HttpStatus.OK.value())
                 .body("email", is(EMAIL))
                 .body("name", is("모모"));
@@ -37,7 +37,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         String token = 로그인(EMAIL, PASSWORD);
 
         ChangePasswordRequest request = new ChangePasswordRequest("newPassword1!");
-        RestHandler.patchRequestWithToken(token, request, "/api/members/password")
+        RestHandler.patchRequest(token, request, "/api/members/password")
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -47,7 +47,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         String token = 로그인(EMAIL, PASSWORD);
 
         ChangeNameRequest request = new ChangeNameRequest("새로운 이름");
-        RestHandler.patchRequestWithToken(token, request, "/api/members/name")
+        RestHandler.patchRequest(token, request, "/api/members/name")
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -56,7 +56,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_가입(EMAIL, PASSWORD, NAME);
         String token = 로그인(EMAIL, PASSWORD);
 
-        RestHandler.deleteRequestWithToken(token, "/api/members")
+        RestHandler.deleteRequest(token, "/api/members")
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
