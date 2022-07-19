@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.duration.Duration;
-import com.woowacourse.momo.group.domain.participant.GroupParticipant;
+import com.woowacourse.momo.participant.domain.GroupParticipant;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 

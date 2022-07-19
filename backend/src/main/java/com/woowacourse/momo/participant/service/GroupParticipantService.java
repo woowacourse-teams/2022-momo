@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service;
+package com.woowacourse.momo.participant.service;
 
 import java.util.List;
 

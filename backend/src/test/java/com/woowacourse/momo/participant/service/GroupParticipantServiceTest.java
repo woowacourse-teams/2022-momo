@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service;
+package com.woowacourse.momo.participant.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,6 +23,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.participant.service.GroupParticipantService;
 
 @Transactional
 @SpringBootTest

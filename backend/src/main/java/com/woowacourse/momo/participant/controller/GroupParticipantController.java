@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.controller;
+package com.woowacourse.momo.participant.controller;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.group.service.GroupParticipantService;
+import com.woowacourse.momo.participant.service.GroupParticipantService;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @RequiredArgsConstructor

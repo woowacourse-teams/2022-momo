@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.acceptance;
+package com.woowacourse.momo.participant.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

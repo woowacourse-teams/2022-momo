@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.participant;
+package com.woowacourse.momo.participant.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
