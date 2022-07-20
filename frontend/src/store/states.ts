@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 
+import { ModalStateType } from 'types/condition';
 import { CategoryType } from 'types/data';
 
 const categoryState = atom<CategoryType[]>({
@@ -7,4 +8,9 @@ const categoryState = atom<CategoryType[]>({
   default: [],
 });
 
-export { categoryState };
+const modalState = atom<ModalStateType>({
+  key: 'modalState',
+  default: 'off',
+});
+
+export { categoryState, modalState };
