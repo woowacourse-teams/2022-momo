@@ -1,13 +1,12 @@
-import { Global, css } from '@emotion/react';
+import { Global, css, useTheme, Theme } from '@emotion/react';
 import emotionReset from 'emotion-reset';
 
 import { fontStyle } from './font';
-import theme from './theme';
 
 // Heading => SuseongDotum
 // Basic => GangwonEdu_OTFBoldA, GangwonEdu_OTFLightA
 
-const style = css`
+const style = (theme: Theme) => css`
   ${emotionReset}
   ${fontStyle}
 
@@ -58,10 +57,22 @@ const style = css`
       color: ${theme.colors.gray003};
     }
   }
+
+  textarea {
+    font-family: 'GangwonEdu_Bold';
+
+    &:focus {
+      border: 1.5px solid ${theme.colors.green001};
+
+      outline: none;
+    }
+  }
 `;
 
 function GlobalStyle() {
-  return <Global styles={style} />;
+  const theme = useTheme();
+
+  return <Global styles={style(theme)} />;
 }
 
 export default GlobalStyle;
