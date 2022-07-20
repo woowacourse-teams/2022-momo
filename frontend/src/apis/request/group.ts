@@ -55,4 +55,8 @@ const getGroupDetail = (id: DetailData['id']): Promise<DetailData> => {
   return axios.get(`${API_PATH.GROUP}/${id}`).then(response => response.data);
 };
 
-export { requestCreateGroup, getGroups, getGroupDetail };
+const deleteGroup = (id: DetailData['id']): Promise<void> => {
+  return axios.delete(`${API_PATH.GROUP}/${id}`);
+};
+
+export { requestCreateGroup, getGroups, getGroupDetail, deleteGroup };

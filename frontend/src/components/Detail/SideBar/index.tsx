@@ -5,16 +5,18 @@ import Info from './Info';
 import Participants from './Participants';
 
 function DetailSideBar({
+  id,
   name,
   schedules,
   location,
   categoryName,
-}: Pick<DetailData, 'name' | 'schedules' | 'location'> & {
+}: Pick<DetailData, 'id' | 'name' | 'schedules' | 'location'> & {
   categoryName: CategoryType['name'];
 }) {
   return (
     <S.Container>
       <Info
+        id={id}
         name={name}
         schedules={schedules}
         location={location}
