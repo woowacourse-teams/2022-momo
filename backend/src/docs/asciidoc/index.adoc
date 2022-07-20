@@ -1,4 +1,4 @@
-== 모모의 API 명세🥹
+== 모모의 API 명세
 
 == 카테고리
 
@@ -10,9 +10,9 @@ include::{snippets}/categorylist/http-request.adoc[]
 ==== Response
 include::{snippets}/categorylist/http-response.adoc[]
 
-== 그룹
+== 모임
 
-=== 그룹 조회
+=== 모임 조회
 
 ==== Request
 include::{snippets}/groupget/http-request.adoc[]
@@ -20,7 +20,7 @@ include::{snippets}/groupget/http-request.adoc[]
 ==== Response
 include::{snippets}/groupget/http-response.adoc[]
 
-=== 그룹 생성
+=== 모임 생성
 
 ==== Request
 include::{snippets}/groupcreate/http-request.adoc[]
@@ -28,7 +28,7 @@ include::{snippets}/groupcreate/http-request.adoc[]
 ==== Response
 include::{snippets}/groupcreate/http-response.adoc[]
 
-=== 그룹 삭제
+=== 모임 삭제
 
 ==== Request
 include::{snippets}/groupdelete/http-request.adoc[]
@@ -36,7 +36,7 @@ include::{snippets}/groupdelete/http-request.adoc[]
 ==== Response
 include::{snippets}/groupdelete/http-response.adoc[]
 
-=== 모든 그룹 조회
+=== 모든 모임 조회
 
 ==== Request
 include::{snippets}/grouplist/http-request.adoc[]
