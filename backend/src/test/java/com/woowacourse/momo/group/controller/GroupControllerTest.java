@@ -2,6 +2,10 @@ package com.woowacourse.momo.group.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -20,6 +24,7 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -39,6 +44,7 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
 public class GroupControllerTest {
@@ -70,7 +76,14 @@ public class GroupControllerTest {
                 .header("Authorization", "bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(groupRequest))
-        ).andExpect(header().string("location", startsWith("/api/groups")));
+        )
+                .andExpect(header().string("location", startsWith("/api/groups")))
+                .andDo(
+                        document("groupcreate",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("그룹이 정상적으로 수정되는 경우를 테스트한다")
@@ -88,7 +101,14 @@ public class GroupControllerTest {
 
         mockMvc.perform(delete("/api/groups/" + saveId)
                 .header("Authorization", "bearer " + accessToken)
-        ).andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+        )
+                .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
+                .andDo(
+                        document("groupdelete",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
@@ -101,7 +121,13 @@ public class GroupControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/" + saveId)
                         .header("Authorization", "bearer " + accessToken))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("name", is("모모의 스터디")));
+                .andExpect(jsonPath("name", is("모모의 스터디")))
+                .andDo(
+                        document("groupget",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("그룹 목록을 가져오는 경우를 테스트한다")
@@ -116,7 +142,13 @@ public class GroupControllerTest {
                         .header("Authorization", "bearer " + accessToken))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$[0].name", is("모모의 스터디")))
-                .andExpect(jsonPath("$[1].name", is("모모의 스터디")));
+                .andExpect(jsonPath("$[1].name", is("모모의 스터디")))
+                .andDo(
+                        document("grouplist",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     Long saveGroup(Long hostId) {
