@@ -20,9 +20,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @Transactional
 @SpringBootTest
@@ -66,8 +68,7 @@ class ParticipantServiceTest {
     @Test
     void participateNotExistGroup() {
         assertThatThrownBy(() -> participantService.participate(0L, savedMember.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 모임입니다.");
+                .isInstanceOf(NotFoundGroupException.class);
     }
 
     @DisplayName("존재하지 않는 사용자는 모임에 참여할 수 없다")
@@ -76,8 +77,7 @@ class ParticipantServiceTest {
         Group savedGroup = saveGroup();
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), 0L))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 사용자입니다.");
+                .isInstanceOf(NotFoundMemberException.class);
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
@@ -96,7 +96,6 @@ class ParticipantServiceTest {
     @Test
     void findParticipantsNotExistGroup() {
         assertThatThrownBy(() -> participantService.findParticipants(0L))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 모임입니다.");
+                .isInstanceOf(NotFoundGroupException.class);
     }
 }
