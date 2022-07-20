@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -32,8 +33,9 @@ public class CategoryControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @DisplayName("카테고리 목록을 조회한다.")
     @Test
-    void 카테고리_조회() throws Exception {
+    void getCategories() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/categories"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$", hasSize(9)))
