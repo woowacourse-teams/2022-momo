@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import ScrollToTop from 'components/@shared/ScrollToTop';
+import LoginModal from 'components/Login/Modal';
+import SignupModal from 'components/Signup/Modal';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
 import { Main, Detail, Create } from 'pages/index';
@@ -21,6 +23,8 @@ function App() {
           <Router>
             <ScrollToTop />
             <PageLayout>
+              <SignupModal />
+              <LoginModal />
               <Routes>
                 <Route path={BROWSER_PATH.BASE} element={<Main />} />
                 <Route path={BROWSER_PATH.DETAIL}>
