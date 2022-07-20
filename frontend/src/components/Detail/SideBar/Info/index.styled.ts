@@ -35,8 +35,8 @@ const JoinButton = styled.button`
 
   background: linear-gradient(
     180deg,
-    ${({ theme: { colors } }) => colors.blue001}99 0%,
-    ${({ theme: { colors } }) => colors.blue001} 20%
+    ${({ theme: { colors } }) => colors.red002}99 0%,
+    ${({ theme: { colors } }) => colors.red002} 20%
   );
   color: ${({ theme: { colors } }) => colors.white001};
 

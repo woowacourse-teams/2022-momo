@@ -33,6 +33,7 @@ function Detail() {
       {data && (
         <>
           <DetailSideBar
+            id={Number(id)}
             name={data.host.name}
             schedules={data.schedules}
             location={data.location}
