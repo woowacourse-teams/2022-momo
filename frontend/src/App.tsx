@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import ScrollToTop from 'components/@shared/ScrollToTop';
-import LoginModal from 'components/Login/Modal';
-import SignupModal from 'components/Signup/Modal';
+import LoginModal from 'components/Login';
+import SignupModal from 'components/Signup';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
 import { Main, Detail, Create } from 'pages/index';
