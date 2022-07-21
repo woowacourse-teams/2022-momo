@@ -31,8 +31,9 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public GroupIdResponse create(GroupRequest groupRequest) {
-        Group group = groupRepository.save(GroupRequestAssembler.group(groupRequest));
+    public GroupIdResponse create(Long memberId, GroupRequest groupRequest) {
+        Member host = memberFindService.findMember(memberId);
+        Group group = groupRepository.save(GroupRequestAssembler.group(host, groupRequest));
 
         return GroupResponseAssembler.groupIdResponse(group);
     }
@@ -57,8 +58,10 @@ public class GroupService {
     }
 
     @Transactional
-    public void update(Long groupId, GroupUpdateRequest request) {
+    public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
+        validateHost(group, hostId);
+
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
         group.update(request.getName(), Category.from(request.getCategoryId()),
@@ -67,7 +70,17 @@ public class GroupService {
     }
 
     @Transactional
-    public void delete(Long groupId) {
+    public void delete(Long hostId, Long groupId) {
+        Group group = groupFindService.findGroup(groupId);
+        validateHost(group, hostId);
+
         groupRepository.deleteById(groupId);
+    }
+
+    private void validateHost(Group group, Long hostId) {
+        Member host = memberFindService.findMember(hostId);
+        if (!group.equalsHost(host)) {
+            throw new IllegalArgumentException("해당 모임의 주최자가 아닙니다.");
+        }
     }
 }
