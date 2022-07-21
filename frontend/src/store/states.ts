@@ -13,14 +13,25 @@ const modalState = atom<ModalStateType>({
   default: 'off',
 });
 
+const loginState = atom<boolean>({
+  key: 'loginState',
+  default: false,
+});
+
 const accessTokenState = selector<string>({
   key: 'accessToken',
-  get: () => sessionStorage.getItem('accessToken') ?? '',
+  get: () => {
+    return sessionStorage.getItem('accessToken') ?? '';
+  },
   set: (_, accessToken) => {
+    if (!accessToken) {
+      sessionStorage.removeItem('accessToken');
+    }
+
     if (!(accessToken instanceof DefaultValue)) {
       sessionStorage.setItem('accessToken', accessToken);
     }
   },
 });
 
-export { categoryState, modalState, accessTokenState };
+export { categoryState, modalState, loginState, accessTokenState };
