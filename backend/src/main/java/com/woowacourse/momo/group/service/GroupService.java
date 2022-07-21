@@ -79,7 +79,7 @@ public class GroupService {
 
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
-        if (!group.equalsHost(host)) {
+        if (!group.isSameHost(host)) {
             throw new IllegalArgumentException("해당 모임의 주최자가 아닙니다.");
         }
     }

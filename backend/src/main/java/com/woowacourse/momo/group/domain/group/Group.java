@@ -98,7 +98,7 @@ public class Group {
         belongTo(schedules);
     }
 
-    public boolean equalsHost(Member host) {
+    public boolean isSameHost(Member host) {
         return Objects.equals(this.hostId, host.getId());
     }
 
