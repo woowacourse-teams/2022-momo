@@ -67,10 +67,10 @@ class GroupServiceTest {
     @DisplayName("모임을 생성한다")
     @Test
     void create() {
-        GroupRequest request = new GroupRequest("모모의 스터디", savedMember.getId(), Category.STUDY.getId(),
+        GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(),
                 DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
-        groupService.create(request);
+        groupService.create(savedMember.getId(), request);
 
         assertThat(groupRepository.findAll()).hasSize(1);
     }
@@ -79,10 +79,10 @@ class GroupServiceTest {
     @Test
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
-        GroupRequest request = new GroupRequest("모모의 스터디", savedMember.getId(), categoryId, DURATION_REQUEST,
+        GroupRequest request = new GroupRequest("모모의 스터디", categoryId, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
-        assertThatThrownBy(() -> groupService.create(request))
+        assertThatThrownBy(() -> groupService.create(savedMember.getId(), request))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("카테고리를 찾을 수 없습니다.");
     }
@@ -125,7 +125,7 @@ class GroupServiceTest {
     @Test
     void delete() {
         long groupId = saveGroup().getId();
-        groupService.delete(groupId);
+        groupService.delete(savedMember.getId(), groupId);
 
         assertThatThrownBy(() -> groupService.findById(groupId))
                 .isInstanceOf(NotFoundGroupException.class);

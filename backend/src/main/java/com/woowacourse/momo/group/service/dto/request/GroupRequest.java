@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class GroupRequest {
 
     private String name;
-    private Long hostId;
     private Long categoryId;
     private DurationRequest duration;
     private List<ScheduleRequest> schedules;

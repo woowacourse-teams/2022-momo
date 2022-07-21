@@ -65,8 +65,9 @@ public class ParticipantAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 비회원은_모임에_참여할_수_없다() {
+        long groupId = 생성한_모임_아이디();
         탈퇴한다(token);
-        ExtractableResponse<Response> response = 모임에_참여한다(token, 생성한_모임_아이디());
+        ExtractableResponse<Response> response = 모임에_참여한다(token, groupId);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),

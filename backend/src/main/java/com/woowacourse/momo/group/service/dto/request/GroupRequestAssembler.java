@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupRequestAssembler {
 
-    public static Group group(GroupRequest request) {
+    public static Group group(Member host, GroupRequest request) {
         return new Group.Builder()
                 .name(request.getName())
-                .hostId(request.getHostId())
+                .hostId(host.getId())
                 .categoryId(request.getCategoryId())
                 .duration(duration(request.getDuration()))
                 .deadline(request.getDeadline())
