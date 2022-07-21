@@ -1,4 +1,5 @@
 spring:
+  sql.init.mode: always
   datasource:
     username: sa
     url: jdbc:h2:~/momo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -10,9 +11,10 @@ spring:
     show-sql: 'true'
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       naming:
         physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
+    defer-datasource-initialization: true
 logging:
   level:
     org:
