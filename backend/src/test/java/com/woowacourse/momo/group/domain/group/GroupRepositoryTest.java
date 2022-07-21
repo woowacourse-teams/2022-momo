@@ -3,11 +3,11 @@ package com.woowacourse.momo.group.domain.group;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import static com.woowacourse.momo.group.fixture.GroupFixture._6월_30일_23시_59분;
 import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일부터_2일까지;
 import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
 import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_2일_10시부터_12시까지;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -151,7 +151,7 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(List<Schedule> schedules) {
-        return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지, LocalDateTime.now(),
+        return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지, _6월_30일_23시_59분,
                 schedules, "", "");
     }
 

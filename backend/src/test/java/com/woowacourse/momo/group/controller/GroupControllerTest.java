@@ -47,7 +47,7 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 @AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
-public class GroupControllerTest {
+class GroupControllerTest {
     private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
