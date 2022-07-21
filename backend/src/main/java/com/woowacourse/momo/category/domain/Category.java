@@ -16,7 +16,8 @@ public enum Category {
     HEALTH(6, "운동"),
     GAME(7, "게임"),
     TRAVEL(8, "여행"),
-    ETC(9, "기타");
+    CULTURE(9, "문화생활"),
+    ETC(10, "기타");
 
     private final long id;
     private final String name;

@@ -1,8 +1,7 @@
 spring:
-  sql.init.mode: always
   datasource:
     username: sa
-    url: jdbc:h2:~/momo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:~/momotest;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
   jpa:
     properties:
       hibernate:
@@ -14,7 +13,6 @@ spring:
       ddl-auto: create-drop
       naming:
         physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
-    defer-datasource-initialization: true
 logging:
   level:
     org:
