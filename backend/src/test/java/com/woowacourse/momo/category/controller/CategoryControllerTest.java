@@ -38,7 +38,7 @@ public class CategoryControllerTest {
     void getCategories() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/categories"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", hasSize(9)))
+                .andExpect(jsonPath("$", hasSize(10)))
                 .andDo(
                         document("categorylist",
                                 preprocessRequest(prettyPrint()),
