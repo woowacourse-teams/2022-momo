@@ -69,7 +69,7 @@ public class GroupControllerTest {
     void groupCreateTest() throws Exception {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", saveMemberId, 1L, DURATION_REQUEST,
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         mockMvc.perform(post("/api/groups/")
@@ -152,10 +152,10 @@ public class GroupControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", hostId, 1L, DURATION_REQUEST,
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
-        return groupService.create(groupRequest).getGroupId();
+        return groupService.create(hostId, groupRequest).getGroupId();
     }
 
     String accessToken() {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
+import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -31,8 +32,9 @@ public class GroupController {
 
     @Authenticated
     @PostMapping
-    public ResponseEntity<GroupIdResponse> create(@RequestBody GroupRequest groupRequest) {
-        GroupIdResponse groupIdResponse = groupService.create(groupRequest);
+    public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
+                                                  @RequestBody GroupRequest groupRequest) {
+        GroupIdResponse groupIdResponse = groupService.create(memberId, groupRequest);
         return ResponseEntity.created(URI.create("/api/groups/" + groupIdResponse.getGroupId()))
                 .body(groupIdResponse);
     }
@@ -49,15 +51,16 @@ public class GroupController {
 
     @Authenticated
     @PutMapping("/{groupId}")
-    public ResponseEntity<Void> update(@PathVariable Long groupId, @RequestBody GroupUpdateRequest groupUpdateRequest) {
-        groupService.update(groupId, groupUpdateRequest);
+    public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
+                                       @RequestBody GroupUpdateRequest groupUpdateRequest) {
+        groupService.update(memberId, groupId, groupUpdateRequest);
         return ResponseEntity.ok().build();
     }
 
     @Authenticated
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> delete(@PathVariable Long groupId) {
-        groupService.delete(groupId);
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
+        groupService.delete(memberId, groupId);
         return ResponseEntity.noContent().build();
     }
 }
