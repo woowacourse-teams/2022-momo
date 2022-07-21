@@ -29,6 +29,7 @@ const Content = styled.div`
   padding: 5rem;
 
   background: ${({ theme: { colors } }) => colors.white001};
+  filter: drop-shadow(0 0 4px ${({ theme: { colors } }) => colors.gray001});
 `;
 
 export { Dimmer, Content };
