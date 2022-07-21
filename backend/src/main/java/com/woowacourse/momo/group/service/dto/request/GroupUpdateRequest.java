@@ -19,7 +19,7 @@ public class GroupUpdateRequest {
     private Boolean regular;
     private DurationRequest duration;
     private List<ScheduleRequest> schedules;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
     private String location;
     private String description;

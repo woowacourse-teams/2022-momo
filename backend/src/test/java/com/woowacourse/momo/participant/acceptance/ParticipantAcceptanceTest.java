@@ -35,7 +35,7 @@ public class ParticipantAcceptanceTest extends AcceptanceTest {
             "\t\t\t\"endTime\" : \"15:00\"\n" +
             "\t\t}\n" +
             "\t],\n" +
-            "\t\"deadline\" : \"2022-06-30 23:59\",\n" +
+            "\t\"deadline\" : \"2022-06-30T23:59\",\n" +
             "\t\"location\" : \"루터회관 1층\",\n" +
             "\t\"description\" : \"팀프로젝트 진행\"\n" +
             "}";

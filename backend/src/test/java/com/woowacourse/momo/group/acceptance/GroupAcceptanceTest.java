@@ -46,7 +46,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\t\t\"endTime\" : \"15:00\"\n" +
                 "\t\t}\n" +
                 "\t],\n" +
-                "\t\"deadline\" : \"2022-06-30 23:59\",\n" +
+                "\t\"deadline\" : \"2022-06-30T23:59\",\n" +
                 "\t\"location\" : \"루터회관 1층\",\n" +
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
@@ -70,7 +70,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 .body("schedules[0].date", is("2022-07-01"))
                 .body("schedules[0].startTime", is("13:00:00"))
                 .body("schedules[0].endTime", is("15:00:00"))
-                .body("deadline", is("2022-06-30 23:59"))
+                .body("deadline", is("2022-06-30T23:59"))
                 .body("location", is("루터회관 1층"))
                 .body("description", is("팀프로젝트 진행"));
     }
@@ -105,7 +105,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 "\t\t\t\"endTime\" : \"15:00\"\n" +
                 "\t\t}\n" +
                 "\t],\n" +
-                "\t\"deadline\" : \"2022-06-30 23:59\",\n" +
+                "\t\"deadline\" : \"2022-06-30T23:59\",\n" +
                 "\t\"location\" : \"루터회관 1층\",\n" +
                 "\t\"description\" : \"팀프로젝트 진행\"\n" +
                 "}";
@@ -124,7 +124,7 @@ class GroupAcceptanceTest extends AcceptanceTest {
                 .body("schedules[0].date", is("2022-07-01"))
                 .body("schedules[0].startTime", is("13:00:00"))
                 .body("schedules[0].endTime", is("15:00:00"))
-                .body("deadline", is("2022-06-30 23:59"))
+                .body("deadline", is("2022-06-30T23:59"))
                 .body("location", is("루터회관 1층"))
                 .body("description", is("팀프로젝트 진행"));
     }
