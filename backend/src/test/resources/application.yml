@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    username: sa
+    url: jdbc:h2:~/momotest;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  jpa:
+    properties:
+      hibernate:
+        format_sql: 'true'
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: 'true'
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+security.jwt.token:
+  secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno
+  expire-length: 3600000
+
