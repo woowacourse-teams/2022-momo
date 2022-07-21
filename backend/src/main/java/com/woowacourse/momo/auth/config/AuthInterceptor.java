@@ -26,10 +26,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
-        String uri = request.getRequestURI();
-        if (uri.startsWith("/docs")) {
-            return true;
-        }
+
         Optional<Authenticated> authenticated = parseAnnotation((HandlerMethod) handler, Authenticated.class);
         if (authenticated.isPresent()) {
             validateToken(request);
