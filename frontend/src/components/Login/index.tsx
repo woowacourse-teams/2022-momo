@@ -4,13 +4,14 @@ import { requestLogin } from 'apis/request/auth';
 import Modal from 'components/Modal';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
-import { accessTokenState, modalState } from 'store/states';
+import { accessTokenState, loginState, modalState } from 'store/states';
 
 import * as S from './index.styled';
 
 function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
+  const setIsLogin = useSetRecoilState(loginState);
   const { value: email, setValue: setEmail } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
 
@@ -27,6 +28,7 @@ function Login() {
         alert(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
         setAccessToken(accessToken);
+        setIsLogin(true);
         setOffModal();
       })
       .catch(() => {
