@@ -18,6 +18,7 @@ import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
+import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 
@@ -40,20 +41,17 @@ public class GroupService {
 
     public GroupResponse findById(Long id) {
         Group group = groupFindService.findGroup(id);
-
-        return convertToGroupResponse(group);
-    }
-
-    private GroupResponse convertToGroupResponse(Group group) {
         Member host = memberFindService.findMember(group.getHostId());
-
         return GroupResponseAssembler.groupResponse(group, host);
     }
 
-    public List<GroupResponse> findAll() {
+    public List<GroupSimpleResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
         return groups.stream()
-                .map(this::convertToGroupResponse)
+                .map(group -> {
+                    Member host = memberFindService.findMember(group.getHostId());
+                    return GroupResponseAssembler.groupSimpleResponse(group, host);
+                })
                 .collect(Collectors.toList());
     }
 

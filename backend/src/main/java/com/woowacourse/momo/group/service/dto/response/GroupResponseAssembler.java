@@ -22,6 +22,11 @@ public class GroupResponseAssembler {
                 group.getDescription());
     }
 
+    public static GroupSimpleResponse groupSimpleResponse(Group group, Member member) {
+        return new GroupSimpleResponse(group.getId(), group.getName(), MemberResponseAssembler.memberResponse(member),
+                group.getCategory().getId(), group.getDeadline());
+    }
+
     public static GroupIdResponse groupIdResponse(Group group) {
         return new GroupIdResponse(group.getId());
     }
