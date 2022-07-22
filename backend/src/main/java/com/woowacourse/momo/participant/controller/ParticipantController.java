@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.participant.service.ParticipantService;
 import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.participant.service.ParticipantService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/participants")
