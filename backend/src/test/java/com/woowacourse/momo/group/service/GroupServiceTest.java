@@ -30,8 +30,9 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
+import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -91,9 +92,9 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupDetailResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
 
-        GroupResponse actual = groupService.findById(savedGroup.getId());
+        GroupDetailResponse actual = groupService.findById(savedGroup.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -110,12 +111,12 @@ class GroupServiceTest {
     @Test
     void findAll() {
         int count = 3;
-        List<GroupResponse> expected = IntStream.rangeClosed(0, count)
+        List<GroupSimpleResponse> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> saveGroup())
-                .map(group -> GroupResponseAssembler.groupResponse(group, savedMember))
+                .map(group -> GroupResponseAssembler.groupSimpleResponse(group, savedMember))
                 .collect(Collectors.toList());
 
-        List<GroupResponse> actual = groupService.findAll();
+        List<GroupSimpleResponse> actual = groupService.findAll();
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expected);
