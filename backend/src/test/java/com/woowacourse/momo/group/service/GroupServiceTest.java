@@ -30,7 +30,7 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
 import com.woowacourse.momo.member.domain.Member;
@@ -92,9 +92,9 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupDetailResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
 
-        GroupResponse actual = groupService.findById(savedGroup.getId());
+        GroupDetailResponse actual = groupService.findById(savedGroup.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);

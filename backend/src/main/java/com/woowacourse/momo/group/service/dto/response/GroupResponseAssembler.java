@@ -15,8 +15,8 @@ import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponse(Group group, Member member) {
-        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(member),
+    public static GroupDetailResponse groupResponse(Group group, Member member) {
+        return new GroupDetailResponse(group.getName(), MemberResponseAssembler.memberResponse(member),
                 group.getCategory().getId(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(),
                 group.getDescription());

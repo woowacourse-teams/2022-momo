@@ -12,7 +12,7 @@ import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @Getter
 @AllArgsConstructor
-public class GroupResponse {
+public class GroupDetailResponse {
 
     private String name;
     private MemberResponse host;
