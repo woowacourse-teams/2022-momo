@@ -1,3 +1,5 @@
+import { UserProfile } from './user';
+
 export interface CategoryType {
   id: DetailData['categoryId'];
   name: string;
@@ -53,3 +55,5 @@ export type Group = Pick<
   DetailData,
   'id' | 'name' | 'host' | 'categoryId' | 'deadline'
 >;
+
+export type GroupParticipants = Omit<UserProfile, 'email'>[];

@@ -3,3 +3,7 @@ export interface User {
   password: string;
   name: string;
 }
+
+export interface UserProfile extends Omit<User, 'password'> {
+  id: number;
+}
