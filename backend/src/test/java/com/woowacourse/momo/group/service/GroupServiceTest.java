@@ -3,12 +3,12 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.group.fixture.GroupFixture._10시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._12시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._6월_30일_23시_59분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일부터_2일까지;
-import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,9 +40,9 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
+            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private GroupService groupService;
@@ -62,7 +62,8 @@ class GroupServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
-                _7월_1일부터_2일까지, _6월_30일_23시_59분, List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
+                _7월_1일부터_2일까지.newInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
+                "", ""));
     }
 
     @DisplayName("모임을 생성한다")

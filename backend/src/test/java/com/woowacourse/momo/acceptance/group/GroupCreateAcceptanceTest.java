@@ -1,13 +1,14 @@
-package com.woowacourse.momo.group.acceptance;
+package com.woowacourse.momo.acceptance.group;
 
-import static com.woowacourse.momo.auth.acceptance.MemberFixture.MOMO;
-import static com.woowacourse.momo.group.acceptance.GroupRestHandler.모임을_생성한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_생성한다;
+import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 class GroupCreateAcceptanceTest extends AcceptanceTest {

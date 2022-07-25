@@ -1,4 +1,4 @@
-package com.woowacourse.momo.common.acceptance;
+package com.woowacourse.momo.acceptance;
 
 import org.springframework.http.MediaType;
 

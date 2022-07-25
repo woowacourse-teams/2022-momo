@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.acceptance;
+package com.woowacourse.momo.acceptance.group;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 import io.restassured.response.ValidatableResponse;
 
-import com.woowacourse.momo.common.acceptance.RestHandler;
+import com.woowacourse.momo.acceptance.RestHandler;
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;

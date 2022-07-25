@@ -1,4 +1,4 @@
-package com.woowacourse.momo.member.acceptance;
+package com.woowacourse.momo.acceptance.member;
 
 import static org.hamcrest.Matchers.is;
 
@@ -7,9 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.auth.acceptance.AuthRestHandler;
-import com.woowacourse.momo.auth.acceptance.MemberFixture;
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
+import com.woowacourse.momo.fixture.MemberFixture;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
 

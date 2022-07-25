@@ -1,17 +1,17 @@
-package com.woowacourse.momo.participant.acceptance;
+package com.woowacourse.momo.acceptance.participant;
 
-import static com.woowacourse.momo.auth.acceptance.MemberFixture.DUDU;
-import static com.woowacourse.momo.participant.acceptance.ParticipantRestHandler.모임에_참여한다;
-import static com.woowacourse.momo.participant.acceptance.ParticipantRestHandler.참여목록을_조회한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.참여목록을_조회한다;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.auth.acceptance.MemberFixture;
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.group.acceptance.GroupFixture;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.MemberFixture;
 
 class ParticipantAcceptanceTest extends AcceptanceTest {
 

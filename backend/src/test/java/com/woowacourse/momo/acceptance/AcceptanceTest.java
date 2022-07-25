@@ -1,4 +1,4 @@
-package com.woowacourse.momo.common.acceptance;
+package com.woowacourse.momo.acceptance;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;

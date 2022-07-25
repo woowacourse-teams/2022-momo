@@ -3,9 +3,9 @@ package com.woowacourse.momo.participant.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.group.fixture.GroupFixture._6월_30일_23시_59분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일부터_2일까지;
-import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ class ParticipantServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
-                _7월_1일부터_2일까지, _6월_30일_23시_59분, List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
+                _7월_1일부터_2일까지.newInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
     }
 
     @DisplayName("모임에 참여한다")

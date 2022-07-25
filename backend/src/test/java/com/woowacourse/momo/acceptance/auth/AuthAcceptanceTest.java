@@ -1,11 +1,12 @@
-package com.woowacourse.momo.auth.acceptance;
+package com.woowacourse.momo.acceptance.auth;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.fixture.MemberFixture;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 

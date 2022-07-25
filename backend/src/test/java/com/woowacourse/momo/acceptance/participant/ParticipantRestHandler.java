@@ -1,8 +1,8 @@
-package com.woowacourse.momo.participant.acceptance;
+package com.woowacourse.momo.acceptance.participant;
 
 import io.restassured.response.ValidatableResponse;
 
-import com.woowacourse.momo.common.acceptance.RestHandler;
+import com.woowacourse.momo.acceptance.RestHandler;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class ParticipantRestHandler extends RestHandler {

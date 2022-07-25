@@ -12,9 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.group.fixture.GroupFixture._10시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._12시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,9 +48,10 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 @Transactional
 @SpringBootTest
 class GroupControllerTest {
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
+    private static final DurationRequest DURATION_REQUEST =
+            new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
+            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     MockMvc mockMvc;
@@ -73,10 +74,10 @@ class GroupControllerTest {
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         mockMvc.perform(post("/api/groups/")
-                .header("Authorization", "bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(groupRequest))
-        )
+                        .header("Authorization", "bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(groupRequest))
+                )
                 .andExpect(header().string("location", startsWith("/api/groups")))
                 .andDo(
                         document("groupcreate",
@@ -100,8 +101,8 @@ class GroupControllerTest {
         String accessToken = accessToken();
 
         mockMvc.perform(delete("/api/groups/" + saveId)
-                .header("Authorization", "bearer " + accessToken)
-        )
+                        .header("Authorization", "bearer " + accessToken)
+                )
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
                 .andDo(
                         document("groupdelete",

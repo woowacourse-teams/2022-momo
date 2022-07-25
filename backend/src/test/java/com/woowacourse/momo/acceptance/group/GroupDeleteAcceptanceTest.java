@@ -1,16 +1,17 @@
-package com.woowacourse.momo.group.acceptance;
+package com.woowacourse.momo.acceptance.group;
 
-import static com.woowacourse.momo.auth.acceptance.MemberFixture.DUDU;
-import static com.woowacourse.momo.group.acceptance.GroupRestHandler.모임을_삭제한다;
-import static com.woowacourse.momo.group.acceptance.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_삭제한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.woowacourse.momo.auth.acceptance.MemberFixture;
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.MemberFixture;
 
 class GroupDeleteAcceptanceTest extends AcceptanceTest {
 

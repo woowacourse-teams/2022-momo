@@ -1,12 +1,12 @@
-package com.woowacourse.momo.group.acceptance;
+package com.woowacourse.momo.acceptance.group;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.auth.acceptance.MemberFixture.DUDU;
-import static com.woowacourse.momo.group.acceptance.GroupFixture.DUDU_STUDY;
-import static com.woowacourse.momo.group.acceptance.GroupRestHandler.모임을_수정한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_수정한다;
+import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,8 +18,9 @@ import org.springframework.http.HttpStatus;
 
 import io.restassured.response.ValidatableResponse;
 
-import com.woowacourse.momo.auth.acceptance.MemberFixture;
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
 
 class GroupUpdateAcceptanceTest extends AcceptanceTest {

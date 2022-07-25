@@ -1,8 +1,8 @@
-package com.woowacourse.momo.category.acceptance;
+package com.woowacourse.momo.acceptance.category;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.woowacourse.momo.common.acceptance.RestHandler.getRequest;
+import static com.woowacourse.momo.acceptance.RestHandler.getRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
+import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponse;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssembler;
-import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 
 class CategoryAcceptanceTest extends AcceptanceTest {
 
