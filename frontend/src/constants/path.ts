@@ -9,6 +9,7 @@ const API_PATH = {
   CATEGORY: '/categories',
   SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
+  PARTICIPANTS: '/participants',
 };
 
 export { BROWSER_PATH, API_PATH };

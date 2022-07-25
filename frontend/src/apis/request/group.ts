@@ -1,7 +1,12 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
-import { CreateGroupData, DetailData, Group } from 'types/data';
+import {
+  CreateGroupData,
+  DetailData,
+  Group,
+  GroupParticipants,
+} from 'types/data';
 
 const requestCreateGroup = async ({
   name,
@@ -71,4 +76,18 @@ const deleteGroup = (id: DetailData['id']): Promise<void> => {
   });
 };
 
-export { requestCreateGroup, getGroups, getGroupDetail, deleteGroup };
+const getGroupParticipants = (
+  id: DetailData['id'],
+): Promise<GroupParticipants> => {
+  return axios
+    .get(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
+    .then(response => response.data);
+};
+
+export {
+  requestCreateGroup,
+  getGroups,
+  getGroupDetail,
+  deleteGroup,
+  getGroupParticipants,
+};
