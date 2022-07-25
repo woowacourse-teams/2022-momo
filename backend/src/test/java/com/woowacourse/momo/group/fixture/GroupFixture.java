@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 import com.woowacourse.momo.group.domain.duration.Duration;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class GroupFixture {
 
     private static final int YEAR = 2022;
@@ -16,5 +17,6 @@ public class GroupFixture {
     public static final LocalTime _10시_00분 = LocalTime.of(10, 0);
     public static final LocalTime _12시_00분 = LocalTime.of(12, 0);
 
+    public static final Duration _7월_1일부터_1일까지 = new Duration(_7월_1일, _7월_1일);
     public static final Duration _7월_1일부터_2일까지 = new Duration(_7월_1일, _7월_2일);
 }

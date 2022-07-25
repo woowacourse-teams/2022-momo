@@ -8,54 +8,61 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.auth.acceptance.AuthRestHandler;
-import com.woowacourse.momo.auth.acceptance.User;
+import com.woowacourse.momo.auth.acceptance.MemberFixture;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestHandler;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
 
-    private static final User USER = User.MOMO;
-
-    private final AuthRestHandler authRestHandler = new AuthRestHandler();
+    private static final MemberFixture MEMBER = MemberFixture.MOMO;
 
     private String accessToken;
 
     @BeforeEach
     void setUp() {
-        accessToken = authRestHandler.로그인을_하다(USER);
+        accessToken = MEMBER.로_로그인하다();
     }
 
     @DisplayName("개인정보를 조회하다")
     @Test
     void findMyInfo() {
-        RestHandler.getRequest(accessToken, "/api/members")
+        MemberRestHandler.개인정보를_조회한다(accessToken)
                 .statusCode(HttpStatus.OK.value())
-                .body("email", is(USER.getEmail()))
-                .body("name", is(USER.getName()));
+                .body("email", is(MEMBER.getEmail()))
+                .body("name", is(MEMBER.getName()));
     }
 
     @DisplayName("비밀번호를 수정하다")
     @Test
     void updatePassword() {
-        ChangePasswordRequest request = new ChangePasswordRequest("newPassword1!");
-        RestHandler.patchRequest(accessToken, request, "/api/members/password")
+        String expected = MEMBER.getPassword() + "new";
+
+        MemberRestHandler.비밀번호를_수정한다(accessToken, expected)
+                .statusCode(HttpStatus.OK.value());
+
+        AuthRestHandler.로그인을_하다(MEMBER.getEmail(), expected)
                 .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("이름을 수정하다")
     @Test
     void updateName() {
-        ChangeNameRequest request = new ChangeNameRequest("새로운 이름");
-        RestHandler.patchRequest(accessToken, request, "/api/members/name")
+        String expected = MEMBER.getName() + "new";
+
+        MemberRestHandler.이름을_수정한다(accessToken, expected)
                 .statusCode(HttpStatus.OK.value());
+
+        MemberRestHandler.개인정보를_조회한다(accessToken)
+                .body("name", is(expected));
     }
 
     @DisplayName("회원탈퇴를 하다")
     @Test
     void delete() {
-        RestHandler.deleteRequest(accessToken, "/api/members")
+        MemberRestHandler.회원탈퇴를_하다(accessToken)
                 .statusCode(HttpStatus.NO_CONTENT.value());
+
+        // TODO: UNAUTHORIZED 상태코드여야 함.
+        AuthRestHandler.로그인을_하다(MEMBER.getEmail(), MEMBER.getPassword())
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

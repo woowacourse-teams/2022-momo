@@ -9,25 +9,21 @@ import com.woowacourse.momo.common.acceptance.AcceptanceTest;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 
-    private static final String EMAIL = "woowa@woowa.com";
-    private static final String PASSWORD = "qwe123!@#";
-    private static final String NAME = "MOMO";
-
-    private final AuthRestHandler authRestHandler = new AuthRestHandler();
+    private static final MemberFixture MEMBER_FIXTURE = MemberFixture.MOMO;
 
     @DisplayName("회원가입을 하다")
     @Test
     void signUp() {
-        authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME)
+        AuthRestHandler.회원가입을_하다(MEMBER_FIXTURE)
                 .statusCode(HttpStatus.CREATED.value());
     }
 
     @DisplayName("로그인을 하다")
     @Test
     void login() {
-        authRestHandler.회원가입을_하다(EMAIL, PASSWORD, NAME);
+        AuthRestHandler.회원가입을_하다(MEMBER_FIXTURE);
 
-        authRestHandler.로그인을_하다(EMAIL, PASSWORD)
+        AuthRestHandler.로그인을_하다(MEMBER_FIXTURE)
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }

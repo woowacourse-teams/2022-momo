@@ -1,107 +1,64 @@
 package com.woowacourse.momo.participant.acceptance;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-import static com.woowacourse.momo.common.acceptance.Fixture.로그인;
-import static com.woowacourse.momo.common.acceptance.Fixture.회원_가입;
+import static com.woowacourse.momo.auth.acceptance.MemberFixture.DUDU;
+import static com.woowacourse.momo.participant.acceptance.ParticipantRestHandler.모임에_참여한다;
+import static com.woowacourse.momo.participant.acceptance.ParticipantRestHandler.참여목록을_조회한다;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-
+import com.woowacourse.momo.auth.acceptance.MemberFixture;
 import com.woowacourse.momo.common.acceptance.AcceptanceTest;
-import com.woowacourse.momo.common.acceptance.RestHandler;
+import com.woowacourse.momo.group.acceptance.GroupFixture;
 
-@SuppressWarnings("NonAsciiCharacters")
-public class ParticipantAcceptanceTest extends AcceptanceTest {
+class ParticipantAcceptanceTest extends AcceptanceTest {
 
-    private static String token;
-    private static final String BODY = "{\n" +
-            "\t\"name\" : \"모두 모여라 회의\",\n" +
-            "\t\"hostId\" : 1,\n" +
-            "\t\"categoryId\" : 1,\n" +
-            "\t\"duration\" : {\n" +
-            "\t\t\"start\" : \"2022-07-01\",\n" +
-            "\t\t\"end\" : \"2022-07-01\"\n" +
-            "\t},\n" +
-            "\t\"schedules\" : [\n" +
-            "\t\t{\n" +
-            "\t\t\t\"date\" : \"2022-07-01\",\n" +
-            "\t\t\t\"startTime\" : \"13:00\",\n" +
-            "\t\t\t\"endTime\" : \"15:00\"\n" +
-            "\t\t}\n" +
-            "\t],\n" +
-            "\t\"deadline\" : \"2022-06-30T23:59\",\n" +
-            "\t\"location\" : \"루터회관 1층\",\n" +
-            "\t\"description\" : \"팀프로젝트 진행\"\n" +
-            "}";
+    private static final MemberFixture HOST = MemberFixture.MOMO;
+    private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;
+
+    private String hostAccessToken;
+    private Long groupId;
 
     @BeforeEach
-    void init() {
-        회원_가입("email@woowacoure.com", "1234asdf!", "모모");
-        token = 로그인("email@woowacoure.com", "1234asdf!");
+    void setUp() {
+        hostAccessToken = HOST.로_로그인하다();
+        groupId = GROUP.을_생성한다(hostAccessToken);
     }
 
+    @DisplayName("회원이 모임에 참여한다")
     @Test
-    void 모임_참여() {
-        ExtractableResponse<Response> response = 모임에_참여한다(token, 생성한_모임_아이디());
+    void participateByMember() {
+        String accessToken = DUDU.로_로그인하다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        참여목록을_조회한다(groupId);
     }
 
+    @DisplayName("주최자가 자신이 주최한 모임에 참여한다")
     @Test
-    void 존재하는_모임에_참여해야_한다() {
-        ExtractableResponse<Response> response = 모임에_참여한다(token, 0);
-
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.body().jsonPath().getString("message")).isEqualTo("존재하지 않는 모임입니다.")
-        );
+    void participateByHost() {
+        모임에_참여한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value()); // TODO: FORBIDDEN
     }
 
+    @DisplayName("참여자가 자신이 참여한 모임에 재참여한다")
     @Test
-    void 비회원은_모임에_참여할_수_없다() {
-        long groupId = 생성한_모임_아이디();
-        탈퇴한다(token);
-        ExtractableResponse<Response> response = 모임에_참여한다(token, groupId);
-
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(response.body().jsonPath().getString("message")).isEqualTo("존재하지 않는 회원입니다.")
-        );
+    void participateByParticipants() {
+        String accessToken = DUDU.로_로그인하다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
     }
 
+    @DisplayName("존재하지 않은 모임에 참여한다")
     @Test
-    void 모임의_참여자_목록_조회() {
-        long groupId = 생성한_모임_아이디();
-        모임에_참여한다(token, groupId);
-
-        ExtractableResponse<Response> response = 모임의_참여자_목록을_조회한다(groupId);
-
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.body().jsonPath().getString("[0].name")).isEqualTo("모모")
-        );
+    void participateToNonExistentGroup() {
+        모임에_참여한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
     }
 
-    private ExtractableResponse<Response> 탈퇴한다(String token) {
-        return RestHandler.deleteRequestWithToken2(token, "/api/members");
-    }
-
-    private long 생성한_모임_아이디() {
-        ExtractableResponse<Response> response = RestHandler.postRequestWithTokenAndBody(token, BODY, "/api/groups");
-        return response.jsonPath().getLong("groupId");
-    }
-
-    private ExtractableResponse<Response> 모임에_참여한다(String token, long groupId) {
-        return RestHandler.postRequestWithToken2(token, "/api/groups/" + groupId + "/participants");
-    }
-
-    private ExtractableResponse<Response> 모임의_참여자_목록을_조회한다(long groupId) {
-        return RestHandler.getRequest2("/api/groups/" + groupId + "/participants");
+    @DisplayName("비회원이 모임에 참여한다")
+    @Test
+    void participateByNonMember() {
+        모임에_참여한다(groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
     }
 }
