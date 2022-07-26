@@ -9,7 +9,6 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
     database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
       naming:
