@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum Category {
 
     STUDY(1, "스터디"),
@@ -21,11 +23,6 @@ public enum Category {
 
     private final long id;
     private final String name;
-
-    Category(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public static Category from(long id) {
         return Arrays.stream(values())
