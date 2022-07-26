@@ -1,6 +1,5 @@
 package com.woowacourse.momo.category.controller;
 
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SuppressWarnings("NonAsciiCharacters")
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @SpringBootTest
