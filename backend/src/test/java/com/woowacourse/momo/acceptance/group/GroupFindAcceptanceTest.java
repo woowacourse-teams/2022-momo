@@ -127,11 +127,13 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
         for (int i = 0; i < groups.size(); i++) {
             GroupFixture group = groups.get(i);
+            String deadline = group.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+
             String index = String.format("[%d]", i);
             response.body(index + ".id", is(groupIds.get(group).intValue()))
                     .body(index + ".name", is(group.getName()))
                     .body(index + ".categoryId", is(group.getCategoryId().intValue()))
-                    .body(index + ".deadline", is(group.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))))
+                    .body(index + ".deadline", is(deadline))
                     .body(index + ".host.id", is(1))
                     .body(index + ".host.name", is(HOST.getName()));
         }
