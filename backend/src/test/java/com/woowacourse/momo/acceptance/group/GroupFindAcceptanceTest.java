@@ -52,7 +52,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         GroupFixture group = MOMO_STUDY;
         ValidatableResponse response = 모임을_조회한다(hostAccessToken, groupIds.get(group));
 
-        checkGroupDetailResponse(response, group);
+        checkGroupResponse(response, group);
     }
 
     @DisplayName("비회원이 모임을 조회한다")
@@ -61,10 +61,10 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         GroupFixture group = MOMO_STUDY;
         ValidatableResponse response = 모임을_조회한다(groupIds.get(group));
 
-        checkGroupDetailResponse(response, group);
+        checkGroupResponse(response, group);
     }
 
-    void checkGroupDetailResponse(ValidatableResponse response, GroupFixture group) {
+    void checkGroupResponse(ValidatableResponse response, GroupFixture group) {
         response.statusCode(HttpStatus.OK.value());
 
         assertAll(
@@ -97,7 +97,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않은 모임을 조회한다")
     @Test
     void findNonExistentGroup() {
-        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TOD: NOT_FOUND
+        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
     }
 
     @DisplayName("회원이 모임목록을 조회한다")
@@ -105,7 +105,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     void findGroupsByMember() {
         ValidatableResponse response = 모임목록을_조회한다(hostAccessToken);
 
-        checkGroupSimpleResponses(response);
+        checkGroupSummaryResponses(response);
     }
 
     @DisplayName("비회원이 모임목록을 조회한다")
@@ -113,10 +113,10 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     void findGroupsByNonMember() {
         ValidatableResponse response = 모임목록을_조회한다();
 
-        checkGroupSimpleResponses(response);
+        checkGroupSummaryResponses(response);
     }
 
-    void checkGroupSimpleResponses(ValidatableResponse response) {
+    void checkGroupSummaryResponses(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
 
         List<GroupFixture> groups = groupIds.entrySet()

@@ -30,9 +30,9 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -93,9 +93,9 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupDetailResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
 
-        GroupDetailResponse actual = groupService.findById(savedGroup.getId());
+        GroupResponse actual = groupService.findById(savedGroup.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -112,12 +112,12 @@ class GroupServiceTest {
     @Test
     void findAll() {
         int count = 3;
-        List<GroupSimpleResponse> expected = IntStream.rangeClosed(0, count)
+        List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> saveGroup())
-                .map(group -> GroupResponseAssembler.groupSimpleResponse(group, savedMember))
+                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, savedMember))
                 .collect(Collectors.toList());
 
-        List<GroupSimpleResponse> actual = groupService.findAll();
+        List<GroupSummaryResponse> actual = groupService.findAll();
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expected);

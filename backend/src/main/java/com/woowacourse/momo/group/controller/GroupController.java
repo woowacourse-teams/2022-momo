@@ -20,9 +20,9 @@ import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
@@ -41,12 +41,12 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupDetailResponse> findById(@PathVariable Long groupId) {
+    public ResponseEntity<GroupResponse> findById(@PathVariable Long groupId) {
         return ResponseEntity.ok(groupService.findById(groupId));
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupSimpleResponse>> findAll() {
+    public ResponseEntity<List<GroupSummaryResponse>> findAll() {
         return ResponseEntity.ok(groupService.findAll());
     }
 

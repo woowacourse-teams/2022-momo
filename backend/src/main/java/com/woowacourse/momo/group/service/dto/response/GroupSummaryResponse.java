@@ -11,7 +11,7 @@ import com.woowacourse.momo.member.dto.response.MemberResponse;
 
 @Getter
 @AllArgsConstructor
-public class GroupSimpleResponse {
+public class GroupSummaryResponse {
 
     private Long id;
     private String name;
