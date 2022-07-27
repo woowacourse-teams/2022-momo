@@ -9,24 +9,31 @@ import * as S from './index.styled';
 interface CalendarProps {
   year: number;
   month: number;
+  goToPrevMonth: () => void;
+  goToNextMonth: () => void;
 }
 
 const days = ['일', '월', '화', '수', '목', '금', '토'];
 
-function Calendar({ year, month }: CalendarProps) {
+function Calendar({
+  year,
+  month,
+  goToPrevMonth,
+  goToNextMonth,
+}: CalendarProps) {
   const { dates, prevDates, nextDates } = useCalendar(year, month);
   const theme = useTheme();
 
   return (
     <S.Container>
       <S.Navigator>
-        <S.Arrow>
+        <S.Arrow onClick={goToPrevMonth}>
           <LeftArrow width={30} color={theme.colors.yellow001} />
         </S.Arrow>
         <div>
           {year}년 {month}월
         </div>
-        <S.Arrow>
+        <S.Arrow onClick={goToNextMonth}>
           <RightArrow width={30} color={theme.colors.yellow001} />
         </S.Arrow>
       </S.Navigator>
