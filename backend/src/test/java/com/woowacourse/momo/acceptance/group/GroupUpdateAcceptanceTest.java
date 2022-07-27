@@ -33,7 +33,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = HOST.로_로그인하다();
+        hostAccessToken = HOST.로_로그인한다();
         groupId = GROUP.을_생성한다(hostAccessToken);
     }
 
@@ -76,7 +76,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     @DisplayName("주최자가 아닌 회원이 모임을 수정한다")
     @Test
     void updateGroupByAnotherMember() {
-        String anotherAccessToken = DUDU.로_로그인하다();
+        String anotherAccessToken = DUDU.로_로그인한다();
         모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
     }
 

@@ -15,16 +15,16 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("회원가입을 하다")
     @Test
     void signUp() {
-        AuthRestHandler.회원가입을_하다(MEMBER_FIXTURE)
+        AuthRestHandler.회원가입을_한다(MEMBER_FIXTURE)
                 .statusCode(HttpStatus.CREATED.value());
     }
 
     @DisplayName("로그인을 하다")
     @Test
     void login() {
-        AuthRestHandler.회원가입을_하다(MEMBER_FIXTURE);
+        AuthRestHandler.회원가입을_한다(MEMBER_FIXTURE);
 
-        AuthRestHandler.로그인을_하다(MEMBER_FIXTURE)
+        AuthRestHandler.로그인을_한다(MEMBER_FIXTURE)
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }

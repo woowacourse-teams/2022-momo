@@ -19,7 +19,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        accessToken = MEMBER.로_로그인하다();
+        accessToken = MEMBER.로_로그인한다();
     }
 
     @DisplayName("개인정보를 조회하다")
@@ -39,7 +39,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         MemberRestHandler.비밀번호를_수정한다(accessToken, expected)
                 .statusCode(HttpStatus.OK.value());
 
-        AuthRestHandler.로그인을_하다(MEMBER.getEmail(), expected)
+        AuthRestHandler.로그인을_한다(MEMBER.getEmail(), expected)
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -58,11 +58,11 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("회원탈퇴를 하다")
     @Test
     void delete() {
-        MemberRestHandler.회원탈퇴를_하다(accessToken)
+        MemberRestHandler.회원탈퇴를_한다(accessToken)
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
         // TODO: UNAUTHORIZED 상태코드여야 함.
-        AuthRestHandler.로그인을_하다(MEMBER.getEmail(), MEMBER.getPassword())
+        AuthRestHandler.로그인을_한다(MEMBER.getEmail(), MEMBER.getPassword())
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

@@ -38,7 +38,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = HOST.로_로그인하다();
+        hostAccessToken = HOST.로_로그인한다();
         groupIds = Stream.of(MOMO_STUDY, MOMO_TRAVEL, DUDU_STUDY)
                 .collect(Collectors.toMap(
                         group -> group,
@@ -97,7 +97,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않은 모임을 조회한다")
     @Test
     void findNonExistentGroup() {
-        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
+        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TOD: NOT_FOUND
     }
 
     @DisplayName("회원이 모임목록을 조회한다")

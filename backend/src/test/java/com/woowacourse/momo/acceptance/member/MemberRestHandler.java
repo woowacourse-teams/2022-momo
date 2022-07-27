@@ -25,7 +25,7 @@ public class MemberRestHandler extends RestHandler {
         return patchRequest(accessToken, request, BASE_URL + "/name");
     }
 
-    public static ValidatableResponse 회원탈퇴를_하다(String accessToken) {
+    public static ValidatableResponse 회원탈퇴를_한다(String accessToken) {
         return deleteRequest(accessToken, BASE_URL);
     }
 }

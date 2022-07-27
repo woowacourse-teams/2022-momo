@@ -23,7 +23,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = HOST.로_로그인하다();
+        hostAccessToken = HOST.로_로그인한다();
         groupId = GROUP.을_생성한다(hostAccessToken);
     }
 
@@ -37,7 +37,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     @DisplayName("주최자가 아닌 회원이 모임을 삭제한다")
     @Test
     void deleteGroupByAnotherMember() {
-        String anotherAccessToken = DUDU.로_로그인하다();
+        String anotherAccessToken = DUDU.로_로그인한다();
         모임을_삭제한다(anotherAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
         모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
     }

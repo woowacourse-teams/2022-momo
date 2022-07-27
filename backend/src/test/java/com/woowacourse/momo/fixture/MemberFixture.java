@@ -25,9 +25,9 @@ public enum MemberFixture {
         this.name = name;
     }
 
-    public String 로_로그인하다() {
-        AuthRestHandler.회원가입을_하다(this);
-        return AuthRestHandler.로그인을_하다(this)
+    public String 로_로그인한다() {
+        AuthRestHandler.회원가입을_한다(this);
+        return AuthRestHandler.로그인을_한다(this)
                 .statusCode(HttpStatus.OK.value())
                 .extract()
                 .as(LoginResponse.class)

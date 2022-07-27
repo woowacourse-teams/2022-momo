@@ -12,20 +12,20 @@ public class AuthRestHandler extends RestHandler {
 
     private static final String BASE_URL = "/api/auth";
 
-    public static ValidatableResponse 회원가입을_하다(String email, String password, String name) {
+    public static ValidatableResponse 회원가입을_한다(String email, String password, String name) {
         SignUpRequest request = new SignUpRequest(email, password, name);
         return postRequest(request, BASE_URL + "/signup");
     }
 
-    public static ValidatableResponse 회원가입을_하다(MemberFixture memberFixture) {
-        return 회원가입을_하다(memberFixture.getEmail(), memberFixture.getPassword(), memberFixture.getName());
+    public static ValidatableResponse 회원가입을_한다(MemberFixture memberFixture) {
+        return 회원가입을_한다(memberFixture.getEmail(), memberFixture.getPassword(), memberFixture.getName());
     }
-    public static ValidatableResponse 로그인을_하다(String email, String password) {
+    public static ValidatableResponse 로그인을_한다(String email, String password) {
         LoginRequest request = new LoginRequest(email, password);
         return postRequest(request, BASE_URL + "/login");
     }
 
-    public static ValidatableResponse 로그인을_하다(MemberFixture memberFixture) {
-        return 로그인을_하다(memberFixture.getEmail(), memberFixture.getPassword());
+    public static ValidatableResponse 로그인을_한다(MemberFixture memberFixture) {
+        return 로그인을_한다(memberFixture.getEmail(), memberFixture.getPassword());
     }
 }

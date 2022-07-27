@@ -23,14 +23,14 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = HOST.로_로그인하다();
+        hostAccessToken = HOST.로_로그인한다();
         groupId = GROUP.을_생성한다(hostAccessToken);
     }
 
     @DisplayName("회원이 모임에 참여한다")
     @Test
     void participateByMember() {
-        String accessToken = DUDU.로_로그인하다();
+        String accessToken = DUDU.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
         참여목록을_조회한다(groupId);
@@ -45,7 +45,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @DisplayName("참여자가 자신이 참여한 모임에 재참여한다")
     @Test
     void participateByParticipants() {
-        String accessToken = DUDU.로_로그인하다();
+        String accessToken = DUDU.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
     }
