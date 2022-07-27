@@ -66,6 +66,7 @@ const Date = styled(DayColor)`
   height: 2rem;
 
   border-radius: 50%;
+  padding: 0.2rem;
 
   cursor: pointer;
 
