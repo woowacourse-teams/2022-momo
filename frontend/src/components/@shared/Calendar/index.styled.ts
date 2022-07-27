@@ -1,11 +1,20 @@
 import styled from '@emotion/styled';
 
+type Size = 'medium' | 'large';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  transform: scale(
+    ${({ size }: { size: Size }) => (size === 'medium' ? 0.5 : 1)}
+  );
 
-  width: 30rem;
+  width: 25rem;
+  height: 25rem;
+
+  font-size: ${({ size }: { size: Size }) =>
+    size === 'medium' ? '1.8rem' : '1.1rem'};
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -18,7 +27,8 @@ const Navigator = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  font-size: 1.3rem;
+  font-size: ${({ size }: { size: Size }) =>
+    size === 'medium' ? '2rem' : '1.3rem'};
 `;
 
 const Arrow = styled.div`

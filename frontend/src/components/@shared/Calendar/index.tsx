@@ -11,6 +11,7 @@ interface CalendarProps {
   month: number;
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
+  size: 'medium' | 'large';
 }
 
 const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -20,13 +21,14 @@ function Calendar({
   month,
   goToPrevMonth,
   goToNextMonth,
+  size,
 }: CalendarProps) {
   const { dates, prevDates, nextDates } = useCalendar(year, month);
   const theme = useTheme();
 
   return (
-    <S.Container>
-      <S.Navigator>
+    <S.Container size={size}>
+      <S.Navigator size={size}>
         <S.Arrow onClick={goToPrevMonth}>
           <LeftArrow width={30} color={theme.colors.yellow001} />
         </S.Arrow>
@@ -44,15 +46,15 @@ function Calendar({
         ))}
         {/* 지난달 */}
         {prevDates.map(date => (
-          <S.PrevNextDate key={date}>{date}</S.PrevNextDate>
+          <S.PrevNextDate key={`${month - 1}-${date}`}>{date}</S.PrevNextDate>
         ))}
         {/* 이번달 */}
         {dates.map(date => (
-          <S.Date key={date}>{date}</S.Date>
+          <S.Date key={`${month}-${date}`}>{date}</S.Date>
         ))}
         {/* 다음달 */}
         {nextDates.map(date => (
-          <S.PrevNextDate key={date}>{date}</S.PrevNextDate>
+          <S.PrevNextDate key={`${month + 1}-${date}`}>{date}</S.PrevNextDate>
         ))}
       </S.Content>
     </S.Container>
