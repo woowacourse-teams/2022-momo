@@ -1,7 +1,6 @@
 package com.woowacourse.momo.fixture;
 
 import java.time.LocalTime;
-import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +18,7 @@ public enum TimeFixture {
     private LocalTime instance;
 
     public LocalTime getInstance() {
-        if (Objects.isNull(instance)) {
+        if (instance == null) {
             instance = LocalTime.of(hour, minute);
         }
         return instance;

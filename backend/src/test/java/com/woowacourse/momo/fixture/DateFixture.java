@@ -1,7 +1,6 @@
 package com.woowacourse.momo.fixture;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ public enum DateFixture {
     private LocalDate instance;
 
     public LocalDate getInstance() {
-        if (Objects.isNull(instance)) {
+        if (instance == null) {
             instance = LocalDate.of(year, month, day);
         }
         return instance;

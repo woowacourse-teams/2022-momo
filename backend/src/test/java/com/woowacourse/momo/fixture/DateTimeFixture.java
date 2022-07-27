@@ -4,7 +4,6 @@ import static com.woowacourse.momo.fixture.DateFixture._6월_30일;
 import static com.woowacourse.momo.fixture.TimeFixture._23시_59분;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ public enum DateTimeFixture {
     private LocalDateTime instance;
 
     public LocalDateTime getInstance() {
-        if (Objects.isNull(instance)) {
+        if (instance == null) {
             instance = LocalDateTime.of(date.getInstance(), time.getInstance());
         }
         return instance;
