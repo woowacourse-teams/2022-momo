@@ -14,7 +14,7 @@ function RecommendGroups() {
 
   if (isLoading) return <h2>잠시만 기다려주세요... 🔎</h2>;
 
-  if (isError) return <h2>에러가 발생했습니다!!!! 👿</h2>;
+  if (isError) throw new Error();
 
   return (
     <>

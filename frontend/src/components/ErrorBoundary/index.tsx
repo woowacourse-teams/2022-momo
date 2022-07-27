@@ -27,7 +27,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
       return <S.Container>에러가 발생하였습니다</S.Container>;
     }
 
-    return this.props.children;
+    return <>{this.props.children}</>;
   }
 }
 

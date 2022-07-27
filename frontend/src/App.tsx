@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import ScrollToTop from 'components/@shared/ScrollToTop';
+import ErrorBoundary from 'components/ErrorBoundary';
 import LoginModal from 'components/Login';
 import SignupModal from 'components/Signup';
 import { BROWSER_PATH } from 'constants/path';
@@ -25,13 +26,15 @@ function App() {
             <PageLayout>
               <SignupModal />
               <LoginModal />
-              <Routes>
-                <Route path={BROWSER_PATH.BASE} element={<Main />} />
-                <Route path={BROWSER_PATH.DETAIL}>
-                  <Route path=":id" element={<Detail />} />
-                </Route>
-                <Route path={BROWSER_PATH.CREATE} element={<Create />} />
-              </Routes>
+              <ErrorBoundary>
+                <Routes>
+                  <Route path={BROWSER_PATH.BASE} element={<Main />} />
+                  <Route path={BROWSER_PATH.DETAIL}>
+                    <Route path=":id" element={<Detail />} />
+                  </Route>
+                  <Route path={BROWSER_PATH.CREATE} element={<Create />} />
+                </Routes>
+              </ErrorBoundary>
             </PageLayout>
           </Router>
         </QueryClientProvider>

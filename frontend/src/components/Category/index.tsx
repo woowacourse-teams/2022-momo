@@ -7,7 +7,7 @@ function Category() {
 
   if (isLoading) return <h2>카테고리 로딩 중...</h2>;
 
-  if (isError) return <h2>에러 발생</h2>;
+  if (isError) throw new Error();
 
   return (
     <S.Box>
