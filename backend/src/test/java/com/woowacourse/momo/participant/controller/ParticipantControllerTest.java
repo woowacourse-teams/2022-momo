@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.group.fixture.GroupFixture._10시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._12시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,9 +42,9 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 public class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
+            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private MockMvc mockMvc;
