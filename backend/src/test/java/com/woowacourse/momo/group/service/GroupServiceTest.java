@@ -3,12 +3,12 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.group.fixture.GroupFixture._10시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._12시_00분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._6월_30일_23시_59분;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일;
-import static com.woowacourse.momo.group.fixture.GroupFixture._7월_1일부터_2일까지;
-import static com.woowacourse.momo.group.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,9 +30,9 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -40,9 +40,9 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일, _7월_1일);
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일, _10시_00분, _12시_00분));
+            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private GroupService groupService;
@@ -62,7 +62,8 @@ class GroupServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
-                _7월_1일부터_2일까지, _6월_30일_23시_59분, List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
+                _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
+                "", ""));
     }
 
     @DisplayName("모임을 생성한다")
@@ -92,9 +93,9 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupDetailResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
 
-        GroupDetailResponse actual = groupService.findById(savedGroup.getId());
+        GroupResponse actual = groupService.findById(savedGroup.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -111,12 +112,12 @@ class GroupServiceTest {
     @Test
     void findAll() {
         int count = 3;
-        List<GroupSimpleResponse> expected = IntStream.rangeClosed(0, count)
+        List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> saveGroup())
-                .map(group -> GroupResponseAssembler.groupSimpleResponse(group, savedMember))
+                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, savedMember))
                 .collect(Collectors.toList());
 
-        List<GroupSimpleResponse> actual = groupService.findAll();
+        List<GroupSummaryResponse> actual = groupService.findAll();
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expected);

@@ -15,10 +15,10 @@ import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupDetailResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.dto.response.GroupSimpleResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 
@@ -39,18 +39,18 @@ public class GroupService {
         return GroupResponseAssembler.groupIdResponse(group);
     }
 
-    public GroupDetailResponse findById(Long id) {
+    public GroupResponse findById(Long id) {
         Group group = groupFindService.findGroup(id);
         Member host = memberFindService.findMember(group.getHostId());
         return GroupResponseAssembler.groupResponse(group, host);
     }
 
-    public List<GroupSimpleResponse> findAll() {
+    public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
         return groups.stream()
                 .map(group -> {
                     Member host = memberFindService.findMember(group.getHostId());
-                    return GroupResponseAssembler.groupSimpleResponse(group, host);
+                    return GroupResponseAssembler.groupSummaryResponse(group, host);
                 })
                 .collect(Collectors.toList());
     }
