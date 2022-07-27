@@ -6,6 +6,21 @@ import useCalendar from 'hooks/useCalendar';
 
 import * as S from './index.styled';
 
+const days = ['일', '월', '화', '수', '목', '금', '토'];
+
+const dayClassGenerator = (day: string | number) => {
+  switch (day) {
+    case '토':
+    case 6:
+      return 'sat';
+    case '일':
+    case 0:
+      return 'sun';
+    default:
+      return '';
+  }
+};
+
 interface CalendarProps {
   year: number;
   month: number;
@@ -14,8 +29,6 @@ interface CalendarProps {
   today: Date;
   size: 'medium' | 'large';
 }
-
-const days = ['일', '월', '화', '수', '목', '금', '토'];
 
 function Calendar({
   year,
@@ -49,7 +62,9 @@ function Calendar({
       <S.Content>
         {/* 요일 */}
         {days.map(day => (
-          <S.Day key={day}>{day}</S.Day>
+          <S.DayColor className={dayClassGenerator(day)} key={day}>
+            {day}
+          </S.DayColor>
         ))}
         {/* 지난달 */}
         {prevDates.map(date => (
@@ -58,7 +73,11 @@ function Calendar({
         {/* 이번달 */}
         {dates.map(date => (
           <S.Date
-            className={isToday(date) ? 'today' : ''}
+            className={
+              isToday(date)
+                ? 'today'
+                : dayClassGenerator(new Date(year, month - 1, date).getDay())
+            }
             key={`${month}-${date}`}
           >
             {date}

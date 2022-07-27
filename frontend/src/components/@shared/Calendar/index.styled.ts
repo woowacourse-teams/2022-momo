@@ -43,13 +43,21 @@ const Content = styled.div`
   gap: 1rem;
 `;
 
-const Day = styled.div``;
+const DayColor = styled.div`
+  &.sat {
+    color: ${({ theme: { colors } }) => colors.blue001};
+  }
+
+  &.sun {
+    color: ${({ theme: { colors } }) => colors.red001};
+  }
+`;
 
 const PrevNextDate = styled.div`
   color: ${({ theme: { colors } }) => colors.gray001};
 `;
 
-const Date = styled.div`
+const Date = styled(DayColor)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,4 +79,4 @@ const Date = styled.div`
   }
 `;
 
-export { Container, Navigator, Arrow, Content, Day, PrevNextDate, Date };
+export { Container, Navigator, Arrow, Content, DayColor, PrevNextDate, Date };
