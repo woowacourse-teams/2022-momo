@@ -42,7 +42,7 @@ public enum GroupFixture {
                  DateTimeFixture deadline, String location, String description) {
         this.name = name;
         this.categoryId = category.getId();
-        this.duration = duration.newInstance();
+        this.duration = duration.getInstance();
         this.schedules = schedules.stream()
                 .map(ScheduleFixture::newInstance)
                 .collect(Collectors.toList());

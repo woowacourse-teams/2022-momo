@@ -62,7 +62,7 @@ class GroupServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
-                _7월_1일부터_2일까지.newInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
+                _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
                 "", ""));
     }
 

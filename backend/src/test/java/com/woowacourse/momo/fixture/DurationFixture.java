@@ -18,7 +18,12 @@ public enum DurationFixture {
     private final DateFixture start;
     private final DateFixture end;
 
-    public Duration newInstance() {
-        return new Duration(start.getInstance(), end.getInstance());
+    private Duration instance;
+
+    public Duration getInstance() {
+        if (instance == null) {
+            instance = new Duration(start.getInstance(), end.getInstance());
+        }
+        return instance;
     }
 }

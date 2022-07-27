@@ -154,7 +154,7 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(List<Schedule> schedules) {
-        return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지.newInstance(), _6월_30일_23시_59분.getInstance(),
+        return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(),
                 schedules, "", "");
     }
 
