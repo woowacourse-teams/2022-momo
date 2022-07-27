@@ -89,7 +89,7 @@ class ParticipantServiceTest {
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), host.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 참여한 모임입니다.");
+                .hasMessage("주최자는 모임에 참여할 수 없습니다.");
     }
 
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
