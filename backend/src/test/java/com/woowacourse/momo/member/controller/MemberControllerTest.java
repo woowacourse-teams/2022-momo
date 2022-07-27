@@ -30,7 +30,6 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
 
-
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Transactional

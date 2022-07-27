@@ -39,7 +39,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @DisplayName("주최자가 자신이 주최한 모임에 참여한다")
     @Test
     void participateByHost() {
-        모임에_참여한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value()); // TODO: FORBIDDEN
+        모임에_참여한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @DisplayName("참여자가 자신이 참여한 모임에 재참여한다")
@@ -47,7 +47,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     void participateByParticipants() {
         String accessToken = DUDU.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
-        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @DisplayName("존재하지 않은 모임에 참여한다")
@@ -60,5 +60,14 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @Test
     void participateByNonMember() {
         모임에_참여한다(groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+    }
+
+    @DisplayName("모임의 참여자 목록을 조회한다")
+    @Test
+    void findParticipants() {
+        String accessToken = DUDU.로_로그인한다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+
+        참여목록을_조회한다(groupId).statusCode(HttpStatus.OK.value());
     }
 }

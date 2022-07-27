@@ -8,6 +8,7 @@ import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일
 import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -39,15 +40,17 @@ class ParticipantServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member savedMember;
+    private Member host;
+    private Member participant;
 
     @BeforeEach
     void setUp() {
-        savedMember = memberRepository.save(new Member("회원", "password", "momo"));
+        host = memberRepository.save(new Member("주최자", "password", "momo"));
+        participant = memberRepository.save(new Member("회원", "password", "momo2"));
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
+        return groupRepository.save(new Group("모모의 스터디", host.getId(), Category.STUDY,
                 _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
     }
 
@@ -56,18 +59,17 @@ class ParticipantServiceTest {
     void participate() {
         Group savedGroup = saveGroup();
 
-        participantService.participate(savedGroup.getId(), savedMember.getId());
+        participantService.participate(savedGroup.getId(), participant.getId());
 
         List<MemberResponse> participants = participantService.findParticipants(savedGroup.getId());
 
-        assertThat(participants).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(List.of(savedMember));
+        assertThat(participants).hasSize(1);
     }
 
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
     @Test
     void participateNotExistGroup() {
-        assertThatThrownBy(() -> participantService.participate(0L, savedMember.getId()))
+        assertThatThrownBy(() -> participantService.participate(0L, participant.getId()))
                 .isInstanceOf(NotFoundGroupException.class);
     }
 
@@ -80,16 +82,39 @@ class ParticipantServiceTest {
                 .isInstanceOf(NotFoundMemberException.class);
     }
 
+    @DisplayName("모임의 주최자일 경우 모임에 참여할 수 없다")
+    @Test
+    void participateHost() {
+        Group savedGroup = saveGroup();
+
+        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), host.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("주최자는 모임에 참여할 수 없습니다.");
+    }
+
+    @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
+    @Test
+    void participateParticipant() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant.getId());
+
+        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 참여한 모임입니다.");
+    }
+
     @DisplayName("모임의 참여자 목록을 조회한다")
     @Test
     void findParticipants() {
         Group savedGroup = saveGroup();
-        participantService.participate(savedGroup.getId(), savedMember.getId());
+        participantService.participate(savedGroup.getId(), participant.getId());
 
-        List<MemberResponse> actual = participantService.findParticipants(savedGroup.getId());
+        List<String> actual = participantService.findParticipants(savedGroup.getId())
+                .stream()
+                .map(MemberResponse::getName)
+                .collect(Collectors.toList());
 
-        assertThat(actual).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(List.of(savedMember));
+        assertThat(actual).contains(participant.getName());
     }
 
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")

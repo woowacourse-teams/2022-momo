@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,9 +27,9 @@ import com.woowacourse.momo.auth.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.AuthService;
 
-@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@Transactional
 @SpringBootTest
 class AuthControllerTest {
 

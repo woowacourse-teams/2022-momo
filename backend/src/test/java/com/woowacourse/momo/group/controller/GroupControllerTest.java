@@ -42,7 +42,6 @@ import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 
-
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Transactional
