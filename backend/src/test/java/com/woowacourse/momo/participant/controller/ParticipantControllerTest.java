@@ -219,7 +219,7 @@ public class ParticipantControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, DURATION_REQUEST,
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();

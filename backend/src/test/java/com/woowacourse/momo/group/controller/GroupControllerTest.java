@@ -69,8 +69,8 @@ class GroupControllerTest {
     void groupCreateTest() throws Exception {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
@@ -152,8 +152,8 @@ class GroupControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

@@ -49,6 +49,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Column(nullable = false)
+    private int maxOfParticipants;
+
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Participant> participants = new ArrayList<>();
@@ -72,11 +75,12 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Long hostId, Category category, Duration duration, LocalDateTime deadline,
-                 List<Schedule> schedules, String location, String description) {
+    public Group(String name, Long hostId, Category category, int maxOfParticipants, Duration duration,
+                 LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.hostId = hostId;
         this.category = category;
+        this.maxOfParticipants = maxOfParticipants;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -85,10 +89,11 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(String name, Category category, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, int maxOfParticipants, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.category = category;
+        this.maxOfParticipants = maxOfParticipants;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -125,6 +130,7 @@ public class Group {
         private String name;
         private Long hostId;
         private Category category;
+        private int maxOfParticipants;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -151,6 +157,11 @@ public class Group {
 
         public Builder categoryId(long categoryId) {
             this.category = Category.from(categoryId);
+            return this;
+        }
+
+        public Builder maxOfParticipants(int maxOfParticipants) {
+            this.maxOfParticipants = maxOfParticipants;
             return this;
         }
 
@@ -181,7 +192,7 @@ public class Group {
 
         public Group build() {
             validateNonNull();
-            return new Group(name, hostId, category, duration, deadline, schedules, location, description);
+            return new Group(name, hostId, category, maxOfParticipants, duration, deadline, schedules, location, description);
         }
 
         private void validateNonNull() {

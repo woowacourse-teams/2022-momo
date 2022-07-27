@@ -62,7 +62,7 @@ public class GroupService {
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
-        group.update(request.getName(), Category.from(request.getCategoryId()),
+        group.update(request.getName(), Category.from(request.getCategoryId()), request.getMaxOfParticipants(),
                 GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }
