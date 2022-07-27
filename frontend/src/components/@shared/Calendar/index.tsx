@@ -11,6 +11,7 @@ interface CalendarProps {
   month: number;
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
+  today: Date;
   size: 'medium' | 'large';
 }
 
@@ -21,10 +22,16 @@ function Calendar({
   month,
   goToPrevMonth,
   goToNextMonth,
+  today,
   size,
 }: CalendarProps) {
   const { dates, prevDates, nextDates } = useCalendar(year, month);
   const theme = useTheme();
+
+  const isToday = (date: number) =>
+    today.getFullYear() === year &&
+    today.getMonth() === month - 1 &&
+    today.getDate() === date;
 
   return (
     <S.Container size={size}>
@@ -50,7 +57,12 @@ function Calendar({
         ))}
         {/* 이번달 */}
         {dates.map(date => (
-          <S.Date key={`${month}-${date}`}>{date}</S.Date>
+          <S.Date
+            className={isToday(date) ? 'today' : ''}
+            key={`${month}-${date}`}
+          >
+            {date}
+          </S.Date>
         ))}
         {/* 다음달 */}
         {nextDates.map(date => (

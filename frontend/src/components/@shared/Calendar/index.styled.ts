@@ -64,6 +64,11 @@ const Date = styled.div`
   &:hover {
     background: ${({ theme: { colors } }) => colors.yellow002};
   }
+
+  &.today {
+    background: ${({ theme: { colors } }) => colors.red002};
+    color: ${({ theme: { colors } }) => colors.white001};
+  }
 `;
 
 export { Container, Navigator, Arrow, Content, Day, PrevNextDate, Date };
