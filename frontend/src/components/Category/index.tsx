@@ -3,9 +3,7 @@ import useCategory from 'hooks/useCategory';
 import * as S from './index.styled';
 
 function Category() {
-  const { categories, isLoading, isError } = useCategory();
-
-  if (isLoading) return <h2>카테고리 로딩 중...</h2>;
+  const { categories, isError } = useCategory();
 
   if (isError) throw new Error();
 

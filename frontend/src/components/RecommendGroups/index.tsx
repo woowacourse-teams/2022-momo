@@ -7,12 +7,9 @@ import { QUERY_KEY } from 'constants/key';
 import * as S from './index.styled';
 
 function RecommendGroups() {
-  const { data, isLoading, isError } = useQuery(
-    QUERY_KEY.GROUP_SUMMARIES,
-    getGroups,
-  );
-
-  if (isLoading) return <h2>잠시만 기다려주세요... 🔎</h2>;
+  const { data, isError } = useQuery(QUERY_KEY.GROUP_SUMMARIES, getGroups, {
+    suspense: true,
+  });
 
   if (isError) throw new Error();
 
