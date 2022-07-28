@@ -19,6 +19,7 @@ public class GroupRequestAssembler {
                 .name(request.getName())
                 .hostId(host.getId())
                 .categoryId(request.getCategoryId())
+                .maxOfParticipants(request.getMaxOfParticipants())
                 .duration(duration(request.getDuration()))
                 .deadline(request.getDeadline())
                 .schedules(schedules(request.getSchedules()))

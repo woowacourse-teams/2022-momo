@@ -12,8 +12,8 @@ import com.woowacourse.momo.auth.dto.response.LoginResponse;
 public enum MemberFixture {
     
     MOMO("momo@woowa.com", "qwe123!@#", "momo"),
-    DUDU("dudu@woowa.com", "qwe123!@#", "dudu")
-    ;
+    DUDU("dudu@woowa.com", "qwe123!@#", "dudu"),
+    GUGU("gugu@woowa.com", "qwe123!@#", "gugu");
 
     private final String email;
     private final String password;

@@ -28,6 +28,9 @@ public class ParticipantService {
         List<Member> participants = group.getParticipants();
         Member member = memberFindService.findMember(memberId);
 
+        if (group.getMaxOfParticipants() <= participants.size()) {
+            throw new IllegalArgumentException("정원이 가득 찼습니다.");
+        }
         if (group.isSameHost(member)) {
             throw new IllegalArgumentException("주최자는 모임에 참여할 수 없습니다.");
         }

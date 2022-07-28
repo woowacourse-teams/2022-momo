@@ -41,17 +41,24 @@ class ParticipantServiceTest {
     private MemberRepository memberRepository;
 
     private Member host;
-    private Member participant;
+    private Member participant1;
+    private Member participant2;
 
     @BeforeEach
     void setUp() {
         host = memberRepository.save(new Member("주최자", "password", "momo"));
-        participant = memberRepository.save(new Member("회원", "password", "momo2"));
+        participant1 = memberRepository.save(new Member("회원1", "password", "momo2"));
+        participant2 = memberRepository.save(new Member("회원2", "password", "momo2"));
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", host.getId(), Category.STUDY, 10,
-                _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()), "", ""));
+        return saveGroupWithSetMaxOfParticipants(10);
+    }
+
+    private Group saveGroupWithSetMaxOfParticipants(int maxOfParticipants) {
+        return groupRepository.save(new Group("모모의 스터디", host.getId(), Category.STUDY, maxOfParticipants,
+                _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
+                "", ""));
     }
 
     @DisplayName("모임에 참여한다")
@@ -59,7 +66,7 @@ class ParticipantServiceTest {
     void participate() {
         Group savedGroup = saveGroup();
 
-        participantService.participate(savedGroup.getId(), participant.getId());
+        participantService.participate(savedGroup.getId(), participant1.getId());
 
         List<MemberResponse> participants = participantService.findParticipants(savedGroup.getId());
 
@@ -69,7 +76,7 @@ class ParticipantServiceTest {
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
     @Test
     void participateNotExistGroup() {
-        assertThatThrownBy(() -> participantService.participate(0L, participant.getId()))
+        assertThatThrownBy(() -> participantService.participate(0L, participant1.getId()))
                 .isInstanceOf(NotFoundGroupException.class);
     }
 
@@ -96,25 +103,37 @@ class ParticipantServiceTest {
     @Test
     void participateParticipant() {
         Group savedGroup = saveGroup();
-        participantService.participate(savedGroup.getId(), participant.getId());
+        participantService.participate(savedGroup.getId(), participant1.getId());
 
-        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant.getId()))
+        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant1.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 참여한 모임입니다.");
+    }
+
+    @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
+    @Test
+    void participateFullGroup() {
+        int maxOfParticipants = 1;
+        Group savedGroup = saveGroupWithSetMaxOfParticipants(maxOfParticipants);
+        participantService.participate(savedGroup.getId(), participant1.getId());
+
+        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("정원이 가득 찼습니다.");
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
     @Test
     void findParticipants() {
         Group savedGroup = saveGroup();
-        participantService.participate(savedGroup.getId(), participant.getId());
+        participantService.participate(savedGroup.getId(), participant1.getId());
 
         List<String> actual = participantService.findParticipants(savedGroup.getId())
                 .stream()
                 .map(MemberResponse::getName)
                 .collect(Collectors.toList());
 
-        assertThat(actual).contains(participant.getName());
+        assertThat(actual).contains(participant1.getName());
     }
 
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")

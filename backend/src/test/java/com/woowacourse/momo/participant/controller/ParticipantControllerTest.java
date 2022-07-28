@@ -42,7 +42,8 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 public class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(),
+            _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
@@ -71,7 +72,7 @@ public class ParticipantControllerTest {
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
                         .header("Authorization", "bearer " + accessToken)
-        )
+                )
                 .andExpect(status().isOk())
                 .andDo(
                         document("participate",
@@ -169,6 +170,29 @@ public class ParticipantControllerTest {
                 );
     }
 
+    @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
+    @Test
+    void participateFullGroup() throws Exception {
+        Long hostId = saveMember("host@woowacourse.com");
+        Long groupId = saveGroupWithSetMaxOfParticipants(hostId, 1);
+        Long participantId = saveMember("participant@woowacourse.com");
+        String accessToken = accessToken("participant@woowacourse.com");
+        participateMember(groupId, participantId);
+
+        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+                        .header("Authorization", "bearer " + accessToken)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("정원이 가득 찼습니다.")))
+                .andDo(
+                        document("participatefullgroup",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()
+                                )
+                        )
+                );
+    }
+
     @DisplayName("모임의 참여자 목록을 조회한다")
     @Test
     void findParticipants() throws Exception {
@@ -219,7 +243,11 @@ public class ParticipantControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10, DURATION_REQUEST,
+        return saveGroupWithSetMaxOfParticipants(hostId, 10);
+    }
+
+    Long saveGroupWithSetMaxOfParticipants(Long hostId, int maxOfParticipants) {
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, maxOfParticipants, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();

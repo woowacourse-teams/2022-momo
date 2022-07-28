@@ -2,7 +2,8 @@ package com.woowacourse.momo.acceptance.participant;
 
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.참여목록을_조회한다;
-import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
+import static com.woowacourse.momo.fixture.MemberFixture.GUGU;
+import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +16,8 @@ import com.woowacourse.momo.fixture.MemberFixture;
 
 class ParticipantAcceptanceTest extends AcceptanceTest {
 
-    private static final MemberFixture HOST = MemberFixture.MOMO;
-    private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;
+    private static final MemberFixture HOST = MemberFixture.DUDU;
+    private static final GroupFixture GROUP = GroupFixture.DUDU_COFFEE_TIME;
 
     private String hostAccessToken;
     private Long groupId;
@@ -30,7 +31,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @DisplayName("회원이 모임에 참여한다")
     @Test
     void participateByMember() {
-        String accessToken = DUDU.로_로그인한다();
+        String accessToken = MOMO.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
         참여목록을_조회한다(groupId);
@@ -45,7 +46,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @DisplayName("참여자가 자신이 참여한 모임에 재참여한다")
     @Test
     void participateByParticipants() {
-        String accessToken = DUDU.로_로그인한다();
+        String accessToken = MOMO.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
     }
@@ -62,10 +63,20 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
     }
 
+    @DisplayName("정원이 가득 찬 모임에 참여한다")
+    @Test
+    void participateFullGroup() {
+        String accessToken = MOMO.로_로그인한다();
+        모임에_참여한다(accessToken, groupId);
+
+        accessToken = GUGU.로_로그인한다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
     @DisplayName("모임의 참여자 목록을 조회한다")
     @Test
     void findParticipants() {
-        String accessToken = DUDU.로_로그인한다();
+        String accessToken = MOMO.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
         참여목록을_조회한다(groupId).statusCode(HttpStatus.OK.value());
