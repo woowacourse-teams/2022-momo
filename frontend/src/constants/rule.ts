@@ -3,6 +3,10 @@ const GROUP_RULE = {
     MIN_LENGTH: 1,
     MAX_LENGTH: 50,
   },
+  CAPACITY: {
+    MIN: 1,
+    MAX: 99,
+  },
   LOCATION: {
     MAX_LENGTH: 50,
   },

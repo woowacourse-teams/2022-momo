@@ -11,6 +11,7 @@ import {
   Step5,
   Step6,
   Step7,
+  Step8,
 } from 'components/Create';
 import Navigator from 'components/Create/Navigator';
 import { BROWSER_PATH } from 'constants/path';
@@ -18,22 +19,24 @@ import useCreateState from 'hooks/useCreateState';
 import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
-import validator from './validate';
+import validateGroupData from './validate';
 
 const totalPage = [
   { number: 1, content: '이름 입력' },
   { number: 2, content: '카테고리 선택' },
-  { number: 3, content: '진행 날짜 선택' },
-  { number: 4, content: '날짜, 시간대 상세 입력' },
-  { number: 5, content: '모집 마감일자 입력' },
-  { number: 6, content: '장소 입력' },
-  { number: 7, content: '상세 설명 입력' },
+  { number: 3, content: '최대 인원 입력' },
+  { number: 4, content: '진행 날짜 선택' },
+  { number: 5, content: '날짜, 시간대 상세 입력' },
+  { number: 6, content: '모집 마감일자 입력' },
+  { number: 7, content: '장소 입력' },
+  { number: 8, content: '상세 설명 입력' },
 ];
 
 function Create() {
   const {
     useNameState,
     useSelectedCategoryState,
+    useCapacityState,
     useDateState,
     useDeadlineState,
     useLocationState,
@@ -41,8 +44,8 @@ function Create() {
     getGroupState,
   } = useCreateState();
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
   const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const navigate = useNavigate();
 
   const getPageRef = (page: number) => (element: HTMLDivElement | null) => {
     pageRefs.current[page] = element;
@@ -82,7 +85,7 @@ function Create() {
     const groupData = getGroupState();
 
     try {
-      validator(groupData);
+      validateGroupData(groupData);
     } catch (error) {
       if (!(error instanceof PageError)) return;
 
@@ -92,9 +95,8 @@ function Create() {
     }
 
     requestCreateGroup(groupData)
-      .then(res => {
-        const id = 1;
-        navigate(`${BROWSER_PATH.DETAIL}/${id}`);
+      .then(groupId => {
+        navigate(`${BROWSER_PATH.DETAIL}/${groupId}`);
       })
       .catch(error => {
         alert(error.message);
@@ -115,22 +117,27 @@ function Create() {
           gotoAdjacentPage={gotoAdjacentPage}
         />
         <Step3
-          useDateState={useDateState}
+          useCapacityState={useCapacityState}
           ref={getPageRef(3)}
           pressEnterToNext={pressEnterToNext}
         />
-        <Step4 ref={getPageRef(4)} pressEnterToNext={pressEnterToNext} />
-        <Step5
-          useDeadlineState={useDeadlineState}
-          ref={getPageRef(5)}
+        <Step4
+          useDateState={useDateState}
+          ref={getPageRef(4)}
           pressEnterToNext={pressEnterToNext}
         />
+        <Step5 ref={getPageRef(5)} pressEnterToNext={pressEnterToNext} />
         <Step6
-          useLocationState={useLocationState}
+          useDeadlineState={useDeadlineState}
           ref={getPageRef(6)}
           pressEnterToNext={pressEnterToNext}
         />
-        <Step7 useDescriptionState={useDescriptionState} ref={getPageRef(7)} />
+        <Step7
+          useLocationState={useLocationState}
+          ref={getPageRef(7)}
+          pressEnterToNext={pressEnterToNext}
+        />
+        <Step8 useDescriptionState={useDescriptionState} ref={getPageRef(8)} />
       </S.ScrollContainer>
       <Navigator
         page={page}

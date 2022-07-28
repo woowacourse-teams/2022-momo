@@ -1,6 +1,7 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
+import { GROUP_RULE } from 'constants/rule';
 import {
   CreateGroupData,
   DetailData,
@@ -11,20 +12,22 @@ import {
 const requestCreateGroup = async ({
   name,
   selectedCategory,
+  capacity,
   startDate,
   endDate,
   deadline,
   location,
   description,
-}: CreateGroupData): Promise<DetailData['id']> => {
+}: CreateGroupData) => {
   const data = {
     name,
     categoryId: selectedCategory.id,
+    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
     duration: {
       start: startDate,
       end: endDate,
     },
-    // TODO: 달력 입력에 따라 스케쥴 시간 바꾸기
+    // TODO: 달력 입력에 따라 스케줄 시간 바꾸기
     schedules: [
       {
         date: startDate,

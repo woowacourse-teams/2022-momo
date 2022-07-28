@@ -1,65 +1,53 @@
-import { memo, LegacyRef, forwardRef } from 'react';
+import { forwardRef, LegacyRef, memo } from 'react';
 
-import { DurationDate } from 'types/data';
-import { getNewDateString } from 'utils/date';
+import { GROUP_RULE } from 'constants/rule';
+import { CreateGroupData } from 'types/data';
 
 import {
   Container,
-  ErrorColor,
   Heading,
+  Input,
+  Label,
   LabelContainer,
 } from '../@shared/styled';
-import * as S from './index.styled';
 
 interface Step3Props {
-  useDateState: () => DurationDate & {
-    setStartDate: (startDate: DurationDate['startDate']) => void;
-    setEndDate: (endDate: DurationDate['endDate']) => void;
+  useCapacityState: () => {
+    capacity: CreateGroupData['capacity'];
+    setCapacity: (capacity: CreateGroupData['capacity']) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step3(
-  { useDateState, pressEnterToNext }: Step3Props,
+  { useCapacityState, pressEnterToNext }: Step3Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { startDate, setStartDate, endDate, setEndDate } = useDateState();
-
-  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
-
-    if (!endDate) {
-      setEndDate(e.target.value);
-    }
-  };
-
-  const changeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(e.target.value);
+  const { capacity, setCapacity } = useCapacityState();
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCapacity(Number(e.target.value));
   };
 
   return (
     <Container ref={ref}>
       <Heading>
-        <span>언제부터 언제까지</span> 만날건가요? <ErrorColor>*</ErrorColor>
+        모임에 <span>최대 몇 명</span>까지 모일 수 있나요?
+        <p>미입력 시 {GROUP_RULE.CAPACITY.MAX}명으로 설정됩니다.</p>
       </Heading>
       <LabelContainer>
-        <p>기간</p>
-        <S.InputWrapper>
-          <S.Input
-            type="date"
-            value={startDate}
-            onChange={changeStartDate}
-            min={getNewDateString('day')}
-          />
-          ~
-          <S.Input
-            type="date"
-            value={endDate}
-            onChange={changeEndDate}
-            min={startDate || getNewDateString('day')}
-            onKeyPress={pressEnterToNext}
-          />
-        </S.InputWrapper>
+        <Label>
+          <p>최대 인원 수</p>
+        </Label>
+        <Input
+          type="number"
+          min={GROUP_RULE.CAPACITY.MIN}
+          max={GROUP_RULE.CAPACITY.MAX}
+          value={capacity || ''}
+          onChange={changeCapacity}
+          onKeyPress={pressEnterToNext}
+          placeholder="99"
+          autoFocus
+        />
       </LabelContainer>
     </Container>
   );

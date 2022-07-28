@@ -1,48 +1,53 @@
-import { memo, forwardRef, LegacyRef } from 'react';
+import { forwardRef, LegacyRef, memo } from 'react';
 
-import { GROUP_RULE } from 'constants/rule';
+import { convertRemainTime, getNewDateString } from 'utils/date';
 
-import { Container, Heading, Input, Label } from '../@shared/styled';
-import * as S from './index.styled';
+import {
+  Container,
+  ErrorColor,
+  Heading,
+  Input,
+  LabelContainer,
+  Label,
+} from '../@shared/styled';
 
 interface Step6Props {
-  useLocationState: () => {
-    location: string;
-    setLocation: (location: string) => void;
+  useDeadlineState: () => {
+    deadline: string;
+    setDeadline: (deadline: string) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step6(
-  { useLocationState, pressEnterToNext }: Step6Props,
+  { useDeadlineState, pressEnterToNext }: Step6Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { location, setLocation } = useLocationState();
-  const changeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
+  const { deadline, setDeadline } = useDeadlineState();
+  const changeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDeadline(e.target.value);
   };
+
+  const remainTime = convertRemainTime(deadline);
 
   return (
     <Container ref={ref}>
       <Heading>
-        <span>어디에서</span> 모일까요?
+        <span>언제까지</span> 모집할까요? <ErrorColor>*</ErrorColor>
       </Heading>
-      <S.LabelContainer>
+      <LabelContainer>
         <Label>
-          <p>장소</p>
-          <p>
-            {location.length}/{GROUP_RULE.LOCATION.MAX_LENGTH}
-          </p>
+          <p>날짜</p>
+          <p>{remainTime && `${remainTime} 후`}</p>
         </Label>
         <Input
-          type="text"
-          value={location}
-          onChange={changeLocation}
+          type="datetime-local"
+          value={deadline}
+          onChange={changeDeadline}
           onKeyPress={pressEnterToNext}
-          placeholder="둘둘치킨 선릉공원점"
-          maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
+          min={getNewDateString('min')}
         />
-      </S.LabelContainer>
+      </LabelContainer>
     </Container>
   );
 }
