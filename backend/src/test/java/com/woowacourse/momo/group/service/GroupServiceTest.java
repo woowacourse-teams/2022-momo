@@ -93,7 +93,7 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup);
 
         GroupResponse actual = groupService.findById(savedGroup.getId());
 
@@ -114,7 +114,7 @@ class GroupServiceTest {
         int count = 3;
         List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> saveGroup())
-                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, savedMember))
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
 
         List<GroupSummaryResponse> actual = groupService.findAll();

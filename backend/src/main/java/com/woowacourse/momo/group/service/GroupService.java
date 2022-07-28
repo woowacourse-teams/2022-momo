@@ -41,13 +41,13 @@ public class GroupService {
 
     public GroupResponse findById(Long id) {
         Group group = groupFindService.findGroup(id);
-        return GroupResponseAssembler.groupResponse(group, group.getHost());
+        return GroupResponseAssembler.groupResponse(group);
     }
 
     public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
         return groups.stream()
-                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, group.getHost()))
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
     }
 
