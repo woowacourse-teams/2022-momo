@@ -42,7 +42,6 @@ function Step3(
           type="number"
           min={GROUP_RULE.CAPACITY.MIN}
           max={GROUP_RULE.CAPACITY.MAX}
-          defaultValue={''}
           value={capacity || ''}
           onChange={changeCapacity}
           onKeyPress={pressEnterToNext}
