@@ -1,13 +1,16 @@
 import { useState } from 'react';
 
-import { CategoryType, Group } from 'types/data';
+import { GROUP_RULE } from 'constants/rule';
+import { CategoryType, CreateGroupData, Group } from 'types/data';
 
+// TODO: input이 사용되는 곳에는 useInput으로 바꾸기
 const useCreateState = () => {
   const [name, setName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
     id: -1,
     name: '',
   });
+  const [capacity, setCapacity] = useState<CreateGroupData['capacity']>(0);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [deadline, setDeadline] = useState('');
@@ -20,6 +23,21 @@ const useCreateState = () => {
 
   const changeSelectedCategory = (newSelectedCategory: CategoryType) => {
     setSelectedCategory(newSelectedCategory);
+  };
+
+  const changeCapacity = (newCapacity: number) => {
+    const { MIN, MAX } = GROUP_RULE.CAPACITY;
+
+    if (newCapacity < MIN) {
+      setCapacity(MIN);
+      return;
+    }
+    if (newCapacity > MAX) {
+      setCapacity(MAX);
+      return;
+    }
+
+    setCapacity(newCapacity);
   };
 
   const changeStartDate = (newStartDate: string) => {
@@ -51,6 +69,10 @@ const useCreateState = () => {
       selectedCategory,
       setSelectedCategory: changeSelectedCategory,
     }),
+    useCapacityState: () => ({
+      capacity,
+      setCapacity: changeCapacity,
+    }),
     useDateState: () => ({
       startDate,
       setStartDate: changeStartDate,
@@ -72,6 +94,7 @@ const useCreateState = () => {
     getGroupState: () => ({
       name,
       selectedCategory,
+      capacity,
       startDate,
       endDate,
       deadline,
