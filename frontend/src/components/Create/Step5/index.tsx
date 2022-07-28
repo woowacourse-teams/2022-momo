@@ -5,12 +5,12 @@ import * as S from './index.styled';
 
 // TODO: 달력은 나중에 ^^
 
-interface Step4Props {
+interface Step5Props {
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step4(
-  { pressEnterToNext }: Step4Props,
+function Step5(
+  { pressEnterToNext }: Step5Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
   return (
@@ -44,4 +44,4 @@ function Step4(
   );
 }
 
-export default memo(forwardRef(Step4));
+export default memo(forwardRef(Step5));

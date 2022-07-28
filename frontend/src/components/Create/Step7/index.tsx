@@ -5,7 +5,7 @@ import { GROUP_RULE } from 'constants/rule';
 import { Container, Heading, Input, Label } from '../@shared/styled';
 import * as S from './index.styled';
 
-interface Step6Props {
+interface Step7Props {
   useLocationState: () => {
     location: string;
     setLocation: (location: string) => void;
@@ -13,8 +13,8 @@ interface Step6Props {
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step6(
-  { useLocationState, pressEnterToNext }: Step6Props,
+function Step7(
+  { useLocationState, pressEnterToNext }: Step7Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { location, setLocation } = useLocationState();
@@ -47,4 +47,4 @@ function Step6(
   );
 }
 
-export default memo(forwardRef(Step6));
+export default memo(forwardRef(Step7));

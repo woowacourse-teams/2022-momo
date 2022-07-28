@@ -5,15 +5,15 @@ import { GROUP_RULE } from 'constants/rule';
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
-interface Step7Props {
+interface Step8Props {
   useDescriptionState: () => {
     description: string;
     setDescription: (description: string) => void;
   };
 }
 
-function Step7(
-  { useDescriptionState }: Step7Props,
+function Step8(
+  { useDescriptionState }: Step8Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { description, setDescription } = useDescriptionState();
@@ -43,4 +43,4 @@ function Step7(
   );
 }
 
-export default memo(forwardRef(Step7));
+export default memo(forwardRef(Step8));

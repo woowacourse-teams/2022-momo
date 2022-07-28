@@ -11,7 +11,7 @@ import {
   Label,
 } from '../@shared/styled';
 
-interface Step5Props {
+interface Step6Props {
   useDeadlineState: () => {
     deadline: string;
     setDeadline: (deadline: string) => void;
@@ -19,8 +19,8 @@ interface Step5Props {
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step5(
-  { useDeadlineState, pressEnterToNext }: Step5Props,
+function Step6(
+  { useDeadlineState, pressEnterToNext }: Step6Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { deadline, setDeadline } = useDeadlineState();
@@ -52,4 +52,4 @@ function Step5(
   );
 }
 
-export default memo(forwardRef(Step5));
+export default memo(forwardRef(Step6));

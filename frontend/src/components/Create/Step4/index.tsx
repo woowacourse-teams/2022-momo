@@ -11,7 +11,7 @@ import {
 } from '../@shared/styled';
 import * as S from './index.styled';
 
-interface Step3Props {
+interface Step4Props {
   useDateState: () => DurationDate & {
     setStartDate: (startDate: DurationDate['startDate']) => void;
     setEndDate: (endDate: DurationDate['endDate']) => void;
@@ -19,8 +19,8 @@ interface Step3Props {
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step3(
-  { useDateState, pressEnterToNext }: Step3Props,
+function Step4(
+  { useDateState, pressEnterToNext }: Step4Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { startDate, setStartDate, endDate, setEndDate } = useDateState();
@@ -65,4 +65,4 @@ function Step3(
   );
 }
 
-export default memo(forwardRef(Step3));
+export default memo(forwardRef(Step4));
