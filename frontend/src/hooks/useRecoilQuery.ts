@@ -8,10 +8,12 @@ const useRecoilQuery = <T>(
   key: string,
   getFunc: () => Promise<T>,
   staleTime = Infinity,
+  suspense = true,
 ) => {
   const [state, setState] = useRecoilState(recoilState);
   const { isLoading, isError, data, error } = useQuery(key, getFunc, {
     staleTime,
+    suspense,
   });
 
   // TODO: React Query + Recoil -> 좀 더 우아한 방법을 찾아보자
