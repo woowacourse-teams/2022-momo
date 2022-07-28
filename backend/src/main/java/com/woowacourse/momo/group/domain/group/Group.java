@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
@@ -42,8 +43,9 @@ public class Group {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long hostId;
+    @ManyToOne
+    @JoinColumn(name = "host_id")
+    private Member host;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -75,10 +77,10 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Long hostId, Category category, int maxOfParticipants, Duration duration,
+    public Group(String name, Member host, Category category, int maxOfParticipants, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
-        this.hostId = hostId;
+        this.host = host;
         this.category = category;
         this.maxOfParticipants = maxOfParticipants;
         this.duration = duration;
@@ -104,7 +106,7 @@ public class Group {
     }
 
     public boolean isSameHost(Member host) {
-        return Objects.equals(this.hostId, host.getId());
+        return this.host.equals(host);
     }
 
     public void participate(Member member) {
@@ -128,7 +130,7 @@ public class Group {
     public static class Builder {
 
         private String name;
-        private Long hostId;
+        private Member host;
         private Category category;
         private int maxOfParticipants;
         private Duration duration;
@@ -145,8 +147,8 @@ public class Group {
             return this;
         }
 
-        public Builder hostId(Long hostId) {
-            this.hostId = hostId;
+        public Builder host(Member host) {
+            this.host = host;
             return this;
         }
 
@@ -192,12 +194,13 @@ public class Group {
 
         public Group build() {
             validateNonNull();
-            return new Group(name, hostId, category, maxOfParticipants, duration, deadline, schedules, location, description);
+            return new Group(name, host, category, maxOfParticipants, duration, deadline, schedules, location,
+                    description);
         }
 
         private void validateNonNull() {
             Objects.requireNonNull(name);
-            Objects.requireNonNull(hostId);
+            Objects.requireNonNull(host);
             Objects.requireNonNull(category);
             Objects.requireNonNull(duration);
             Objects.requireNonNull(deadline);

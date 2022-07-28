@@ -17,7 +17,7 @@ public class GroupRequestAssembler {
     public static Group group(Member host, GroupRequest request) {
         return new Group.Builder()
                 .name(request.getName())
-                .hostId(host.getId())
+                .host(host)
                 .categoryId(request.getCategoryId())
                 .maxOfParticipants(request.getMaxOfParticipants())
                 .duration(duration(request.getDuration()))
