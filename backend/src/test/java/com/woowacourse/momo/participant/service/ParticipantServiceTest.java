@@ -70,7 +70,7 @@ class ParticipantServiceTest {
 
         List<MemberResponse> participants = participantService.findParticipants(savedGroup.getId());
 
-        assertThat(participants).hasSize(1);
+        assertThat(participants).hasSize(2);
     }
 
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
@@ -113,7 +113,7 @@ class ParticipantServiceTest {
     @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
     @Test
     void participateFullGroup() {
-        int maxOfParticipants = 1;
+        int maxOfParticipants = 2;
         Group savedGroup = saveGroupWithSetMaxOfParticipants(maxOfParticipants);
         participantService.participate(savedGroup.getId(), participant1.getId());
 

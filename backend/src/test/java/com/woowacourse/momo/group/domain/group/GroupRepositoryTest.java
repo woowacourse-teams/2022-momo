@@ -158,7 +158,7 @@ class GroupRepositoryTest {
 
         assertThat(foundGroup).isPresent();
         assertThat(foundGroup.get().getParticipants()).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(List.of(participant));
+                .isEqualTo(List.of(host, participant));
     }
 
     private Group constructGroup(Member host, List<Schedule> schedules) {

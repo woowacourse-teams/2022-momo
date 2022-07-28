@@ -177,7 +177,6 @@ public class ParticipantControllerTest {
         Long groupId = saveGroupWithSetMaxOfParticipants(hostId, 1);
         Long participantId = saveMember("participant@woowacourse.com");
         String accessToken = accessToken("participant@woowacourse.com");
-        participateMember(groupId, participantId);
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
                         .header("Authorization", "bearer " + accessToken)

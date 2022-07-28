@@ -88,6 +88,7 @@ public class Group {
         this.location = location;
         this.description = description;
 
+        participate(host);
         belongTo(schedules);
     }
 
