@@ -111,22 +111,22 @@ public class Group {
     }
 
     public void participate(Member member) {
-        validateParticipateAvailability(member);
+        validateParticipateAvailable(member);
         this.participants.add(new Participant(this, member));
     }
 
-    private void validateParticipateAvailability(Member member) {
-        validateOvercapacity();
-        validateParticipant(member);
+    private void validateParticipateAvailable(Member member) {
+        validateOverCapacity();
+        validateReParticipant(member);
     }
 
-    private void validateParticipant(Member member) {
+    private void validateReParticipant(Member member) {
         if (getParticipants().contains(member)) {
             throw new IllegalArgumentException("이미 참여한 모임입니다.");
         }
     }
 
-    private void validateOvercapacity() {
+    private void validateOverCapacity() {
         if (this.capacity <= participants.size()) {
             throw new IllegalArgumentException("정원이 가득 찼습니다.");
         }

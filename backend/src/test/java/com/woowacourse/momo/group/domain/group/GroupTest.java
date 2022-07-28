@@ -18,9 +18,9 @@ import com.woowacourse.momo.member.domain.Member;
 
 class GroupTest {
 
-    private Member host = new Member("주최자", "password", "momo");
+    private final Member host = new Member("주최자", "password", "momo");
 
-    @DisplayName("회원이 모임의 생성자면 True를 반환한다.")
+    @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")
     @Test
     void isSameHost() {
         Group group = constructGroup();
@@ -29,7 +29,7 @@ class GroupTest {
         assertThat(actual).isTrue();
     }
 
-    @DisplayName("회원이 모임의 생성자가 아니면 false를 반환한다.")
+    @DisplayName("회원이 모임의 주최자가 아닌 경우 False 를 반환한다")
     @Test
     void isNotSameHost() {
         Group group = constructGroup();
@@ -51,7 +51,7 @@ class GroupTest {
 
     @DisplayName("이미 참여한 모임에 참가할 경우 예외가 발생한다")
     @Test
-    void validateParticipant() {
+    void validateReParticipant() {
         Group group = constructGroup();
         Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
         group.participate(member);
@@ -62,9 +62,9 @@ class GroupTest {
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
     @Test
-    void validateOvercapacity() {
+    void validateOverCapacity() {
         int capacity = 2;
-        Group group = constructGroupWithSetcapacity(capacity);
+        Group group = constructGroupWithSetCapacity(capacity);
         Member member1 = new Member("momo@woowa.com", "qwer123!@#", "모모");
         group.participate(member1);
 
@@ -86,10 +86,10 @@ class GroupTest {
     }
 
     private Group constructGroup() {
-        return constructGroupWithSetcapacity(10);
+        return constructGroupWithSetCapacity(10);
     }
 
-    private Group constructGroupWithSetcapacity(int capacity) {
+    private Group constructGroupWithSetCapacity(int capacity) {
         List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
         return new Group("momo 회의", host, Category.STUDY, capacity, _7월_1일부터_2일까지.getInstance(),
                 _6월_30일_23시_59분.getInstance(),

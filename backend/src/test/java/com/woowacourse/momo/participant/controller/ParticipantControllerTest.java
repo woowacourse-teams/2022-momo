@@ -128,7 +128,7 @@ public class ParticipantControllerTest {
 
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
     @Test
-    void participateParticipant() throws Exception {
+    void reParticipate() throws Exception {
         Long hostId = saveMember("host@woowacourse.com");
         Long groupId = saveGroup(hostId);
         Long participantId = saveMember("participant@woowacourse.com");
@@ -153,7 +153,7 @@ public class ParticipantControllerTest {
     @Test
     void participateFullGroup() throws Exception {
         Long hostId = saveMember("host@woowacourse.com");
-        Long groupId = saveGroupWithSetcapacity(hostId, 1);
+        Long groupId = saveGroupWithSetCapacity(hostId, 1);
         Long participantId = saveMember("participant@woowacourse.com");
         String accessToken = accessToken("participant@woowacourse.com");
 
@@ -221,10 +221,10 @@ public class ParticipantControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        return saveGroupWithSetcapacity(hostId, 10);
+        return saveGroupWithSetCapacity(hostId, 10);
     }
 
-    Long saveGroupWithSetcapacity(Long hostId, int capacity) {
+    Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 

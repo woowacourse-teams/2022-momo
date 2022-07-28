@@ -52,10 +52,10 @@ class ParticipantServiceTest {
     }
 
     private Group saveGroup() {
-        return saveGroupWithSetcapacity(10);
+        return saveGroupWithSetCapacity(10);
     }
 
-    private Group saveGroupWithSetcapacity(int capacity) {
+    private Group saveGroupWithSetCapacity(int capacity) {
         return groupRepository.save(new Group("모모의 스터디", host, Category.STUDY, capacity,
                 _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
                 "", ""));
@@ -91,7 +91,7 @@ class ParticipantServiceTest {
 
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
     @Test
-    void participateParticipant() {
+    void reParticipate() {
         Group savedGroup = saveGroup();
         participantService.participate(savedGroup.getId(), participant1.getId());
 
@@ -104,7 +104,7 @@ class ParticipantServiceTest {
     @Test
     void participateFullGroup() {
         int capacity = 2;
-        Group savedGroup = saveGroupWithSetcapacity(capacity);
+        Group savedGroup = saveGroupWithSetCapacity(capacity);
         participantService.participate(savedGroup.getId(), participant1.getId());
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))
