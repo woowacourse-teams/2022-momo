@@ -47,9 +47,7 @@ public class GroupService {
     public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
         return groups.stream()
-                .map(group -> {
-                    return GroupResponseAssembler.groupSummaryResponse(group, group.getHost());
-                })
+                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, group.getHost()))
                 .collect(Collectors.toList());
     }
 
