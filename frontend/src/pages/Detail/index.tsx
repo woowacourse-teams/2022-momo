@@ -11,22 +11,16 @@ import * as S from './index.styled';
 function Detail() {
   const { id } = useParams();
 
-  const {
-    data,
-    isLoading: isGroupDetailLoading,
-    isError: isGroupDetailError,
-  } = useQuery(QUERY_KEY.GROUP_DETAILS, () => getGroupDetail(Number(id)));
-  const {
-    categories,
-    isLoading: isCategoryLoading,
-    isError: isCategoryError,
-  } = useCategory();
+  const { data, isError: isGroupDetailError } = useQuery(
+    QUERY_KEY.GROUP_DETAILS,
+    () => getGroupDetail(Number(id)),
+    {
+      suspense: true,
+    },
+  );
+  const { categories, isError: isCategoryError } = useCategory();
 
-  if (isGroupDetailLoading || isCategoryLoading)
-    return <h2>잠시만 기다려주세요... 🔎</h2>;
-
-  if (isGroupDetailError || isCategoryError)
-    return <h2>에러가 발생했습니다!!!! 👿</h2>;
+  if (isGroupDetailError || isCategoryError) throw new Error();
 
   return (
     <S.PageContainer>
@@ -35,7 +29,7 @@ function Detail() {
           <DetailSideBar
             id={Number(id)}
             name={data.host.name}
-            schedules={data.schedules}
+            duration={data.duration}
             location={data.location}
             categoryName={
               categories.find(category => category.id === data.categoryId)

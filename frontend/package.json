@@ -27,6 +27,7 @@
     "emotion-reset": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-lottie": "^1.2.3",
     "react-query": "^3.39.1",
     "react-router-dom": "^6.3.0",
     "recoil": "^0.7.4"
@@ -51,6 +52,7 @@
     "@types/node": "^18.0.0",
     "@types/react": "^17.0.47",
     "@types/react-dom": "^18.0.5",
+    "@types/react-lottie": "^1.2.6",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
     "babel-loader": "^8.2.5",

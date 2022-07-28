@@ -13,6 +13,7 @@ export interface PageType {
 export interface CreateGroupData {
   name: string;
   selectedCategory: CategoryType;
+  capacity: number;
   startDate: string;
   endDate: string;
   deadline: string;
@@ -29,6 +30,7 @@ export interface DetailData {
     name: string;
   };
   categoryId: number;
+  capacity: number;
   duration: {
     start: string;
     end: string;

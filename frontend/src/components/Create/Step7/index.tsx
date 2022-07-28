@@ -1,42 +1,46 @@
-import { memo, LegacyRef, forwardRef } from 'react';
+import { memo, forwardRef, LegacyRef } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
 
-import { Container, Heading } from '../@shared/styled';
+import { Container, Heading, Input, Label } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step7Props {
-  useDescriptionState: () => {
-    description: string;
-    setDescription: (description: string) => void;
+  useLocationState: () => {
+    location: string;
+    setLocation: (location: string) => void;
   };
+  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step7(
-  { useDescriptionState }: Step7Props,
+  { useLocationState, pressEnterToNext }: Step7Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { description, setDescription } = useDescriptionState();
-  const changeDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
+  const { location, setLocation } = useLocationState();
+  const changeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
   };
 
   return (
     <Container ref={ref}>
       <Heading>
-        <span>모임에 대한 추가적인 설명</span>이 필요하다면 입력해주세요.
-        <p>자세히 설명할수록 인원이 모일 확률이 높아져요!</p>
+        <span>어디에서</span> 모일까요?
       </Heading>
       <S.LabelContainer>
-        <S.Label>
+        <Label>
+          <p>장소</p>
           <p>
-            {description.length}/{GROUP_RULE.DESCRIPTION.MAX_LENGTH}
+            {location.length}/{GROUP_RULE.LOCATION.MAX_LENGTH}
           </p>
-        </S.Label>
-        <S.TextArea
-          value={description}
-          onChange={changeDescription}
-          maxLength={GROUP_RULE.DESCRIPTION.MAX_LENGTH}
+        </Label>
+        <Input
+          type="text"
+          value={location}
+          onChange={changeLocation}
+          onKeyPress={pressEnterToNext}
+          placeholder="둘둘치킨 선릉공원점"
+          maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
         />
       </S.LabelContainer>
     </Container>

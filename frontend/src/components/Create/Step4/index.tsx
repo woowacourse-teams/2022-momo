@@ -1,45 +1,66 @@
-import { forwardRef, LegacyRef, memo } from 'react';
+import { memo, LegacyRef, forwardRef } from 'react';
 
-import { Container, Heading } from '../@shared/styled';
+import { DurationDate } from 'types/data';
+import { getNewDateString } from 'utils/date';
+
+import {
+  Container,
+  ErrorColor,
+  Heading,
+  LabelContainer,
+} from '../@shared/styled';
 import * as S from './index.styled';
 
-// TODO: 달력은 나중에 ^^
-
 interface Step4Props {
+  useDateState: () => DurationDate & {
+    setStartDate: (startDate: DurationDate['startDate']) => void;
+    setEndDate: (endDate: DurationDate['endDate']) => void;
+  };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step4(
-  { pressEnterToNext }: Step4Props,
+  { useDateState, pressEnterToNext }: Step4Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
+  const { startDate, setStartDate, endDate, setEndDate } = useDateState();
+
+  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.target.value);
+
+    if (!endDate) {
+      setEndDate(e.target.value);
+    }
+  };
+
+  const changeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value);
+  };
+
   return (
     <Container ref={ref}>
       <Heading>
-        <span>언제</span> 만날건가요?
+        <span>언제부터 언제까지</span> 만날건가요? <ErrorColor>*</ErrorColor>
       </Heading>
-      <S.Content>
-        <S.Calendar />
-        <S.Right>
-          <S.DailyButton type="button">매일</S.DailyButton>
-          <S.DayBox>
-            <span className="sun">일</span>
-            <span>월</span>
-            <span>화</span>
-            <span>수</span>
-            <span>목</span>
-            <span>금</span>
-            <span className="sat">토</span>
-          </S.DayBox>
-          <S.InputWrapper>
-            <S.Input type="time" />
-            부터
-            <S.Input type="time" onKeyPress={pressEnterToNext} />
-            까지
-          </S.InputWrapper>
-          <S.AddButton type="button">달력에 추가하기</S.AddButton>
-        </S.Right>
-      </S.Content>
+      <LabelContainer>
+        <p>기간</p>
+        <S.InputWrapper>
+          <S.Input
+            type="date"
+            value={startDate}
+            onChange={changeStartDate}
+            min={getNewDateString('day')}
+          />
+          ~
+          <S.Input
+            type="date"
+            value={endDate}
+            onChange={changeEndDate}
+            min={startDate || getNewDateString('day')}
+            onKeyPress={pressEnterToNext}
+          />
+        </S.InputWrapper>
+      </LabelContainer>
     </Container>
   );
 }
