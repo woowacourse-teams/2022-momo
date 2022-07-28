@@ -1,4 +1,4 @@
-import { forwardRef, LegacyRef } from 'react';
+import { forwardRef, LegacyRef, memo } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
@@ -53,4 +53,4 @@ function Step3(
   );
 }
 
-export default forwardRef(Step3);
+export default memo(forwardRef(Step3));
