@@ -67,7 +67,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @Test
     void participateFullGroup() {
         String accessToken = MOMO.로_로그인한다();
-        모임에_참여한다(accessToken, groupId);
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
         accessToken = GUGU.로_로그인한다();
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
