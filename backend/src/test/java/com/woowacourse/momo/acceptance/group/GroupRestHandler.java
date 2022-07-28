@@ -66,16 +66,16 @@ public class GroupRestHandler extends RestHandler {
 
 
     public static GroupRequest groupRequest(GroupFixture group) {
-        return groupRequest(group.getName(), group.getCategoryId(), group.getMaxOfParticipants(), group.getDuration(),
+        return groupRequest(group.getName(), group.getCategoryId(), group.getCapacity(), group.getDuration(),
                 group.getSchedules(), group.getDeadline(), group.getLocation(), group.getDescription());
     }
 
-    public static GroupRequest groupRequest(String name, Long categoryId, int maxOfParticipants, Duration duration,
+    public static GroupRequest groupRequest(String name, Long categoryId, int capacity, Duration duration,
                                             List<Schedule> schedules, LocalDateTime deadline, String location,
                                             String description) {
         DurationRequest durationRequest = durationRequest(duration);
         List<ScheduleRequest> scheduleRequests = scheduleRequests(schedules);
-        return new GroupRequest(name, categoryId, maxOfParticipants, durationRequest, scheduleRequests, deadline, location, description);
+        return new GroupRequest(name, categoryId, capacity, durationRequest, scheduleRequests, deadline, location, description);
     }
 
     public static GroupUpdateRequest groupUpdateRequest(GroupFixture group) {

@@ -62,9 +62,9 @@ class GroupTest {
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
     @Test
-    void validateOverMaxOfParticipants() {
-        int maxOfParticipants = 2;
-        Group group = constructGroupWithSetMaxOfParticipants(maxOfParticipants);
+    void validateOvercapacity() {
+        int capacity = 2;
+        Group group = constructGroupWithSetcapacity(capacity);
         Member member1 = new Member("momo@woowa.com", "qwer123!@#", "모모");
         group.participate(member1);
 
@@ -86,12 +86,12 @@ class GroupTest {
     }
 
     private Group constructGroup() {
-        return constructGroupWithSetMaxOfParticipants(10);
+        return constructGroupWithSetcapacity(10);
     }
 
-    private Group constructGroupWithSetMaxOfParticipants(int maxOfParticipants) {
+    private Group constructGroupWithSetcapacity(int capacity) {
         List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
-        return new Group("momo 회의", host, Category.STUDY, maxOfParticipants, _7월_1일부터_2일까지.getInstance(),
+        return new Group("momo 회의", host, Category.STUDY, capacity, _7월_1일부터_2일까지.getInstance(),
                 _6월_30일_23시_59분.getInstance(),
                 schedules, "", "");
     }

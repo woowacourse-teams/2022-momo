@@ -52,11 +52,11 @@ class ParticipantServiceTest {
     }
 
     private Group saveGroup() {
-        return saveGroupWithSetMaxOfParticipants(10);
+        return saveGroupWithSetcapacity(10);
     }
 
-    private Group saveGroupWithSetMaxOfParticipants(int maxOfParticipants) {
-        return groupRepository.save(new Group("모모의 스터디", host, Category.STUDY, maxOfParticipants,
+    private Group saveGroupWithSetcapacity(int capacity) {
+        return groupRepository.save(new Group("모모의 스터디", host, Category.STUDY, capacity,
                 _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
                 "", ""));
     }
@@ -103,8 +103,8 @@ class ParticipantServiceTest {
     @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
     @Test
     void participateFullGroup() {
-        int maxOfParticipants = 2;
-        Group savedGroup = saveGroupWithSetMaxOfParticipants(maxOfParticipants);
+        int capacity = 2;
+        Group savedGroup = saveGroupWithSetcapacity(capacity);
         participantService.participate(savedGroup.getId(), participant1.getId());
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))

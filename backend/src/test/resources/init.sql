@@ -12,7 +12,7 @@ create table momo_group
     endDate           date         not null,
     startDate         date         not null,
     location          varchar(255) not null,
-    maxOfParticipants integer      not null,
+    capacity integer      not null,
     name              varchar(255) not null,
     host_id           bigint,
     primary key (id)

@@ -153,7 +153,7 @@ public class ParticipantControllerTest {
     @Test
     void participateFullGroup() throws Exception {
         Long hostId = saveMember("host@woowacourse.com");
-        Long groupId = saveGroupWithSetMaxOfParticipants(hostId, 1);
+        Long groupId = saveGroupWithSetcapacity(hostId, 1);
         Long participantId = saveMember("participant@woowacourse.com");
         String accessToken = accessToken("participant@woowacourse.com");
 
@@ -221,11 +221,11 @@ public class ParticipantControllerTest {
     }
 
     Long saveGroup(Long hostId) {
-        return saveGroupWithSetMaxOfParticipants(hostId, 10);
+        return saveGroupWithSetcapacity(hostId, 10);
     }
 
-    Long saveGroupWithSetMaxOfParticipants(Long hostId, int maxOfParticipants) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, maxOfParticipants, DURATION_REQUEST,
+    Long saveGroupWithSetcapacity(Long hostId, int capacity) {
+        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();

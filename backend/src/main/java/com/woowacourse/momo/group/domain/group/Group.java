@@ -52,7 +52,7 @@ public class Group {
     private Category category;
 
     @Column(nullable = false)
-    private int maxOfParticipants;
+    private int capacity;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -77,12 +77,12 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Member host, Category category, int maxOfParticipants, Duration duration,
+    public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.host = host;
         this.category = category;
-        this.maxOfParticipants = maxOfParticipants;
+        this.capacity = capacity;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -92,11 +92,11 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(String name, Category category, int maxOfParticipants, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.category = category;
-        this.maxOfParticipants = maxOfParticipants;
+        this.capacity = capacity;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
@@ -116,7 +116,7 @@ public class Group {
     }
 
     private void validateParticipateAvailability(Member member) {
-        validateOverMaxOfParticipants();
+        validateOvercapacity();
         validateParticipant(member);
     }
 
@@ -126,8 +126,8 @@ public class Group {
         }
     }
 
-    private void validateOverMaxOfParticipants() {
-        if (this.maxOfParticipants <= participants.size()) {
+    private void validateOvercapacity() {
+        if (this.capacity <= participants.size()) {
             throw new IllegalArgumentException("정원이 가득 찼습니다.");
         }
     }
@@ -151,7 +151,7 @@ public class Group {
         private String name;
         private Member host;
         private Category category;
-        private int maxOfParticipants;
+        private int capacity;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -181,8 +181,8 @@ public class Group {
             return this;
         }
 
-        public Builder maxOfParticipants(int maxOfParticipants) {
-            this.maxOfParticipants = maxOfParticipants;
+        public Builder capacity(int capacity) {
+            this.capacity = capacity;
             return this;
         }
 
@@ -213,7 +213,7 @@ public class Group {
 
         public Group build() {
             validateNonNull();
-            return new Group(name, host, category, maxOfParticipants, duration, deadline, schedules, location,
+            return new Group(name, host, category, capacity, duration, deadline, schedules, location,
                     description);
         }
 
