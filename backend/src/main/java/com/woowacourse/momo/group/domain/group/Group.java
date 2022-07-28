@@ -88,6 +88,7 @@ public class Group {
         this.location = location;
         this.description = description;
 
+        validateCapacity(capacity);
         participate(host);
         belongTo(schedules);
     }
@@ -102,8 +103,15 @@ public class Group {
         this.location = location;
         this.description = description;
 
+        validateCapacity(capacity);
         this.schedules.clear();
         belongTo(schedules);
+    }
+
+    private void validateCapacity(int capacity) {
+        if (1 > capacity || capacity > 99) {
+            throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
+        }
     }
 
     public boolean isSameHost(Member host) {

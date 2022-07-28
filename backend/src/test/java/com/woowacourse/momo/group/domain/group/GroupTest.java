@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
@@ -19,6 +21,15 @@ import com.woowacourse.momo.member.domain.Member;
 class GroupTest {
 
     private final Member host = new Member("주최자", "password", "momo");
+
+    @ParameterizedTest
+    @DisplayName("모임 정원은 1명 이상 99명 이하여야 한다.")
+    @ValueSource(ints = {-1, 0, 100})
+    void validateCapacity(int capacity) {
+        assertThatThrownBy(() -> constructGroupWithSetCapacity(capacity))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("모임 정원은 1명 이상 99명 이하여야 합니다.");
+    }
 
     @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")
     @Test
