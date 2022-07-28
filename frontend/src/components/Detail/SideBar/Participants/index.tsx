@@ -1,31 +1,39 @@
+import { useQuery } from 'react-query';
+
+import { getGroupParticipants } from 'apis/request/group';
 import { ReactComponent as CrownSVG } from 'assets/crown.svg';
 import PersonSVG from 'components/svg/Person';
+import { QUERY_KEY } from 'constants/key';
+import { DetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-const host = '4기 이프';
+interface ParticipantsProps {
+  id: DetailData['id'];
+  hostName: string;
+}
 
-const participants = [
-  '4기 유세지',
-  '4기 하리',
-  '4기 유콩',
-  '4기 렉스',
-  '4기 라쿤',
-];
+function Participants({ id, hostName }: ParticipantsProps) {
+  const { data: participants } = useQuery<GroupParticipants>(
+    QUERY_KEY.GROUP_PARTICIPANTS,
+    () => getGroupParticipants(id),
+    {
+      staleTime: Infinity,
+    },
+  );
 
-function Participants() {
   return (
     <S.Container>
       <S.Header>참여자 목록</S.Header>
       <S.Box>
         <S.Wrapper>
           <CrownSVG width={32} />
-          <S.HostText>{host}</S.HostText>
+          <S.HostText>{hostName}</S.HostText>
         </S.Wrapper>
-        {participants.map(participant => (
-          <S.Wrapper key={participant}>
+        {participants?.map(participant => (
+          <S.Wrapper key={participant.id}>
             <PersonSVG width={32} />
-            <S.Text>{participant}</S.Text>
+            <S.Text>{participant.name}</S.Text>
           </S.Wrapper>
         ))}
       </S.Box>

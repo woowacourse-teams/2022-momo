@@ -7,10 +7,10 @@ import Participants from './Participants';
 function DetailSideBar({
   id,
   name,
-  schedules,
+  duration,
   location,
   categoryName,
-}: Pick<DetailData, 'id' | 'name' | 'schedules' | 'location'> & {
+}: Pick<DetailData, 'id' | 'name' | 'duration' | 'location'> & {
   categoryName: CategoryType['name'];
 }) {
   return (
@@ -18,11 +18,11 @@ function DetailSideBar({
       <Info
         id={id}
         name={name}
-        schedules={schedules}
+        duration={duration}
         location={location}
         categoryName={categoryName}
       />
-      <Participants />
+      <Participants id={id} hostName={name} />
     </S.Container>
   );
 }
