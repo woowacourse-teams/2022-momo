@@ -111,7 +111,25 @@ public class Group {
     }
 
     public void participate(Member member) {
+        validateParticipateAvailability(member);
         this.participants.add(new Participant(this, member));
+    }
+
+    private void validateParticipateAvailability(Member member) {
+        validateOverMaxOfParticipants();
+        validateParticipant(member);
+    }
+
+    private void validateParticipant(Member member) {
+        if (getParticipants().contains(member)) {
+            throw new IllegalArgumentException("이미 참여한 모임입니다.");
+        }
+    }
+
+    private void validateOverMaxOfParticipants() {
+        if (this.maxOfParticipants <= participants.size()) {
+            throw new IllegalArgumentException("정원이 가득 찼습니다.");
+        }
     }
 
     private void belongTo(List<Schedule> schedules) {

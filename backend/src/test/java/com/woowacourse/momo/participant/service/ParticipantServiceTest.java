@@ -89,16 +89,6 @@ class ParticipantServiceTest {
                 .isInstanceOf(NotFoundMemberException.class);
     }
 
-    @DisplayName("모임의 주최자일 경우 모임에 참여할 수 없다")
-    @Test
-    void participateHost() {
-        Group savedGroup = saveGroup();
-
-        assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), host.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("주최자는 모임에 참여할 수 없습니다.");
-    }
-
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
     @Test
     void participateParticipant() {

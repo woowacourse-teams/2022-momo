@@ -126,27 +126,6 @@ public class ParticipantControllerTest {
                 );
     }
 
-    @DisplayName("모임의 주최자일 경우 모임에 참여할 수 없다")
-    @Test
-    void participateHost() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
-        Long groupId = saveGroup(hostId);
-        String accessToken = accessToken("host@woowacourse.com");
-
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
-                        .header("Authorization", "bearer " + accessToken)
-                )
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("주최자는 모임에 참여할 수 없습니다.")))
-                .andDo(
-                        document("participatehost",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
-    }
-
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
     @Test
     void participateParticipant() throws Exception {
