@@ -44,7 +44,7 @@ public class Group {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "host_id")
+    @JoinColumn
     private Member host;
 
     @Column(nullable = false)
