@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const PageContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,12 +10,12 @@ const PageContainer = styled.div`
   height: calc(100% - 4rem);
 `;
 
-const PageTitle = styled.h1`
+const Title = styled.h1`
   font-size: 2rem;
 `;
 
-const PageDescription = styled.p`
+const Description = styled.p`
   font-size: 1.2rem;
 `;
 
-export { PageContainer, PageTitle, PageDescription };
+export { Container, Title, Description };
