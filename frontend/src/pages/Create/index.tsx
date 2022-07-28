@@ -19,7 +19,7 @@ import useCreateState from 'hooks/useCreateState';
 import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
-import validator from './validate';
+import validateGroupData from './validate';
 
 const totalPage = [
   { number: 1, content: '이름 입력' },
@@ -36,6 +36,7 @@ function Create() {
   const {
     useNameState,
     useSelectedCategoryState,
+    useCapacityState,
     useDateState,
     useDeadlineState,
     useLocationState,
@@ -43,8 +44,8 @@ function Create() {
     getGroupState,
   } = useCreateState();
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
   const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const navigate = useNavigate();
 
   const getPageRef = (page: number) => (element: HTMLDivElement | null) => {
     pageRefs.current[page] = element;
@@ -84,7 +85,7 @@ function Create() {
     const groupData = getGroupState();
 
     try {
-      validator(groupData);
+      validateGroupData(groupData);
     } catch (error) {
       if (!(error instanceof PageError)) return;
 
@@ -115,7 +116,11 @@ function Create() {
           ref={getPageRef(2)}
           gotoAdjacentPage={gotoAdjacentPage}
         />
-        <Step3 ref={getPageRef(3)} />
+        <Step3
+          useCapacityState={useCapacityState}
+          ref={getPageRef(3)}
+          pressEnterToNext={pressEnterToNext}
+        />
         <Step4
           useDateState={useDateState}
           ref={getPageRef(4)}
