@@ -1,11 +1,57 @@
 import { forwardRef, LegacyRef } from 'react';
 
-import { Container } from '../@shared/styled';
+import { GROUP_RULE } from 'constants/rule';
+import { CreateGroupData } from 'types/data';
 
-interface Step3Props {}
+import {
+  Container,
+  Heading,
+  Input,
+  Label,
+  LabelContainer,
+} from '../@shared/styled';
 
-function Step3({}: Step3Props, ref: LegacyRef<HTMLDivElement>) {
-  return <Container ref={ref}>Step3</Container>;
+interface Step3Props {
+  useCapacityState: () => {
+    capacity: CreateGroupData['capacity'];
+    setCapacity: (capacity: CreateGroupData['capacity']) => void;
+  };
+  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+function Step3(
+  { useCapacityState, pressEnterToNext }: Step3Props,
+  ref: LegacyRef<HTMLDivElement>,
+) {
+  const { capacity, setCapacity } = useCapacityState();
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCapacity(Number(e.target.value));
+  };
+
+  return (
+    <Container ref={ref}>
+      <Heading>
+        모임에 <span>최대 몇 명</span>까지 모일 수 있나요?
+        <p>미입력 시 {GROUP_RULE.CAPACITY.MAX}명으로 설정됩니다.</p>
+      </Heading>
+      <LabelContainer>
+        <Label>
+          <p>최대 인원 수</p>
+        </Label>
+        <Input
+          type="number"
+          min={GROUP_RULE.CAPACITY.MIN}
+          max={GROUP_RULE.CAPACITY.MAX}
+          defaultValue={''}
+          value={capacity || ''}
+          onChange={changeCapacity}
+          onKeyPress={pressEnterToNext}
+          placeholder="99"
+          autoFocus
+        />
+      </LabelContainer>
+    </Container>
+  );
 }
 
 export default forwardRef(Step3);
