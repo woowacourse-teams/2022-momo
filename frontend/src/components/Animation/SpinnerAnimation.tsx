@@ -1,6 +1,6 @@
 import Lottie from 'react-lottie';
 
-import * as animationData from '../../assets/spinner.json';
+import * as animationData from 'assets/spinner.json';
 
 const defaultOptions = {
   loop: true,
