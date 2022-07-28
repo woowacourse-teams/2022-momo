@@ -1,15 +1,13 @@
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 
-import * as animationData from 'assets/not_found.json';
+import notFound from 'assets/not_found.json';
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
+const style = {
+  height: 300,
 };
 
 function NotFoundPage() {
-  return <Lottie options={defaultOptions} height={400} width={400} />;
+  return <Lottie animationData={notFound} style={style} />;
 }
 
 export default NotFoundPage;
