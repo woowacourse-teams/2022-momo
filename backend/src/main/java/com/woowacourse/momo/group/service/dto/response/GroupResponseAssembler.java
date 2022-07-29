@@ -22,6 +22,11 @@ public class GroupResponseAssembler {
                 group.getDescription());
     }
 
+
+    public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses, boolean hasNextPage) {
+        return new GroupPageResponse(hasNextPage, groupSummaryResponses);
+    }
+
     public static GroupSummaryResponse groupSummaryResponse(Group group, Member member) {
         return new GroupSummaryResponse(group.getId(), group.getName(), MemberResponseAssembler.memberResponse(member),
                 group.getCategory().getId(), group.getDeadline());

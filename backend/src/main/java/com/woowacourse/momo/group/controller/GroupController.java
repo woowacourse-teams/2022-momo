@@ -3,6 +3,8 @@ package com.woowacourse.momo.group.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
@@ -46,8 +49,8 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupSummaryResponse>> findAll() {
-        return ResponseEntity.ok(groupService.findAll());
+    public ResponseEntity<GroupPageResponse> findAll(@PageableDefault(size=12) Pageable pageable) {
+        return ResponseEntity.ok(groupService.findAll(pageable));
     }
 
     @Authenticated
