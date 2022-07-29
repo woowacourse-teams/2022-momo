@@ -1,15 +1,13 @@
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 
-import * as animationData from 'assets/spinner.json';
+import spinner from 'assets/spinner.json';
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
+const style = {
+  height: 300,
 };
 
 function Spinner() {
-  return <Lottie options={defaultOptions} height={400} width={400} />;
+  return <Lottie animationData={spinner} style={style} />;
 }
 
 export default Spinner;

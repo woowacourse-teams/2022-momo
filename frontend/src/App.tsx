@@ -13,6 +13,7 @@ import SignupModal from 'components/Signup';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
 import { Main, Detail, Create } from 'pages/index';
+import NotFound from 'pages/NotFound';
 import GlobalStyle from 'styles/global';
 import theme from 'styles/theme';
 
@@ -37,6 +38,7 @@ function App() {
                       <Route path=":id" element={<Detail />} />
                     </Route>
                     <Route path={BROWSER_PATH.CREATE} element={<Create />} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
               </ErrorBoundary>
