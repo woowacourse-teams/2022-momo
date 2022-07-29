@@ -40,28 +40,18 @@ public class Logging {
     }
 
     protected void warn(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.warn("" + getException(joinPoint));
+        LOGGER.warn(ConsolePrettier.yellow("" + getException(joinPoint)));
     }
 
     protected void error(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.error("" + getException(joinPoint));
+        LOGGER.error(ConsolePrettier.red("" + getException(joinPoint)));
         LogFileManager.write(getException(joinPoint));
     }
 
     private String log(ProceedingJoinPoint joinPoint, Object result) {
-        return ConsolePrettier.yellow(
+        return ConsolePrettier.green(
                 getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint) + "(" + getParams(joinPoint) + ")"
         );
-    }
-
-    private String exceptionLog(ProceedingJoinPoint joinPoint, Object result) {
-        return ConsolePrettier.red(
-                getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint) + "(" + getParams(joinPoint) + ")"
-        );
-    }
-
-    private Exception getException(ProceedingJoinPoint joinPoint) {
-        return (Exception) joinPoint.getArgs()[0];
     }
 
     private String getPathAndClassName(ProceedingJoinPoint joinPoint) {
@@ -74,5 +64,9 @@ public class Logging {
 
     private String getParams(ProceedingJoinPoint joinPoint) {
         return Arrays.toString(joinPoint.getArgs());
+    }
+
+    private Exception getException(ProceedingJoinPoint joinPoint) {
+        return (Exception) joinPoint.getArgs()[0];
     }
 }
