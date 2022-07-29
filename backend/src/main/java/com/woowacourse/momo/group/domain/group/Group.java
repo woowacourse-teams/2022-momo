@@ -108,6 +108,10 @@ public class Group {
         belongTo(schedules);
     }
 
+    private void belongTo(List<Schedule> schedules) {
+        this.schedules.addAll(schedules);
+    }
+
     private void validateCapacity(int capacity) {
         if (GroupCapacityRange.isOutOfRange(capacity)) {
             throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
@@ -135,13 +139,17 @@ public class Group {
     }
 
     private void validateOverCapacity() {
-        if (this.capacity <= participants.size()) {
+        if (isOverCapacity()) {
             throw new IllegalArgumentException("정원이 가득 찼습니다.");
         }
     }
 
-    private void belongTo(List<Schedule> schedules) {
-        this.schedules.addAll(schedules);
+    public boolean isFinishedRecruitment() {
+        return isOverCapacity() || deadline.isBefore(LocalDateTime.now());
+    }
+
+    private boolean isOverCapacity() {
+        return this.capacity <= participants.size();
     }
 
     public List<Schedule> getSchedules() {

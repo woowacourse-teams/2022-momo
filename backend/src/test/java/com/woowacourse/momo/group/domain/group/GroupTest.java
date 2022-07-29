@@ -8,6 +8,7 @@ import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59�
 import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -104,6 +105,28 @@ class GroupTest {
         assertThat(participants).contains(host, member);
     }
 
+    @DisplayName("현재 참여 인원이 정원을 초과하면 모집이 종료된다.")
+    @Test
+    void isFinishedRecruitmentWithOverCapacity() {
+        int capacity = 2;
+        Group group = constructGroupWithSetCapacity(capacity);
+        Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
+        group.participate(member);
+
+        boolean actual = group.isFinishedRecruitment();
+        assertThat(actual).isTrue();
+    }
+
+    @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
+    @Test
+    void isFinishedRecruitmentWithPassedDeadline() {
+        LocalDateTime deadline = LocalDateTime.now().minusMinutes(1);
+        Group group = constructGroupWithSetDeadline(deadline);
+
+        boolean actual = group.isFinishedRecruitment();
+        assertThat(actual).isTrue();
+    }
+
     private Group constructGroup() {
         return constructGroupWithSetCapacity(10);
     }
@@ -113,5 +136,11 @@ class GroupTest {
         return new Group("momo 회의", host, Category.STUDY, capacity, _7월_1일부터_2일까지.getInstance(),
                 _6월_30일_23시_59분.getInstance(),
                 schedules, "", "");
+    }
+
+    private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
+        List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
+        return new Group("momo 회의", host, Category.STUDY, 10, _7월_1일부터_2일까지.getInstance(),
+                deadline, schedules, "", "");
     }
 }
