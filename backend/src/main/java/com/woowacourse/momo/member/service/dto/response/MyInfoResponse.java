@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MyInfoResponse {
 
-    private String email;
+    private String userId;
     private String name;
 }

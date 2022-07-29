@@ -65,10 +65,10 @@ public class ParticipantControllerTest {
     @DisplayName("모임에 참여한다")
     @Test
     void participate() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
+        Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
-        Long participantId = saveMember("participant@woowacourse.com");
-        String accessToken = accessToken("participant@woowacourse.com");
+        Long participantId = saveMember("participant");
+        String accessToken = accessToken("participant");
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
                         .header("Authorization", "bearer " + accessToken)
@@ -86,8 +86,8 @@ public class ParticipantControllerTest {
     @DisplayName("존재하지 않는 모임에 참여할 수 없다")
     @Test
     void participateNotExistGroup() throws Exception {
-        Long participantId = saveMember("participant@woowacourse.com");
-        String accessToken = accessToken("participant@woowacourse.com");
+        Long participantId = saveMember("participant");
+        String accessToken = accessToken("participant");
 
         mockMvc.perform(post("/api/groups/" + 0 + "/participants")
                         .header("Authorization", "bearer " + accessToken)
@@ -106,10 +106,10 @@ public class ParticipantControllerTest {
     @DisplayName("존재하지 않는 사용자는 모임에 참여할 수 없다")
     @Test
     void participateNotExistMember() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
+        Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
-        Long participantId = saveMember("participant@woowacourse.com");
-        String accessToken = accessToken("participant@woowacourse.com");
+        Long participantId = saveMember("participant");
+        String accessToken = accessToken("participant");
         deleteMember(participantId);
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
@@ -129,10 +129,10 @@ public class ParticipantControllerTest {
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
     @Test
     void reParticipate() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
+        Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
-        Long participantId = saveMember("participant@woowacourse.com");
-        String accessToken = accessToken("participant@woowacourse.com");
+        Long participantId = saveMember("participant");
+        String accessToken = accessToken("participant");
         participateMember(groupId, participantId);
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
@@ -152,10 +152,10 @@ public class ParticipantControllerTest {
     @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
     @Test
     void participateFullGroup() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
+        Long hostId = saveMember("host");
         Long groupId = saveGroupWithSetCapacity(hostId, 1);
-        Long participantId = saveMember("participant@woowacourse.com");
-        String accessToken = accessToken("participant@woowacourse.com");
+        Long participantId = saveMember("participant");
+        String accessToken = accessToken("participant");
 
         mockMvc.perform(post("/api/groups/" + groupId + "/participants")
                         .header("Authorization", "bearer " + accessToken)
@@ -174,7 +174,7 @@ public class ParticipantControllerTest {
     @DisplayName("모임의 참여자 목록을 조회한다")
     @Test
     void findParticipants() throws Exception {
-        Long hostId = saveMember("host@woowacourse.com");
+        Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
 
         mockMvc.perform(get("/api/groups/" + groupId + "/participants")
@@ -205,13 +205,13 @@ public class ParticipantControllerTest {
                 );
     }
 
-    Long saveMember(String email) {
-        SignUpRequest request = new SignUpRequest(email, "wooteco1!", "momo");
+    Long saveMember(String userId) {
+        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
         return authService.signUp(request);
     }
 
-    String accessToken(String email) {
-        LoginRequest request = new LoginRequest(email, "wooteco1!");
+    String accessToken(String userId) {
+        LoginRequest request = new LoginRequest(userId, "wooteco1!");
 
         return authService.login(request).getAccessToken();
     }

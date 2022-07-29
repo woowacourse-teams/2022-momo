@@ -19,8 +19,8 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(name = "user_id", nullable = false, unique = true)
+    private String userId;
 
     @Column(nullable = false)
     private String password;
@@ -28,8 +28,11 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String name;
 
-    public Member(String email, String password, String name) {
-        this.email = email;
+    public Member(String userId, String password, String name) {
+        if (userId.contains("@")) {
+            throw new IllegalArgumentException();
+        }
+        this.userId = userId;
         this.password = password;
         this.name = name;
     }

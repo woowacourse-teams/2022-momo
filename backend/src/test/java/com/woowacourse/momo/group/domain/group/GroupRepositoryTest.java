@@ -132,7 +132,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 참여자가 있는 모임을 삭제한다")
     @Test
     void deleteIncludedParticipants() {
-        Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
+        Member participant = memberRepository.save(new Member("momo", "1234asdf!", "모모1"));
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
@@ -148,7 +148,7 @@ class GroupRepositoryTest {
     @DisplayName("모임에 참여자를 추가한다")
     @Test
     void saveParticipant() {
-        Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
+        Member participant = memberRepository.save(new Member("momo", "1234asdf!", "모모1"));
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);

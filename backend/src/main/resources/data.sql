@@ -1,11 +1,11 @@
-insert into momo_member(email, name, password)
-values ('inbong@woowa.woo', '4기 이프', '1q2w3e4R!');
-insert into momo_member(email, name, password)
-values ('useji@woowa.woo', '4기 유세지', '1q2w3e4R!');
-insert into momo_member(email, name, password)
-values ('seongwon@woowa.woo', '4기 렉스', '1q2w3e4R!');
-insert into momo_member(email, name, password)
-values ('yukong@woowa.woo', '4기 유콩', '1q2w3e4R!');
+insert into momo_member(user_id, name, password)
+values ('inbong', '4기 이프', '1q2w3e4R!');
+insert into momo_member(user_id, name, password)
+values ('useji', '4기 유세지', '1q2w3e4R!');
+insert into momo_member(user_id, name, password)
+values ('seongwon', '4기 렉스', '1q2w3e4R!');
+insert into momo_member(user_id, name, password)
+values ('yukong', '4기 유콩', '1q2w3e4R!');
 
 insert into momo_group(category, deadline, capacity, description, enddate, startdate, host_id, location, name)
 values ('DRINK', '2022-07-22 17:59', 99, '오늘로 레벨 3의 두 번째 데모 데이가 끝납니다.\n저녁식사 하면서 간단하게 한 잔 하려고 하는데 오실 분들은 자유롭게 참여해주세요.\n메뉴는 치킨에 맥주입니다.\n술 강요 없음 / 딱 한 잔 가능 / 주종 선택 자유',

@@ -27,7 +27,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void findMyInfo() {
         MemberRestHandler.개인정보를_조회한다(accessToken)
                 .statusCode(HttpStatus.OK.value())
-                .body("email", is(MEMBER.getEmail()))
+                .body("userId", is(MEMBER.getUserId()))
                 .body("name", is(MEMBER.getName()));
     }
 
@@ -39,7 +39,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         MemberRestHandler.비밀번호를_수정한다(accessToken, expected)
                 .statusCode(HttpStatus.OK.value());
 
-        AuthRestHandler.로그인을_한다(MEMBER.getEmail(), expected)
+        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), expected)
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -62,7 +62,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
         // TODO: UNAUTHORIZED 상태코드여야 함.
-        AuthRestHandler.로그인을_한다(MEMBER.getEmail(), MEMBER.getPassword())
+        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), MEMBER.getPassword())
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

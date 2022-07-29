@@ -36,7 +36,7 @@ import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 @SpringBootTest
 public class MemberControllerTest {
 
-    private static final String ID = "momo@woowa.com";
+    private static final String ID = "momo";
     private static final String PASSWORD = "1q2W3e4r!";
     private static final String NAME = "모모";
 
@@ -62,7 +62,7 @@ public class MemberControllerTest {
     void find() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/members")
                         .header("authorization", "bearer " + accessToken))
-                .andExpect(jsonPath("email", is(ID)))
+                .andExpect(jsonPath("userId", is(ID)))
                 .andDo(
                         document("memberfind",
                                 preprocessRequest(prettyPrint()),

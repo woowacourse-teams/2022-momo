@@ -179,13 +179,13 @@ class GroupControllerTest {
     }
 
     String accessToken() {
-        LoginRequest request = new LoginRequest("woowa@woowa.com", "wooteco1!");
+        LoginRequest request = new LoginRequest("woowa", "wooteco1!");
 
         return authService.login(request).getAccessToken();
     }
 
     Long saveMember() {
-        SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
+        SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
         return authService.signUp(request);
     }
 }

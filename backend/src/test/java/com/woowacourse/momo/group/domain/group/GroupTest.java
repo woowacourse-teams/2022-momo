@@ -62,7 +62,7 @@ class GroupTest {
     @Test
     void participate() {
         Group group = constructGroup();
-        Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
+        Member member = new Member("momo", "qwer123!@#", "모모");
         group.participate(member);
 
         assertThat(group.getParticipants()).hasSize(2);
@@ -72,7 +72,7 @@ class GroupTest {
     @Test
     void validateReParticipant() {
         Group group = constructGroup();
-        Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
+        Member member = new Member("momo", "qwer123!@#", "모모");
         group.participate(member);
         assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -84,10 +84,10 @@ class GroupTest {
     void validateOverCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
-        Member member1 = new Member("momo@woowa.com", "qwer123!@#", "모모");
+        Member member1 = new Member("momo", "qwer123!@#", "모모");
         group.participate(member1);
 
-        Member member2 = new Member("dudu@woowa.com", "qwer123!@#", "두두");
+        Member member2 = new Member("dudu", "qwer123!@#", "두두");
         assertThatThrownBy(() -> group.participate(member2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("정원이 가득 찼습니다.");
@@ -97,7 +97,7 @@ class GroupTest {
     @Test
     void getParticipants() {
         Group group = constructGroup();
-        Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
+        Member member = new Member("momo", "qwer123!@#", "모모");
         group.participate(member);
 
         List<Member> participants = group.getParticipants();
