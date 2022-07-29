@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.fixture.MemberFixture.INVALID_EMAIL;
-import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -31,18 +30,6 @@ class ApiLoggingTest extends AcceptanceTest {
         System.setOut(new PrintStream(console));
     }
 
-    @DisplayName("method 실행 전 후에 로그를 남긴다")
-    @Test
-    void infoLog() {
-        executeInfoLogMethod();
-
-        assertAll(
-                () -> assertThat(console.toString()).contains("com.woowacourse.momo.logging.Logging"),
-                () -> assertThat(console.toString()).contains("com.woowacourse.momo.auth.controller.AuthController/signUp"),
-                () -> assertThat(console.toString()).contains("INFO")
-        );
-    }
-
     @DisplayName("예측한 예외 발생 시 로그를 남긴다")
     @Test
     void warningLog() {
@@ -50,13 +37,9 @@ class ApiLoggingTest extends AcceptanceTest {
 
         assertAll(
                 () -> assertThat(console.toString()).contains("com.woowacourse.momo.logging.Logging"),
-                () -> assertThat(console.toString()).contains("com.woowacourse.momo.globalException.ControllerAdvice"),
+                () -> assertThat(console.toString()).contains("MethodArgumentNotValidException"),
                 () -> assertThat(console.toString()).contains("WARN")
         );
-    }
-
-    private void executeInfoLogMethod() {
-        AuthRestHandler.회원가입을_한다(MOMO);
     }
 
     private void executeWarningLogMethod() {
