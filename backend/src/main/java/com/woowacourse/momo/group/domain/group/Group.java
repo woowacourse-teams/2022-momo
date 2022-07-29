@@ -109,7 +109,7 @@ public class Group {
     }
 
     private void validateCapacity(int capacity) {
-        if (1 > capacity || capacity > 99) {
+        if (GroupCapacityRange.isOutOfRange(capacity)) {
             throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
         }
     }
