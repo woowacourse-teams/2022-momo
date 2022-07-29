@@ -2,7 +2,7 @@ package com.woowacourse.momo.logging;
 
 import java.util.Arrays;
 
-import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,54 +19,38 @@ public class Logging {
     protected void allMethod() {
     }
 
-    @Pointcut("execution(* " + BASE_PATH + "." + EXCEPTION_PACKAGE + "..*.*(..))")
-    protected void predictedExceptionMethod() {
-    }
-
     @Pointcut("execution(* " + BASE_PATH + "." + EXCEPTION_PACKAGE + "." + GLOBAL_EXCEPTION_METHOD + "(..))")
     protected void exceptionMethod() {
     }
 
-    protected void info(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.info(log(joinPoint, result));
+    protected void printExceptionStackTrace(JoinPoint joinPoint) {
+        String logMessage = log(joinPoint);
+        LOGGER.error(ConsolePrettier.red(logMessage));
+        LogFileManager.writeExceptionStackTrace(logMessage);
     }
 
-    protected void debug(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.debug(log(joinPoint, result));
-    }
-
-    protected void trace(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.trace(log(joinPoint, result));
-    }
-
-    protected void warn(ProceedingJoinPoint joinPoint, Object result) {
-        LOGGER.warn(ConsolePrettier.yellow("" + getException(joinPoint)));
-    }
-
-    protected void error(ProceedingJoinPoint joinPoint, Object result) {
+    protected void printExceptionMessage(JoinPoint joinPoint) {
         LOGGER.error(ConsolePrettier.red("" + getException(joinPoint)));
         LogFileManager.write(getException(joinPoint));
     }
 
-    private String log(ProceedingJoinPoint joinPoint, Object result) {
-        return ConsolePrettier.green(
-                getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint) + "(" + getParams(joinPoint) + ")"
-        );
+    private String log(JoinPoint joinPoint) {
+        return getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint) + "(" + getParams(joinPoint) + ")";
     }
 
-    private String getPathAndClassName(ProceedingJoinPoint joinPoint) {
+    private String getPathAndClassName(JoinPoint joinPoint) {
         return joinPoint.getSignature().getDeclaringTypeName();
     }
 
-    private String getMethodName(ProceedingJoinPoint joinPoint) {
+    private String getMethodName(JoinPoint joinPoint) {
         return joinPoint.getSignature().getName();
     }
 
-    private String getParams(ProceedingJoinPoint joinPoint) {
+    private String getParams(JoinPoint joinPoint) {
         return Arrays.toString(joinPoint.getArgs());
     }
 
-    private Exception getException(ProceedingJoinPoint joinPoint) {
+    private Exception getException(JoinPoint joinPoint) {
         return (Exception) joinPoint.getArgs()[0];
     }
 }
