@@ -43,7 +43,10 @@ function Header() {
         <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
         <NavLink to={'NOT_THING'}>내 모임</NavLink>
         {isLogin ? (
-          <div onClick={logout}>로그아웃</div>
+          <>
+            <NavLink to={BROWSER_PATH.INFO}>내 정보</NavLink>
+            <div onClick={logout}>로그아웃</div>
+          </>
         ) : (
           <>
             <div onClick={changeModalState('signup')}>회원가입</div>
