@@ -31,33 +31,33 @@ public class Logging {
     protected void exceptionMethod() {
     }
 
-    protected void info(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.info(log(prefix, joinPoint));
+    protected void info(ProceedingJoinPoint joinPoint) {
+        LOGGER.info(log(joinPoint));
     }
 
-    protected void debug(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.debug(log(prefix, joinPoint));
+    protected void debug(ProceedingJoinPoint joinPoint) {
+        LOGGER.debug(log(joinPoint));
     }
 
-    protected void trace(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.trace(log(prefix, joinPoint));
+    protected void trace(ProceedingJoinPoint joinPoint) {
+        LOGGER.trace(log(joinPoint));
     }
 
-    protected void warn(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.warn(log(prefix, joinPoint));
+    protected void warn(ProceedingJoinPoint joinPoint) {
+        LOGGER.warn(log(joinPoint));
     }
 
-    protected void error(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.error(exceptionLog(prefix, joinPoint));
+    protected void error(ProceedingJoinPoint joinPoint) {
+        LOGGER.error(exceptionLog(joinPoint));
     }
 
-    private String log(String prefix, ProceedingJoinPoint joinPoint) {
-        return ANSI_YELLOW + prefix + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
+    private String log(ProceedingJoinPoint joinPoint) {
+        return ANSI_YELLOW + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
                  + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
     }
 
-    private String exceptionLog(String prefix, ProceedingJoinPoint joinPoint) {
-        return ANSI_RED + prefix + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
+    private String exceptionLog(ProceedingJoinPoint joinPoint) {
+        return ANSI_RED + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
                 + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
     }
 
