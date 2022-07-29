@@ -135,13 +135,9 @@ public class Group {
     }
 
     private void validateOverCapacity() {
-        if (this.capacity <= getParticipantsSize()) {
+        if (this.capacity <= participants.size()) {
             throw new IllegalArgumentException("정원이 가득 찼습니다.");
         }
-    }
-
-    public int getParticipantsSize() {
-        return participants.size();
     }
 
     private void belongTo(List<Schedule> schedules) {
