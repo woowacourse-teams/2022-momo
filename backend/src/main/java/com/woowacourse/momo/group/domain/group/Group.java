@@ -125,10 +125,10 @@ public class Group {
 
     private void validateParticipateAvailable(Member member) {
         validateOverCapacity();
-        validateReParticipant(member);
+        validateReParticipate(member);
     }
 
-    private void validateReParticipant(Member member) {
+    private void validateReParticipate(Member member) {
         if (getParticipants().contains(member)) {
             throw new IllegalArgumentException("이미 참여한 모임입니다.");
         }
