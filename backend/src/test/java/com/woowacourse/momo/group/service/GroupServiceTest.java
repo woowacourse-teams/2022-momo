@@ -40,7 +40,8 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(),
+            _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 

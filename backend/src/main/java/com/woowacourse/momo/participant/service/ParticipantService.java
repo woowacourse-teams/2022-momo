@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.service.MemberFindService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
-import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

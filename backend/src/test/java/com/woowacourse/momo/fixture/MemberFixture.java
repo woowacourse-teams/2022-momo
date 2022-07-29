@@ -10,7 +10,7 @@ import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 @SuppressWarnings("NonAsciiCharacters")
 @Getter
 public enum MemberFixture {
-    
+
     MOMO("momo@woowa.com", "qwe123!@#", "momo"),
     DUDU("dudu@woowa.com", "qwe123!@#", "dudu"),
     GUGU("gugu@woowa.com", "qwe123!@#", "gugu");

@@ -35,9 +35,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
-import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;

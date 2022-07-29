@@ -16,6 +16,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class ScheduleTest {
 
+    private static Stream<Arguments> provideForScheduleValidator() {
+        return Stream.of(
+                Arguments.of(_10시_00분.getInstance(), _10시_00분.getInstance()),
+                Arguments.of(_12시_00분.getInstance(), _10시_00분.getInstance())
+        );
+    }
+
     @DisplayName("시작 시간은 종료 시간 이전이어야 한다")
     @ParameterizedTest(name = "시작 시간: {0}, 종료 시간: {1}")
     @MethodSource("provideForScheduleValidator")
@@ -23,12 +30,5 @@ class ScheduleTest {
         assertThatThrownBy(() -> new Schedule(_7월_1일.getInstance(), startTime, endTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("시작 시간은 종료 시간 이전이어야 합니다.");
-    }
-
-    private static Stream<Arguments> provideForScheduleValidator() {
-        return Stream.of(
-                Arguments.of(_10시_00분.getInstance(), _10시_00분.getInstance()),
-                Arguments.of(_12시_00분.getInstance(), _10시_00분.getInstance())
-        );
     }
 }

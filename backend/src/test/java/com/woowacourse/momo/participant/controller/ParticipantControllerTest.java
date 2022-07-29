@@ -26,9 +26,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
-import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;

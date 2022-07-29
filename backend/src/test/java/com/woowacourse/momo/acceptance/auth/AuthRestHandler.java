@@ -20,6 +20,7 @@ public class AuthRestHandler extends RestHandler {
     public static ValidatableResponse 회원가입을_한다(MemberFixture memberFixture) {
         return 회원가입을_한다(memberFixture.getEmail(), memberFixture.getPassword(), memberFixture.getName());
     }
+
     public static ValidatableResponse 로그인을_한다(String email, String password) {
         LoginRequest request = new LoginRequest(email, password);
         return postRequest(request, BASE_URL + "/login");
