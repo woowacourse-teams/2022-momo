@@ -25,9 +25,11 @@ import org.springframework.http.HttpStatus;
 import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
+import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 class GroupFindAcceptanceTest extends AcceptanceTest {
 
@@ -130,11 +132,17 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
             GroupFixture group = groups.get(i);
             String deadline = group.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 
+            int numOfParticipant = ParticipantRestHandler.참여목록을_조회한다(groupIds.get(group))
+                    .extract()
+                    .as(MemberResponse[].class)
+                    .length;
+
             String index = String.format("[%d]", i);
             response.body(index + ".id", is(groupIds.get(group).intValue()))
                     .body(index + ".name", is(group.getName()))
                     .body(index + ".categoryId", is(group.getCategoryId().intValue()))
                     .body(index + ".capacity", is(group.getCapacity()))
+                    .body(index + ".numOfParticipant", is(numOfParticipant))
                     .body(index + ".deadline", is(deadline))
                     .body(index + ".host.id", is(1))
                     .body(index + ".host.name", is(HOST.getName()));
