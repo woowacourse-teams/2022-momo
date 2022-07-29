@@ -3,8 +3,8 @@ package com.woowacourse.momo.acceptance.member;
 import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class MemberRestHandler extends RestHandler {

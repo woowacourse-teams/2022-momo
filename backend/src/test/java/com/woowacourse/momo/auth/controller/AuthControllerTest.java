@@ -23,9 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.AuthService;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs

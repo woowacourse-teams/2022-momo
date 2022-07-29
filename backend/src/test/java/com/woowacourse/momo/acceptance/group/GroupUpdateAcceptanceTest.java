@@ -50,7 +50,8 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                 () -> {
                     String startDuration = updatedGroup.getDuration().getStartDate().format(DateTimeFormatter.ISO_DATE);
                     String endDuration = updatedGroup.getDuration().getEndDate().format(DateTimeFormatter.ISO_DATE);
-                    String deadline = updatedGroup.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                    String deadline = updatedGroup.getDeadline()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                     response
                             .body("name", is(updatedGroup.getName()))
                             .body("host.id", is(1))
@@ -78,7 +79,8 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     @Test
     void updateGroupByAnotherMember() {
         String anotherAccessToken = DUDU.로_로그인한다();
-        모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY).statusCode(
+                HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
     }
 
     @DisplayName("비회원이 모임을 수정한다")

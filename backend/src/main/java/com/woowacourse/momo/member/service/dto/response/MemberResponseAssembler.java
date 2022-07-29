@@ -1,4 +1,4 @@
-package com.woowacourse.momo.member.dto.response;
+package com.woowacourse.momo.member.service.dto.response;
 
 import java.util.List;
 import java.util.stream.Collectors;

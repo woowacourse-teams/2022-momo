@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
-import com.woowacourse.momo.member.dto.response.MyInfoResponse;
+import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
+import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

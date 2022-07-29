@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
-import com.woowacourse.momo.auth.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.exception.AuthFailException;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.member.domain.Member;

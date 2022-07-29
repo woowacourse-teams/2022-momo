@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 @Getter
 @AllArgsConstructor

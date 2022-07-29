@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.AuthService;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
+import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional
 @SpringBootTest

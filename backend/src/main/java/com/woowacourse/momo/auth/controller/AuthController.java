@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
-import com.woowacourse.momo.auth.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.service.AuthService;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")

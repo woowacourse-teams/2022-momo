@@ -24,11 +24,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -61,7 +61,7 @@ public class MemberControllerTest {
     @Test
     void find() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/members")
-                .header("authorization", "bearer " + accessToken))
+                        .header("authorization", "bearer " + accessToken))
                 .andExpect(jsonPath("email", is(ID)))
                 .andDo(
                         document("memberfind",
