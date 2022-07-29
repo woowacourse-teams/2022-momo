@@ -64,6 +64,18 @@ class AuthControllerTest {
                 );
     }
 
+    @DisplayName("잘못된 아이디 형식으로 로그인시 400코드가 반환된다")
+    @Test
+    void signUpWithInvalidUserIdPattern() throws Exception {
+        SignUpRequest request = new SignUpRequest("woowa@", PASSWORD, NAME);
+
+        mockMvc.perform(post("/api/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", containsString("잘못된 아이디 형식입니다.")));
+    }
+
     @DisplayName("비어있는 아이디 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankUserId() throws Exception {

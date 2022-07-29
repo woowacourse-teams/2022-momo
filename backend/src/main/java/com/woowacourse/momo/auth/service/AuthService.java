@@ -34,10 +34,17 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
+        validateUserId(request.getUserId());
         String password = passwordEncoder.encrypt(request.getPassword());
         Member member = new Member(request.getUserId(), password, request.getName());
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
+    }
+
+    private void validateUserId(String userId) {
+        if (userId.contains("@")) {
+            throw new IllegalArgumentException("잘못된 아이디 형식입니다.");
+        }
     }
 }
