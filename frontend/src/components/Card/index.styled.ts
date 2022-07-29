@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -24,6 +25,7 @@ const Description = styled.div`
   display: flex;
   justify-content: space-between;
 
+  height: 100%;
   line-height: 1.4em;
 
   padding: 1rem;
@@ -33,7 +35,17 @@ const Left = styled.div`
   display: flex;
   flex-direction: column;
 
-  max-width: 58%;
+  width: 50%;
+`;
+
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  width: 50%;
+  height: 100%;
 `;
 
 const Title = styled.div`
@@ -82,14 +94,26 @@ const Deadline = styled.div`
   font-size: 1rem;
 `;
 
+const Capacity = styled.div`
+  ${({ theme: { colors } }) => css`
+    color: ${colors.gray001};
+
+    span {
+      color: ${colors.blue002};
+    }
+  `}
+`;
+
 export {
   Container,
   Image,
   Description,
   Left,
+  Right,
   Title,
   HostName,
-  Deadline,
   HashtagBox,
   Hashtag,
+  Deadline,
+  Capacity,
 };
