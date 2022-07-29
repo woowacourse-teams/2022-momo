@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Portal from 'components/Portal';
 import { preventBubbling } from 'utils/event';
@@ -12,11 +12,30 @@ interface ModalProps {
 }
 
 function Modal({ modalState, setOffModal, children }: ModalProps) {
+  const [isClosing, setIsClosing] = useState(false);
+
+  const setOffModalWithAnimation = () => {
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setOffModal();
+      setIsClosing(false);
+    }, 300);
+  };
+
   return (
     <Portal>
       {modalState && (
-        <S.Dimmer onClick={setOffModal}>
-          <S.Content onClick={preventBubbling}>{children}</S.Content>
+        <S.Dimmer
+          onClick={setOffModalWithAnimation}
+          className={isClosing ? 'close' : ''}
+        >
+          <S.Content
+            onClick={preventBubbling}
+            className={isClosing ? 'close' : ''}
+          >
+            {children}
+          </S.Content>
         </S.Dimmer>
       )}
     </Portal>
