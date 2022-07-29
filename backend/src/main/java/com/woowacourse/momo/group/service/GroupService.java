@@ -3,6 +3,8 @@ package com.woowacourse.momo.group.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
@@ -55,7 +58,6 @@ public class GroupService {
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
-        validateFinishedRecruitment(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
@@ -89,9 +91,15 @@ public class GroupService {
         }
     }
 
-    private void validateFinishedRecruitment(Group group) {
-        if (group.isFinishedRecruitment()) {
-            throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
-        }
+    public GroupPageResponse findAll(Pageable pageable) {
+        Page<Group> groups = groupFindService.findGroups(pageable);
+        List<GroupSummaryResponse> summaries = groups.stream()
+                .map(group -> {
+                    Member host = memberFindService.findMember(group.getHostId());
+                    return GroupResponseAssembler.groupSummaryResponse(group, host);
+                })
+                .collect(Collectors.toList());
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
     }
 }
