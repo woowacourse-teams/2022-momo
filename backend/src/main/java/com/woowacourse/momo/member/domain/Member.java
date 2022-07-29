@@ -29,9 +29,6 @@ public class Member {
     private String name;
 
     public Member(String userId, String password, String name) {
-        if (userId.contains("@")) {
-            throw new IllegalArgumentException();
-        }
         this.userId = userId;
         this.password = password;
         this.name = name;
