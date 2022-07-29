@@ -7,18 +7,19 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import com.woowacourse.momo.logging.exception.LogException;
 
-public class MomoLogFile {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class LogFileManager {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final String LOG_DIRECTORY_PATH = "./src/log/";
     private static final String EXTENSION = ".txt";
     private static final File DIRECTORY = new File(LOG_DIRECTORY_PATH);
     private static final boolean IS_APPENDED = true;
-
-    private MomoLogFile() {
-    }
 
     public static void write(Exception exception) {
         createDirectory();

@@ -49,7 +49,7 @@ public class Logging {
 
     protected void error(ProceedingJoinPoint joinPoint, Object result) {
         LOGGER.error("" + getException(joinPoint));
-        MomoLogFile.write(getException(joinPoint));
+        LogFileManager.write(getException(joinPoint));
     }
 
     private String log(ProceedingJoinPoint joinPoint, Object result) {
