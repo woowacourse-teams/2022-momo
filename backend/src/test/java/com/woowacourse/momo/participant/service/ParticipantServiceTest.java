@@ -24,7 +24,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.dto.response.MemberResponse;
+import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
 
 @Transactional

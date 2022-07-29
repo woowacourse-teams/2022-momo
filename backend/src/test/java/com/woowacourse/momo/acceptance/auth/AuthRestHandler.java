@@ -3,8 +3,8 @@ package com.woowacourse.momo.acceptance.auth;
 import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.MemberFixture;
 
 @SuppressWarnings("NonAsciiCharacters")

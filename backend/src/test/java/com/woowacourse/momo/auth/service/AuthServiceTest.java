@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 
 @Transactional

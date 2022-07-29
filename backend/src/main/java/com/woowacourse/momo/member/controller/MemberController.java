@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.member.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.dto.request.ChangePasswordRequest;
-import com.woowacourse.momo.member.dto.response.MyInfoResponse;
+import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 import com.woowacourse.momo.member.service.MemberService;
 
 @RequiredArgsConstructor

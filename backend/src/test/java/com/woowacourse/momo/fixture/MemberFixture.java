@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
-import com.woowacourse.momo.auth.dto.response.LoginResponse;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Getter

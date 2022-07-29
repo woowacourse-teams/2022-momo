@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
+import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {

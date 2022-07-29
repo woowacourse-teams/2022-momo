@@ -1,12 +1,12 @@
-package com.woowacourse.momo.member.dto.response;
+package com.woowacourse.momo.member.service.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberResponse {
+public class MyInfoResponse {
 
-    private Long id;
+    private String email;
     private String name;
 }
