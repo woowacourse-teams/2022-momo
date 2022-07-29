@@ -158,11 +158,11 @@ class GroupControllerTest {
         saveGroup(saveMemberId);
         String accessToken = accessToken();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0")
                         .header("Authorization", "bearer " + accessToken))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$[0].name", is("모모의 스터디")))
-                .andExpect(jsonPath("$[1].name", is("모모의 스터디")))
+                .andExpect(jsonPath("groups[0].name", is("모모의 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
                 .andDo(
                         document("grouplist",
                                 preprocessRequest(prettyPrint()),
