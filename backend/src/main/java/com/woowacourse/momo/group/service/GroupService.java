@@ -84,10 +84,7 @@ public class GroupService {
     public GroupPageResponse findAll(Pageable pageable) {
         Page<Group> groups = groupFindService.findGroups(pageable);
         List<GroupSummaryResponse> summaries = groups.stream()
-                .map(group -> {
-                    Member host = memberFindService.findMember(group.getHostId());
-                    return GroupResponseAssembler.groupSummaryResponse(group, host);
-                })
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
