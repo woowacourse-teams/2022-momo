@@ -18,7 +18,7 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 @SuppressWarnings("NonAsciiCharacters")
 public class GroupRestHandler extends RestHandler {
 
-    public static final String BASE_URL = "/api/groups";
+    private static final String BASE_URL = "/api/groups";
 
     public static ValidatableResponse 모임을_생성한다(String accessToken, GroupFixture group) {
         GroupRequest request = groupRequest(group);

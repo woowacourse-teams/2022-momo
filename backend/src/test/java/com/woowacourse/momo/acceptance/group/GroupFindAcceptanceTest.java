@@ -138,7 +138,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                     .as(MemberResponse[].class)
                     .length;
 
-            String index = String.format("[%d]", i);
+            String index = String.format("groups[%d]", i);
             response.body(index + ".id", is(groupIds.get(group).intValue()))
                     .body(index + ".name", is(group.getName()))
                     .body(index + ".categoryId", is(group.getCategoryId().intValue()))
