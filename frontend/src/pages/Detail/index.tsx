@@ -29,6 +29,7 @@ function Detail() {
           <DetailSideBar
             id={Number(id)}
             name={data.host.name}
+            capacity={data.capacity}
             duration={data.duration}
             location={data.location}
             categoryName={
