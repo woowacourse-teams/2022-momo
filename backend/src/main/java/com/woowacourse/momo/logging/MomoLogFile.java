@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.woowacourse.momo.logging.exception.LogException;
+
 public class MomoLogFile {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final String LOG_DIRECTORY_PATH = "./src/log/";
     private static final String EXTENSION = ".txt";
+    private static final File DIRECTORY = new File(LOG_DIRECTORY_PATH);
+    private static final boolean IS_APPENDED = true;
 
     private MomoLogFile() {
     }
@@ -21,13 +25,23 @@ public class MomoLogFile {
 
         File file = new File(LOG_DIRECTORY_PATH + getFileName() + EXTENSION);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
             writeExceptionMessage(exception, writer);
             writeStackTrace(exception, writer);
             writer.newLine();
         } catch (IOException e) {
-            throw new IllegalArgumentException("로그 작성에 문제있음!!!"); // TODO: 수정 필요
+            throw new LogException("로그 작성에 실패하였습니다");
         }
+    }
+
+    private static void createDirectory() {
+        if (!DIRECTORY.exists() && !DIRECTORY.mkdir()) {
+            throw new LogException("로그 폴더 생성에 실패하였습니다");
+        }
+    }
+
+    private static String getFileName() {
+        return DATE_FORMAT.format(new Date());
     }
 
     private static void writeExceptionMessage(Exception exception, BufferedWriter writer) throws IOException {
@@ -42,16 +56,5 @@ public class MomoLogFile {
             writer.append(log.toString());
             writer.newLine();
         }
-    }
-
-    private static void createDirectory() {
-        File directory = new File(LOG_DIRECTORY_PATH);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
-    }
-
-    private static String getFileName() {
-        return DATE_FORMAT.format(new Date());
     }
 }
