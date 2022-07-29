@@ -18,6 +18,7 @@ public class GroupSummaryResponse {
     private MemberResponse host;
     private Long categoryId;
     private int capacity;
+    private int numOfParticipant;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
 }

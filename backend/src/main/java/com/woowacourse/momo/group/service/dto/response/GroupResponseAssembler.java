@@ -24,7 +24,7 @@ public class GroupResponseAssembler {
     public static GroupSummaryResponse groupSummaryResponse(Group group) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getDeadline());
+                group.getCapacity(), group.getParticipants().size(), group.getDeadline());
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {
