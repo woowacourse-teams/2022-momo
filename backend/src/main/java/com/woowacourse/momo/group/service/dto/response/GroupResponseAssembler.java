@@ -27,6 +27,10 @@ public class GroupResponseAssembler {
                 group.getCapacity(), group.getParticipants().size(), group.getDeadline());
     }
 
+    public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses, boolean hasNextPage) {
+        return new GroupPageResponse(hasNextPage, groupSummaryResponses);
+    }
+
     public static GroupIdResponse groupIdResponse(Group group) {
         return new GroupIdResponse(group.getId());
     }
