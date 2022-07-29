@@ -22,6 +22,18 @@ const Header = styled.p`
   font-weight: 700;
 `;
 
+const Summary = styled.div`
+  text-align: center;
+
+  color: ${({ theme: { colors } }) => colors.gray001};
+
+  font-size: 1rem;
+
+  span {
+    color: ${({ theme: { colors } }) => colors.blue002};
+  }
+`;
+
 const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,4 +61,4 @@ const HostText = styled(Text)`
   color: ${({ theme: { colors } }) => colors.yellow001};
 `;
 
-export { Container, Header, Box, Wrapper, Text, HostText };
+export { Container, Header, Summary, Box, Wrapper, Text, HostText };
