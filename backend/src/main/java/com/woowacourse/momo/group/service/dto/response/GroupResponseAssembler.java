@@ -16,7 +16,7 @@ public class GroupResponseAssembler {
 
     public static GroupResponse groupResponse(Group group) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
-                group.getCategory().getId(), durationResponse(group.getDuration()),
+                group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(),
                 group.getDescription());
     }
@@ -24,7 +24,7 @@ public class GroupResponseAssembler {
     public static GroupSummaryResponse groupSummaryResponse(Group group) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getDeadline());
+                group.getCapacity(), group.getDeadline());
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {

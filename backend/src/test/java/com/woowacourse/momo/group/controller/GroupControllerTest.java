@@ -8,6 +8,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +41,7 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 
 @AutoConfigureMockMvc
@@ -47,6 +49,7 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 @Transactional
 @SpringBootTest
 class GroupControllerTest {
+
     private static final DurationRequest DURATION_REQUEST =
             new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
@@ -88,8 +91,25 @@ class GroupControllerTest {
 
     @DisplayName("그룹이 정상적으로 수정되는 경우를 테스트한다")
     @Test
-    void groupUpdateTest() {
+    void groupUpdateTest() throws Exception {
+        Long saveMemberId = saveMember();
+        String accessToken = accessToken();
+        Long savedGroupId = saveGroup(saveMemberId);
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 15,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
+        mockMvc.perform(put("/api/groups/" + savedGroupId)
+                        .header("Authorization", "bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(groupRequest))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document("groupupdate",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("그룹이 정상적으로 삭제되는 경우를 테스트한다")

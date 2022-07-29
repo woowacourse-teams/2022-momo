@@ -34,14 +34,14 @@ public enum GroupFixture {
 
     private final String name;
     private final Long categoryId;
-    private final int capacity;
+    private final Integer capacity;
     private final Duration duration;
     private final List<Schedule> schedules;
     private final LocalDateTime deadline;
     private final String location;
     private final String description;
 
-    GroupFixture(String name, Category category, int capacity, DurationFixture duration,
+    GroupFixture(String name, Category category, Integer capacity, DurationFixture duration,
                  List<ScheduleFixture> schedules, DateTimeFixture deadline, String location, String description) {
         this.name = name;
         this.categoryId = category.getId();

@@ -17,6 +17,7 @@ public class GroupResponse {
     private String name;
     private MemberResponse host;
     private Long categoryId;
+    private int capacity;
     private DurationResponse duration;
     private List<ScheduleResponse> schedules;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
