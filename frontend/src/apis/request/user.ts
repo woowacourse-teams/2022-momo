@@ -3,11 +3,11 @@ import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
 import { UserInfo } from 'types/user';
 
-const getUserInfo = (): Promise<UserInfo> => {
+const getUserInfo = () => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios
-    .get(API_PATH.MEMBERS, {
+    .get<UserInfo>(API_PATH.MEMBERS, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

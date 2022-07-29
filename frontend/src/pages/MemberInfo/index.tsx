@@ -16,33 +16,39 @@ import useInput from 'hooks/useInput';
 
 import * as S from './index.styled';
 
-function Info() {
+function MemberInfo() {
   const { data } = useQuery(QUERY_KEY.USER_INFO, getUserInfo, {
     suspense: true,
   });
   const { value: name, setValue: setName, dangerouslySetValue } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
-  const [isEditableName, setEditableName] = useState(false);
-  const [isEditablePassword, setEditablePassword] = useState(false);
+  const [isEditableName, setIsEditableName] = useState(false);
+  const [isEditablePassword, setIsEditablePassword] = useState(false);
+
+  useEffect(() => {
+    if (typeof data === 'undefined') return;
+
+    dangerouslySetValue(data.name);
+  }, [data, dangerouslySetValue]);
 
   const changeNameEditable = () => {
-    setEditableName(true);
+    setIsEditableName(true);
   };
 
   const changePasswordEditable = () => {
-    setEditablePassword(true);
+    setIsEditablePassword(true);
   };
 
   const editName = () => {
     requestChangeName(name)
       .then(() => {
         alert(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
+        setIsEditableName(false);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
       });
-    setEditableName(false);
   };
 
   const editPassword = () => {
@@ -54,18 +60,12 @@ function Info() {
     requestChangePassword(password)
       .then(() => {
         alert(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
+        setIsEditablePassword(false);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
       });
-    setEditablePassword(false);
   };
-
-  useEffect(() => {
-    if (typeof data?.name === 'string') {
-      dangerouslySetValue(data?.name);
-    }
-  }, [data, dangerouslySetValue]);
 
   return (
     <S.Container>
@@ -136,4 +136,4 @@ function Info() {
   );
 }
 
-export default Info;
+export default MemberInfo;
