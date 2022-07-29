@@ -31,34 +31,38 @@ public class Logging {
     protected void exceptionMethod() {
     }
 
-    protected void info(ProceedingJoinPoint joinPoint) {
-        LOGGER.info(log(joinPoint));
+    protected void info(ProceedingJoinPoint joinPoint, Object result) {
+        LOGGER.info(log(joinPoint, result));
     }
 
-    protected void debug(ProceedingJoinPoint joinPoint) {
-        LOGGER.debug(log(joinPoint));
+    protected void debug(ProceedingJoinPoint joinPoint, Object result) {
+        LOGGER.debug(log(joinPoint, result));
     }
 
-    protected void trace(ProceedingJoinPoint joinPoint) {
-        LOGGER.trace(log(joinPoint));
+    protected void trace(ProceedingJoinPoint joinPoint, Object result) {
+        LOGGER.trace(log(joinPoint, result));
     }
 
-    protected void warn(ProceedingJoinPoint joinPoint) {
-        LOGGER.warn(log(joinPoint));
+    protected void warn(ProceedingJoinPoint joinPoint, Object result) {
+        LOGGER.warn("" + getException(joinPoint));
     }
 
-    protected void error(ProceedingJoinPoint joinPoint) {
-        LOGGER.error(exceptionLog(joinPoint));
+    protected void error(ProceedingJoinPoint joinPoint, Object result) {
+        LOGGER.error("" + getException(joinPoint));
     }
 
-    private String log(ProceedingJoinPoint joinPoint) {
+    private String log(ProceedingJoinPoint joinPoint, Object result) {
         return ANSI_YELLOW + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
                  + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
     }
 
-    private String exceptionLog(ProceedingJoinPoint joinPoint) {
+    private String exceptionLog(ProceedingJoinPoint joinPoint, Object result) {
         return ANSI_RED + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
                 + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
+    }
+
+    private Exception getException(ProceedingJoinPoint joinPoint) {
+        return (Exception) joinPoint.getArgs()[0];
     }
 
     private String getPathAndClassName(ProceedingJoinPoint joinPoint) {
