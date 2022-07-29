@@ -1,5 +1,7 @@
 package com.woowacourse.momo.logging;
 
+import java.util.Arrays;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
@@ -8,6 +10,10 @@ import org.slf4j.LoggerFactory;
 public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
+
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RED = "\u001B[31m";
 
     private static final String BASE_PATH = "com.woowacourse.momo";
     private static final String EXCEPTION_PACKAGE = "globalException";
@@ -42,11 +48,17 @@ public class Logging {
     }
 
     protected void error(String prefix, ProceedingJoinPoint joinPoint) {
-        LOGGER.error(log(prefix, joinPoint));
+        LOGGER.error(exceptionLog(prefix, joinPoint));
     }
 
     private String log(String prefix, ProceedingJoinPoint joinPoint) {
-        return prefix + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint);
+        return ANSI_YELLOW + prefix + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
+                 + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
+    }
+
+    private String exceptionLog(String prefix, ProceedingJoinPoint joinPoint) {
+        return ANSI_RED + prefix + getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint)
+                + "(" + getParams(joinPoint) + ")" + ANSI_RESET;
     }
 
     private String getPathAndClassName(ProceedingJoinPoint joinPoint) {
@@ -55,5 +67,9 @@ public class Logging {
 
     private String getMethodName(ProceedingJoinPoint joinPoint) {
         return joinPoint.getSignature().getName();
+    }
+
+    private String getParams(ProceedingJoinPoint joinPoint) {
+        return Arrays.toString(joinPoint.getArgs());
     }
 }
