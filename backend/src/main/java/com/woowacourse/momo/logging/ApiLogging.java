@@ -12,14 +12,14 @@ public class ApiLogging extends Logging {
     @Around("predictedExceptionMethod()")
     public Object warnLog(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        warn(joinPoint);
+        warn(joinPoint, result);
         return result;
     }
 
     @Around("exceptionMethod()")
     public Object errorLog(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        error(joinPoint);
+        error(joinPoint, result);
         return result;
     }
 }
