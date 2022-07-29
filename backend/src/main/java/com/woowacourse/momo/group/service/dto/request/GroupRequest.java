@@ -17,6 +17,7 @@ public class GroupRequest {
 
     private String name;
     private Long categoryId;
+    private Integer capacity;
     private DurationRequest duration;
     private List<ScheduleRequest> schedules;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")

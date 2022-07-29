@@ -56,6 +56,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                             .body("host.id", is(1))
                             .body("host.name", is(HOST.getName()))
                             .body("categoryId", is(updatedGroup.getCategoryId().intValue()))
+                            .body("capacity", is(updatedGroup.getCapacity()))
                             .body("duration.start", is(startDuration))
                             .body("duration.end", is(endDuration))
                             .body("deadline", is(deadline))

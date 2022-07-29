@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
-import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponse(Group group, Member member) {
-        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(member),
-                group.getCategory().getId(), durationResponse(group.getDuration()),
+    public static GroupResponse groupResponse(Group group) {
+        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
+                group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(),
                 group.getDescription());
     }
 
-    public static GroupSummaryResponse groupSummaryResponse(Group group, Member member) {
-        return new GroupSummaryResponse(group.getId(), group.getName(), MemberResponseAssembler.memberResponse(member),
-                group.getCategory().getId(), group.getDeadline());
+    public static GroupSummaryResponse groupSummaryResponse(Group group) {
+        return new GroupSummaryResponse(group.getId(), group.getName(),
+                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
+                group.getCapacity(), group.getDeadline());
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {

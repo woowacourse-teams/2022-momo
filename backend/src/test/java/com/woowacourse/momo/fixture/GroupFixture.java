@@ -23,25 +23,29 @@ import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
             _6월_30일_23시_59분, "루터회관 13층", "같이 공부해요!!"),
-    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, _7월_1일부터_1일까지, List.of(_7월_1일_10시부터_12시까지),
+    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, _7월_1일부터_1일까지, List.of(_7월_1일_10시부터_12시까지),
             _6월_30일_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
-    DUDU_STUDY("두두와의 스터디", Category.STUDY, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
-            _6월_30일_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!");
+    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
+            _6월_30일_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
+    DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, _7월_1일부터_1일까지, List.of(_7월_1일_10시부터_12시까지),
+            _6월_30일_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
 
     private final String name;
     private final Long categoryId;
+    private final Integer capacity;
     private final Duration duration;
     private final List<Schedule> schedules;
     private final LocalDateTime deadline;
     private final String location;
     private final String description;
 
-    GroupFixture(String name, Category category, DurationFixture duration, List<ScheduleFixture> schedules,
-                 DateTimeFixture deadline, String location, String description) {
+    GroupFixture(String name, Category category, Integer capacity, DurationFixture duration,
+                 List<ScheduleFixture> schedules, DateTimeFixture deadline, String location, String description) {
         this.name = name;
         this.categoryId = category.getId();
+        this.capacity = capacity;
         this.duration = duration.getInstance();
         this.schedules = schedules.stream()
                 .map(ScheduleFixture::newInstance)

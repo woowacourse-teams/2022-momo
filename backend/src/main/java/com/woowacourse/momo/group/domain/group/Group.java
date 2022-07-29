@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
@@ -42,12 +43,16 @@ public class Group {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long hostId;
+    @ManyToOne
+    @JoinColumn
+    private Member host;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Column(nullable = false)
+    private int capacity;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -72,38 +77,67 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    public Group(String name, Long hostId, Category category, Duration duration, LocalDateTime deadline,
-                 List<Schedule> schedules, String location, String description) {
+    public Group(String name, Member host, Category category, int capacity, Duration duration,
+                 LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
-        this.hostId = hostId;
+        this.host = host;
         this.category = category;
+        this.capacity = capacity;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
         this.description = description;
 
+        validateCapacity(capacity);
+        participate(host);
         belongTo(schedules);
     }
 
-    public void update(String name, Category category, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.category = category;
+        this.capacity = capacity;
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
         this.description = description;
 
+        validateCapacity(capacity);
         this.schedules.clear();
         belongTo(schedules);
     }
 
+    private void validateCapacity(int capacity) {
+        if (GroupCapacityRange.isOutOfRange(capacity)) {
+            throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
+        }
+    }
+
     public boolean isSameHost(Member host) {
-        return Objects.equals(this.hostId, host.getId());
+        return this.host.equals(host);
     }
 
     public void participate(Member member) {
+        validateParticipateAvailable(member);
         this.participants.add(new Participant(this, member));
+    }
+
+    private void validateParticipateAvailable(Member member) {
+        validateOverCapacity();
+        validateReParticipate(member);
+    }
+
+    private void validateReParticipate(Member member) {
+        if (getParticipants().contains(member)) {
+            throw new IllegalArgumentException("이미 참여한 모임입니다.");
+        }
+    }
+
+    private void validateOverCapacity() {
+        if (this.capacity <= participants.size()) {
+            throw new IllegalArgumentException("정원이 가득 찼습니다.");
+        }
     }
 
     private void belongTo(List<Schedule> schedules) {
@@ -123,8 +157,9 @@ public class Group {
     public static class Builder {
 
         private String name;
-        private Long hostId;
+        private Member host;
         private Category category;
+        private int capacity;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -139,8 +174,8 @@ public class Group {
             return this;
         }
 
-        public Builder hostId(Long hostId) {
-            this.hostId = hostId;
+        public Builder host(Member host) {
+            this.host = host;
             return this;
         }
 
@@ -151,6 +186,11 @@ public class Group {
 
         public Builder categoryId(long categoryId) {
             this.category = Category.from(categoryId);
+            return this;
+        }
+
+        public Builder capacity(int capacity) {
+            this.capacity = capacity;
             return this;
         }
 
@@ -181,12 +221,13 @@ public class Group {
 
         public Group build() {
             validateNonNull();
-            return new Group(name, hostId, category, duration, deadline, schedules, location, description);
+            return new Group(name, host, category, capacity, duration, deadline, schedules, location,
+                    description);
         }
 
         private void validateNonNull() {
             Objects.requireNonNull(name);
-            Objects.requireNonNull(hostId);
+            Objects.requireNonNull(host);
             Objects.requireNonNull(category);
             Objects.requireNonNull(duration);
             Objects.requireNonNull(deadline);

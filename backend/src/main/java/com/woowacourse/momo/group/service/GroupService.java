@@ -41,17 +41,13 @@ public class GroupService {
 
     public GroupResponse findById(Long id) {
         Group group = groupFindService.findGroup(id);
-        Member host = memberFindService.findMember(group.getHostId());
-        return GroupResponseAssembler.groupResponse(group, host);
+        return GroupResponseAssembler.groupResponse(group);
     }
 
     public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
         return groups.stream()
-                .map(group -> {
-                    Member host = memberFindService.findMember(group.getHostId());
-                    return GroupResponseAssembler.groupSummaryResponse(group, host);
-                })
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
     }
 
@@ -62,7 +58,7 @@ public class GroupService {
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
-        group.update(request.getName(), Category.from(request.getCategoryId()),
+        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
                 GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }

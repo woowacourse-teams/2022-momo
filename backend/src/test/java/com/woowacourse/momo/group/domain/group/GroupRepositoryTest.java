@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,18 @@ class GroupRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    private Member host;
+
+    @BeforeEach
+    void setUp() {
+        host = memberRepository.save(new Member("주최자", "password", "momo"));
+    }
+
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
         List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
-        Group group = constructGroup(schedules);
+        Group group = constructGroup(host, schedules);
 
         Group savedGroup = groupRepository.save(group);
 
@@ -59,7 +67,7 @@ class GroupRepositoryTest {
     @Test
     void saveGroupWithoutSchedules() {
         List<Schedule> schedules = Collections.emptyList();
-        Group group = constructGroup(schedules);
+        Group group = constructGroup(host, schedules);
 
         Group savedGroup = groupRepository.save(group);
 
@@ -75,7 +83,7 @@ class GroupRepositoryTest {
     @Test
     void findById() {
         List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance(), _7월_2일_10시부터_12시까지.newInstance());
-        Group group = constructGroup(schedules);
+        Group group = constructGroup(host, schedules);
         Group savedGroup = groupRepository.save(group);
 
         synchronize();
@@ -90,8 +98,8 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        Group group1 = constructGroup(List.of(_7월_1일_10시부터_12시까지.newInstance()));
-        Group group2 = constructGroup(List.of(_7월_2일_10시부터_12시까지.newInstance()));
+        Group group1 = constructGroup(host, List.of(_7월_1일_10시부터_12시까지.newInstance()));
+        Group group2 = constructGroup(host, List.of(_7월_2일_10시부터_12시까지.newInstance()));
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
@@ -107,7 +115,7 @@ class GroupRepositoryTest {
     @Test
     void deleteById() {
         List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
-        Group group = constructGroup(schedules);
+        Group group = constructGroup(host, schedules);
         groupRepository.save(group);
 
         synchronize();
@@ -125,7 +133,7 @@ class GroupRepositoryTest {
     @Test
     void deleteIncludedParticipants() {
         Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
-        Group savedGroup = groupRepository.save(constructGroup(Collections.emptyList()));
+        Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
         synchronize();
@@ -141,7 +149,7 @@ class GroupRepositoryTest {
     @Test
     void saveParticipant() {
         Member participant = memberRepository.save(new Member("email1@woowacourse.com", "1234asdf!", "모모1"));
-        Group savedGroup = groupRepository.save(constructGroup(Collections.emptyList()));
+        Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
         synchronize();
@@ -150,11 +158,12 @@ class GroupRepositoryTest {
 
         assertThat(foundGroup).isPresent();
         assertThat(foundGroup.get().getParticipants()).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(List.of(participant));
+                .isEqualTo(List.of(host, participant));
     }
 
-    private Group constructGroup(List<Schedule> schedules) {
-        return new Group("momo 회의", 1L, Category.STUDY, _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(),
+    private Group constructGroup(Member host, List<Schedule> schedules) {
+
+        return new Group("momo 회의", host, Category.STUDY, 10, _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(),
                 schedules, "", "");
     }
 

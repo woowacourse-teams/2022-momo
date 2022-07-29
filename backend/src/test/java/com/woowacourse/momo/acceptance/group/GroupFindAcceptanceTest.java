@@ -77,6 +77,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                             .body("host.id", is(1))
                             .body("host.name", is(HOST.getName()))
                             .body("categoryId", is(group.getCategoryId().intValue()))
+                            .body("capacity", is(group.getCapacity()))
                             .body("duration.start", is(startDuration))
                             .body("duration.end", is(endDuration))
                             .body("deadline", is(deadline))
@@ -133,6 +134,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
             response.body(index + ".id", is(groupIds.get(group).intValue()))
                     .body(index + ".name", is(group.getName()))
                     .body(index + ".categoryId", is(group.getCategoryId().intValue()))
+                    .body(index + ".capacity", is(group.getCapacity()))
                     .body(index + ".deadline", is(deadline))
                     .body(index + ".host.id", is(1))
                     .body(index + ".host.name", is(HOST.getName()));

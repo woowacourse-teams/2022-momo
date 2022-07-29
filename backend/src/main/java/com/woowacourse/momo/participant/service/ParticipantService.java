@@ -25,15 +25,7 @@ public class ParticipantService {
     @Transactional
     public void participate(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
-        List<Member> participants = group.getParticipants();
         Member member = memberFindService.findMember(memberId);
-
-        if (group.isSameHost(member)) {
-            throw new IllegalArgumentException("주최자는 모임에 참여할 수 없습니다.");
-        }
-        if (participants.contains(member)) {
-            throw new IllegalArgumentException("이미 참여한 모임입니다.");
-        }
 
         group.participate(member);
     }

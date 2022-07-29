@@ -61,7 +61,7 @@ class GroupServiceTest {
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", savedMember.getId(), Category.STUDY,
+        return groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
                 _7월_1일부터_2일까지.getInstance(), _6월_30일_23시_59분.getInstance(), List.of(_7월_1일_10시부터_12시까지.newInstance()),
                 "", ""));
     }
@@ -69,7 +69,7 @@ class GroupServiceTest {
     @DisplayName("모임을 생성한다")
     @Test
     void create() {
-        GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(),
+        GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(), 10,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         groupService.create(savedMember.getId(), request);
@@ -81,7 +81,7 @@ class GroupServiceTest {
     @Test
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
-        GroupRequest request = new GroupRequest("모모의 스터디", categoryId, DURATION_REQUEST,
+        GroupRequest request = new GroupRequest("모모의 스터디", categoryId, 10, DURATION_REQUEST,
                 SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
 
         assertThatThrownBy(() -> groupService.create(savedMember.getId(), request))
@@ -93,7 +93,7 @@ class GroupServiceTest {
     @Test
     void findById() {
         Group savedGroup = saveGroup();
-        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup, savedMember);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup);
 
         GroupResponse actual = groupService.findById(savedGroup.getId());
 
@@ -114,7 +114,7 @@ class GroupServiceTest {
         int count = 3;
         List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> saveGroup())
-                .map(group -> GroupResponseAssembler.groupSummaryResponse(group, savedMember))
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
 
         List<GroupSummaryResponse> actual = groupService.findAll();
