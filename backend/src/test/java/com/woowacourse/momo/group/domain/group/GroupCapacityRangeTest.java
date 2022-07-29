@@ -8,12 +8,21 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class GroupCapacityRangeTest {
 
+    @DisplayName("유효하지 않은 모임 정원 값이면 True를 반환한다")
     @ParameterizedTest
-    @DisplayName("모임 정원은 1명 이상 99명 이하여야 한다.")
     @ValueSource(ints = {-1, 0, 100})
     void isOutOfRange(int capacity) {
         boolean actual = GroupCapacityRange.isOutOfRange(capacity);
 
         assertThat(actual).isTrue();
+    }
+
+    @DisplayName("유효한 모임 정원 값이면 False를 반환한다")
+    @ParameterizedTest
+    @ValueSource(ints = {1, 99})
+    void isInOfRange(int capacity) {
+        boolean actual = GroupCapacityRange.isOutOfRange(capacity);
+
+        assertThat(actual).isFalse();
     }
 }

@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.group;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
@@ -22,13 +23,20 @@ class GroupTest {
 
     private final Member host = new Member("주최자", "password", "momo");
 
+    @DisplayName("유효하지 않은 모임 정원 값이면 예외가 발생한다")
     @ParameterizedTest
-    @DisplayName("모임 정원은 1명 이상 99명 이하여야 한다.")
     @ValueSource(ints = {-1, 0, 100})
-    void validateCapacity(int capacity) {
+    void validateOutOfCapacityRange(int capacity) {
         assertThatThrownBy(() -> constructGroupWithSetCapacity(capacity))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("모임 정원은 1명 이상 99명 이하여야 합니다.");
+    }
+
+    @DisplayName("유효한 모임 정원 값이면 예외가 발생하지 않는다")
+    @ParameterizedTest
+    @ValueSource(ints = {1, 99})
+    void validateInRangeOfCapacity(int capacity) {
+        assertDoesNotThrow(() -> constructGroupWithSetCapacity(capacity));
     }
 
     @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")
