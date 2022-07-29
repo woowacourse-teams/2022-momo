@@ -26,7 +26,7 @@ class MemberRepositoryTest {
     @DisplayName("회원을 저장한다.")
     @Test
     void save() {
-        Member member = new Member("aa@bb.com", "1q2w3e4r!", "모모");
+        Member member = new Member("aaaa", "1q2w3e4r!", "모모");
         Long id = memberRepository.save(member).getId();
 
         assertThat(id).isNotNull();
@@ -35,7 +35,7 @@ class MemberRepositoryTest {
     @DisplayName("식별자를 통해 회원을 조회한다")
     @Test
     void findById() {
-        Member member = new Member("aa@bb.com", "1q2w3e4r!", "모모");
+        Member member = new Member("aaaa", "1q2w3e4r!", "모모");
         Member expected = memberRepository.save(member);
         entityManager.clear();
 
@@ -46,16 +46,16 @@ class MemberRepositoryTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("Email과 Password가 일치하는 회원을 조회한다")
+    @DisplayName("userId과 Password가 일치하는 회원을 조회한다")
     @Test
-    void findByEmailAndPassword() {
-        String email = "aa@bb.com";
+    void findByUserIdAndPassword() {
+        String userId = "aaaa";
         String password = "1q2w3e4r!";
-        Member member = new Member(email, password, "모모");
+        Member member = new Member(userId, password, "모모");
         Member expected = memberRepository.save(member);
         entityManager.clear();
 
-        Optional<Member> actual = memberRepository.findByEmailAndPassword(email, password);
+        Optional<Member> actual = memberRepository.findByUserIdAndPassword(userId, password);
 
         assertThat(actual).isPresent();
         assertThat(actual.get()).usingRecursiveComparison()
@@ -65,9 +65,9 @@ class MemberRepositoryTest {
     @DisplayName("회원을 삭제한다")
     @Test
     void deleteById() {
-        String email = "aa@bb.com";
+        String userId = "aaaa";
         String password = "1q2w3e4r!";
-        Member member = new Member(email, password, "모모");
+        Member member = new Member(userId, password, "모모");
         Member savedMember = memberRepository.save(member);
         entityManager.clear();
 

@@ -11,16 +11,16 @@ import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 @Getter
 public enum MemberFixture {
 
-    MOMO("momo@woowa.com", "qwe123!@#", "momo"),
-    DUDU("dudu@woowa.com", "qwe123!@#", "dudu"),
-    GUGU("gugu@woowa.com", "qwe123!@#", "gugu");
+    MOMO("momo", "qwe123!@#", "모모"),
+    DUDU("dudu", "qwe123!@#", "두두"),
+    GUGU("gugu", "qwe123!@#", "구구");
 
-    private final String email;
+    private final String userId;
     private final String password;
     private final String name;
 
-    MemberFixture(String email, String password, String name) {
-        this.email = email;
+    MemberFixture(String userId, String password, String name) {
+        this.userId = userId;
         this.password = password;
         this.name = name;
     }

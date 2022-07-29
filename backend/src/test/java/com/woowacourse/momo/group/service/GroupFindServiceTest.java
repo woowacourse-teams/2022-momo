@@ -40,7 +40,7 @@ public class GroupFindServiceTest {
 
     @BeforeEach
     void setUp() {
-        savedMember = memberRepository.save(new Member("momo@woowa.com", "qwe123!@#", "momo"));
+        savedMember = memberRepository.save(new Member("momo", "qwe123!@#", "momo"));
     }
 
     @DisplayName("모임을 조회한다")

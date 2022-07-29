@@ -25,7 +25,7 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         String password = passwordEncoder.encrypt(request.getPassword());
-        Member member = memberRepository.findByEmailAndPassword(request.getEmail(), password)
+        Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
                 .orElseThrow(() -> new AuthFailException("로그인에 실패했습니다."));
         String token = JwtTokenProvider.createToken(member.getId());
 
@@ -34,10 +34,17 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
+        validateUserId(request.getUserId());
         String password = passwordEncoder.encrypt(request.getPassword());
-        Member member = new Member(request.getEmail(), password, request.getName());
+        Member member = new Member(request.getUserId(), password, request.getName());
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
+    }
+
+    private void validateUserId(String userId) {
+        if (userId.contains("@")) {
+            throw new IllegalArgumentException("잘못된 아이디 형식입니다.");
+        }
     }
 }

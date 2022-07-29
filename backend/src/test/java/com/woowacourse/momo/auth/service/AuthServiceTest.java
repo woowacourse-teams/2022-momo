@@ -17,7 +17,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 @SpringBootTest
 class AuthServiceTest {
 
-    private static final String EMAIL = "woowa@woowa.com";
+    private static final String USER_ID = "woowa";
     private static final String PASSWORD = "wooteco1!";
     private static final String NAME = "모모";
 
@@ -27,7 +27,7 @@ class AuthServiceTest {
     @DisplayName("회원 가입을 한다")
     @Test
     void signUp() {
-        SignUpRequest request = new SignUpRequest(EMAIL, PASSWORD, NAME);
+        SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
         Long id = authService.signUp(request);
 
         assertThat(id).isNotNull();
@@ -36,8 +36,8 @@ class AuthServiceTest {
     @DisplayName("로그인을 성공한다")
     @Test
     void login() {
-        createMember(EMAIL, PASSWORD, NAME);
-        LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
+        createMember(USER_ID, PASSWORD, NAME);
+        LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
 
         assertThat(authService.login(request).getAccessToken()).isNotNull();
     }
@@ -45,15 +45,15 @@ class AuthServiceTest {
     @DisplayName("로그인에 실패한다")
     @Test
     void loginFail() {
-        createMember(EMAIL, PASSWORD, NAME);
-        LoginRequest request = new LoginRequest(EMAIL, "wrongPassword");
+        createMember(USER_ID, PASSWORD, NAME);
+        LoginRequest request = new LoginRequest(USER_ID, "wrongPassword");
 
         assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(AuthFailException.class);
     }
 
-    void createMember(String email, String password, String name) {
-        SignUpRequest request = new SignUpRequest(email, password, name);
+    void createMember(String userId, String password, String name) {
+        SignUpRequest request = new SignUpRequest(userId, password, name);
         authService.signUp(request);
     }
 }

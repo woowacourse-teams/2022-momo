@@ -24,7 +24,7 @@ class MemberFindServiceTest {
     @DisplayName("회원을 조회한다")
     @Test
     void findMember() {
-        Member expected = memberRepository.save(new Member("momo@woowa.com", "qwe123!@#", "momo"));
+        Member expected = memberRepository.save(new Member("momo", "qwe123!@#", "momo"));
 
         Member actual = memberFindService.findMember(expected.getId());
 

@@ -34,7 +34,7 @@ class MemberServiceTest {
     @DisplayName("회원 정보를 조회한다")
     @Test
     void findById() {
-        SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
+        SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
         Long memberId = authService.signUp(request);
 
         MyInfoResponse response = memberService.findById(memberId);
@@ -85,7 +85,7 @@ class MemberServiceTest {
     }
 
     private Long createMember() {
-        SignUpRequest request = new SignUpRequest("woowa@woowa.com", "wooteco1!", "모모");
+        SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
         return authService.signUp(request);
     }
 }

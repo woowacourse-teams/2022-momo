@@ -33,7 +33,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 @SpringBootTest
 class AuthControllerTest {
 
-    private static final String EMAIL = "woowa@woowa.com";
+    private static final String USER_ID = "woowa";
     private static final String PASSWORD = "wooteco1!";
     private static final String NAME = "모모";
 
@@ -49,7 +49,7 @@ class AuthControllerTest {
     @DisplayName("정상적으로 회원가입이 되는 경우를 테스트한다")
     @Test
     void signUp() throws Exception {
-        SignUpRequest request = new SignUpRequest(EMAIL, PASSWORD, NAME);
+        SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -64,34 +64,34 @@ class AuthControllerTest {
                 );
     }
 
-    @DisplayName("잘못된 이메일 형식으로 회원가입시 400코드가 반환된다")
+    @DisplayName("잘못된 아이디 형식으로 로그인시 400코드가 반환된다")
     @Test
-    void signUpWithInvalidEmailPattern() throws Exception {
-        SignUpRequest request = new SignUpRequest("woowa", PASSWORD, NAME);
+    void signUpWithInvalidUserIdPattern() throws Exception {
+        SignUpRequest request = new SignUpRequest("woowa@", PASSWORD, NAME);
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("잘못된 이메일 형식입니다.")));
+                .andExpect(jsonPath("message", containsString("잘못된 아이디 형식입니다.")));
     }
 
-    @DisplayName("비어있는 이메일 값으로 회원가입시 400코드가 반환된다")
+    @DisplayName("비어있는 아이디 값으로 회원가입시 400코드가 반환된다")
     @Test
-    void signUpWithBlankEmail() throws Exception {
+    void signUpWithBlankUserId() throws Exception {
         SignUpRequest request = new SignUpRequest("", PASSWORD, NAME);
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("이메일은 빈 값일 수 없습니다.")));
+                .andExpect(jsonPath("message", containsString("아이디는 빈 값일 수 없습니다.")));
     }
 
     @DisplayName("비어있는 비밀번호 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankPassword() throws Exception {
-        SignUpRequest request = new SignUpRequest(EMAIL, "", NAME);
+        SignUpRequest request = new SignUpRequest(USER_ID, "", NAME);
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -103,7 +103,7 @@ class AuthControllerTest {
     @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithInvalidPasswordPattern() throws Exception {
-        SignUpRequest request = new SignUpRequest(EMAIL, "woowa", NAME);
+        SignUpRequest request = new SignUpRequest(USER_ID, "woowa", NAME);
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -115,7 +115,7 @@ class AuthControllerTest {
     @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankName() throws Exception {
-        SignUpRequest request = new SignUpRequest("woowa@woowa.com", PASSWORD, "");
+        SignUpRequest request = new SignUpRequest("woowa", PASSWORD, "");
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -127,8 +127,8 @@ class AuthControllerTest {
     @DisplayName("정상적으로 로그인될 시 토큰이 발급된다")
     @Test
     void login() throws Exception {
-        createNewMember(EMAIL, PASSWORD, NAME);
-        LoginRequest request = new LoginRequest(EMAIL, PASSWORD);
+        createNewMember(USER_ID, PASSWORD, NAME);
+        LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -143,36 +143,24 @@ class AuthControllerTest {
                 );
     }
 
-    @DisplayName("잘못된 이메일 형식으로 로그인시 400코드가 반환된다")
+    @DisplayName("비어있는 아이디 값으로 로그인시 400코드가 반환된다")
     @Test
-    void loginWithInvalidEmailPattern() throws Exception {
-        LoginRequest request = new LoginRequest("woowa", PASSWORD);
-
-        mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("잘못된 이메일 형식입니다.")));
-    }
-
-    @DisplayName("비어있는 이메일 값으로 로그인시 400코드가 반환된다")
-    @Test
-    void loginWithBlankEmail() throws Exception {
-        createNewMember(EMAIL, PASSWORD, NAME);
+    void loginWithBlankUserId() throws Exception {
+        createNewMember(USER_ID, PASSWORD, NAME);
         LoginRequest request = new LoginRequest("", PASSWORD);
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("이메일은 빈 값일 수 없습니다.")));
+                .andExpect(jsonPath("message", containsString("아이디는 빈 값일 수 없습니다.")));
     }
 
     @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithBlankPassword() throws Exception {
-        createNewMember(EMAIL, PASSWORD, NAME);
-        LoginRequest request = new LoginRequest("woowa@woowa.com", "");
+        createNewMember(USER_ID, PASSWORD, NAME);
+        LoginRequest request = new LoginRequest("woowa", "");
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -181,8 +169,8 @@ class AuthControllerTest {
                 .andExpect(jsonPath("message", containsString("패스워드는 빈 값일 수 없습니다.")));
     }
 
-    void createNewMember(String email, String password, String name) {
-        SignUpRequest request = new SignUpRequest(email, password, name);
+    void createNewMember(String userId, String password, String name) {
+        SignUpRequest request = new SignUpRequest(userId, password, name);
         authService.signUp(request);
     }
 }
