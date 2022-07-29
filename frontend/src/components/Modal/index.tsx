@@ -11,6 +11,8 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
+const modalAnimationTime = 300;
+
 function Modal({ modalState, setOffModal, children }: ModalProps) {
   const [isClosing, setIsClosing] = useState(false);
 
@@ -20,7 +22,7 @@ function Modal({ modalState, setOffModal, children }: ModalProps) {
     setTimeout(() => {
       setOffModal();
       setIsClosing(false);
-    }, 300);
+    }, modalAnimationTime);
   };
 
   return (
@@ -29,10 +31,12 @@ function Modal({ modalState, setOffModal, children }: ModalProps) {
         <S.Dimmer
           onClick={setOffModalWithAnimation}
           className={isClosing ? 'close' : ''}
+          animationTime={modalAnimationTime}
         >
           <S.Content
             onClick={preventBubbling}
             className={isClosing ? 'close' : ''}
+            animationTime={modalAnimationTime}
           >
             {children}
           </S.Content>
