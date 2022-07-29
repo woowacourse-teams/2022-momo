@@ -21,6 +21,19 @@ public class LogFileManager {
     private static final File DIRECTORY = new File(LOG_DIRECTORY_PATH);
     private static final boolean IS_APPENDED = true;
 
+    public static void writeExceptionStackTrace(String exceptionStackTrace) {
+        createDirectory();
+
+        File file = new File(LOG_DIRECTORY_PATH + getFileName() + EXTENSION);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
+            writer.append(exceptionStackTrace);
+            writer.newLine();
+        } catch (IOException e) {
+            throw new LogException("로그 작성에 실패하였습니다");
+        }
+    }
+
     public static void write(Exception exception) {
         createDirectory();
 
@@ -28,7 +41,6 @@ public class LogFileManager {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
             writeExceptionMessage(exception, writer);
-            writeStackTrace(exception, writer);
             writer.newLine();
         } catch (IOException e) {
             throw new LogException("로그 작성에 실패하였습니다");
@@ -50,12 +62,5 @@ public class LogFileManager {
                 .append(": ")
                 .append(exception.getMessage());
         writer.newLine();
-    }
-
-    private static void writeStackTrace(Exception exception, BufferedWriter writer) throws IOException {
-        for (StackTraceElement log : exception.getStackTrace()) {
-            writer.append(log.toString());
-            writer.newLine();
-        }
     }
 }
