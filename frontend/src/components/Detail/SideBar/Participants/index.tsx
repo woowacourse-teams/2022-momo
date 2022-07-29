@@ -21,15 +21,11 @@ function Participants({ id, hostName, capacity }: ParticipantsProps) {
     { staleTime: Infinity },
   );
 
-  if (!participants) return <></>;
-
-  const numOfParticipant = participants.length + 1;
-
   return (
     <S.Container>
       <S.Header>참여자 목록</S.Header>
       <S.Summary>
-        (<span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명)
+        (<span>{participants?.length}</span>명 / 최대 <span>{capacity}</span>명)
       </S.Summary>
       <S.Box>
         <S.Wrapper>
