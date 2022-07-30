@@ -72,6 +72,21 @@ const Button = styled.button`
   background: none;
 `;
 
+const WithdrawalButton = styled.button`
+  display: block;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 5rem;
+
+  border: none;
+  border-radius: 5px;
+
+  padding: 1rem;
+
+  background: ${({ theme: { colors } }) => colors.red002};
+`;
+
 export {
   Container,
   Image,
@@ -82,4 +97,5 @@ export {
   Input,
   InputLineContainer,
   Button,
+  WithdrawalButton,
 };

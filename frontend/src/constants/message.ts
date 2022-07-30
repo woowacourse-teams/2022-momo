@@ -12,6 +12,9 @@ const GUIDE_MESSAGE = {
   MEMBER: {
     SUCCESS_NAME_REQUEST: '닉네임 변경에 성공했어요.',
     SUCCESS_PASSWORD_REQUEST: '비밀번호 변경에 성공했어요.',
+    CONFIRM_WITHDRAWAL_REQUEST:
+      '정말로 탈퇴하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
+    SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴에 성공했어요. 다음에 다시 만나요 😊',
   },
 };
 
@@ -44,6 +47,8 @@ const ERROR_MESSAGE = {
       '닉네임을 변경하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_PASSWORD_REQUEST:
       '비밀번호를 변경하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_WITHDRAWAL_REQUEST:
+      '회원 탈퇴에 문제가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
 };
 
