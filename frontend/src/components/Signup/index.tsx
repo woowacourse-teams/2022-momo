@@ -10,7 +10,7 @@ import * as S from './index.styled';
 
 function Signup() {
   const [isModalOpen, setModalState] = useRecoilState(modalState);
-  const { value: email, setValue: setEmail } = useInput('');
+  const { value: userId, setValue: setUserId } = useInput('');
   const { value: name, setValue: setName } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
@@ -22,7 +22,7 @@ function Signup() {
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    requestSignup({ email, password, name })
+    requestSignup({ userId, password, name })
       .then(() => {
         alert(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
         setOffModal();
@@ -38,12 +38,12 @@ function Signup() {
         <S.Title>회원가입</S.Title>
         <S.InputContainer>
           <S.Label>
-            이메일
+            아이디
             <S.Input
-              type="email"
-              placeholder="brie@woowa.net"
-              value={email}
-              onChange={setEmail}
+              type="text"
+              placeholder="brie"
+              value={userId}
+              onChange={setUserId}
               required
             />
           </S.Label>

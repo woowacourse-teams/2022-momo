@@ -12,7 +12,7 @@ function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setIsLogin = useSetRecoilState(loginState);
-  const { value: email, setValue: setEmail } = useInput('');
+  const { value: userId, setValue: setUserId } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
 
   const setOffModal = () => {
@@ -23,7 +23,7 @@ function Login() {
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    requestLogin({ email, password })
+    requestLogin({ userId, password })
       .then(accessToken => {
         alert(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
@@ -42,12 +42,12 @@ function Login() {
         <S.Title>로그인</S.Title>
         <S.InputContainer>
           <S.Label>
-            이메일
+            아이디
             <S.Input
-              type="email"
-              value={email}
-              onChange={setEmail}
-              placeholder="brie@woowa.net"
+              type="text"
+              value={userId}
+              onChange={setUserId}
+              placeholder="brie"
               required
             />
           </S.Label>
