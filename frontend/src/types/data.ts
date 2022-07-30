@@ -58,4 +58,4 @@ export type Group = Pick<
   'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'capacity'
 > & { numOfParticipant: number };
 
-export type GroupParticipants = Omit<UserProfile, 'email'>[];
+export type GroupParticipants = Omit<UserProfile, 'userId'>[];

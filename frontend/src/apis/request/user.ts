@@ -48,4 +48,19 @@ const requestChangePassword = (data: string) => {
   );
 };
 
-export { getUserInfo, requestChangeName, requestChangePassword };
+const requestWithdrawal = () => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.delete(API_PATH.MEMBERS, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+export {
+  getUserInfo,
+  requestChangeName,
+  requestChangePassword,
+  requestWithdrawal,
+};
