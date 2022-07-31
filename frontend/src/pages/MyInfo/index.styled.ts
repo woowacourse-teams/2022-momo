@@ -73,10 +73,6 @@ const Button = styled.button`
 `;
 
 const WithdrawalButton = styled.button`
-  display: block;
-  justify-content: flex-start;
-  align-items: center;
-
   width: 5rem;
 
   border: none;

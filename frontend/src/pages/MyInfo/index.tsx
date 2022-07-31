@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import useInput from 'hooks/useInput';
+import { useSetRecoilState } from 'recoil';
 
 import {
   getUserInfo,
@@ -11,13 +10,13 @@ import {
   requestChangePassword,
   requestWithdrawal,
 } from 'apis/request/user';
-import { QUERY_KEY } from 'constants/key';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
-import { accessTokenState, loginState } from 'store/states';
-
 import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/pencil.svg';
 import cover from 'assets/userInfo_cover.jpg';
+import { QUERY_KEY } from 'constants/key';
+import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import useInput from 'hooks/useInput';
+import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
 
@@ -30,8 +29,8 @@ function MemberInfo() {
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
   const [isEditableName, setIsEditableName] = useState(false);
   const [isEditablePassword, setIsEditablePassword] = useState(false);
-  const [_, setAccessToken] = useRecoilState(accessTokenState);
-  const [__, setIsLogin] = useRecoilState(loginState);
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
   useEffect(() => {
