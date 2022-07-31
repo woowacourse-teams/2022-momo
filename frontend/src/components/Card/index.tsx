@@ -21,12 +21,20 @@ function Card({ group }: CardProps) {
             <S.Title>{group.name}</S.Title>
             <S.HostName>{group.host.name}</S.HostName>
             {/* <S.HashtagBox>
-            {group.hashtags?.map(hashtag => (
-              <S.Hashtag key={hashtag}>#{hashtag}</S.Hashtag>
-            ))}
-          </S.HashtagBox> */}
+              {group.hashtags?.map(hashtag => (
+                <S.Hashtag key={hashtag}>#{hashtag}</S.Hashtag>
+              ))}
+            </S.HashtagBox> */}
           </S.Left>
-          <S.Deadline>{convertDeadlineToRemainTime(group.deadline)}</S.Deadline>
+          <S.Right>
+            <S.Deadline>
+              {convertDeadlineToRemainTime(group.deadline)}
+            </S.Deadline>
+            <S.Capacity>
+              <span>{group.numOfParticipant}</span>명 / 최대{' '}
+              <span>{group.capacity}</span>명
+            </S.Capacity>
+          </S.Right>
         </S.Description>
       </S.Container>
     </Link>

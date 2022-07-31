@@ -7,3 +7,5 @@ export interface User {
 export interface UserProfile extends Omit<User, 'password'> {
   id: number;
 }
+
+export type UserInfo = Omit<User, 'password'>;

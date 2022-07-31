@@ -10,21 +10,23 @@ import * as S from './index.styled';
 
 interface ParticipantsProps {
   id: DetailData['id'];
-  hostName: string;
+  hostName: DetailData['host']['name'];
+  capacity: DetailData['capacity'];
 }
 
-function Participants({ id, hostName }: ParticipantsProps) {
+function Participants({ id, hostName, capacity }: ParticipantsProps) {
   const { data: participants } = useQuery<GroupParticipants>(
-    QUERY_KEY.GROUP_PARTICIPANTS,
+    `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
     () => getGroupParticipants(id),
-    {
-      staleTime: Infinity,
-    },
+    { staleTime: Infinity },
   );
 
   return (
     <S.Container>
       <S.Header>참여자 목록</S.Header>
+      <S.Summary>
+        (<span>{participants?.length}</span>명 / 최대 <span>{capacity}</span>명)
+      </S.Summary>
       <S.Box>
         <S.Wrapper>
           <CrownSVG width={32} />
