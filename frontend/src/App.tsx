@@ -12,9 +12,7 @@ import LoginModal from 'components/Login';
 import SignupModal from 'components/Signup';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
-import { Main, Detail, Create } from 'pages/index';
-import MemberInfo from 'pages/MemberInfo';
-import NotFound from 'pages/NotFound';
+import { Main, Detail, Create, MyInfo, NotFound } from 'pages/index';
 import GlobalStyle from 'styles/global';
 import theme from 'styles/theme';
 
@@ -39,7 +37,7 @@ function App() {
                       <Route path=":id" element={<Detail />} />
                     </Route>
                     <Route path={BROWSER_PATH.CREATE} element={<Create />} />
-                    <Route path={BROWSER_PATH.INFO} element={<MemberInfo />} />
+                    <Route path={BROWSER_PATH.INFO} element={<MyInfo />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>

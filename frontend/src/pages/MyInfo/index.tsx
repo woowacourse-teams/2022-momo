@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 
 import {
   getUserInfo,
   requestChangeName,
   requestChangePassword,
+  requestWithdrawal,
 } from 'apis/request/user';
 import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/pencil.svg';
@@ -13,6 +16,7 @@ import cover from 'assets/userInfo_cover.jpg';
 import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
+import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
 
@@ -25,6 +29,9 @@ function MemberInfo() {
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
   const [isEditableName, setIsEditableName] = useState(false);
   const [isEditablePassword, setIsEditablePassword] = useState(false);
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const setIsLogin = useSetRecoilState(loginState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (typeof data === 'undefined') return;
@@ -67,6 +74,22 @@ function MemberInfo() {
       });
   };
 
+  const withdrawal = () => {
+    if (!window.confirm(GUIDE_MESSAGE.MEMBER.CONFIRM_WITHDRAWAL_REQUEST))
+      return;
+
+    requestWithdrawal()
+      .then(() => {
+        setIsLogin(false);
+        setAccessToken('');
+        alert(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
+        navigate('/');
+      })
+      .catch(() => {
+        alert(ERROR_MESSAGE.MEMBER.FAILURE_WITHDRAWAL_REQUEST);
+      });
+  };
+
   return (
     <S.Container>
       <S.Image src={cover} alt="user info cover" />
@@ -74,8 +97,8 @@ function MemberInfo() {
         <S.Title>회원 정보</S.Title>
         <S.InputContainer>
           <S.Label>
-            이메일
-            <S.Input type="email" value={data?.email} disabled />
+            아이디
+            <S.Input type="userId" value={data?.userId} disabled />
           </S.Label>
           <S.Label>
             닉네임
@@ -130,6 +153,9 @@ function MemberInfo() {
               />
             </S.Label>
           )}
+          <S.WithdrawalButton onClick={withdrawal}>
+            회원 탈퇴
+          </S.WithdrawalButton>
         </S.InputContainer>
       </S.Content>
     </S.Container>
