@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static com.woowacourse.momo.fixture.DateFixture._3일_후;
 import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
-import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
