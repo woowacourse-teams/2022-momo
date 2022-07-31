@@ -89,6 +89,7 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
+        validateFutureDeadline(deadline);
         participate(host);
         belongTo(schedules);
     }
@@ -104,18 +105,25 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
+        validateFutureDeadline(deadline);
         this.schedules.clear();
         belongTo(schedules);
-    }
-
-    private void belongTo(List<Schedule> schedules) {
-        this.schedules.addAll(schedules);
     }
 
     private void validateCapacity(int capacity) {
         if (GroupCapacityRange.isOutOfRange(capacity)) {
             throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
         }
+    }
+
+    private void validateFutureDeadline(LocalDateTime deadline) {
+        if (deadline.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("마감 시간은 현재 시간 이전일 수 없습니다.");
+        }
+    }
+
+    private void belongTo(List<Schedule> schedules) {
+        this.schedules.addAll(schedules);
     }
 
     public boolean isSameHost(Member host) {

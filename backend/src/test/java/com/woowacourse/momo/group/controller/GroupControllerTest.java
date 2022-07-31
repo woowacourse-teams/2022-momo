@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static com.woowacourse.momo.fixture.DateFixture._3일_후;
+import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -73,7 +73,7 @@ class GroupControllerTest {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
@@ -96,7 +96,7 @@ class GroupControllerTest {
         String accessToken = accessToken();
         Long savedGroupId = saveGroup(saveMemberId);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 15,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
                         .header("Authorization", "bearer " + accessToken)
@@ -173,7 +173,7 @@ class GroupControllerTest {
 
     Long saveGroup(Long hostId) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

@@ -11,10 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static com.woowacourse.momo.fixture.DateFixture._3일_후;
+import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -226,7 +226,7 @@ public class ParticipantControllerTest {
 
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

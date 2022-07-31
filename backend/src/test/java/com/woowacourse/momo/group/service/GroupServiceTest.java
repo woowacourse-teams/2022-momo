@@ -10,7 +10,6 @@ import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ class GroupServiceTest {
     @Test
     void create() {
         GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(), 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         groupService.create(savedMember.getId(), request);
 
@@ -83,7 +82,7 @@ class GroupServiceTest {
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
         GroupRequest request = new GroupRequest("모모의 스터디", categoryId, 10, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.create(savedMember.getId(), request))
                 .isInstanceOf(NoSuchElementException.class)
