@@ -161,7 +161,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("정원이 가득 찼습니다.")))
+                .andExpect(jsonPath("$.message", is("모집이 마감됐습니다.")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),

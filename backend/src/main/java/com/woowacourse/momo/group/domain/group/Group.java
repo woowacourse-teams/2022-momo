@@ -147,19 +147,19 @@ public class Group {
     }
 
     private void validateParticipateAvailable(Member member) {
-        validateOverCapacity();
+        validateFinishedRecruitment();
         validateReParticipate(member);
+    }
+
+    private void validateFinishedRecruitment() {
+        if (isFinishedRecruitment()) {
+            throw new IllegalArgumentException("모집이 마감됐습니다.");
+        }
     }
 
     private void validateReParticipate(Member member) {
         if (getParticipants().contains(member)) {
             throw new IllegalArgumentException("이미 참여한 모임입니다.");
-        }
-    }
-
-    private void validateOverCapacity() {
-        if (isOverCapacity()) {
-            throw new IllegalArgumentException("정원이 가득 찼습니다.");
         }
     }
 

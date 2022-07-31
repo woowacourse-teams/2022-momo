@@ -109,7 +109,7 @@ class ParticipantServiceTest {
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("정원이 가득 찼습니다.");
+                .hasMessage("모집이 마감됐습니다.");
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")

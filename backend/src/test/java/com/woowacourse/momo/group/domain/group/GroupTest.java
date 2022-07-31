@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import static com.woowacourse.momo.fixture.DateTimeFixture._1일_전_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture._7일_후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
@@ -109,7 +110,7 @@ class GroupTest {
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
     @Test
-    void validateOverCapacity() {
+    void validateFinishedRecruitmentWithOverCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
         Member member1 = new Member("momo@woowa.com", "qwer123!@#", "모모");
@@ -118,7 +119,18 @@ class GroupTest {
         Member member2 = new Member("dudu@woowa.com", "qwer123!@#", "두두");
         assertThatThrownBy(() -> group.participate(member2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("정원이 가득 찼습니다.");
+                .hasMessage("모집이 마감됐습니다.");
+    }
+
+    @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
+    @Test
+    void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
+        Group group = constructGroupWithSetPastDeadline(_1일_전_23시_59분.getInstance());
+        Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
+
+        assertThatThrownBy(() -> group.participate(member))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("모집이 마감됐습니다.");
     }
 
     @DisplayName("모임에 참여한 회원을 반환한다")
@@ -147,8 +159,7 @@ class GroupTest {
     @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
     @Test
     void isFinishedRecruitmentWithPassedDeadline() throws IllegalAccessException {
-        LocalDateTime deadline = LocalDateTime.now().minusMinutes(1);
-        Group group = constructGroupWithSetPastDeadline(deadline);
+        Group group = constructGroupWithSetPastDeadline(_1일_전_23시_59분.getInstance());
 
         boolean actual = group.isFinishedRecruitment();
         assertThat(actual).isTrue();
