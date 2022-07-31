@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.domain.duration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -28,9 +29,20 @@ public class Duration {
         this.endDate = endDate;
     }
 
+    public static Duration newDuration(LocalDate startDate, LocalDate endDate) {
+        validatePastDate(startDate, endDate);
+        return new Duration(startDate, endDate);
+    }
+
+    private static void validatePastDate(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
+            throw new InvalidDurationException("시작일과 종료일은 과거의 날짜가 될 수 없습니다.");
+        }
+    }
+
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new InvalidDurationException();
+            throw new InvalidDurationException("시작일은 종료일 이후가 될 수 없습니다.");
         }
     }
 }
