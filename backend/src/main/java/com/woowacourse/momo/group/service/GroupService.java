@@ -54,6 +54,16 @@ public class GroupService {
                 .collect(Collectors.toList());
     }
 
+    public GroupPageResponse findAll(Pageable pageable) {
+        Page<Group> groups = groupFindService.findGroups(pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = groupsOfPage.stream()
+                .map(GroupResponseAssembler::groupSummaryResponse)
+                .collect(Collectors.toList());
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
+    }
+
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
@@ -79,17 +89,5 @@ public class GroupService {
         if (!group.isSameHost(host)) {
             throw new IllegalArgumentException("해당 모임의 주최자가 아닙니다.");
         }
-    }
-
-    public GroupPageResponse findAll(Pageable pageable) {
-        Page<Group> groups = groupFindService.findGroups(pageable);
-        List<GroupSummaryResponse> summaries = groups.stream()
-                .map(group -> {
-                    Member host = memberFindService.findMember(group.getHostId());
-                    return GroupResponseAssembler.groupSummaryResponse(group, host);
-                })
-                .collect(Collectors.toList());
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
     }
 }
