@@ -28,7 +28,7 @@ function Navigator({
   createNewGroup,
 }: NavigatorProps) {
   const {
-    colors: { green001: activeColor, gray003: inactiveColor },
+    colors: { green002: activeColor, gray003: inactiveColor },
   } = useTheme();
 
   const goToNextPage = () => {
