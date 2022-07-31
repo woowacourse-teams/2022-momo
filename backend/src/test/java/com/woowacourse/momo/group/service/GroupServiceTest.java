@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static com.woowacourse.momo.fixture.DateFixture._3일_후;
 import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
+import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
@@ -61,7 +62,7 @@ class GroupServiceTest {
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
+        return groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 2,
                 _3일_후부터_7일_후까지.getInstance(), _1일_후_23시_59분.getInstance(), List.of(_3일_후_10시부터_12시까지.newInstance()),
                 "", ""));
     }
@@ -131,5 +132,19 @@ class GroupServiceTest {
 
         assertThatThrownBy(() -> groupService.findById(groupId))
                 .isInstanceOf(NotFoundGroupException.class);
+    }
+
+    @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다.")
+    @Test
+    void deleteFinishedRecruitmentGroup() {
+        Group savedGroup = saveGroup();
+        Member savedMember2 = memberRepository.save(new Member("회원2", "password", "dudu"));
+        savedGroup.participate(savedMember2);
+
+        long groupId = savedGroup.getId();
+
+        assertThatThrownBy(() -> groupService.delete(savedMember.getId(), groupId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("모집이 마감되어 모임을 삭제할 수 없습니다.");
     }
 }
