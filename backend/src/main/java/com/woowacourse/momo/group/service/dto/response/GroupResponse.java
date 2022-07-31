@@ -20,6 +20,7 @@ public class GroupResponse {
     private int capacity;
     private DurationResponse duration;
     private List<ScheduleResponse> schedules;
+    private boolean finished;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
     private String location;

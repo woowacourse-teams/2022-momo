@@ -17,14 +17,15 @@ public class GroupResponseAssembler {
     public static GroupResponse groupResponse(Group group) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
-                scheduleResponses(group.getSchedules()), group.getDeadline(), group.getLocation(),
-                group.getDescription());
+                scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
+                group.getLocation(), group.getDescription());
     }
 
     public static GroupSummaryResponse groupSummaryResponse(Group group) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getParticipants().size(), group.getDeadline());
+                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
+                group.getDeadline());
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {
