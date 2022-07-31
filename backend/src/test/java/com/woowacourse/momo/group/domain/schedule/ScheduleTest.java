@@ -2,7 +2,7 @@ package com.woowacourse.momo.group.domain.schedule;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture._3일_후;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
@@ -27,7 +27,7 @@ class ScheduleTest {
     @ParameterizedTest(name = "시작 시간: {0}, 종료 시간: {1}")
     @MethodSource("provideForScheduleValidator")
     void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        assertThatThrownBy(() -> new Schedule(_7월_1일.getInstance(), startTime, endTime))
+        assertThatThrownBy(() -> new Schedule(_3일_후.getInstance(), startTime, endTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("시작 시간은 종료 시간 이전이어야 합니다.");
     }

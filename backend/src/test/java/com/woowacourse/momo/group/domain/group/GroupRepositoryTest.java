@@ -3,10 +3,10 @@ package com.woowacourse.momo.group.domain.group;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._7월_2일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._7일_후_10시부터_12시까지;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +50,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
-        List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance());
         Group group = constructGroup(host, schedules);
 
         Group savedGroup = groupRepository.save(group);
@@ -82,7 +82,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
-        List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance(), _7월_2일_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance(), _7일_후_10시부터_12시까지.newInstance());
         Group group = constructGroup(host, schedules);
         Group savedGroup = groupRepository.save(group);
 
@@ -98,8 +98,8 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        Group group1 = constructGroup(host, List.of(_7월_1일_10시부터_12시까지.newInstance()));
-        Group group2 = constructGroup(host, List.of(_7월_2일_10시부터_12시까지.newInstance()));
+        Group group1 = constructGroup(host, List.of(_3일_후_10시부터_12시까지.newInstance()));
+        Group group2 = constructGroup(host, List.of(_7일_후_10시부터_12시까지.newInstance()));
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
@@ -114,7 +114,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
-        List<Schedule> schedules = List.of(_7월_1일_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance());
         Group group = constructGroup(host, schedules);
         groupRepository.save(group);
 
@@ -163,8 +163,8 @@ class GroupRepositoryTest {
 
     private Group constructGroup(Member host, List<Schedule> schedules) {
 
-        return new Group("momo 회의", host, Category.STUDY, 10, _7월_1일부터_2일까지.getInstance(),
-                _6월_30일_23시_59분.getInstance(),
+        return new Group("momo 회의", host, Category.STUDY, 10, _3일_후부터_7일_후까지.getInstance(),
+                _1일_후_23시_59분.getInstance(),
                 schedules, "", "");
     }
 

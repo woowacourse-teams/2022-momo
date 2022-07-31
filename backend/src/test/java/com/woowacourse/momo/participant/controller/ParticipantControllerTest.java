@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture._3일_후;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
@@ -42,10 +42,10 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 public class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(),
-            _7월_1일.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_3일_후.getInstance(),
+            _3일_후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(_3일_후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private MockMvc mockMvc;

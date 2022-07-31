@@ -1,9 +1,9 @@
 package com.woowacourse.momo.fixture;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_1일까지;
-import static com.woowacourse.momo.fixture.DurationFixture._7월_1일부터_2일까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._7월_1일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_3일_후까지;
+import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,14 +23,14 @@ import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
-            _6월_30일_23시_59분, "루터회관 13층", "같이 공부해요!!"),
-    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, _7월_1일부터_1일까지, List.of(_7월_1일_10시부터_12시까지),
-            _6월_30일_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
-    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, _7월_1일부터_2일까지, List.of(_7월_1일_10시부터_12시까지),
-            _6월_30일_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
-    DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, _7월_1일부터_1일까지, List.of(_7월_1일_10시부터_12시까지),
-            _6월_30일_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, _3일_후부터_7일_후까지, List.of(_3일_후_10시부터_12시까지),
+            _1일_후_23시_59분, "루터회관 13층", "같이 공부해요!!"),
+    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, _3일_후부터_3일_후까지, List.of(_3일_후_10시부터_12시까지),
+            _1일_후_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
+    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, _3일_후부터_7일_후까지, List.of(_3일_후_10시부터_12시까지),
+            _1일_후_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
+    DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, _3일_후부터_3일_후까지, List.of(_3일_후_10시부터_12시까지),
+            _1일_후_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
 
     private final String name;
     private final Long categoryId;
