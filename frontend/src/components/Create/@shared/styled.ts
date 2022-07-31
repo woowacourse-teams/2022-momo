@@ -14,7 +14,7 @@ const Heading = styled.h2`
   font-size: 1.5rem;
 
   span {
-    color: ${({ theme: { colors } }) => colors.green001};
+    color: ${({ theme: { colors } }) => colors.green002};
   }
 
   p {
@@ -47,7 +47,7 @@ const Input = styled.input`
 `;
 
 const ErrorColor = styled.b`
-  color: ${({ theme: { colors } }) => colors.red002};
+  color: ${({ theme: { colors } }) => colors.red003};
 `;
 
 const WarningColor = styled.b`
@@ -55,7 +55,7 @@ const WarningColor = styled.b`
 `;
 
 const SuccessColor = styled.b`
-  color: ${({ theme: { colors } }) => colors.green001};
+  color: ${({ theme: { colors } }) => colors.green002};
 `;
 
 export {

@@ -48,7 +48,7 @@ const style = (theme: Theme) => css`
     font-size: 1.2rem;
 
     &:focus {
-      border: 1.5px solid ${theme.colors.green001};
+      border: 1.5px solid ${theme.colors.green002};
 
       outline: none;
     }
@@ -62,7 +62,7 @@ const style = (theme: Theme) => css`
     font-family: 'GangwonEdu_Bold';
 
     &:focus {
-      border: 1.5px solid ${theme.colors.green001};
+      border: 1.5px solid ${theme.colors.green002};
 
       outline: none;
     }
