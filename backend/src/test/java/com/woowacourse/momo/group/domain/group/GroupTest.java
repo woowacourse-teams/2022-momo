@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
+import static com.woowacourse.momo.fixture.DateTimeFixture._7일_후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
 
@@ -55,6 +56,15 @@ class GroupTest {
     void validateFutureDeadline() {
         LocalDateTime deadline = LocalDateTime.now().plusMinutes(1);
         assertDoesNotThrow(() -> constructGroupWithSetDeadline(deadline));
+    }
+
+    @DisplayName("모임 기간 시작일 이후의 마감기한으로 인스턴스 생성시 예외가 발생한다")
+    @Test
+    void validateDeadlineIsBeforeStartDuration() {
+        LocalDateTime deadline = _7일_후_23시_59분.getInstance();
+        assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
     }
 
     @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")

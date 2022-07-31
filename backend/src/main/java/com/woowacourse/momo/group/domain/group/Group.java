@@ -89,7 +89,7 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
-        validateFutureDeadline(deadline);
+        validateDeadline(deadline, duration);
         participate(host);
         belongTo(schedules);
     }
@@ -105,7 +105,7 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
-        validateFutureDeadline(deadline);
+        validateDeadline(deadline, duration);
         this.schedules.clear();
         belongTo(schedules);
     }
@@ -116,9 +116,20 @@ public class Group {
         }
     }
 
+    private void validateDeadline(LocalDateTime deadline, Duration duration) {
+        validateFutureDeadline(deadline);
+        validateDeadlineIsBeforeStartDuration(deadline, duration);
+    }
+
     private void validateFutureDeadline(LocalDateTime deadline) {
         if (deadline.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("마감 시간은 현재 시간 이전일 수 없습니다.");
+        }
+    }
+
+    private void validateDeadlineIsBeforeStartDuration(LocalDateTime deadline, Duration duration) {
+        if (duration.isAfterStartDate(deadline)) {
+            throw new IllegalArgumentException("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
         }
     }
 
