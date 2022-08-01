@@ -51,8 +51,8 @@ public class GroupRestHandler extends RestHandler {
         return putRequest(accessToken, request, BASE_URL + "/" + groupId);
     }
 
-    public static ValidatableResponse 페이지로_모임목록을_조회한다() {
-        return getRequest(BASE_URL + "?page=0");
+    public static ValidatableResponse 페이지로_모임목록을_조회한다(int pageNumber) {
+        return getRequest(BASE_URL + "?page=" + pageNumber);
     }
 
     public static ValidatableResponse 모임을_수정한다(Long groupId, GroupFixture group) {

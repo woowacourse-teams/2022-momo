@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @Service
 public class GroupService {
 
+    private static final int DEFAULT_PAGE_SIZE = 12;
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
@@ -52,6 +54,17 @@ public class GroupService {
         return groups.stream()
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
+    }
+
+    public GroupPageResponse findAll(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
+        Page<Group> groups = groupFindService.findGroups(pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = groupsOfPage.stream()
+                .map(GroupResponseAssembler::groupSummaryResponse)
+                .collect(Collectors.toList());
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
     }
 
     @Transactional

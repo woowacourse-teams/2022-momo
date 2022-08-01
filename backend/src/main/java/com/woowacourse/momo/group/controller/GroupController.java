@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@PageableDefault(size=12) Pageable pageable) {
-        return ResponseEntity.ok(groupService.findAll(pageable));
+    public ResponseEntity<GroupPageResponse> findAll(@RequestParam(required = false, defaultValue = "0") int page) {
+        return ResponseEntity.ok(groupService.findAll(page));
     }
 
     @Authenticated

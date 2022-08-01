@@ -161,7 +161,6 @@ class GroupServiceTest {
     @DisplayName("모임 목록중 두번째 페이지를 조회한다.")
     @Test
     void findAllWithPage() {
-        Pageable pageable = PageRequest.of(1, PAGE_SIZE);
         for (int i = 0; i < PAGE_SIZE; i++) {
             saveGroup();
         }
@@ -171,7 +170,7 @@ class GroupServiceTest {
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
 
-        GroupPageResponse actual = groupService.findAll(pageable);
+        GroupPageResponse actual = groupService.findAll(1);
 
         assertAll(
                 () -> assertThat(actual.isHasNextPage()).isFalse(),
