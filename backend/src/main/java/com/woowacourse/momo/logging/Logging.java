@@ -31,7 +31,7 @@ public class Logging {
 
     protected void printExceptionMessage(JoinPoint joinPoint) {
         LOGGER.error(ConsolePrettier.red("" + getException(joinPoint)));
-        LogFileManager.write(getException(joinPoint));
+        LogFileManager.writeExceptionMessage(getException(joinPoint));
     }
 
     private String log(JoinPoint joinPoint) {
