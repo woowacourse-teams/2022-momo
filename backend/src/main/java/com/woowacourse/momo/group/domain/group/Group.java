@@ -77,6 +77,8 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
+    private boolean isEarlyClosing;
+
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
