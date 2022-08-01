@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -54,6 +55,8 @@ class GroupControllerTest {
             new DurationRequest(이틀후.getInstance(), 이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+    private static final int TWO_PAGE_GROUPS = 24;
 
     @Autowired
     MockMvc mockMvc;
@@ -175,10 +178,8 @@ class GroupControllerTest {
         Long saveMemberId = saveMember();
         saveGroup(saveMemberId);
         saveGroup(saveMemberId);
-        String accessToken = accessToken();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0")
-                        .header("Authorization", "bearer " + accessToken))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0"))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("groups[0].name", is("모모의 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
@@ -188,6 +189,19 @@ class GroupControllerTest {
                                 preprocessResponse(prettyPrint())
                         )
                 );
+    }
+
+    @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다.")
+    @Test
+    void groupGetListWithPaginationTest() throws Exception {
+        Long saveMemberId = saveMember();
+        for (int i = 0; i < TWO_PAGE_GROUPS; i++) {
+            saveGroup(saveMemberId);
+        }
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=1"))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups", hasSize(12)));
     }
 
     Long saveGroup(Long hostId) {
