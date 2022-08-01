@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,7 +24,6 @@ import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
