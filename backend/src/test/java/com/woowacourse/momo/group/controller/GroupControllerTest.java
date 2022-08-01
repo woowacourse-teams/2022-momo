@@ -191,7 +191,7 @@ class GroupControllerTest {
                 );
     }
 
-    @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다.")
+    @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다")
     @Test
     void groupGetListWithPaginationTest() throws Exception {
         Long saveMemberId = saveMember();

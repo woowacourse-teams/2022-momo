@@ -180,6 +180,7 @@ class GroupServiceTest {
         );
     }
 
+
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void delete() {
