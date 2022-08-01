@@ -57,7 +57,7 @@ public class GroupRestHandler extends RestHandler {
     }
 
     public static ValidatableResponse 모임을_조기마감한다(String accessToken, Long groupId) {
-        return putRequestWithNoBody(accessToken, BASE_URL + "/close/" + groupId);
+        return postRequestWithNoBody(accessToken, BASE_URL + "/" + groupId + "/close");
     }
 
     public static ValidatableResponse 모임을_삭제한다(String accessToken, Long groupId) {

@@ -59,7 +59,7 @@ public class GroupController {
     }
 
     @Authenticated
-    @PutMapping("/close/{groupId}")
+    @PostMapping("/{groupId}/close")
     public ResponseEntity<Void> closeEarly(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         groupService.closeEarly(memberId, groupId);
         return ResponseEntity.ok().build();
