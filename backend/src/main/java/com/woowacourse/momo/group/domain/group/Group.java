@@ -166,11 +166,15 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isFullCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isEarlyClosing || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
     }
 
     private boolean isFullCapacity() {
         return this.capacity <= participants.size();
+    }
+
+    public void closeEarly() {
+        this.isEarlyClosing = true;
     }
 
     public List<Schedule> getSchedules() {

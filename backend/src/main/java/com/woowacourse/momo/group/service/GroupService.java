@@ -65,6 +65,15 @@ public class GroupService {
     }
 
     @Transactional
+    public void closeEarly(Long hostId, Long groupId) {
+        Group group = groupFindService.findGroup(groupId);
+        validateHost(group, hostId);
+        validateFinishedRecruitment(group);
+
+        group.closeEarly();
+    }
+
+    @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);

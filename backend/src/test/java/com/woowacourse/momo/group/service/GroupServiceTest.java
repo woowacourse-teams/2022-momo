@@ -124,7 +124,7 @@ class GroupServiceTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다.")
+    @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
     @Test
     void updateFinishedRecruitmentGroup() {
         Group savedGroup = saveGroup();
@@ -138,6 +138,17 @@ class GroupServiceTest {
         assertThatThrownBy(() -> groupService.update(savedMember.getId(), groupId, groupRequest))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+    }
+
+    @DisplayName("모임을 조기 마감한다")
+    @Test
+    void closeEarly() {
+        Group savedGroup = saveGroup();
+
+        groupService.closeEarly(savedMember.getId(), savedGroup.getId());
+
+        boolean actual = groupService.findById(savedGroup.getId()).isFinished();
+        assertThat(actual).isTrue();
     }
 
     @DisplayName("식별자를 통해 모임을 삭제한다")
