@@ -1,0 +1,10 @@
+spring.jpa:
+  properties:
+    hibernate:
+      format_sql: 'true'
+      dialect: org.hibernate.dialect.H2Dialect
+  show-sql: 'true'
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
