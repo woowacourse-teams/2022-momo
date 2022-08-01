@@ -7,6 +7,11 @@ const Content = styled.div`
   gap: 4rem;
 
   max-width: 55rem;
+  height: 25.5rem;
+`;
+
+const Left = styled.div`
+  max-width: 20rem;
 `;
 
 const Right = styled.div`
@@ -70,4 +75,13 @@ const AddButton = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Content, Right, DailyButton, DayBox, InputWrapper, Input, AddButton };
+export {
+  Content,
+  Left,
+  Right,
+  DailyButton,
+  DayBox,
+  InputWrapper,
+  Input,
+  AddButton,
+};

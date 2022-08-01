@@ -24,14 +24,16 @@ function Step5(
         <span>언제</span> 만날건가요?
       </Heading>
       <S.Content>
-        <Calendar
-          year={year}
-          month={month}
-          goToPrevMonth={goToPrevMonth}
-          goToNextMonth={goToNextMonth}
-          today={today}
-          size="large"
-        />
+        <S.Left>
+          <Calendar
+            year={year}
+            month={month}
+            goToPrevMonth={goToPrevMonth}
+            goToNextMonth={goToNextMonth}
+            today={today}
+            size="large"
+          />
+        </S.Left>
         <S.Right>
           <S.DailyButton type="button">매일</S.DailyButton>
           <S.DayBox>
