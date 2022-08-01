@@ -20,14 +20,16 @@ const theme: Theme = {
     gray005: '#EEEEEE',
     yellow001: '#FFC500',
     yellow002: '#FFE47A',
-    green001: '#A5CC82',
+    green001: '#85AD61',
+    green002: '#A5CC82',
     blue001: '#00467F',
     blue002: '#3D7EAA',
     red001: '#C21500',
-    red002: '#F7797D',
+    red002: '#E05A5E',
+    red003: '#F7797D',
   },
   filter: {
-    darken001: '#0000004d',
+    darken001: '#0000004D',
   },
 };
 

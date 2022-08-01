@@ -27,7 +27,7 @@ const Image = styled.div`
   background: linear-gradient(
     90deg,
     ${({ theme: { colors } }) => colors.blue001}cc 0%,
-    ${({ theme: { colors } }) => colors.green001}cc 100%
+    ${({ theme: { colors } }) => colors.green002}cc 100%
   );
 `;
 

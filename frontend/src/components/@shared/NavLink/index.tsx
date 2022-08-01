@@ -1,6 +1,5 @@
+import { useTheme } from '@emotion/react';
 import { NavLink as RouterLink } from 'react-router-dom';
-
-import theme from 'styles/theme';
 
 interface LinkProps {
   to: string;
@@ -8,19 +7,13 @@ interface LinkProps {
 }
 
 function NavLink({ to, children }: LinkProps) {
-  const activeStyle = {
-    color: theme.colors.yellow002,
-  };
-
-  const defaultStyle = {
-    color: theme.colors.white001,
-  };
+  const theme = useTheme();
+  const style = ({ isActive }: { isActive: boolean }) => ({
+    color: isActive ? theme.colors.yellow002 : theme.colors.black002,
+  });
 
   return (
-    <RouterLink
-      to={to}
-      style={({ isActive }) => (isActive ? activeStyle : defaultStyle)}
-    >
+    <RouterLink to={to} style={style}>
       {children}
     </RouterLink>
   );

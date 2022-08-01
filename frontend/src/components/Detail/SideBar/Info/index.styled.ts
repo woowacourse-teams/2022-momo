@@ -30,22 +30,4 @@ const Text = styled.span`
   font-weight: 700;
 `;
 
-const JoinButton = styled.button`
-  height: 4rem;
-
-  background: linear-gradient(
-    180deg,
-    ${({ theme: { colors } }) => colors.red002}99 0%,
-    ${({ theme: { colors } }) => colors.red002} 20%
-  );
-  color: ${({ theme: { colors } }) => colors.white001};
-
-  border-radius: 0 0 10px 10px;
-
-  margin-top: 1rem;
-
-  font-size: 1.3rem;
-  font-weight: 700;
-`;
-
-export { Container, Wrapper, Text, JoinButton };
+export { Container, Wrapper, Text };

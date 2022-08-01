@@ -64,7 +64,7 @@ const DescriptionBox = styled.div`
 const Duration = styled(DescriptionBox)`
   align-items: center;
 
-  color: ${({ theme: { colors } }) => colors.red002};
+  color: ${({ theme: { colors } }) => colors.red003};
 
   font-weight: 700;
 `;

@@ -75,7 +75,7 @@ const Date = styled(DayColor)`
   }
 
   &.today {
-    background: ${({ theme: { colors } }) => colors.red002};
+    background: ${({ theme: { colors } }) => colors.red003};
     color: ${({ theme: { colors } }) => colors.white001};
   }
 `;

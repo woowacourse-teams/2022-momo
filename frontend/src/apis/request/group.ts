@@ -48,7 +48,7 @@ const requestCreateGroup = async ({
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios
-    .post(API_PATH.GROUP, data, {
+    .post<{ groupId: DetailData['id'] }>(API_PATH.GROUP, data, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -87,10 +87,32 @@ const getGroupParticipants = (
     .then(response => response.data);
 };
 
+const joinGroup = (id: DetailData['id']): Promise<void> => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.post(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
+const exitGroup = (id: DetailData['id']): Promise<void> => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
 export {
   requestCreateGroup,
   getGroups,
   getGroupDetail,
   deleteGroup,
   getGroupParticipants,
+  joinGroup,
+  exitGroup,
 };

@@ -15,10 +15,12 @@ declare module '@emotion/react' {
       | 'yellow001'
       | 'yellow002'
       | 'green001'
+      | 'green002'
       | 'blue001'
       | 'blue002'
       | 'red001'
-      | 'red002',
+      | 'red002'
+      | 'red003',
       string
     >;
     filter: Record<'darken001', string>;

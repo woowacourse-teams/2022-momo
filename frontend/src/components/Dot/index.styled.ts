@@ -19,7 +19,7 @@ const Dot = styled.div`
   ${({ isFocused, theme }: { isFocused: boolean; theme: Theme }) => css`
     ${isFocused
       ? `
-      background: ${theme.colors.green001};
+      background: ${theme.colors.green002};
       transform: scale(1.5);
     `
       : `
