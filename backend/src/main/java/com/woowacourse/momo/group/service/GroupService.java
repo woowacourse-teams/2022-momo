@@ -104,15 +104,9 @@ public class GroupService {
         }
     }
 
-    public GroupPageResponse findAll(Pageable pageable) {
-        Page<Group> groups = groupFindService.findGroups(pageable);
-        List<GroupSummaryResponse> summaries = groups.stream()
-                .map(group -> {
-                    Member host = memberFindService.findMember(group.getHostId());
-                    return GroupResponseAssembler.groupSummaryResponse(group, host);
-                })
-                .collect(Collectors.toList());
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
+    private void validateFinishedRecruitment(Group group) {
+        if (group.isFinishedRecruitment()) {
+            throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
     }
 }
