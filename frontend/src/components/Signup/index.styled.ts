@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+type InfoMessageProps = {
+  isValid?: boolean;
+};
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -29,6 +33,11 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const InfoMessage = styled.span<InfoMessageProps>`
+  color: ${({ isValid, theme: { colors } }) =>
+    isValid ? colors.gray002 : colors.red002};
+`;
+
 const Button = styled.button`
   height: 3rem;
 
@@ -40,4 +49,4 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Form, Title, InputContainer, Label, Input, Button };
+export { Form, Title, InputContainer, Label, Input, InfoMessage, Button };

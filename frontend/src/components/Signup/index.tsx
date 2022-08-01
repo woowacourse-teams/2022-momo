@@ -1,12 +1,20 @@
+import { useEffect, useState } from 'react';
+
 import { useRecoilState } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/Modal';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { modalState } from 'store/states';
+import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
+import {
+  checkValidNickname,
+  checkValidPassword,
+  isValidSignupFormData,
+} from './validate';
 
 function Signup() {
   const [isModalOpen, setModalState] = useRecoilState(modalState);
@@ -14,6 +22,9 @@ function Signup() {
   const { value: name, setValue: setName } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
+  const [isValidName, setIsValidName] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(false);
 
   const setOffModal = () => {
     setModalState('off');
@@ -22,15 +33,37 @@ function Signup() {
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (
+      !isValidSignupFormData({
+        isValidName,
+        isValidPassword,
+        isValidConfirmPassword,
+      })
+    )
+      return;
+
     requestSignup({ userId, password, name })
       .then(() => {
         alert(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
         setOffModal();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.AUTH.FAILURE_SIGNUP_REQUEST);
+      .catch(({ message }) => {
+        showErrorMessage(message);
       });
   };
+
+  useEffect(() => {
+    setIsValidConfirmPassword(false);
+    setIsValidPassword(checkValidPassword(password));
+
+    if (password === confirmPassword) setIsValidConfirmPassword(true);
+
+    console.log(isValidPassword);
+  }, [password, confirmPassword, isValidPassword]);
+
+  useEffect(() => {
+    setIsValidName(checkValidNickname(name));
+  }, [name]);
 
   return (
     <Modal modalState={isModalOpen === 'signup'} setOffModal={setOffModal}>
@@ -56,6 +89,9 @@ function Signup() {
               onChange={setName}
               required
             />
+            <S.InfoMessage isValid={isValidName}>
+              닉네임은 1~6자 사이여야 합니다.
+            </S.InfoMessage>
           </S.Label>
           <S.Label>
             비밀번호
@@ -66,6 +102,9 @@ function Signup() {
               onChange={setPassword}
               required
             />
+            <S.InfoMessage isValid={isValidPassword}>
+              비밀번호는 8~16자 사이의 영문, 숫자, 특수문자의 조합이어야 합니다.
+            </S.InfoMessage>
           </S.Label>
           <S.Label>
             비밀번호 확인
@@ -76,6 +115,9 @@ function Signup() {
               onChange={setConfirmPassword}
               required
             />
+            {isValidConfirmPassword || (
+              <S.InfoMessage>비밀번호 확인이 일치하지 않습니다.</S.InfoMessage>
+            )}
           </S.Label>
         </S.InputContainer>
         <S.Button type="submit">회원가입</S.Button>
