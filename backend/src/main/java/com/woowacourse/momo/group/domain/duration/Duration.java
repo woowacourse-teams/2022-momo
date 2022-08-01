@@ -2,7 +2,6 @@ package com.woowacourse.momo.group.domain.duration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -44,6 +43,6 @@ public class Duration {
     }
 
     public boolean isAfterStartDate(LocalDateTime localDateTime) {
-        return startDate.isBefore(ChronoLocalDate.from(localDateTime));
+        return startDate.isBefore(LocalDate.from(localDateTime));
     }
 }
