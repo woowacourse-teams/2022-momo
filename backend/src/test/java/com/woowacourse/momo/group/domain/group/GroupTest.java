@@ -110,7 +110,7 @@ class GroupTest {
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
     @Test
-    void validateFinishedRecruitmentWithOverCapacity() {
+    void validateFinishedRecruitmentWithFullCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
         Member member1 = new Member("momo@woowa.com", "qwer123!@#", "모모");

@@ -164,10 +164,10 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isOverCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isFullCapacity() || deadline.isBefore(LocalDateTime.now());
     }
 
-    private boolean isOverCapacity() {
+    private boolean isFullCapacity() {
         return this.capacity <= participants.size();
     }
 
