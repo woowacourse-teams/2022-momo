@@ -26,13 +26,27 @@ const Navigator = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
 
   font-size: ${({ size }: { size: Size }) =>
     size === 'medium' ? '2rem' : '1.3rem'};
 `;
 
 const Arrow = styled.div`
+  display: flex;
+  align-items: center;
+
+  max-width: 2rem;
+
   cursor: pointer;
+`;
+
+const LeftArrow = styled(Arrow)`
+  justify-content: flex-start;
+`;
+
+const RightArrow = styled(Arrow)`
+  justify-content: flex-end;
 `;
 
 const Content = styled.div`
@@ -62,8 +76,7 @@ const Date = styled(DayColor)`
   justify-content: center;
   align-items: center;
 
-  width: 2rem;
-  height: 2rem;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
   padding: 0.2rem;
@@ -80,4 +93,13 @@ const Date = styled(DayColor)`
   }
 `;
 
-export { Container, Navigator, Arrow, Content, DayColor, PrevNextDate, Date };
+export {
+  Container,
+  Navigator,
+  LeftArrow,
+  RightArrow,
+  Content,
+  DayColor,
+  PrevNextDate,
+  Date,
+};
