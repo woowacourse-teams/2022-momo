@@ -55,7 +55,6 @@ class GroupControllerTest {
             new DurationRequest(이틀후.getInstance(), 이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
-            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
     private static final int TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE = 20;
 
     @Autowired
@@ -120,7 +119,7 @@ class GroupControllerTest {
     void groupCloseEarlyTest() throws Exception {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
-        Long savedGroupId = saveGroup(saveMemberId);
+        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
 
         mockMvc.perform(post("/api/groups/" + savedGroupId + "/close")
                         .header("Authorization", "bearer " + accessToken)

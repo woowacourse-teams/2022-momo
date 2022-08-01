@@ -71,6 +71,7 @@ public class GroupService {
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
+        validateFinishedRecruitment(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 

@@ -48,7 +48,6 @@ class GroupServiceTest {
             이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
-            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
     private static final int PAGE_SIZE = 12;
     private static final int TWO_PAGE_GROUPS = 8;
 
