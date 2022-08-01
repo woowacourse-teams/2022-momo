@@ -24,21 +24,16 @@ const isValidSignupFormData = ({
   isValidConfirmPassword,
 }: isValidSignupFormDataProp) => {
   if (!isValidName) {
-    alert(ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
-    return false;
+    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
   }
 
   if (!isValidPassword) {
-    alert(ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
-    return false;
+    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
   }
 
   if (!isValidConfirmPassword) {
-    alert(ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
-    return false;
+    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
   }
-
-  return true;
 };
 
 export { checkValidNickname, checkValidPassword, isValidSignupFormData };

@@ -38,7 +38,7 @@ function Login() {
         setOffModal();
       })
       .catch(({ message }) => {
-        showErrorMessage(message);
+        alert(showErrorMessage(message));
       });
   };
 

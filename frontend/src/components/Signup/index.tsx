@@ -22,9 +22,9 @@ function Signup() {
   const { value: name, setValue: setName } = useInput('');
   const { value: password, setValue: setPassword } = useInput('');
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
-  const [isValidName, setIsValidName] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(false);
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
   const setOffModal = () => {
     setModalState('off');
@@ -33,14 +33,16 @@ function Signup() {
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      !isValidSignupFormData({
+    try {
+      isValidSignupFormData({
         isValidName,
         isValidPassword,
         isValidConfirmPassword,
-      })
-    )
+      });
+    } catch ({ message }) {
+      alert(message);
       return;
+    }
 
     requestSignup({ userId, password, name })
       .then(() => {
@@ -48,21 +50,19 @@ function Signup() {
         setOffModal();
       })
       .catch(({ message }) => {
-        showErrorMessage(message);
+        alert(showErrorMessage(message));
       });
   };
 
   useEffect(() => {
-    setIsValidConfirmPassword(false);
-    setIsValidPassword(checkValidPassword(password));
-
-    if (password === confirmPassword) setIsValidConfirmPassword(true);
-
-    console.log(isValidPassword);
+    setIsValidPassword(password.length === 0 || checkValidPassword(password));
+    setIsValidConfirmPassword(
+      confirmPassword.length === 0 || password === confirmPassword,
+    );
   }, [password, confirmPassword, isValidPassword]);
 
   useEffect(() => {
-    setIsValidName(checkValidNickname(name));
+    setIsValidName(name.length === 0 || checkValidNickname(name));
   }, [name]);
 
   return (

@@ -36,6 +36,8 @@ const Input = styled.input`
 const InfoMessage = styled.span<InfoMessageProps>`
   color: ${({ isValid, theme: { colors } }) =>
     isValid ? colors.gray002 : colors.red002};
+
+  font-size: 0.9rem;
 `;
 
 const Button = styled.button`
