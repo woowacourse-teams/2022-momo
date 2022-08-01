@@ -90,11 +90,15 @@ const getGroupParticipants = (
 const joinGroup = (id: DetailData['id']): Promise<void> => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
-  return axios.post(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+  return axios.post(
+    `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-  });
+  );
 };
 
 const exitGroup = (id: DetailData['id']): Promise<void> => {
