@@ -112,6 +112,25 @@ class GroupControllerTest {
                 );
     }
 
+    @DisplayName("그룹이 정상적으로 조기마감되는 경우를 테스트한다")
+    @Test
+    void groupCloseEarlyTest() throws Exception {
+        Long saveMemberId = saveMember();
+        String accessToken = accessToken();
+        Long savedGroupId = saveGroup(saveMemberId);
+
+        mockMvc.perform(post("/api/groups/" + savedGroupId + "/close")
+                        .header("Authorization", "bearer " + accessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document("groupupdate",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     @DisplayName("그룹이 정상적으로 삭제되는 경우를 테스트한다")
     @Test
     void groupDeleteTest() throws Exception {
