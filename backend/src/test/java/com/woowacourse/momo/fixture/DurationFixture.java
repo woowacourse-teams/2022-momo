@@ -1,7 +1,7 @@
 package com.woowacourse.momo.fixture;
 
-import static com.woowacourse.momo.fixture.DateFixture._3일_후;
-import static com.woowacourse.momo.fixture.DateFixture._7일_후;
+import static com.woowacourse.momo.fixture.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.DateFixture.일주일후;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,9 +11,8 @@ import com.woowacourse.momo.group.domain.duration.Duration;
 @RequiredArgsConstructor
 public enum DurationFixture {
 
-    _3일_후부터_3일_후까지(_3일_후, _3일_후),
-    _3일_후부터_7일_후까지(_3일_후, _7일_후),
-    ;
+    이틀후_하루동안(이틀후, 이틀후),
+    이틀후부터_일주일후까지(이틀후, 일주일후);
 
     private final DateFixture start;
     private final DateFixture end;

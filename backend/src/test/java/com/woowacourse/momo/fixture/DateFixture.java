@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum DateFixture {
 
-    _1일_전(LocalDate.now().minusDays(1)),
-    _1일_후(LocalDate.now().plusDays(1)),
-    _3일_후(LocalDate.now().plusDays(3)),
-    _7일_후(LocalDate.now().plusDays(7));
+    어제(LocalDate.now().minusDays(1)),
+    내일(LocalDate.now().plusDays(1)),
+    이틀후(LocalDate.now().plusDays(2)),
+    일주일후(LocalDate.now().plusDays(7));
 
     private final LocalDate instance;
 

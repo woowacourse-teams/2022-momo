@@ -1,9 +1,9 @@
 package com.woowacourse.momo.fixture;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_3일_후까지;
-import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후_하루동안;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,14 +23,14 @@ import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, _3일_후부터_7일_후까지, List.of(_3일_후_10시부터_12시까지),
-            _1일_후_23시_59분, "루터회관 13층", "같이 공부해요!!"),
-    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, _3일_후부터_3일_후까지, List.of(_3일_후_10시부터_12시까지),
-            _1일_후_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
-    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, _3일_후부터_7일_후까지, List.of(_3일_후_10시부터_12시까지),
-            _1일_후_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
-    DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, _3일_후부터_3일_후까지, List.of(_3일_후_10시부터_12시까지),
-            _1일_후_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_일주일후까지, List.of(이틀후_10시부터_12시까지),
+            내일_23시_59분, "루터회관 13층", "같이 공부해요!!"),
+    MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
+            내일_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
+    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 이틀후부터_일주일후까지, List.of(이틀후_10시부터_12시까지),
+            내일_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
+    DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
+            내일_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
 
     private final String name;
     private final Long categoryId;

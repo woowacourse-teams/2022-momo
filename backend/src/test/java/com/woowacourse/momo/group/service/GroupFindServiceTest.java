@@ -2,9 +2,9 @@ package com.woowacourse.momo.group.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +47,7 @@ public class GroupFindServiceTest {
     @Test
     void findGroup() {
         Group expected = groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
-                _3일_후부터_7일_후까지.getInstance(), _1일_후_23시_59분.getInstance(), List.of(_3일_후_10시부터_12시까지.newInstance()),
+                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
                 "", ""));
 
         Group actual = groupFindService.findGroup(expected.getId());
@@ -62,8 +62,8 @@ public class GroupFindServiceTest {
         int count = 3;
         List<Group> expected = IntStream.rangeClosed(0, count)
                 .mapToObj(i -> groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
-                        _3일_후부터_7일_후까지.getInstance(), _1일_후_23시_59분.getInstance(),
-                        List.of(_3일_후_10시부터_12시까지.newInstance()), "", "")))
+                        이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
+                        List.of(이틀후_10시부터_12시까지.newInstance()), "", "")))
                 .collect(Collectors.toList());
 
         List<Group> actual = groupFindService.findGroups();

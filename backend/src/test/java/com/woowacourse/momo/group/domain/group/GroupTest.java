@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture._1일_전_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture._7일_후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
+import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -62,7 +62,7 @@ class GroupTest {
     @DisplayName("모임 기간 시작일 이후의 마감기한으로 인스턴스 생성시 예외가 발생한다")
     @Test
     void validateDeadlineIsBeforeStartDuration() {
-        LocalDateTime deadline = _7일_후_23시_59분.getInstance();
+        LocalDateTime deadline = 일주일후_23시_59분.getInstance();
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
@@ -125,7 +125,7 @@ class GroupTest {
     @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
     @Test
     void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(_1일_전_23시_59분.getInstance());
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
         Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
 
         assertThatThrownBy(() -> group.participate(member))
@@ -159,7 +159,7 @@ class GroupTest {
     @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
     @Test
     void isFinishedRecruitmentWithPassedDeadline() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(_1일_전_23시_59분.getInstance());
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
 
         boolean actual = group.isFinishedRecruitment();
         assertThat(actual).isTrue();
@@ -170,22 +170,22 @@ class GroupTest {
     }
 
     private Group constructGroupWithSetCapacity(int capacity) {
-        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance());
-        return new Group("momo 회의", host, Category.STUDY, capacity, _3일_후부터_7일_후까지.getInstance(),
-                _1일_후_23시_59분.getInstance(),
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        return new Group("momo 회의", host, Category.STUDY, capacity, 이틀후부터_일주일후까지.getInstance(),
+                내일_23시_59분.getInstance(),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
-        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance());
-        return new Group("momo 회의", host, Category.STUDY, 10, _3일_후부터_7일_후까지.getInstance(),
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        return new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
                 deadline, schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
-        List<Schedule> schedules = List.of(_3일_후_10시부터_12시까지.newInstance());
-        Group group = new Group("momo 회의", host, Category.STUDY, 10, _3일_후부터_7일_후까지.getInstance(),
-                _1일_후_23시_59분.getInstance(), schedules, "", "");
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        Group group = new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+                내일_23시_59분.getInstance(), schedules, "", "");
 
         Class<Group> clazz = Group.class;
         Field[] field = clazz.getDeclaredFields();

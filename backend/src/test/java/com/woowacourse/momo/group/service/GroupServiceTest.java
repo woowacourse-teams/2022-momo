@@ -3,10 +3,10 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.fixture.DateFixture._3일_후;
-import static com.woowacourse.momo.fixture.DateTimeFixture._1일_후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture._3일_후부터_7일_후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture._3일_후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
@@ -39,10 +39,10 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_3일_후.getInstance(),
-            _3일_후.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
+            이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_3일_후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private GroupService groupService;
@@ -62,7 +62,7 @@ class GroupServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 2,
-                _3일_후부터_7일_후까지.getInstance(), _1일_후_23시_59분.getInstance(), List.of(_3일_후_10시부터_12시까지.newInstance()),
+                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
                 "", ""));
     }
 
@@ -70,7 +70,7 @@ class GroupServiceTest {
     @Test
     void create() {
         GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(), 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         groupService.create(savedMember.getId(), request);
 
@@ -82,7 +82,7 @@ class GroupServiceTest {
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
         GroupRequest request = new GroupRequest("모모의 스터디", categoryId, 10, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, _1일_후_23시_59분.getInstance(), "", "");
+                SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.create(savedMember.getId(), request))
                 .isInstanceOf(NoSuchElementException.class)
