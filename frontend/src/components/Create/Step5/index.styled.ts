@@ -11,7 +11,7 @@ const Content = styled.div`
 `;
 
 const Left = styled.div`
-  max-width: 20rem;
+  max-width: 22rem;
 `;
 
 const Right = styled.div`
