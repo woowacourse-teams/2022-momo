@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
 import static com.woowacourse.momo.fixture.DateTimeFixture._6월_30일_23시_59분;
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.category.domain.Category;
@@ -30,6 +33,7 @@ import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
@@ -44,6 +48,8 @@ class GroupServiceTest {
             _7월_1일.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+    private static final int PAGE_SIZE = 12;
+    private static final int TWO_PAGE_GROUPS = 8;
 
     @Autowired
     private GroupService groupService;
@@ -122,6 +128,28 @@ class GroupServiceTest {
 
         assertThat(actual).usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expected);
+    }
+
+    @DisplayName("모임 목록중 두번째 페이지를 조회한다.")
+    @Test
+    void findAllWithPage() {
+        Pageable pageable = PageRequest.of(1, PAGE_SIZE);
+        for (int i = 0; i < PAGE_SIZE; i++) {
+            saveGroup();
+        }
+
+        List<GroupSummaryResponse> summaries = IntStream.rangeClosed(0, TWO_PAGE_GROUPS)
+                .mapToObj(i -> saveGroup())
+                .map(GroupResponseAssembler::groupSummaryResponse)
+                .collect(Collectors.toList());
+
+        GroupPageResponse actual = groupService.findAll(pageable);
+
+        assertAll(
+                () -> assertThat(actual.isHasNextPage()).isFalse(),
+                () -> assertThat(actual.getGroups()).usingRecursiveFieldByFieldElementComparator()
+                    .isEqualTo(summaries)
+        );
     }
 
     @DisplayName("식별자를 통해 모임을 삭제한다")
