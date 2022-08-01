@@ -6,14 +6,12 @@ const Content = styled.div`
   display: flex;
   gap: 4rem;
 
-  max-width: 43.75rem;
+  max-width: 55rem;
+  height: 25.5rem;
 `;
 
-const Calendar = styled.div`
-  width: 10rem;
-  height: 10rem;
-
-  background: ${({ theme: { colors } }) => colors.gray003};
+const Left = styled.div`
+  max-width: 22rem;
 `;
 
 const Right = styled.div`
@@ -53,7 +51,7 @@ const DayBox = styled.div`
   }
 
   .sat {
-    color: ${({ theme: { colors } }) => colors.blue002};
+    color: ${({ theme: { colors } }) => colors.blue001};
   }
 `;
 
@@ -79,7 +77,7 @@ const AddButton = styled.button`
 
 export {
   Content,
-  Calendar,
+  Left,
   Right,
   DailyButton,
   DayBox,

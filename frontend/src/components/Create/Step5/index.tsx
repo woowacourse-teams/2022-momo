@@ -1,5 +1,8 @@
 import { forwardRef, LegacyRef, memo } from 'react';
 
+import Calendar from 'components/@shared/Calendar';
+import useDate from 'hooks/useDate';
+
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
@@ -13,13 +16,24 @@ function Step5(
   { pressEnterToNext }: Step5Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
+  const { today, year, month, goToPrevMonth, goToNextMonth } = useDate();
+
   return (
     <Container ref={ref}>
       <Heading>
         <span>언제</span> 만날건가요?
       </Heading>
       <S.Content>
-        <S.Calendar />
+        <S.Left>
+          <Calendar
+            year={year}
+            month={month}
+            goToPrevMonth={goToPrevMonth}
+            goToNextMonth={goToNextMonth}
+            today={today}
+            size="large"
+          />
+        </S.Left>
         <S.Right>
           <S.DailyButton type="button">매일</S.DailyButton>
           <S.DayBox>
