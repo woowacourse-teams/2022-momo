@@ -6,12 +6,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  transform-origin: 0 0;
   transform: scale(
-    ${({ size }: { size: Size }) => (size === 'medium' ? 0.5 : 1)}
+    ${({ size }: { size: Size }) => (size === 'medium' ? 0.7 : 1)}
   );
-
-  width: 25rem;
-  height: 25rem;
 
   font-size: ${({ size }: { size: Size }) =>
     size === 'medium' ? '1.8rem' : '1.1rem'};
@@ -76,6 +74,7 @@ const Date = styled(DayColor)`
   justify-content: center;
   align-items: center;
 
+  min-width: 1.8rem;
   aspect-ratio: 1 / 1;
 
   border-radius: 50%;
