@@ -28,6 +28,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
@@ -123,6 +124,22 @@ class GroupServiceTest {
                 .isEqualTo(expected);
     }
 
+    @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다.")
+    @Test
+    void updateFinishedRecruitmentGroup() {
+        Group savedGroup = saveGroup();
+        Member savedMember2 = memberRepository.save(new Member("회원2", "password", "dudu"));
+        savedGroup.participate(savedMember2);
+        long groupId = savedGroup.getId();
+
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 2,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        assertThatThrownBy(() -> groupService.update(savedMember.getId(), groupId, groupRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+    }
+
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void delete() {
@@ -144,6 +161,6 @@ class GroupServiceTest {
 
         assertThatThrownBy(() -> groupService.delete(savedMember.getId(), groupId))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집이 마감되어 모임을 삭제할 수 없습니다.");
+                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
     }
 }

@@ -55,6 +55,7 @@ public class GroupService {
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
+        validateFinishedRecruitment(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
@@ -81,7 +82,7 @@ public class GroupService {
 
     private void validateFinishedRecruitment(Group group) {
         if (group.isFinishedRecruitment()) {
-            throw new IllegalArgumentException("모집이 마감되어 모임을 삭제할 수 없습니다.");
+            throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
         }
     }
 }
