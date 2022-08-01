@@ -1,10 +1,12 @@
+import { useRef } from 'react';
+
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestLogin } from 'apis/request/auth';
 import Modal from 'components/Modal';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
-import useInput from 'hooks/useInput';
+import { GUIDE_MESSAGE } from 'constants/message';
 import { accessTokenState, loginState, modalState } from 'store/states';
+import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
@@ -12,16 +14,20 @@ function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setIsLogin = useSetRecoilState(loginState);
-  const { value: userId, setValue: setUserId } = useInput('');
-  const { value: password, setValue: setPassword } = useInput('');
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const setOffModal = () => {
     setModalFlag('off');
   };
 
-  // TODO: 비제어 컴포넌트로 수정하기
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!userIdRef.current || !passwordRef.current) return;
+
+    const userId = userIdRef.current.value;
+    const password = passwordRef.current.value;
 
     requestLogin({ userId, password })
       .then(accessToken => {
@@ -31,8 +37,8 @@ function Login() {
         setIsLogin(true);
         setOffModal();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.AUTH.FAILURE_LOGIN_REQUEST);
+      .catch(({ message }) => {
+        alert(showErrorMessage(message));
       });
   };
 
@@ -43,21 +49,14 @@ function Login() {
         <S.InputContainer>
           <S.Label>
             아이디
-            <S.Input
-              type="text"
-              value={userId}
-              onChange={setUserId}
-              placeholder="brie"
-              required
-            />
+            <S.Input type="text" placeholder="brie" ref={userIdRef} required />
           </S.Label>
           <S.Label>
             비밀번호
             <S.Input
               type="password"
-              value={password}
-              onChange={setPassword}
               placeholder="********"
+              ref={passwordRef}
               required
             />
           </S.Label>
