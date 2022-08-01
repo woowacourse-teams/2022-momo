@@ -77,7 +77,7 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    private boolean isEarlyClosing;
+    private boolean isEarlyClosed;
 
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
@@ -166,7 +166,7 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosing || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isEarlyClosed || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
     }
 
     private boolean isFullCapacity() {
@@ -174,7 +174,7 @@ public class Group {
     }
 
     public void closeEarly() {
-        this.isEarlyClosing = true;
+        this.isEarlyClosed = true;
     }
 
     public List<Schedule> getSchedules() {
