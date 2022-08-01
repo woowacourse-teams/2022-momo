@@ -1,7 +1,5 @@
 package com.woowacourse.momo.group.service.dto.request;
 
-import static com.woowacourse.momo.group.domain.duration.Duration.newDuration;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +29,7 @@ public class GroupRequestAssembler {
     }
 
     public static Duration duration(DurationRequest request) {
-        return newDuration(request.getStart(), request.getEnd());
+        return new Duration(request.getStart(), request.getEnd());
     }
 
     public static List<Schedule> schedules(List<ScheduleRequest> requests) {

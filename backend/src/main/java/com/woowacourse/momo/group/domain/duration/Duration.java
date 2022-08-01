@@ -25,17 +25,13 @@ public class Duration {
     private LocalDate endDate;
 
     public Duration(LocalDate startDate, LocalDate endDate) {
+        validatePastDate(startDate, endDate);
         validateEndIsNotBeforeStart(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public static Duration newDuration(LocalDate startDate, LocalDate endDate) {
-        validatePastDate(startDate, endDate);
-        return new Duration(startDate, endDate);
-    }
-
-    private static void validatePastDate(LocalDate startDate, LocalDate endDate) {
+    private void validatePastDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
             throw new InvalidDurationException("시작일과 종료일은 과거의 날짜가 될 수 없습니다.");
         }
