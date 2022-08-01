@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class ApiLogging extends Logging {
+public class ExceptionLogging extends Logging {
 
     @AfterThrowing(value = "allMethod()", throwing = "exception")
     public void exceptionStackTrace(JoinPoint joinPoint, Exception exception) {

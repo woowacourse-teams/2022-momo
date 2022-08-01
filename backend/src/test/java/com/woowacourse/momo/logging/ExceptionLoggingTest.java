@@ -17,7 +17,7 @@ import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
 import com.woowacourse.momo.auth.service.AuthService;
 
-class ApiLoggingTest extends AcceptanceTest {
+class ExceptionLoggingTest extends AcceptanceTest {
 
     private static ByteArrayOutputStream console;
 
