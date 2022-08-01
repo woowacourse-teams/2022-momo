@@ -59,6 +59,13 @@ public class GroupController {
     }
 
     @Authenticated
+    @PutMapping("/close/{groupId}")
+    public ResponseEntity<Void> closeEarly(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
+        groupService.closeEarly(memberId, groupId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Authenticated
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         groupService.delete(memberId, groupId);
