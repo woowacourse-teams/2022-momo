@@ -75,7 +75,7 @@ const Date = styled(DayColor)`
   align-items: center;
 
   min-width: 1.8rem;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1;
 
   border-radius: 50%;
   padding: 0.2rem;
