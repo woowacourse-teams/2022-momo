@@ -8,20 +8,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum DateFixture {
 
-    _6월_30일(2022, 6, 30),
-    _7월_1일(2022, 7, 1),
-    _7월_2일(2022, 7, 2);
+    어제(LocalDate.now().minusDays(1)),
+    내일(LocalDate.now().plusDays(1)),
+    이틀후(LocalDate.now().plusDays(2)),
+    일주일후(LocalDate.now().plusDays(7));
 
-    private final int year;
-    private final int month;
-    private final int day;
-
-    private LocalDate instance;
+    private final LocalDate instance;
 
     public LocalDate getInstance() {
-        if (instance == null) {
-            instance = LocalDate.of(year, month, day);
-        }
         return instance;
     }
 }

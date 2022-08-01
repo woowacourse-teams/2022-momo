@@ -10,11 +10,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -42,10 +42,10 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 public class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(_7월_1일.getInstance(),
-            _7월_1일.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
+            이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     private MockMvc mockMvc;
@@ -161,7 +161,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("정원이 가득 찼습니다.")))
+                .andExpect(jsonPath("$.message", is("모집이 마감됐습니다.")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),
@@ -226,7 +226,7 @@ public class ParticipantControllerTest {
 
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

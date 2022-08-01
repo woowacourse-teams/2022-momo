@@ -48,12 +48,16 @@ public class GroupRestHandler extends RestHandler {
 
     public static ValidatableResponse 모임을_수정한다(String accessToken, Long groupId, GroupFixture group) {
         GroupUpdateRequest request = groupUpdateRequest(group);
-        return RestHandler.putRequest(accessToken, request, BASE_URL + "/" + groupId);
+        return putRequest(accessToken, request, BASE_URL + "/" + groupId);
     }
 
     public static ValidatableResponse 모임을_수정한다(Long groupId, GroupFixture group) {
         GroupUpdateRequest request = groupUpdateRequest(group);
-        return RestHandler.putRequest(request, BASE_URL + "/" + groupId);
+        return putRequest(request, BASE_URL + "/" + groupId);
+    }
+
+    public static ValidatableResponse 모임을_조기마감한다(String accessToken, Long groupId) {
+        return postRequestWithNoBody(accessToken, BASE_URL + "/" + groupId + "/close");
     }
 
     public static ValidatableResponse 모임을_삭제한다(String accessToken, Long groupId) {

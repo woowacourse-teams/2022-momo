@@ -55,6 +55,7 @@ public class GroupService {
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
+        validateFinishedRecruitment(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
 
@@ -64,9 +65,19 @@ public class GroupService {
     }
 
     @Transactional
+    public void closeEarly(Long hostId, Long groupId) {
+        Group group = groupFindService.findGroup(groupId);
+        validateHost(group, hostId);
+        validateFinishedRecruitment(group);
+
+        group.closeEarly();
+    }
+
+    @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
+        validateFinishedRecruitment(group);
 
         groupRepository.deleteById(groupId);
     }
@@ -75,6 +86,12 @@ public class GroupService {
         Member host = memberFindService.findMember(hostId);
         if (!group.isSameHost(host)) {
             throw new IllegalArgumentException("해당 모임의 주최자가 아닙니다.");
+        }
+    }
+
+    private void validateFinishedRecruitment(Group group) {
+        if (group.isFinishedRecruitment()) {
+            throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
         }
     }
 }

@@ -77,6 +77,8 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
+    private boolean isEarlyClosed;
+
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = name;
@@ -89,6 +91,7 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
+        validateDeadline(deadline, duration);
         participate(host);
         belongTo(schedules);
     }
@@ -104,6 +107,7 @@ public class Group {
         this.description = description;
 
         validateCapacity(capacity);
+        validateDeadline(deadline, duration);
         this.schedules.clear();
         belongTo(schedules);
     }
@@ -112,6 +116,27 @@ public class Group {
         if (GroupCapacityRange.isOutOfRange(capacity)) {
             throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
         }
+    }
+
+    private void validateDeadline(LocalDateTime deadline, Duration duration) {
+        validateFutureDeadline(deadline);
+        validateDeadlineIsBeforeStartDuration(deadline, duration);
+    }
+
+    private void validateFutureDeadline(LocalDateTime deadline) {
+        if (deadline.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("마감 시간은 현재 시간 이전일 수 없습니다.");
+        }
+    }
+
+    private void validateDeadlineIsBeforeStartDuration(LocalDateTime deadline, Duration duration) {
+        if (duration.isAfterStartDate(deadline)) {
+            throw new IllegalArgumentException("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
+        }
+    }
+
+    private void belongTo(List<Schedule> schedules) {
+        this.schedules.addAll(schedules);
     }
 
     public boolean isSameHost(Member host) {
@@ -124,8 +149,14 @@ public class Group {
     }
 
     private void validateParticipateAvailable(Member member) {
-        validateOverCapacity();
+        validateFinishedRecruitment();
         validateReParticipate(member);
+    }
+
+    private void validateFinishedRecruitment() {
+        if (isFinishedRecruitment()) {
+            throw new IllegalArgumentException("모집이 마감됐습니다.");
+        }
     }
 
     private void validateReParticipate(Member member) {
@@ -134,14 +165,16 @@ public class Group {
         }
     }
 
-    private void validateOverCapacity() {
-        if (this.capacity <= participants.size()) {
-            throw new IllegalArgumentException("정원이 가득 찼습니다.");
-        }
+    public boolean isFinishedRecruitment() {
+        return isEarlyClosed || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
     }
 
-    private void belongTo(List<Schedule> schedules) {
-        this.schedules.addAll(schedules);
+    private boolean isFullCapacity() {
+        return this.capacity <= participants.size();
+    }
+
+    public void closeEarly() {
+        this.isEarlyClosed = true;
     }
 
     public List<Schedule> getSchedules() {

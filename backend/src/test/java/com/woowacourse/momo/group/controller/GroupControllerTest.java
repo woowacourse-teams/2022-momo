@@ -13,11 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.DateFixture._7월_1일;
+import static com.woowacourse.momo.fixture.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -51,9 +51,9 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 class GroupControllerTest {
 
     private static final DurationRequest DURATION_REQUEST =
-            new DurationRequest(_7월_1일.getInstance(), _7월_1일.getInstance());
+            new DurationRequest(이틀후.getInstance(), 이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(_7월_1일.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
     @Autowired
     MockMvc mockMvc;
@@ -73,7 +73,7 @@ class GroupControllerTest {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
@@ -96,12 +96,31 @@ class GroupControllerTest {
         String accessToken = accessToken();
         Long savedGroupId = saveGroup(saveMemberId);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 15,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
                         .header("Authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(groupRequest))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document("groupupdate",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("그룹이 정상적으로 조기마감되는 경우를 테스트한다")
+    @Test
+    void groupCloseEarlyTest() throws Exception {
+        Long saveMemberId = saveMember();
+        String accessToken = accessToken();
+        Long savedGroupId = saveGroup(saveMemberId);
+
+        mockMvc.perform(post("/api/groups/" + savedGroupId + "/close")
+                        .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(
@@ -173,7 +192,7 @@ class GroupControllerTest {
 
     Long saveGroup(Long hostId) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, LocalDateTime.now(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

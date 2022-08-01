@@ -65,6 +65,16 @@ public class RestHandler {
                 .then().log().all();
     }
 
+    public static ValidatableResponse postRequestWithNoBody(String accessToken, String path) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post(path)
+                .then().log().all();
+    }
+
     public static ValidatableResponse putRequest(Object body, String path) {
         return RestAssured.given().log().all()
                 .body(body)
