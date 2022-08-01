@@ -1,5 +1,6 @@
 import { CategoryType, DetailData } from 'types/data';
 
+import Calendar from './Calendar';
 import * as S from './index.styled';
 import Info from './Info';
 import Participants from './Participants';
@@ -23,6 +24,7 @@ function DetailSideBar({
         location={location}
         categoryName={categoryName}
       />
+      <Calendar />
       <Participants id={id} hostName={name} capacity={capacity} />
     </S.Container>
   );

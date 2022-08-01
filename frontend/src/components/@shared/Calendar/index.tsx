@@ -49,15 +49,15 @@ function Calendar({
   return (
     <S.Container size={size}>
       <S.Navigator size={size}>
-        <S.Arrow onClick={goToPrevMonth}>
+        <S.LeftArrow onClick={goToPrevMonth}>
           <LeftArrow width={30} color={theme.colors.yellow001} />
-        </S.Arrow>
+        </S.LeftArrow>
         <div>
           {year}년 {month}월
         </div>
-        <S.Arrow onClick={goToNextMonth}>
+        <S.RightArrow onClick={goToNextMonth}>
           <RightArrow width={30} color={theme.colors.yellow001} />
-        </S.Arrow>
+        </S.RightArrow>
       </S.Navigator>
       <S.Content>
         {/* 요일 */}
