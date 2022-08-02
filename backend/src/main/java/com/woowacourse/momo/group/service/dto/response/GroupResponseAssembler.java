@@ -34,8 +34,9 @@ public class GroupResponseAssembler {
                 group.getDeadline());
     }
 
-    public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses, boolean hasNextPage) {
-        return new GroupPageResponse(hasNextPage, groupSummaryResponses);
+    public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses,
+                                                      boolean hasNextPage, int pageNumber) {
+        return new GroupPageResponse(hasNextPage, pageNumber, groupSummaryResponses);
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {

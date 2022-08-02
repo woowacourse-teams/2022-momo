@@ -10,5 +10,6 @@ import lombok.Getter;
 public class GroupPageResponse {
 
     boolean hasNextPage;
+    int pageNumber;
     List<GroupSummaryResponse> groups;
 }
