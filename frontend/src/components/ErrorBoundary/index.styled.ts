@@ -10,4 +10,14 @@ const Container = styled.div`
   background: ${({ theme: { colors } }) => colors.gray002};
 `;
 
-export { Container };
+const Title = styled.h2`
+  font-size: 2rem;
+`;
+
+const Description = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+export { Container, Title, Description };
