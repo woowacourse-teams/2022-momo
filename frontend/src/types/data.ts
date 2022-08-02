@@ -52,8 +52,7 @@ export interface DurationDate {
   endDate: GroupDetailData['duration']['end'];
 }
 
-// TODO: GroupSummary으로 이름 변경 필요
-export type Group = Pick<
+export type GroupSummary = Pick<
   GroupDetailData,
   'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'capacity'
 > & { numOfParticipant: number };

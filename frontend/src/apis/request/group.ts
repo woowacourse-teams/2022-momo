@@ -5,7 +5,7 @@ import { GROUP_RULE } from 'constants/rule';
 import {
   CreateGroupData,
   GroupDetailData,
-  Group,
+  GroupSummary,
   GroupParticipants,
 } from 'types/data';
 
@@ -61,7 +61,7 @@ const requestCreateGroup = async ({
     });
 };
 
-const getGroups = (): Promise<Group[]> => {
+const getGroups = (): Promise<GroupSummary[]> => {
   return axios.get(API_PATH.GROUP).then(response => response.data);
 };
 
