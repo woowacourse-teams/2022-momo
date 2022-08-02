@@ -4,14 +4,14 @@ import { getGroupParticipants } from 'apis/request/group';
 import { ReactComponent as CrownSVG } from 'assets/crown.svg';
 import PersonSVG from 'components/svg/Person';
 import { QUERY_KEY } from 'constants/key';
-import { DetailData, GroupParticipants } from 'types/data';
+import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
 interface ParticipantsProps {
-  id: DetailData['id'];
-  hostName: DetailData['host']['name'];
-  capacity: DetailData['capacity'];
+  id: GroupDetailData['id'];
+  hostName: GroupDetailData['host']['name'];
+  capacity: GroupDetailData['capacity'];
 }
 
 function Participants({ id, hostName, capacity }: ParticipantsProps) {
