@@ -96,9 +96,8 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
+    public void update(Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
-        this.name = name;
         this.category = category;
         this.capacity = capacity;
         this.duration = duration;

@@ -138,7 +138,7 @@ class GroupServiceTest {
         savedGroup.participate(savedMember2);
         long groupId = savedGroup.getId();
 
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedMember.getId(), groupId, groupRequest))
