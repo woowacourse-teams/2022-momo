@@ -21,11 +21,21 @@ public class GroupResponseAssembler {
                 group.getLocation(), group.getDescription());
     }
 
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<Group> groups) {
+        return groups.stream()
+                .map(GroupResponseAssembler::groupSummaryResponse)
+                .collect(Collectors.toList());
+    }
+
     public static GroupSummaryResponse groupSummaryResponse(Group group) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
                 group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
                 group.getDeadline());
+    }
+
+    public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses, boolean hasNextPage) {
+        return new GroupPageResponse(hasNextPage, groupSummaryResponses);
     }
 
     public static GroupIdResponse groupIdResponse(Group group) {

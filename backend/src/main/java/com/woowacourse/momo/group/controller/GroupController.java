@@ -1,8 +1,9 @@
 package com.woowacourse.momo.group.controller;
 
 import java.net.URI;
-import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,8 @@ import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
@@ -46,8 +48,8 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupSummaryResponse>> findAll() {
-        return ResponseEntity.ok(groupService.findAll());
+    public ResponseEntity<GroupPageResponse> findAll(@RequestParam(required = false, defaultValue = "0") int page) {
+        return ResponseEntity.ok(groupService.findAll(page));
     }
 
     @Authenticated

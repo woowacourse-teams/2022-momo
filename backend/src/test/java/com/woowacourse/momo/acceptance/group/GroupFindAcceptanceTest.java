@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
@@ -34,6 +35,7 @@ import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 class GroupFindAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture HOST = MemberFixture.MOMO;
+    private static final int FIRST_PAGE_NUMBER = 0;
 
     private String hostAccessToken;
     private Map<GroupFixture, Long> groupIds;
@@ -120,6 +122,14 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         checkGroupSummaryResponses(response);
     }
 
+    @DisplayName("모임목록중 첫번째 페이지를 조회한다")
+    @Test
+    void findGroupsByPageNumber() {
+        ValidatableResponse response = 페이지로_모임목록을_조회한다(FIRST_PAGE_NUMBER);
+
+        checkGroupSummaryResponses(response);
+    }
+
     void checkGroupSummaryResponses(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
 
@@ -138,7 +148,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                     .as(MemberResponse[].class)
                     .length;
 
-            String index = String.format("[%d]", i);
+            String index = String.format("groups[%d]", i);
             response.body(index + ".id", is(groupIds.get(group).intValue()))
                     .body(index + ".name", is(group.getName()))
                     .body(index + ".categoryId", is(group.getCategoryId().intValue()))

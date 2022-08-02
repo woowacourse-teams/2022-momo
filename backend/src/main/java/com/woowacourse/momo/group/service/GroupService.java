@@ -3,6 +3,9 @@ package com.woowacourse.momo.group.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,7 @@ import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
@@ -27,6 +31,7 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @Service
 public class GroupService {
 
+    private static final int DEFAULT_PAGE_SIZE = 12;
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
@@ -46,9 +51,17 @@ public class GroupService {
 
     public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
-        return groups.stream()
-                .map(GroupResponseAssembler::groupSummaryResponse)
-                .collect(Collectors.toList());
+
+        return GroupResponseAssembler.groupSummaryResponses(groups);
+    }
+
+    public GroupPageResponse findAll(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
+        Page<Group> groups = groupFindService.findGroups(pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
     }
 
     @Transactional
