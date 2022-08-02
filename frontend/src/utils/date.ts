@@ -1,4 +1,4 @@
-import { DetailData } from 'types/data';
+import { GroupDetailData } from 'types/data';
 
 const convertRemainTime = (deadline: string) => {
   const deadlineDate = new Date(deadline);
@@ -8,6 +8,7 @@ const convertRemainTime = (deadline: string) => {
 
   if (gap <= 0 || Number.isNaN(gap)) return null;
 
+  // TODO: 산술식 상수화 시키기
   const dayGap = Math.floor(gap / (1000 * 60 * 60 * 24));
   const hourGap = Math.floor((gap / (1000 * 60 * 60)) % 24);
   const minGap = Math.floor((gap / (1000 * 60)) % 60);
@@ -20,7 +21,7 @@ const convertRemainTime = (deadline: string) => {
   return `${secGap}초`;
 };
 
-const convertDeadlineToRemainTime = (deadline: DetailData['deadline']) => {
+const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
   const remainTime = convertRemainTime(deadline);
 
   if (!remainTime) return '마감 완료';
@@ -43,9 +44,34 @@ const resetDateToMidnight = (date: Date) => {
   return date;
 };
 
+const parsedDurationDate = (duration: GroupDetailData['duration']) => {
+  const [startYear, startMonth, startDay] = duration.start.split('-');
+  const parsedStartDate = `${startYear}년 ${startMonth}월 ${startDay}일`;
+  const [endYear, endMonth, endDay] = duration.end.split('-');
+
+  if (duration.start === duration.end) {
+    return parsedStartDate;
+  }
+
+  if (startYear !== endYear) {
+    const parsedEndDate = `${endYear}년 ${endMonth}월 ${endDay}일`;
+
+    return `${parsedStartDate} ~ ${parsedEndDate}`;
+  }
+
+  if (startMonth !== endMonth) {
+    const parsedEndDate = `${endMonth}월 ${endDay}일`;
+
+    return `${parsedStartDate} ~ ${parsedEndDate}`;
+  }
+
+  return `${parsedStartDate} ~ ${endDay}일`;
+};
+
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
   getNewDateString,
   resetDateToMidnight,
+  parsedDurationDate,
 };

@@ -1,5 +1,5 @@
 import map from 'assets/map.jpg';
-import { DetailData } from 'types/data';
+import { GroupDetailData } from 'types/data';
 import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
@@ -10,7 +10,7 @@ function DetailContent({
   deadline,
   categoryId,
   description,
-}: Pick<DetailData, 'name' | 'deadline' | 'categoryId' | 'description'>) {
+}: Pick<GroupDetailData, 'name' | 'deadline' | 'categoryId' | 'description'>) {
   return (
     <S.Container>
       <S.TitleWrapper imgSrc={getCategoryImage(categoryId)}>

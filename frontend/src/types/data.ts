@@ -1,8 +1,14 @@
 import { UserProfile } from './user';
 
 export interface CategoryType {
-  id: DetailData['categoryId'];
+  id: GroupDetailData['categoryId'];
   name: string;
+}
+
+export interface ScheduleType {
+  date: string;
+  startTime: string;
+  endTime: string;
 }
 
 export interface PageType {
@@ -11,18 +17,18 @@ export interface PageType {
 }
 
 export interface CreateGroupData {
-  name: string;
+  name: GroupDetailData['name'];
   selectedCategory: CategoryType;
-  capacity: number;
-  startDate: string;
-  endDate: string;
-  deadline: string;
-  location: string;
-  description: string;
+  capacity: GroupDetailData['capacity'];
+  startDate: GroupDetailData['duration']['start'];
+  endDate: GroupDetailData['duration']['end'];
+  schedules: GroupDetailData['schedules'];
+  deadline: GroupDetailData['deadline'];
+  location: GroupDetailData['location'];
+  description: GroupDetailData['description'];
 }
 
-// TODO: GroupDetailData
-export interface DetailData {
+export interface GroupDetailData {
   id: number;
   name: string;
   host: {
@@ -35,26 +41,20 @@ export interface DetailData {
     start: string;
     end: string;
   };
-  schedules: [
-    {
-      date: string;
-      startTime: string;
-      endTime: string;
-    },
-  ];
+  schedules: ScheduleType[];
   deadline: string;
   location: string;
   description: string;
 }
 
 export interface DurationDate {
-  startDate: DetailData['duration']['start'];
-  endDate: DetailData['duration']['end'];
+  startDate: GroupDetailData['duration']['start'];
+  endDate: GroupDetailData['duration']['end'];
 }
 
 // TODO: GroupSummary으로 이름 변경 필요
 export type Group = Pick<
-  DetailData,
+  GroupDetailData,
   'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'capacity'
 > & { numOfParticipant: number };
 

@@ -1,4 +1,4 @@
-import { CategoryType, DetailData } from 'types/data';
+import { CategoryType, GroupDetailData } from 'types/data';
 
 import Calendar from './Calendar';
 import * as S from './index.styled';
@@ -10,9 +10,13 @@ function DetailSideBar({
   name,
   capacity,
   duration,
+  schedules,
   location,
   categoryName,
-}: Pick<DetailData, 'id' | 'name' | 'capacity' | 'duration' | 'location'> & {
+}: Pick<
+  GroupDetailData,
+  'id' | 'name' | 'capacity' | 'duration' | 'schedules' | 'location'
+> & {
   categoryName: CategoryType['name'];
 }) {
   return (
@@ -24,7 +28,7 @@ function DetailSideBar({
         location={location}
         categoryName={categoryName}
       />
-      <Calendar />
+      <Calendar schedules={schedules} />
       <Participants id={id} hostName={name} capacity={capacity} />
     </S.Container>
   );

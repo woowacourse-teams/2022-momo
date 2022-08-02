@@ -10,7 +10,7 @@ import {
   CategoryImage9,
   CategoryImage10,
 } from 'assets/category';
-import { DetailData } from 'types/data';
+import { GroupDetailData } from 'types/data';
 
 const categoryImage = [
   CategoryImage1,
@@ -25,7 +25,7 @@ const categoryImage = [
   CategoryImage10,
 ];
 
-const getCategoryImage = (categoryId: DetailData['categoryId']) => {
+const getCategoryImage = (categoryId: GroupDetailData['categoryId']) => {
   return categoryImage[categoryId - 1];
 };
 

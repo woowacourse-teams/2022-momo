@@ -4,7 +4,7 @@ import { API_PATH } from 'constants/path';
 import { GROUP_RULE } from 'constants/rule';
 import {
   CreateGroupData,
-  DetailData,
+  GroupDetailData,
   Group,
   GroupParticipants,
 } from 'types/data';
@@ -48,7 +48,7 @@ const requestCreateGroup = async ({
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios
-    .post<{ groupId: DetailData['id'] }>(API_PATH.GROUP, data, {
+    .post<{ groupId: GroupDetailData['id'] }>(API_PATH.GROUP, data, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -65,11 +65,13 @@ const getGroups = (): Promise<Group[]> => {
   return axios.get(API_PATH.GROUP).then(response => response.data);
 };
 
-const getGroupDetail = (id: DetailData['id']): Promise<DetailData> => {
+const getGroupDetail = (
+  id: GroupDetailData['id'],
+): Promise<GroupDetailData> => {
   return axios.get(`${API_PATH.GROUP}/${id}`).then(response => response.data);
 };
 
-const deleteGroup = (id: DetailData['id']): Promise<void> => {
+const deleteGroup = (id: GroupDetailData['id']): Promise<void> => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.delete(`${API_PATH.GROUP}/${id}`, {
@@ -80,14 +82,14 @@ const deleteGroup = (id: DetailData['id']): Promise<void> => {
 };
 
 const getGroupParticipants = (
-  id: DetailData['id'],
+  id: GroupDetailData['id'],
 ): Promise<GroupParticipants> => {
   return axios
     .get(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const joinGroup = (id: DetailData['id']): Promise<void> => {
+const joinGroup = (id: GroupDetailData['id']): Promise<void> => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.post(
@@ -101,7 +103,7 @@ const joinGroup = (id: DetailData['id']): Promise<void> => {
   );
 };
 
-const exitGroup = (id: DetailData['id']): Promise<void> => {
+const exitGroup = (id: GroupDetailData['id']): Promise<void> => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {

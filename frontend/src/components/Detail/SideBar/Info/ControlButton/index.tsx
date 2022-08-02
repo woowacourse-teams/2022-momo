@@ -8,12 +8,12 @@ import {
 } from 'apis/request/group';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { loginState, modalState } from 'store/states';
-import { DetailData } from 'types/data';
+import { GroupDetailData } from 'types/data';
 
 import * as S from './index.styled';
 
 interface ControlButtonProps {
-  id: DetailData['id'];
+  id: GroupDetailData['id'];
 }
 
 function ControlButton({ id }: ControlButtonProps) {
