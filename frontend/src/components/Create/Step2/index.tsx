@@ -20,7 +20,7 @@ function Step2(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const { categories, isLoading, isError } = useCategory();
+  const { categories, isLoading } = useCategory();
 
   const selectCategory = (newSelectedCategory: CategoryType) => () => {
     setSelectedCategory(newSelectedCategory);
@@ -29,8 +29,6 @@ function Step2(
   };
 
   if (isLoading) return <h2>카테고리 로딩 중...</h2>;
-
-  if (isError) return <h2>에러 발생</h2>;
 
   return (
     <Container ref={ref}>
