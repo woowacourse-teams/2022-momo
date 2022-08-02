@@ -21,6 +21,12 @@ public class GroupResponseAssembler {
                 group.getLocation(), group.getDescription());
     }
 
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<Group> groups) {
+        return groups.stream()
+                .map(GroupResponseAssembler::groupSummaryResponse)
+                .collect(Collectors.toList());
+    }
+
     public static GroupSummaryResponse groupSummaryResponse(Group group) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),

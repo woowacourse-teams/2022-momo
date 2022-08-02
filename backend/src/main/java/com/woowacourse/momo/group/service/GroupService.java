@@ -51,18 +51,15 @@ public class GroupService {
 
     public List<GroupSummaryResponse> findAll() {
         List<Group> groups = groupFindService.findGroups();
-        return groups.stream()
-                .map(GroupResponseAssembler::groupSummaryResponse)
-                .collect(Collectors.toList());
+
+        return GroupResponseAssembler.groupSummaryResponses(groups);
     }
 
     public GroupPageResponse findAll(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
         Page<Group> groups = groupFindService.findGroups(pageable);
         List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = groupsOfPage.stream()
-                .map(GroupResponseAssembler::groupSummaryResponse)
-                .collect(Collectors.toList());
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
     }
