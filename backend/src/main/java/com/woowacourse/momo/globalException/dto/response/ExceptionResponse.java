@@ -24,4 +24,8 @@ public class ExceptionResponse {
         }
         return new ExceptionResponse(new String(message));
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

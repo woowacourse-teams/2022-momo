@@ -13,7 +13,8 @@ public enum MemberFixture {
 
     MOMO("momo", "qwe123!@#", "모모"),
     DUDU("dudu", "qwe123!@#", "두두"),
-    GUGU("gugu", "qwe123!@#", "구구");
+    GUGU("gugu", "qwe123!@#", "구구")
+    ;
 
     private final String userId;
     private final String password;
