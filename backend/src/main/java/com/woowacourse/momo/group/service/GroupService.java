@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -106,5 +105,11 @@ public class GroupService {
         if (group.isFinishedRecruitment()) {
             throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
         }
+    }
+
+    public List<GroupSummaryResponse> findGroupOfMember(Long memberId) {
+        List<Group> participatedGroups = groupFindService.findRelatedGroups(memberId);
+
+        return GroupResponseAssembler.groupSummaryResponses(participatedGroups);
     }
 }

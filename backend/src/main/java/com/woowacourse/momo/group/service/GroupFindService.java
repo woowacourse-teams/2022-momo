@@ -1,6 +1,10 @@
 package com.woowacourse.momo.group.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
+import com.woowacourse.momo.participant.domain.Participant;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,5 +36,11 @@ public class GroupFindService {
 
     public Page<Group> findGroups(Pageable pageable) {
         return groupRepository.findAll(pageable);
+    }
+
+    public List<Group> findRelatedGroups(Long memberId) {
+        List<Group> participatedGroup = groupRepository.findParticipatedGroups(memberId);
+
+        return new ArrayList<>(participatedGroup);
     }
 }
