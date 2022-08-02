@@ -119,7 +119,7 @@ class GroupServiceTest {
     @Test
     void findAll() {
         int count = 3;
-        List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
+        List<GroupSummaryResponse> expected = IntStream.range(0, count)
                 .mapToObj(i -> saveGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
@@ -164,7 +164,7 @@ class GroupServiceTest {
             saveGroup();
         }
 
-        List<GroupSummaryResponse> summaries = IntStream.rangeClosed(0, TWO_PAGE_GROUPS)
+        List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
                 .mapToObj(i -> saveGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());

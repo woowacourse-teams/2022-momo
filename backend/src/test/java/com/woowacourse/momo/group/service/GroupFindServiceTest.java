@@ -38,9 +38,12 @@ public class GroupFindServiceTest {
 
     private Member savedMember;
 
+    private Member savedAnotherMember;
+
     @BeforeEach
     void setUp() {
         savedMember = memberRepository.save(new Member("momo", "qwe123!@#", "momo"));
+        savedAnotherMember = memberRepository.save(new Member("mumu", "qwe123!@#", "mumu"));
     }
 
     @DisplayName("모임을 조회한다")
@@ -60,7 +63,7 @@ public class GroupFindServiceTest {
     @Test
     void findGroups() {
         int count = 3;
-        List<Group> expected = IntStream.rangeClosed(0, count)
+        List<Group> expected = IntStream.range(0, count)
                 .mapToObj(i -> groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
                         이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
                         List.of(이틀후_10시부터_12시까지.newInstance()), "", "")))
@@ -70,5 +73,22 @@ public class GroupFindServiceTest {
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @DisplayName("참여하거나 가입한 모임 목록을 조회한다")
+    @Test
+    void findRelatedGroups() {
+        int count = 3;
+        IntStream.range(0, count)
+                .forEach(i -> groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
+                        이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
+                        List.of(이틀후_10시부터_12시까지.newInstance()), "", "")));
+
+        groupRepository.save(new Group("모모의 스터디", savedAnotherMember, Category.STUDY, 10,
+                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
+                List.of(이틀후_10시부터_12시까지.newInstance()), "", ""));
+
+        assertThat(groupFindService.findRelatedGroups(savedMember.getId()))
+                .hasSize(count);
     }
 }

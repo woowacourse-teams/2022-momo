@@ -44,6 +44,7 @@ import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
+import com.woowacourse.momo.participant.service.ParticipantService;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -69,11 +70,14 @@ class GroupControllerTest {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    ParticipantService participantService;
+
     @DisplayName("그룹이 정상적으로 생성되는 경우를 테스트한다")
     @Test
     void groupCreateTest() throws Exception {
-        Long saveMemberId = saveMember();
-        String accessToken = accessToken();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String accessToken = accessToken("woowa", "wooteco1!");
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
@@ -94,8 +98,8 @@ class GroupControllerTest {
     @DisplayName("그룹이 정상적으로 수정되는 경우를 테스트한다")
     @Test
     void groupUpdateTest() throws Exception {
-        Long saveMemberId = saveMember();
-        String accessToken = accessToken();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 15,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
@@ -117,8 +121,8 @@ class GroupControllerTest {
     @DisplayName("그룹이 정상적으로 조기마감되는 경우를 테스트한다")
     @Test
     void groupCloseEarlyTest() throws Exception {
-        Long saveMemberId = saveMember();
-        String accessToken = accessToken();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
 
         mockMvc.perform(post("/api/groups/" + savedGroupId + "/close")
@@ -136,9 +140,9 @@ class GroupControllerTest {
     @DisplayName("그룹이 정상적으로 삭제되는 경우를 테스트한다")
     @Test
     void groupDeleteTest() throws Exception {
-        Long saveMemberId = saveMember();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         Long saveId = saveGroup("모모의 스터디", saveMemberId);
-        String accessToken = accessToken();
+        String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(delete("/api/groups/" + saveId)
                         .header("Authorization", "bearer " + accessToken)
@@ -155,9 +159,9 @@ class GroupControllerTest {
     @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
     @Test
     void groupGetTest() throws Exception {
-        Long saveMemberId = saveMember();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         Long saveId = saveGroup("모모의 스터디", saveMemberId);
-        String accessToken = accessToken();
+        String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/" + saveId)
                         .header("Authorization", "bearer " + accessToken))
@@ -174,7 +178,7 @@ class GroupControllerTest {
     @DisplayName("그룹 목록을 가져오는 경우를 테스트한다")
     @Test
     void groupGetListTest() throws Exception {
-        Long saveMemberId = saveMember();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         saveGroup("모모의 스터디", saveMemberId);
         saveGroup("무무의 스터디", saveMemberId);
 
@@ -193,7 +197,7 @@ class GroupControllerTest {
     @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다")
     @Test
     void groupGetListWithPaginationTest() throws Exception {
-        Long saveMemberId = saveMember();
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         for (int i = 0; i < TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE; i++) {
             saveGroup("모모의 스터디" + i, saveMemberId);
         }
@@ -203,6 +207,29 @@ class GroupControllerTest {
                 .andExpect(jsonPath("groups", hasSize(8)));
     }
 
+    @DisplayName("본인이 참여하거나 개최한 그룹들을 조회한다")
+    @Test
+    void groupGetListRelatedMe() throws Exception {
+        Long savedMember1 = saveMember("woowa", "wooteco1!", "모모");
+        Long savedMember2 = saveMember("woowak", "wooteco1!", "머머");
+        saveGroup("모모의 스터디1", savedMember1);
+        String token = accessToken("woowa", "wooteco1!");
+
+        Long GroupHeldByAnotherMember = saveGroup("머머의 스터디", savedMember2);
+        participantService.participate(GroupHeldByAnotherMember, savedMember1);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me")
+                        .header("Authorization", "bearer " + token))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(
+                        document("grouprelated",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     Long saveGroup(String name, Long hostId) {
         GroupRequest groupRequest = new GroupRequest(name, 1L, 10,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
@@ -210,14 +237,14 @@ class GroupControllerTest {
         return groupService.create(hostId, groupRequest).getGroupId();
     }
 
-    String accessToken() {
-        LoginRequest request = new LoginRequest("woowa", "wooteco1!");
+    String accessToken(String id, String password) {
+        LoginRequest request = new LoginRequest(id, password);
 
         return authService.login(request).getAccessToken();
     }
 
-    Long saveMember() {
-        SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
+    Long saveMember(String id, String password, String name) {
+        SignUpRequest request = new SignUpRequest(id, password, name);
         return authService.signUp(request);
     }
 }
