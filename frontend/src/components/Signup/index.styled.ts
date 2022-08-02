@@ -40,6 +40,11 @@ const InfoMessage = styled.span<InfoMessageProps>`
   font-size: 0.9rem;
 `;
 
+const WarningMessage = styled(InfoMessage)`
+  color: ${({ isValid, theme: { colors } }) =>
+    isValid ? colors.white001 : colors.red002};
+`;
+
 const Button = styled.button`
   height: 3rem;
 
@@ -51,4 +56,13 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Form, Title, InputContainer, Label, Input, InfoMessage, Button };
+export {
+  Form,
+  Title,
+  InputContainer,
+  Label,
+  Input,
+  InfoMessage,
+  WarningMessage,
+  Button,
+};
