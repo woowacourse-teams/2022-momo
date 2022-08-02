@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -62,6 +63,7 @@ public class MemberControllerTest {
     void find() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/members")
                         .header("authorization", "bearer " + accessToken))
+                .andExpect(jsonPath("id", notNullValue()))
                 .andExpect(jsonPath("userId", is(ID)))
                 .andDo(
                         document("memberfind",
