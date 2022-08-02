@@ -1,7 +1,7 @@
 import React, { forwardRef, LegacyRef, memo } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { Group } from 'types/data';
+import { CreateGroupData } from 'types/data';
 
 import {
   Container,
@@ -14,8 +14,8 @@ import {
 
 interface Step1Props {
   useNameState: () => {
-    name: Group['name'];
-    setName: (name: Group['name']) => void;
+    name: CreateGroupData['name'];
+    setName: (name: CreateGroupData['name']) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }

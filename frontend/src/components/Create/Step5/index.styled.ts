@@ -7,7 +7,7 @@ const Content = styled.div`
   gap: 4rem;
 
   max-width: 55rem;
-  height: 25.5rem;
+  height: 27rem;
 `;
 
 const Left = styled.div`

@@ -11,7 +11,7 @@ const useRecoilQuery = <T>(
   suspense = true,
 ) => {
   const [state, setState] = useRecoilState(recoilState);
-  const { isLoading, isError, data, error } = useQuery(key, getFunc, {
+  const { isLoading, data } = useQuery(key, getFunc, {
     staleTime,
     suspense,
   });
@@ -23,7 +23,7 @@ const useRecoilQuery = <T>(
     setState(data);
   }, [data, setState]);
 
-  return { state, isLoading, isError, error };
+  return { state, isLoading };
 };
 
 export default useRecoilQuery;

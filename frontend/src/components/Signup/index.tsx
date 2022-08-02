@@ -18,16 +18,43 @@ import {
 
 function Signup() {
   const [isModalOpen, setModalState] = useRecoilState(modalState);
-  const { value: userId, setValue: setUserId } = useInput('');
-  const { value: name, setValue: setName } = useInput('');
-  const { value: password, setValue: setPassword } = useInput('');
-  const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
+  const {
+    value: userId,
+    setValue: setUserId,
+    dangerouslySetValue: dangerouslySetUserId,
+  } = useInput('');
+  const {
+    value: name,
+    setValue: setName,
+    dangerouslySetValue: dangerouslySetName,
+  } = useInput('');
+  const {
+    value: password,
+    setValue: setPassword,
+    dangerouslySetValue: dangerouslySetPassword,
+  } = useInput('');
+  const {
+    value: confirmPassword,
+    setValue: setConfirmPassword,
+    dangerouslySetValue: dangerouslySetConfirmPassword,
+  } = useInput('');
   const [isValidName, setIsValidName] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
   const setOffModal = () => {
     setModalState('off');
+  };
+
+  const showLoginModal = () => {
+    setModalState('login');
+  };
+
+  const resetValues = () => {
+    dangerouslySetUserId('');
+    dangerouslySetName('');
+    dangerouslySetPassword('');
+    dangerouslySetConfirmPassword('');
   };
 
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +74,8 @@ function Signup() {
     requestSignup({ userId, password, name })
       .then(() => {
         alert(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
-        setOffModal();
+        resetValues();
+        showLoginModal();
       })
       .catch(({ message }) => {
         alert(showErrorMessage(message));
@@ -74,50 +102,42 @@ function Signup() {
             아이디
             <S.Input
               type="text"
-              placeholder="brie"
               value={userId}
               onChange={setUserId}
+              autoFocus
               required
             />
           </S.Label>
           <S.Label>
             닉네임
-            <S.Input
-              type="text"
-              placeholder="사용하실 닉네임을 입력해주세요."
-              value={name}
-              onChange={setName}
-              required
-            />
+            <S.Input type="text" value={name} onChange={setName} required />
             <S.InfoMessage isValid={isValidName}>
-              닉네임은 1~6자 사이여야 합니다.
+              닉네임은 1~6자 사이여야 해요.
             </S.InfoMessage>
           </S.Label>
           <S.Label>
             비밀번호
             <S.Input
               type="password"
-              placeholder="영문자, 숫자, 특수문자 포함 8자 이상"
               value={password}
               onChange={setPassword}
               required
             />
             <S.InfoMessage isValid={isValidPassword}>
-              비밀번호는 8~16자 사이의 영문, 숫자, 특수문자의 조합이어야 합니다.
+              8~16자 사이의 영문, 숫자, 특수문자 포함
             </S.InfoMessage>
           </S.Label>
           <S.Label>
             비밀번호 확인
             <S.Input
               type="password"
-              placeholder="비밀번호를 한 번 더 입력해주세요."
               value={confirmPassword}
               onChange={setConfirmPassword}
               required
             />
-            {isValidConfirmPassword || (
-              <S.InfoMessage>비밀번호 확인이 일치하지 않습니다.</S.InfoMessage>
-            )}
+            <S.WarningMessage isValid={isValidConfirmPassword}>
+              비밀번호 확인이 일치하지 않아요.
+            </S.WarningMessage>
           </S.Label>
         </S.InputContainer>
         <S.Button type="submit">회원가입</S.Button>

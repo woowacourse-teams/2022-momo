@@ -1,14 +1,15 @@
 import { memo, LegacyRef, forwardRef } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
+import { CreateGroupData } from 'types/data';
 
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step8Props {
   useDescriptionState: () => {
-    description: string;
-    setDescription: (description: string) => void;
+    description: CreateGroupData['description'];
+    setDescription: (description: CreateGroupData['description']) => void;
   };
 }
 

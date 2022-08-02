@@ -11,16 +11,14 @@ import * as S from './index.styled';
 function Detail() {
   const { id } = useParams();
 
-  const { data, isError: isGroupDetailError } = useQuery(
+  const { data } = useQuery(
     QUERY_KEY.GROUP_DETAILS,
     () => getGroupDetail(Number(id)),
     {
       suspense: true,
     },
   );
-  const { categories, isError: isCategoryError } = useCategory();
-
-  if (isGroupDetailError || isCategoryError) throw new Error();
+  const { categories } = useCategory();
 
   return (
     <S.PageContainer>
@@ -31,6 +29,7 @@ function Detail() {
             name={data.host.name}
             capacity={data.capacity}
             duration={data.duration}
+            schedules={data.schedules}
             location={data.location}
             categoryName={
               categories.find(category => category.id === data.categoryId)

@@ -5,13 +5,13 @@ import { categoryState } from 'store/states';
 import useRecoilQuery from './useRecoilQuery';
 
 const useCategory = () => {
-  const {
-    state: categories,
-    isLoading,
-    isError,
-  } = useRecoilQuery(categoryState, QUERY_KEY.CATEGORY, getCategory);
+  const { state: categories, isLoading } = useRecoilQuery(
+    categoryState,
+    QUERY_KEY.CATEGORY,
+    getCategory,
+  );
 
-  return { categories, isLoading, isError };
+  return { categories, isLoading };
 };
 
 export default useCategory;

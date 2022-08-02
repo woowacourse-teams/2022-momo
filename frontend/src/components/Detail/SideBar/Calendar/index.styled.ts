@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  transform: translateX(12.5%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  width: max-content;
   height: 17rem;
 `;
 

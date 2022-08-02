@@ -3,9 +3,7 @@ import useCategory from 'hooks/useCategory';
 import * as S from './index.styled';
 
 function Category() {
-  const { categories, isError } = useCategory();
-
-  if (isError) throw new Error();
+  const { categories } = useCategory();
 
   return (
     <S.Box>
