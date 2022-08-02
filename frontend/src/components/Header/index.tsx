@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { ReactComponent as LogoSVG } from 'assets/logo.svg';
 import NavLink from 'components/@shared/NavLink';
+import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import { accessTokenState, loginState, modalState } from 'store/states';
 import { ModalStateType } from 'types/condition';
@@ -26,7 +27,7 @@ function Header() {
   };
 
   const logout = () => {
-    if (!window.confirm('로그아웃 하실건가요?')) return;
+    if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
 
     setIsLogin(false);
     setAccessToken('');
