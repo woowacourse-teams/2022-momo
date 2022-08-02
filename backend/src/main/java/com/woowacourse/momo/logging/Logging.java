@@ -11,15 +11,11 @@ public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
 
-    private static final String BASE_PATH = "com.woowacourse.momo";
-    private static final String EXCEPTION_PACKAGE = "globalException";
-    private static final String GLOBAL_EXCEPTION_METHOD = "ControllerAdvice.handleException";
-
-    @Pointcut("execution(* " + BASE_PATH + "..*.*(..))")
+    @Pointcut("execution(* com.woowacourse.momo..*.*(..))")
     protected void allMethod() {
     }
 
-    @Pointcut("execution(* " + BASE_PATH + "." + EXCEPTION_PACKAGE + "." + GLOBAL_EXCEPTION_METHOD + "(..))")
+    @Pointcut("execution(* com.woowacourse.momo.globalException.ControllerAdvice.handleException(..))")
     protected void exceptionMethod() {
     }
 
