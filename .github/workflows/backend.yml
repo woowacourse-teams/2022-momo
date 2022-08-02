@@ -28,6 +28,7 @@ jobs:
         run: |
           eval `ssh-agent -s`
 
+          echo "what is that??"
           echo "$SUBMODULE_SSH_KEY"
           echo "$SUBMODULE_SSH_KEY" | base64 -d > ssh.key
           chmod 400 ssh.key
