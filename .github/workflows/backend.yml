@@ -28,8 +28,8 @@ jobs:
         run: |
           eval `ssh-agent -s`
 
-          echo "SUBMODULE_SSH_KEY"
-          echo "SUBMODULE_SSH_KEY" | base64 -d > ssh.key
+          echo "$SUBMODULE_SSH_KEY"
+          echo "$SUBMODULE_SSH_KEY" | base64 -d > ssh.key
           ssh-add ssh.key
 
           git submodule update --init --recursive
