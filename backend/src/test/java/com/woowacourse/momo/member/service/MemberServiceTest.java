@@ -41,11 +41,9 @@ class MemberServiceTest {
         MyInfoResponse response = memberService.findById(memberId);
 
         assertAll(
-                () -> assertThat(memberId).isEqualTo(response.getId()),
-                () -> assertThat(response).usingRecursiveComparison()
-                        .ignoringFields("id")
-                        .ignoringFields("password")
-                        .isEqualTo(request)
+                () -> assertThat(response.getId()).isEqualTo(memberId),
+                () -> assertThat(response.getUserId()).isEqualTo(request.getUserId()),
+                () -> assertThat(response.getName()).isEqualTo(request.getName())
         );
     }
 
