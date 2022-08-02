@@ -61,7 +61,7 @@ public class GroupService {
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext());
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
     }
 
     @Transactional
