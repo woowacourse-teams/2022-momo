@@ -44,6 +44,14 @@ include::{snippets}/grouplist/http-request.adoc[]
 ==== Response
 include::{snippets}/grouplist/http-response.adoc[]
 
+==== 본인이 가입하거나 주최한 모임 조회
+
+==== Request
+include::{snippets}/grouprelated/http-request.adoc[]
+
+==== Response
+include::{snippets}/grouprelated/http-response.adoc[]
+
 == 유저
 
 === 회원가입
