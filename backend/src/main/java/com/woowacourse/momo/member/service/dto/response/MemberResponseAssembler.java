@@ -12,7 +12,7 @@ import com.woowacourse.momo.member.domain.Member;
 public class MemberResponseAssembler {
 
     public static MyInfoResponse myInfoResponse(Member member) {
-        return new MyInfoResponse(member.getUserId(), member.getName());
+        return new MyInfoResponse(member.getId(), member.getUserId(), member.getName());
     }
 
     public static MemberResponse memberResponse(Member member) {

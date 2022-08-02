@@ -2,6 +2,7 @@ package com.woowacourse.momo.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,9 +40,11 @@ class MemberServiceTest {
 
         MyInfoResponse response = memberService.findById(memberId);
 
-        assertThat(response).usingRecursiveComparison()
-                .ignoringFields("password")
-                .isEqualTo(request);
+        assertAll(
+                () -> assertThat(response.getId()).isEqualTo(memberId),
+                () -> assertThat(response.getUserId()).isEqualTo(request.getUserId()),
+                () -> assertThat(response.getName()).isEqualTo(request.getName())
+        );
     }
 
     @DisplayName("회원 비밀번호를 수정한다")
@@ -75,7 +78,6 @@ class MemberServiceTest {
     @DisplayName("회원 정보를 삭제한다")
     @Test
     void delete() {
-
         Long memberId = createMember();
 
         memberService.deleteById(memberId);
