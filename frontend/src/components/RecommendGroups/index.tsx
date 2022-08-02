@@ -17,7 +17,7 @@ function RecommendGroups() {
     <>
       <S.Heading>이런 모임, 어때요?</S.Heading>
       <S.GroupListBox>
-        {data?.map(group => (
+        {data?.groups.map(group => (
           <Card group={group} key={group.id} />
         ))}
       </S.GroupListBox>

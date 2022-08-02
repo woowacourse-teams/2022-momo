@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 
 import { BROWSER_PATH } from 'constants/path';
-import { Group } from 'types/data';
+import { GroupSummary } from 'types/data';
 import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
 import * as S from './index.styled';
 
 interface CardProps {
-  group: Group;
+  group: GroupSummary;
 }
 
 function Card({ group }: CardProps) {

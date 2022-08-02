@@ -2,7 +2,7 @@ import { ReactComponent as ClockSVG } from 'assets/clock.svg';
 import { ReactComponent as LocationSVG } from 'assets/location.svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
-import { CategoryType, DetailData } from 'types/data';
+import { CategoryType, GroupDetailData } from 'types/data';
 import { parsedDurationDate } from 'utils/date';
 
 import ControlButton from './ControlButton';
@@ -12,7 +12,10 @@ import * as S from './index.styled';
 
 const svgSize = 32;
 
-type InfoProps = Pick<DetailData, 'id' | 'name' | 'duration' | 'location'> & {
+type InfoProps = Pick<
+  GroupDetailData,
+  'id' | 'name' | 'duration' | 'location'
+> & {
   categoryName: CategoryType['name'];
 };
 
