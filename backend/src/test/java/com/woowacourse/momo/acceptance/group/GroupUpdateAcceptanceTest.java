@@ -54,7 +54,6 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                     String deadline = updatedGroup.getDeadline()
                             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                     response
-                            .body("name", is(updatedGroup.getName()))
                             .body("host.id", is(1))
                             .body("host.name", is(HOST.getName()))
                             .body("categoryId", is(updatedGroup.getCategoryId().intValue()))

@@ -97,7 +97,7 @@ class GroupControllerTest {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("변경된 모모의 스터디", 1L, 15,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 15,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
