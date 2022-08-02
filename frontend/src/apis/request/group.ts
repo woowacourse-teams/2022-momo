@@ -5,8 +5,8 @@ import { GROUP_RULE } from 'constants/rule';
 import {
   CreateGroupData,
   GroupDetailData,
-  GroupSummary,
   GroupParticipants,
+  GroupList,
 } from 'types/data';
 
 const requestCreateGroup = async ({
@@ -61,7 +61,7 @@ const requestCreateGroup = async ({
     });
 };
 
-const getGroups = (): Promise<GroupSummary[]> => {
+const getGroups = (): Promise<GroupList> => {
   return axios.get(API_PATH.GROUP).then(response => response.data);
 };
 

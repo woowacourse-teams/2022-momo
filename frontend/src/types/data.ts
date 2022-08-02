@@ -52,6 +52,11 @@ export interface DurationDate {
   endDate: GroupDetailData['duration']['end'];
 }
 
+export interface GroupList {
+  groups: GroupSummary[];
+  hasNextPage: boolean;
+}
+
 export type GroupSummary = Pick<
   GroupDetailData,
   'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'capacity'
