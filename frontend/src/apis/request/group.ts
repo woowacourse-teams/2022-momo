@@ -61,19 +61,19 @@ const requestCreateGroup = async ({
     });
 };
 
-const getGroups = (pageNumber: number) => (): Promise<GroupList> => {
+const getGroups = (pageNumber: number) => () => {
   return axios
-    .get(`${API_PATH.GROUP}?page=${pageNumber}`)
+    .get<GroupList>(`${API_PATH.GROUP}?page=${pageNumber}`)
     .then(response => response.data);
 };
 
-const getGroupDetail = (
-  id: GroupDetailData['id'],
-): Promise<GroupDetailData> => {
-  return axios.get(`${API_PATH.GROUP}/${id}`).then(response => response.data);
+const getGroupDetail = (id: GroupDetailData['id']) => {
+  return axios
+    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
+    .then(response => response.data);
 };
 
-const deleteGroup = (id: GroupDetailData['id']): Promise<void> => {
+const deleteGroup = (id: GroupDetailData['id']) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.delete(`${API_PATH.GROUP}/${id}`, {
@@ -83,15 +83,13 @@ const deleteGroup = (id: GroupDetailData['id']): Promise<void> => {
   });
 };
 
-const getGroupParticipants = (
-  id: GroupDetailData['id'],
-): Promise<GroupParticipants> => {
+const getGroupParticipants = (id: GroupDetailData['id']) => {
   return axios
-    .get(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
+    .get<GroupParticipants>(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const joinGroup = (id: GroupDetailData['id']): Promise<void> => {
+const joinGroup = (id: GroupDetailData['id']) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.post(
@@ -105,7 +103,7 @@ const joinGroup = (id: GroupDetailData['id']): Promise<void> => {
   );
 };
 
-const exitGroup = (id: GroupDetailData['id']): Promise<void> => {
+const exitGroup = (id: GroupDetailData['id']) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
