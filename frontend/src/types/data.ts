@@ -53,6 +53,7 @@ export interface DurationDate {
 }
 
 export interface GroupList {
+  pageNumber: number;
   groups: GroupSummary[];
   hasNextPage: boolean;
 }

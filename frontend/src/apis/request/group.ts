@@ -61,8 +61,10 @@ const requestCreateGroup = async ({
     });
 };
 
-const getGroups = (): Promise<GroupList> => {
-  return axios.get(API_PATH.GROUP).then(response => response.data);
+const getGroups = (pageNumber: number) => (): Promise<GroupList> => {
+  return axios
+    .get(`${API_PATH.GROUP}?page=${pageNumber}`)
+    .then(response => response.data);
 };
 
 const getGroupDetail = (
