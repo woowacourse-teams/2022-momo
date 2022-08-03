@@ -1,5 +1,6 @@
 import Category from 'components/Category';
 import ErrorBoundary from 'components/ErrorBoundary';
+import { CategoryFallback } from 'components/ErrorBoundary/CategoryFallback';
 import RecommendGroups from 'components/RecommendGroups';
 import Search from 'components/Search';
 
@@ -9,7 +10,7 @@ function Main() {
   return (
     <>
       <Search />
-      <ErrorBoundary>
+      <ErrorBoundary fallbackUI={<CategoryFallback />}>
         <Category />
       </ErrorBoundary>
       <S.Content>
