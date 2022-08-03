@@ -1,11 +1,13 @@
 package com.woowacourse.momo.acceptance.group;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
@@ -128,6 +130,22 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         ValidatableResponse response = 페이지로_모임목록을_조회한다(FIRST_PAGE_NUMBER);
 
         checkGroupSummaryResponses(response);
+    }
+
+    @DisplayName("본인이 참여하고 있는 모임들을 조회한다.")
+    @Test
+    void findGroupsParticipated() {
+        String anotherHostAccessToken = MemberFixture.DUDU.로_로그인한다();
+        DUDU_STUDY.을_생성한다(anotherHostAccessToken);
+
+        ValidatableResponse response = 본인의_모임을_조회한다(anotherHostAccessToken);
+
+        checkGroupParticipated(response);
+    }
+
+    private void checkGroupParticipated(ValidatableResponse response) {
+        response.statusCode(HttpStatus.OK.value());
+        response.body("$", hasSize(1));
     }
 
     void checkGroupSummaryResponses(ValidatableResponse response) {

@@ -21,8 +21,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.category.domain.Category;
@@ -119,7 +117,7 @@ class GroupServiceTest {
     @Test
     void findAll() {
         int count = 3;
-        List<GroupSummaryResponse> expected = IntStream.rangeClosed(0, count)
+        List<GroupSummaryResponse> expected = IntStream.range(0, count)
                 .mapToObj(i -> saveGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
@@ -164,7 +162,7 @@ class GroupServiceTest {
             saveGroup();
         }
 
-        List<GroupSummaryResponse> summaries = IntStream.rangeClosed(0, TWO_PAGE_GROUPS)
+        List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
                 .mapToObj(i -> saveGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
