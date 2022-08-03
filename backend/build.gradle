@@ -35,6 +35,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.17'
 
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
