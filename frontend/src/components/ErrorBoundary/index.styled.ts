@@ -5,9 +5,14 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
+  border-radius: 20px;
   padding: 1rem;
 
   background: ${({ theme: { colors } }) => colors.gray002};
+`;
+
+const CategoryContainer = styled(Container)`
+  border-radius: 0;
 `;
 
 const Title = styled.h2`
@@ -20,4 +25,4 @@ const Description = styled.div`
   gap: 2rem;
 `;
 
-export { Container, Title, Description };
+export { Container, CategoryContainer, Title, Description };
