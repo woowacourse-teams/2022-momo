@@ -1,3 +1,4 @@
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -7,6 +8,7 @@ import {
   exitGroup as requestExitGroup,
   requestCloseGroup,
 } from 'apis/request/group';
+import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { loginState, modalState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
@@ -20,7 +22,14 @@ type ControlButtonProps = Pick<GroupDetailData, 'id' | 'host'> & {
 function ControlButton({ id, host, participants }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
+
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const refetch = () => {
+    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
+    queryClient.invalidateQueries(`${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`);
+  };
 
   const closeGroup = () => {
     if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CLOSE_REQUEST)) return;
@@ -28,7 +37,7 @@ function ControlButton({ id, host, participants }: ControlButtonProps) {
     requestCloseGroup(id)
       .then(() => {
         alert(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
-        // TODO: 리렌더링
+        refetch();
       })
       .catch(() => {
         alert(ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
@@ -58,7 +67,7 @@ function ControlButton({ id, host, participants }: ControlButtonProps) {
     requestJoinGroup(id)
       .then(() => {
         alert(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
-        // TODO: 리렌더링
+        refetch();
       })
       .catch(() => {
         alert(ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
@@ -71,7 +80,7 @@ function ControlButton({ id, host, participants }: ControlButtonProps) {
     requestExitGroup(id)
       .then(() => {
         alert(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
-        // TODO: 리렌더링
+        refetch();
       })
       .catch(() => {
         alert(ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
