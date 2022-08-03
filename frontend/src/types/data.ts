@@ -42,6 +42,7 @@ export interface GroupDetailData {
     end: string;
   };
   schedules: ScheduleType[];
+  finished: boolean;
   deadline: string;
   location: string;
   description: string;
