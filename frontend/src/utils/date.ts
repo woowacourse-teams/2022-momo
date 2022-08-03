@@ -68,10 +68,17 @@ const parsedDurationDate = (duration: GroupDetailData['duration']) => {
   return `${parsedStartDate} ~ ${endDay}일`;
 };
 
+const parsedTime = (time: string) => {
+  const [hour, minute] = time.split(':');
+
+  return Number(minute) === 0 ? `${hour}시` : `${hour}시 ${minute}분`;
+};
+
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
   getNewDateString,
   resetDateToMidnight,
   parsedDurationDate,
+  parsedTime,
 };

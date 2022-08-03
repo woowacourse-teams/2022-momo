@@ -1,7 +1,12 @@
 import { useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CategoryType, CreateGroupData, Group } from 'types/data';
+import {
+  CategoryType,
+  CreateGroupData,
+  GroupSummary,
+  ScheduleType,
+} from 'types/data';
 
 // TODO: input이 사용되는 곳에는 useInput으로 바꾸기
 const useCreateState = () => {
@@ -13,11 +18,12 @@ const useCreateState = () => {
   const [capacity, setCapacity] = useState<CreateGroupData['capacity']>(0);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [schedules, setSchedules] = useState<CreateGroupData['schedules']>([]);
   const [deadline, setDeadline] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
 
-  const changeName = (newName: Group['name']) => {
+  const changeName = (newName: GroupSummary['name']) => {
     setName(newName);
   };
 
@@ -46,6 +52,14 @@ const useCreateState = () => {
 
   const changeEndDate = (newEndDate: string) => {
     setEndDate(newEndDate);
+  };
+
+  const changeSchedules = (newSchedule: ScheduleType) => {
+    setSchedules(prevState => {
+      if (!prevState.length) return [newSchedule];
+
+      return [...prevState, newSchedule];
+    });
   };
 
   const changeDeadline = (newDeadline: string) => {
@@ -79,6 +93,10 @@ const useCreateState = () => {
       endDate,
       setEndDate: changeEndDate,
     }),
+    useScheduleState: () => ({
+      schedules,
+      setSchedules: changeSchedules,
+    }),
     useDeadlineState: () => ({
       deadline,
       setDeadline: changeDeadline,
@@ -97,6 +115,7 @@ const useCreateState = () => {
       capacity,
       startDate,
       endDate,
+      schedules,
       deadline,
       location,
       description,

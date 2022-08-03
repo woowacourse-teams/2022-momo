@@ -38,6 +38,7 @@ function Create() {
     useSelectedCategoryState,
     useCapacityState,
     useDateState,
+    useScheduleState,
     useDeadlineState,
     useLocationState,
     useDescriptionState,
@@ -126,7 +127,11 @@ function Create() {
           ref={getPageRef(4)}
           pressEnterToNext={pressEnterToNext}
         />
-        <Step5 ref={getPageRef(5)} pressEnterToNext={pressEnterToNext} />
+        <Step5
+          useScheduleState={useScheduleState}
+          ref={getPageRef(5)}
+          pressEnterToNext={pressEnterToNext}
+        />
         <Step6
           useDeadlineState={useDeadlineState}
           ref={getPageRef(6)}

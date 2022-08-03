@@ -3,8 +3,10 @@ import { useTheme } from '@emotion/react';
 import LeftArrow from 'components/svg/LeftArrow';
 import RightArrow from 'components/svg/RightArrow';
 import useCalendar from 'hooks/useCalendar';
+import { GroupDetailData } from 'types/data';
 
 import * as S from './index.styled';
+import SelectedDate from './SelectedDate';
 
 const days = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -27,6 +29,7 @@ interface CalendarProps {
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
   today: Date;
+  schedules: GroupDetailData['schedules'];
   size: 'medium' | 'large';
 }
 
@@ -36,6 +39,7 @@ function Calendar({
   goToPrevMonth,
   goToNextMonth,
   today,
+  schedules,
   size,
 }: CalendarProps) {
   const { dates, prevDates, nextDates } = useCalendar(year, month);
@@ -45,6 +49,16 @@ function Calendar({
     today.getFullYear() === year &&
     today.getMonth() === month - 1 &&
     today.getDate() === date;
+
+  const getSchedule = (date: number) => {
+    return schedules.find(
+      schedule =>
+        schedule.date ===
+        `${year}-${month.toString().padStart(2, '0')}-${date
+          .toString()
+          .padStart(2, '0')}`,
+    );
+  };
 
   return (
     <S.Container size={size}>
@@ -71,18 +85,28 @@ function Calendar({
           <S.PrevNextDate key={`${month - 1}-${date}`}>{date}</S.PrevNextDate>
         ))}
         {/* 이번달 */}
-        {dates.map(date => (
-          <S.Date
-            className={
-              isToday(date)
-                ? 'today'
-                : dayClassGenerator(new Date(year, month - 1, date).getDay())
-            }
-            key={`${month}-${date}`}
-          >
-            {date}
-          </S.Date>
-        ))}
+        {dates.map(date => {
+          const schedule = getSchedule(date);
+
+          return schedule ? (
+            <SelectedDate
+              date={date}
+              schedule={schedule}
+              key={`${month}-${date}`}
+            />
+          ) : (
+            <S.Date
+              className={
+                isToday(date)
+                  ? 'today'
+                  : dayClassGenerator(new Date(year, month - 1, date).getDay())
+              }
+              key={`${month}-${date}`}
+            >
+              {date}
+            </S.Date>
+          );
+        })}
         {/* 다음달 */}
         {nextDates.map(date => (
           <S.PrevNextDate key={`${month + 1}-${date}`}>{date}</S.PrevNextDate>
