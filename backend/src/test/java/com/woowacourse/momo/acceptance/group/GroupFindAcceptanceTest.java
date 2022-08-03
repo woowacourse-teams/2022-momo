@@ -138,14 +138,14 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         String anotherHostAccessToken = MemberFixture.DUDU.로_로그인한다();
         DUDU_STUDY.을_생성한다(anotherHostAccessToken);
 
-        ValidatableResponse response = 본인의_모임을_조회한다(hostAccessToken);
+        ValidatableResponse response = 본인의_모임을_조회한다(anotherHostAccessToken);
 
         checkGroupParticipated(response);
     }
 
     private void checkGroupParticipated(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
-        response.body("$", hasSize(groupIds.size()));
+        response.body("$", hasSize(1));
     }
 
     void checkGroupSummaryResponses(ValidatableResponse response) {
