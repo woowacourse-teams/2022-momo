@@ -11,15 +11,15 @@ interface DateProps {
 }
 
 function SelectedDate({ date, schedule }: DateProps) {
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHover, setIsHover] = useState(false);
 
-  const toggleHovering = (isHovering: boolean) => () => {
-    setIsHovering(isHovering);
+  const toggleHovering = (isHover: boolean) => () => {
+    setIsHover(isHover);
   };
 
   return (
     <>
-      {isHovering && (
+      {isHover && (
         <S.TimeModal>
           ⏰ {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}{' '}
           ⏰
