@@ -33,7 +33,7 @@ class GroupTest {
     void validateOutOfCapacityRange(int capacity) {
         assertThatThrownBy(() -> constructGroupWithSetCapacity(capacity))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모임 정원은 1명 이상 99명 이하여야 합니다.");
+                .hasMessage("GROUP_ERROR_008");
     }
 
     @DisplayName("유효한 모임 정원 값으로 인스턴스 생성시 예외가 발생하지 않는다")
@@ -49,7 +49,7 @@ class GroupTest {
         LocalDateTime deadline = LocalDateTime.now().minusMinutes(1);
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("마감 시간은 현재 시간 이전일 수 없습니다.");
+                .hasMessage("GROUP_ERROR_007");
     }
 
     @DisplayName("유효한 마감기한 날짜로 인스턴스 생성시 예외가 발생하지 않는다")
@@ -65,7 +65,7 @@ class GroupTest {
         LocalDateTime deadline = 일주일후_23시_59분.getInstance();
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
+                .hasMessage("GROUP_ERROR_006");
     }
 
     @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")
@@ -105,7 +105,7 @@ class GroupTest {
         group.participate(member);
         assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 참여한 모임입니다.");
+                .hasMessage("PARTICIPANT_ERROR_002");
     }
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
@@ -119,7 +119,7 @@ class GroupTest {
         Member member2 = new Member("dudu", "qwer123!@#", "두두");
         assertThatThrownBy(() -> group.participate(member2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집이 마감됐습니다.");
+                .hasMessage("PARTICIPANT_ERROR_003");
     }
 
     @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
@@ -130,7 +130,7 @@ class GroupTest {
 
         assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집이 마감됐습니다.");
+                .hasMessage("PARTICIPANT_ERROR_003");
     }
 
     @DisplayName("모임에 참여한 회원을 반환한다")

@@ -29,6 +29,6 @@ class ScheduleTest {
     void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         assertThatThrownBy(() -> new Schedule(이틀후.getInstance(), startTime, endTime))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("시작 시간은 종료 시간 이전이어야 합니다.");
+                .hasMessage("GROUP_ERROR_003");
     }
 }

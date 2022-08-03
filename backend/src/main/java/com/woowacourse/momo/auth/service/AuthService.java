@@ -44,7 +44,7 @@ public class AuthService {
     }
 
     private void validateExistUser(String userId) {
-        if (memberRepository.findByUserId(userId) == null) {
+        if (memberRepository.findByUserId(userId) != null) {
             throw new IllegalArgumentException("SIGNUP_ERROR_003"); // 이미 가입된 아이디
         }
     }

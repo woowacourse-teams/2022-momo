@@ -141,7 +141,7 @@ class GroupServiceTest {
 
         assertThatThrownBy(() -> groupService.update(savedMember.getId(), groupId, groupRequest))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+                .hasMessage("GROUP_ERROR_006");
     }
 
     @DisplayName("모임을 조기 마감한다")
@@ -198,6 +198,6 @@ class GroupServiceTest {
 
         assertThatThrownBy(() -> groupService.delete(savedMember.getId(), groupId))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+                .hasMessage("GROUP_ERROR_006");
     }
 }

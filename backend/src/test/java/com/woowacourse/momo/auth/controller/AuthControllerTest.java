@@ -73,7 +73,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("잘못된 아이디 형식입니다.")));
+                .andExpect(jsonPath("message", containsString("SIGNUP_ERROR_001")));
     }
 
     @DisplayName("비어있는 아이디 값으로 회원가입시 400코드가 반환된다")
@@ -153,7 +153,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("아이디는 빈 값일 수 없습니다.")));
+                .andExpect(jsonPath("message", containsString("SIGNUP_ERROR_001")));
     }
 
     @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
@@ -166,7 +166,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("패스워드는 빈 값일 수 없습니다.")));
+                .andExpect(jsonPath("message", containsString("SIGNUP_ERROR_002")));
     }
 
     void createNewMember(String userId, String password, String name) {
