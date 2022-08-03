@@ -30,6 +30,7 @@ function Detail() {
             capacity={data.capacity}
             duration={data.duration}
             schedules={data.schedules}
+            finished={data.finished}
             location={data.location}
             categoryName={
               categories.find(category => category.id === data.categoryId)

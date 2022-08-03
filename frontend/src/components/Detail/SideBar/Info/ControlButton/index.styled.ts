@@ -85,10 +85,22 @@ const ExitButton = styled(Button)`
   }
 `;
 
+const DisableButton = styled(Button)`
+  background: linear-gradient(
+    180deg,
+    ${({ theme: { colors } }) => colors.gray002}99 0%,
+    ${({ theme: { colors } }) => colors.gray002} 20%
+  );
+  color: ${({ theme: { colors } }) => colors.white001};
+
+  cursor: not-allowed;
+`;
+
 export {
   HostButtonContainer,
   EarlyClosedButton,
   DeleteButton,
   JoinButton,
   ExitButton,
+  DisableButton,
 };

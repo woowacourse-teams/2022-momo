@@ -14,7 +14,7 @@ const svgSize = 32;
 
 type InfoProps = Pick<
   GroupDetailData,
-  'id' | 'host' | 'duration' | 'location'
+  'id' | 'host' | 'duration' | 'finished' | 'location'
 > & {
   categoryName: CategoryType['name'];
   participants: GroupParticipants;
@@ -25,6 +25,7 @@ function Info({
   host,
   duration,
   categoryName,
+  finished,
   location,
   participants,
 }: InfoProps) {
@@ -46,7 +47,12 @@ function Info({
         <PersonSVG width={svgSize} />
         <S.Text>{host.name}</S.Text>
       </S.Wrapper>
-      <ControlButton id={id} host={host} participants={participants} />
+      <ControlButton
+        id={id}
+        host={host}
+        finished={finished}
+        participants={participants}
+      />
     </S.Container>
   );
 }

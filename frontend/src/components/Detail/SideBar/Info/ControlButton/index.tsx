@@ -13,11 +13,16 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-type ControlButtonProps = Pick<GroupDetailData, 'id' | 'host'> & {
+type ControlButtonProps = Pick<GroupDetailData, 'id' | 'host' | 'finished'> & {
   participants: GroupParticipants;
 };
 
-function ControlButton({ id, host, participants }: ControlButtonProps) {
+function ControlButton({
+  id,
+  host,
+  finished,
+  participants,
+}: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
   const navigate = useNavigate();
@@ -81,6 +86,10 @@ function ControlButton({ id, host, participants }: ControlButtonProps) {
   const isJoined = participants.some(
     participant => participant.id === user?.id,
   );
+
+  if (finished) {
+    return <S.DisableButton>마감되었습니다</S.DisableButton>;
+  }
 
   if (user?.id === host.id) {
     return (

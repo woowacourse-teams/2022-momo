@@ -15,11 +15,18 @@ function DetailSideBar({
   capacity,
   duration,
   schedules,
+  finished,
   location,
   categoryName,
 }: Pick<
   GroupDetailData,
-  'id' | 'host' | 'capacity' | 'duration' | 'schedules' | 'location'
+  | 'id'
+  | 'host'
+  | 'capacity'
+  | 'duration'
+  | 'schedules'
+  | 'finished'
+  | 'location'
 > & {
   categoryName: CategoryType['name'];
 }) {
@@ -37,6 +44,7 @@ function DetailSideBar({
         id={id}
         host={host}
         duration={duration}
+        finished={finished}
         location={location}
         categoryName={categoryName}
         participants={participants}
