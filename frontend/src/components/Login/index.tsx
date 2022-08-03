@@ -34,11 +34,12 @@ function Login() {
       .then(accessToken => {
         alert(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
+        setAccessToken(accessToken);
+
         getUserInfo().then(userInfo => {
           setLoginInfo({ isLogin: true, user: userInfo });
         });
 
-        setAccessToken(accessToken);
         setOffModal();
       })
       .catch(({ message }) => {
