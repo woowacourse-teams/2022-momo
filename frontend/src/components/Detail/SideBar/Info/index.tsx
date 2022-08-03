@@ -2,7 +2,7 @@ import { ReactComponent as ClockSVG } from 'assets/clock.svg';
 import { ReactComponent as LocationSVG } from 'assets/location.svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
-import { CategoryType, GroupDetailData } from 'types/data';
+import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
 import { parsedDurationDate } from 'utils/date';
 
 import ControlButton from './ControlButton';
@@ -14,12 +14,20 @@ const svgSize = 32;
 
 type InfoProps = Pick<
   GroupDetailData,
-  'id' | 'name' | 'duration' | 'location'
+  'id' | 'host' | 'duration' | 'location'
 > & {
   categoryName: CategoryType['name'];
+  participants: GroupParticipants;
 };
 
-function Info({ id, name, duration, categoryName, location }: InfoProps) {
+function Info({
+  id,
+  host,
+  duration,
+  categoryName,
+  location,
+  participants,
+}: InfoProps) {
   return (
     <S.Container>
       <S.Wrapper>
@@ -36,9 +44,9 @@ function Info({ id, name, duration, categoryName, location }: InfoProps) {
       </S.Wrapper>
       <S.Wrapper>
         <PersonSVG width={svgSize} />
-        <S.Text>{name}</S.Text>
+        <S.Text>{host.name}</S.Text>
       </S.Wrapper>
-      <ControlButton id={id} />
+      <ControlButton id={id} host={host} participants={participants} />
     </S.Container>
   );
 }

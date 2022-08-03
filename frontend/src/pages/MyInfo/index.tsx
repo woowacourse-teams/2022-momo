@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import {
-  getUserInfo,
   requestChangeName,
   requestChangePassword,
   requestWithdrawal,
@@ -13,7 +11,6 @@ import {
 import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/pencil.svg';
 import cover from 'assets/userInfo_cover.jpg';
-import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { accessTokenState, loginState } from 'store/states';
@@ -21,23 +18,17 @@ import { accessTokenState, loginState } from 'store/states';
 import * as S from './index.styled';
 
 function MemberInfo() {
-  const { data } = useQuery(QUERY_KEY.USER_INFO, getUserInfo, {
-    suspense: true,
-  });
-  const { value: name, setValue: setName, dangerouslySetValue } = useInput('');
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const [{ user }, setLoginInfo] = useRecoilState(loginState);
+
+  const { value: name, setValue: setName } = useInput(user?.name || '');
   const { value: password, setValue: setPassword } = useInput('');
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
+
   const [isEditableName, setIsEditableName] = useState(false);
   const [isEditablePassword, setIsEditablePassword] = useState(false);
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setIsLogin = useSetRecoilState(loginState);
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (typeof data === 'undefined') return;
-
-    dangerouslySetValue(data.name);
-  }, [data, dangerouslySetValue]);
 
   const changeNameEditable = () => {
     setIsEditableName(true);
@@ -80,7 +71,7 @@ function MemberInfo() {
 
     requestWithdrawal()
       .then(() => {
-        setIsLogin(false);
+        setLoginInfo({ isLogin: false });
         setAccessToken('');
         alert(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
         navigate('/');
@@ -98,7 +89,7 @@ function MemberInfo() {
         <S.InputContainer>
           <S.Label>
             아이디
-            <S.Input type="userId" value={data?.userId} disabled />
+            <S.Input type="userId" value={user?.userId} disabled />
           </S.Label>
           <S.Label>
             닉네임

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
+import { getUserInfo } from 'apis/request/user';
 import { ReactComponent as LogoSVG } from 'assets/logo.svg';
 import NavLink from 'components/@shared/NavLink';
 import { GUIDE_MESSAGE } from 'constants/message';
@@ -14,13 +15,15 @@ import * as S from './index.styled';
 function Header() {
   const setModalState = useSetRecoilState(modalState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [{ isLogin }, setLoginInfo] = useRecoilState(loginState);
 
   useEffect(() => {
     if (accessToken) {
-      setIsLogin(true);
+      getUserInfo().then(userInfo => {
+        setLoginInfo({ isLogin: true, user: userInfo });
+      });
     }
-  }, [accessToken, setIsLogin]);
+  }, [accessToken, setLoginInfo]);
 
   const changeModalState = (modalState: ModalStateType) => () => {
     setModalState(modalState);
@@ -29,7 +32,7 @@ function Header() {
   const logout = () => {
     if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
 
-    setIsLogin(false);
+    setLoginInfo({ isLogin: false });
     setAccessToken('');
   };
 

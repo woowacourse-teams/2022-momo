@@ -8,4 +8,7 @@ export interface UserProfile extends Omit<User, 'password'> {
   id: number;
 }
 
-export type UserInfo = Omit<User, 'password'>;
+export interface LoginState {
+  isLogin: boolean;
+  user?: UserProfile;
+}

@@ -1,24 +1,16 @@
-import { useQuery } from 'react-query';
-
-import { getGroupParticipants } from 'apis/request/group';
 import { ReactComponent as CrownSVG } from 'assets/crown.svg';
 import PersonSVG from 'components/svg/Person';
-import { QUERY_KEY } from 'constants/key';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-interface ParticipantsProps {
-  id: GroupDetailData['id'];
-  hostName: GroupDetailData['host']['name'];
-  capacity: GroupDetailData['capacity'];
-}
+type ParticipantsProps = Pick<GroupDetailData, 'host' | 'capacity'> & {
+  participants: GroupParticipants;
+};
 
-function Participants({ id, hostName, capacity }: ParticipantsProps) {
-  const { data: participants } = useQuery<GroupParticipants>(
-    `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
-    () => getGroupParticipants(id),
-    { staleTime: Infinity },
+function Participants({ host, capacity, participants }: ParticipantsProps) {
+  const participantsWithoutHost = participants.filter(
+    participant => participant.id !== host.id,
   );
 
   return (
@@ -30,9 +22,9 @@ function Participants({ id, hostName, capacity }: ParticipantsProps) {
       <S.Box>
         <S.Wrapper>
           <CrownSVG width={32} />
-          <S.HostText>{hostName}</S.HostText>
+          <S.HostText>{host.name}</S.HostText>
         </S.Wrapper>
-        {participants?.map(participant => (
+        {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
             <PersonSVG width={32} />
             <S.Text>{participant.name}</S.Text>

@@ -1,13 +1,13 @@
 import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
-import { UserInfo } from 'types/user';
+import { UserProfile } from 'types/user';
 
 const getUserInfo = () => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios
-    .get<UserInfo>(API_PATH.MEMBERS, {
+    .get<UserProfile>(API_PATH.MEMBERS, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestLogin } from 'apis/request/auth';
+import { getUserInfo } from 'apis/request/user';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { accessTokenState, loginState, modalState } from 'store/states';
@@ -13,7 +14,7 @@ import * as S from './index.styled';
 function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
-  const setIsLogin = useSetRecoilState(loginState);
+  const setLoginInfo = useSetRecoilState(loginState);
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -33,8 +34,11 @@ function Login() {
       .then(accessToken => {
         alert(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
+        getUserInfo().then(userInfo => {
+          setLoginInfo({ isLogin: true, user: userInfo });
+        });
+
         setAccessToken(accessToken);
-        setIsLogin(true);
         setOffModal();
       })
       .catch(({ message }) => {
