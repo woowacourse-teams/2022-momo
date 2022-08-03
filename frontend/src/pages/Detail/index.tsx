@@ -26,7 +26,7 @@ function Detail() {
         <>
           <DetailSideBar
             id={Number(id)}
-            name={data.host.name}
+            host={data.host}
             capacity={data.capacity}
             duration={data.duration}
             schedules={data.schedules}

@@ -7,7 +7,7 @@ import Participants from './Participants';
 
 function DetailSideBar({
   id,
-  name,
+  host,
   capacity,
   duration,
   schedules,
@@ -15,7 +15,7 @@ function DetailSideBar({
   categoryName,
 }: Pick<
   GroupDetailData,
-  'id' | 'name' | 'capacity' | 'duration' | 'schedules' | 'location'
+  'id' | 'host' | 'capacity' | 'duration' | 'schedules' | 'location'
 > & {
   categoryName: CategoryType['name'];
 }) {
@@ -23,13 +23,13 @@ function DetailSideBar({
     <S.Container>
       <Info
         id={id}
-        name={name}
+        host={host}
         duration={duration}
         location={location}
         categoryName={categoryName}
       />
       <Calendar schedules={schedules} />
-      <Participants id={id} hostName={name} capacity={capacity} />
+      <Participants id={id} hostName={host.name} capacity={capacity} />
     </S.Container>
   );
 }

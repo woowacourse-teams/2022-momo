@@ -13,12 +13,8 @@ import { GroupDetailData } from 'types/data';
 
 import * as S from './index.styled';
 
-interface ControlButtonProps {
-  id: GroupDetailData['id'];
-}
-
-function ControlButton({ id }: ControlButtonProps) {
-  const { isLogin } = useRecoilValue(loginState);
+function ControlButton({ id, host }: Pick<GroupDetailData, 'id' | 'host'>) {
+  const { isLogin, user } = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
   const navigate = useNavigate();
 
@@ -78,11 +74,9 @@ function ControlButton({ id }: ControlButtonProps) {
       });
   };
 
-  // TODO: API가 나온 후 호스트인지 아닌지 여부 판단
-  const isHost = false;
   const isJoined = false;
 
-  if (isHost) {
+  if (user?.id === host.id) {
     return (
       <S.HostButtonContainer>
         <S.EarlyClosedButton type="button" onClick={closeGroup}>
