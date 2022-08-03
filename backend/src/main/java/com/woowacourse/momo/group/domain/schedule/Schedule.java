@@ -40,7 +40,12 @@ public class Schedule {
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         if (!endTime.isAfter(startTime)) {
-            throw new IllegalArgumentException("시작 시간은 종료 시간 이전이어야 합니다.");
+            throw new IllegalArgumentException("GROUP_ERROR_003"); // 시작 시간은 종료 시간 이전이어야 합니다
         }
+    }
+
+    public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
+        return (date.isAfter(startDate) | date.isEqual(startDate))
+                && (date.isBefore(endDate) | date.isEqual(endDate));
     }
 }

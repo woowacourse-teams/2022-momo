@@ -32,13 +32,13 @@ public class Duration {
 
     private void validatePastDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
-            throw new InvalidDurationException("시작일과 종료일은 과거의 날짜가 될 수 없습니다.");
+            throw new InvalidDurationException("GROUP_ERROR_005"); // 시작일과 종료일은 과거의 날짜가 될 수 없습니다.
         }
     }
 
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new InvalidDurationException("시작일은 종료일 이후가 될 수 없습니다.");
+            throw new InvalidDurationException("GROUP_ERROR_002"); // 시작일은 종료일 이후가 될 수 없습니다.
         }
     }
 
