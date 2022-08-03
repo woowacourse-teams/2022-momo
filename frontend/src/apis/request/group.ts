@@ -113,6 +113,20 @@ const exitGroup = (id: GroupDetailData['id']) => {
   });
 };
 
+const requestCloseGroup = (id: GroupDetailData['id']) => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.post(
+    `${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+};
+
 export {
   requestCreateGroup,
   getGroups,
@@ -121,4 +135,5 @@ export {
   getGroupParticipants,
   joinGroup,
   exitGroup,
+  requestCloseGroup,
 };
