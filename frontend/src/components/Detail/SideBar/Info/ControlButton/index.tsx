@@ -5,6 +5,7 @@ import {
   deleteGroup as requestDeleteGroup,
   joinGroup as requestJoinGroup,
   exitGroup as requestExitGroup,
+  requestCloseGroup,
 } from 'apis/request/group';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { loginState, modalState } from 'store/states';
@@ -20,6 +21,19 @@ function ControlButton({ id }: ControlButtonProps) {
   const isLogin = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
   const navigate = useNavigate();
+
+  const closeGroup = () => {
+    if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CLOSE_REQUEST)) return;
+
+    requestCloseGroup(id)
+      .then(() => {
+        alert(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
+        // TODO: 리렌더링
+      })
+      .catch(() => {
+        alert(ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+      });
+  };
 
   const deleteGroup = () => {
     if (!window.confirm(GUIDE_MESSAGE.DELETE.CONFIRM_REQUEST)) return;
@@ -44,6 +58,7 @@ function ControlButton({ id }: ControlButtonProps) {
     requestJoinGroup(id)
       .then(() => {
         alert(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
+        // TODO: 리렌더링
       })
       .catch(() => {
         alert(ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
@@ -56,6 +71,7 @@ function ControlButton({ id }: ControlButtonProps) {
     requestExitGroup(id)
       .then(() => {
         alert(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
+        // TODO: 리렌더링
       })
       .catch(() => {
         alert(ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
@@ -69,7 +85,9 @@ function ControlButton({ id }: ControlButtonProps) {
   if (isHost) {
     return (
       <S.HostButtonContainer>
-        <S.EarlyClosedButton type="button">마감하기</S.EarlyClosedButton>
+        <S.EarlyClosedButton type="button" onClick={closeGroup}>
+          마감하기
+        </S.EarlyClosedButton>
         <S.DeleteButton type="button" onClick={deleteGroup}>
           삭제하기
         </S.DeleteButton>
