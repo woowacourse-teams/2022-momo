@@ -2,6 +2,7 @@ import { forwardRef, LegacyRef, memo } from 'react';
 
 import Calendar from 'components/@shared/Calendar';
 import useDate from 'hooks/useDate';
+import { CreateGroupData, ScheduleType } from 'types/data';
 
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
@@ -9,13 +10,18 @@ import * as S from './index.styled';
 // TODO: 달력은 나중에 ^^
 
 interface Step5Props {
+  useScheduleState: () => {
+    schedules: CreateGroupData['schedules'];
+    setSchedules: (schedules: ScheduleType) => void;
+  };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step5(
-  { pressEnterToNext }: Step5Props,
+  { useScheduleState, pressEnterToNext }: Step5Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
+  const { schedules } = useScheduleState();
   const { today, year, month, goToPrevMonth, goToNextMonth } = useDate();
 
   return (
@@ -31,6 +37,7 @@ function Step5(
             goToPrevMonth={goToPrevMonth}
             goToNextMonth={goToNextMonth}
             today={today}
+            schedules={schedules}
             size="large"
           />
         </S.Left>
