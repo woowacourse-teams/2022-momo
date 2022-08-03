@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
@@ -70,10 +71,20 @@ public class GroupService {
         validateFinishedRecruitment(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
+        Duration duration = GroupRequestAssembler.duration(request.getDuration());
+        validateSchedulesInDuration(schedules, duration);
 
         group.update(Category.from(request.getCategoryId()), request.getCapacity(),
-                GroupRequestAssembler.duration(request.getDuration()), request.getDeadline(), schedules,
+                duration, request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
+    }
+
+    private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
+        // 일정의 일자가 모임 기간에 포함되지 않습니다.
+        schedules.stream()
+                .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
+                .findAny()
+                .ifPresent(schedule -> { throw new IllegalArgumentException("GROUP_ERROR_004"); });
     }
 
     @Transactional
@@ -97,13 +108,13 @@ public class GroupService {
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
         if (!group.isSameHost(host)) {
-            throw new IllegalArgumentException("해당 모임의 주최자가 아닙니다.");
+            throw new IllegalArgumentException("AUTH_ERROR_004"); // 해당 모임의 주최자가 아닙니다.
         }
     }
 
     private void validateFinishedRecruitment(Group group) {
         if (group.isFinishedRecruitment()) {
-            throw new IllegalArgumentException("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+            throw new IllegalArgumentException("GROUP_ERROR_006"); // 모집 마감된 모임은 수정 및 삭제할 수 없습니다.
         }
     }
 
