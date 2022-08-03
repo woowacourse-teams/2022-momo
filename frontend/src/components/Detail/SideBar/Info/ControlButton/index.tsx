@@ -9,11 +9,15 @@ import {
 } from 'apis/request/group';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { loginState, modalState } from 'store/states';
-import { GroupDetailData } from 'types/data';
+import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-function ControlButton({ id, host }: Pick<GroupDetailData, 'id' | 'host'>) {
+type ControlButtonProps = Pick<GroupDetailData, 'id' | 'host'> & {
+  participants: GroupParticipants;
+};
+
+function ControlButton({ id, host, participants }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
   const navigate = useNavigate();
@@ -74,7 +78,9 @@ function ControlButton({ id, host }: Pick<GroupDetailData, 'id' | 'host'>) {
       });
   };
 
-  const isJoined = false;
+  const isJoined = participants.some(
+    participant => participant.id === user?.id,
+  );
 
   if (user?.id === host.id) {
     return (

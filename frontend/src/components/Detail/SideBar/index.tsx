@@ -1,4 +1,8 @@
-import { CategoryType, GroupDetailData } from 'types/data';
+import { useQuery } from 'react-query';
+
+import { getGroupParticipants } from 'apis/request/group';
+import { QUERY_KEY } from 'constants/key';
+import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
 
 import Calendar from './Calendar';
 import * as S from './index.styled';
@@ -19,6 +23,14 @@ function DetailSideBar({
 > & {
   categoryName: CategoryType['name'];
 }) {
+  const { data: participants } = useQuery<GroupParticipants>(
+    `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
+    () => getGroupParticipants(id),
+    { staleTime: Infinity },
+  );
+
+  if (!participants) return <></>;
+
   return (
     <S.Container>
       <Info
@@ -27,9 +39,15 @@ function DetailSideBar({
         duration={duration}
         location={location}
         categoryName={categoryName}
+        participants={participants}
       />
       <Calendar schedules={schedules} />
-      <Participants id={id} hostName={host.name} capacity={capacity} />
+      <Participants
+        id={id}
+        hostName={host.name}
+        capacity={capacity}
+        participants={participants}
+      />
     </S.Container>
   );
 }

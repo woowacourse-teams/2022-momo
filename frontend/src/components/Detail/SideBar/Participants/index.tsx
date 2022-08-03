@@ -1,9 +1,5 @@
-import { useQuery } from 'react-query';
-
-import { getGroupParticipants } from 'apis/request/group';
 import { ReactComponent as CrownSVG } from 'assets/crown.svg';
 import PersonSVG from 'components/svg/Person';
-import { QUERY_KEY } from 'constants/key';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
@@ -12,15 +8,15 @@ interface ParticipantsProps {
   id: GroupDetailData['id'];
   hostName: GroupDetailData['host']['name'];
   capacity: GroupDetailData['capacity'];
+  participants: GroupParticipants;
 }
 
-function Participants({ id, hostName, capacity }: ParticipantsProps) {
-  const { data: participants } = useQuery<GroupParticipants>(
-    `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
-    () => getGroupParticipants(id),
-    { staleTime: Infinity },
-  );
-
+function Participants({
+  id,
+  hostName,
+  capacity,
+  participants,
+}: ParticipantsProps) {
   return (
     <S.Container>
       <S.Header>참여자 목록</S.Header>
