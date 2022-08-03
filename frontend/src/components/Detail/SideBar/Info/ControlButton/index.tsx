@@ -18,7 +18,7 @@ interface ControlButtonProps {
 }
 
 function ControlButton({ id }: ControlButtonProps) {
-  const isLogin = useRecoilValue(loginState);
+  const { isLogin } = useRecoilValue(loginState);
   const setModalState = useSetRecoilState(modalState);
   const navigate = useNavigate();
 

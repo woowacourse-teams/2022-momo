@@ -2,6 +2,7 @@ import { atom, DefaultValue, selector } from 'recoil';
 
 import { ModalStateType } from 'types/condition';
 import { CategoryType } from 'types/data';
+import { LoginState } from 'types/user';
 
 const categoryState = atom<CategoryType[]>({
   key: 'categoryState',
@@ -13,9 +14,9 @@ const modalState = atom<ModalStateType>({
   default: 'off',
 });
 
-const loginState = atom<boolean>({
+const loginState = atom<LoginState>({
   key: 'loginState',
-  default: false,
+  default: { isLogin: false },
 });
 
 const accessTokenState = selector<string>({
