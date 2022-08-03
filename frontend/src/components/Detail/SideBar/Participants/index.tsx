@@ -4,19 +4,15 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-interface ParticipantsProps {
-  id: GroupDetailData['id'];
-  hostName: GroupDetailData['host']['name'];
-  capacity: GroupDetailData['capacity'];
+type ParticipantsProps = Pick<GroupDetailData, 'host' | 'capacity'> & {
   participants: GroupParticipants;
-}
+};
 
-function Participants({
-  id,
-  hostName,
-  capacity,
-  participants,
-}: ParticipantsProps) {
+function Participants({ host, capacity, participants }: ParticipantsProps) {
+  const participantsWithoutHost = participants.filter(
+    participant => participant.id !== host.id,
+  );
+
   return (
     <S.Container>
       <S.Header>참여자 목록</S.Header>
@@ -26,9 +22,9 @@ function Participants({
       <S.Box>
         <S.Wrapper>
           <CrownSVG width={32} />
-          <S.HostText>{hostName}</S.HostText>
+          <S.HostText>{host.name}</S.HostText>
         </S.Wrapper>
-        {participants?.map(participant => (
+        {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
             <PersonSVG width={32} />
             <S.Text>{participant.name}</S.Text>

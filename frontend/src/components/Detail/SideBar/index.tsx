@@ -43,8 +43,7 @@ function DetailSideBar({
       />
       <Calendar schedules={schedules} />
       <Participants
-        id={id}
-        hostName={host.name}
+        host={host}
         capacity={capacity}
         participants={participants}
       />
