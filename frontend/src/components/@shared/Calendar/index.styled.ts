@@ -6,7 +6,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  transform-origin: 0 0;
   transform: scale(
     ${({ size }: { size: Size }) => (size === 'medium' ? 0.7 : 1)}
   );
