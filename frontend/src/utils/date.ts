@@ -1,5 +1,10 @@
 import { GroupDetailData } from 'types/data';
 
+const oneSecond = 1000;
+const oneMinute = oneSecond * 60;
+const oneHour = oneMinute * 60;
+const oneDay = oneHour * 24;
+
 const convertRemainTime = (deadline: string) => {
   const deadlineDate = new Date(deadline);
   const now = new Date();
@@ -8,14 +13,13 @@ const convertRemainTime = (deadline: string) => {
 
   if (gap <= 0 || Number.isNaN(gap)) return null;
 
-  // TODO: 산술식 상수화 시키기
-  const dayGap = Math.floor(gap / (1000 * 60 * 60 * 24));
-  const hourGap = Math.floor((gap / (1000 * 60 * 60)) % 24);
-  const minGap = Math.floor((gap / (1000 * 60)) % 60);
-  const secGap = Math.floor((gap / 1000) % 60);
+  const dayGap = Math.floor(gap / oneDay);
+  const hourGap = Math.floor((gap / oneHour) % 24);
+  const minGap = Math.floor((gap / oneMinute) % 60);
+  const secGap = Math.floor((gap / oneSecond) % 60);
 
   if (dayGap > 0) return `${dayGap}일`;
-  if (hourGap > 0) return `${hourGap}시간 ${minGap !== 0 ? `${minGap}분` : ''}`;
+  if (hourGap > 0) return `${hourGap}시간${minGap !== 0 ? ` ${minGap}분` : ''}`;
   if (minGap > 0) return `${minGap}분`;
 
   return `${secGap}초`;
