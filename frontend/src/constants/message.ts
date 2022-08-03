@@ -19,8 +19,10 @@ const GUIDE_MESSAGE = {
     SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴에 성공했어요. 다음에 다시 만나요 😊',
   },
   GROUP: {
-    CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
+    CONFIRM_CLOSE_REQUEST: '모임 모집을 마감하시겠어요?',
+    SUCCESS_CLOSE_REQUEST: '모임 모집을 마감했어요.',
     SUCCESS_JOIN_REQUEST: '참여에 성공했어요.',
+    CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
     SUCCESS_EXIT_REQUEST: '참여 취소에 성공했어요.',
   },
 };
@@ -67,6 +69,8 @@ const ERROR_MESSAGE = {
       '회원 탈퇴에 문제가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
   GROUP: {
+    FAILURE_CLOSE_GROUP:
+      '모임 모집을 마감하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_JOIN_GROUP:
       '모임에 참여하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_EXIT_GROUP:
