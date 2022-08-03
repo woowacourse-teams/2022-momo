@@ -29,16 +29,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         Optional<Authenticated> authenticated = parseAnnotation((HandlerMethod) handler, Authenticated.class);
         if (authenticated.isPresent()) {
-            validateContainsAuthorizationHeader(request);
             validateToken(request);
         }
         return true;
-    }
-
-    private void validateContainsAuthorizationHeader(HttpServletRequest request) {
-        if (request.getHeader("Authorization") == null) {
-            throw new AuthFailException("AUTH_ERROR_003"); // 인증이 필요한 접근입니다, 비회원이 접근 시 로그인이 필요한 경우
-        }
     }
 
     private <T extends Annotation> Optional<T> parseAnnotation(HandlerMethod handler, Class<T> clazz) {

@@ -27,6 +27,6 @@ public class AuthorizationExtractor {
             }
         }
 
-        throw new AuthFailException("토큰이 존재하지 않습니다");
+        throw new AuthFailException("AUTH_ERROR_003"); // 토큰이 존재하지 않습니다.
     }
 }
