@@ -8,9 +8,10 @@ const BROWSER_PATH = {
 const API_PATH = {
   GROUP: '/groups',
   CATEGORY: '/categories',
+  PARTICIPANTS: '/participants',
+  CLOSE: '/close',
   SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
-  PARTICIPANTS: '/participants',
   MEMBERS: '/members',
   NAME: '/members/name',
   PASSWORD: '/members/password',
