@@ -28,7 +28,9 @@ function Card({ group }: CardProps) {
           </S.Left>
           <S.Right>
             <S.Deadline>
-              {convertDeadlineToRemainTime(group.deadline)}
+              {group.finished
+                ? '마감 완료'
+                : convertDeadlineToRemainTime(group.deadline)}
             </S.Deadline>
             <S.Capacity>
               <span>{group.numOfParticipant}</span>명 / 최대{' '}

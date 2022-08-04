@@ -61,7 +61,7 @@ export interface GroupList {
 
 export type GroupSummary = Pick<
   GroupDetailData,
-  'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'capacity'
+  'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'finished' | 'capacity'
 > & { numOfParticipant: number };
 
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
