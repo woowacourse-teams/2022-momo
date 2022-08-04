@@ -15,13 +15,11 @@ import com.woowacourse.momo.logging.exception.LogException;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogFileManager {
 
-    private static final SimpleDateFormat YEAR_FOLDER_FORMAT = new SimpleDateFormat("yyyy");
-    private static final SimpleDateFormat MONTH_FOLDER_FORMAT = new SimpleDateFormat("MM");
     private static final SimpleDateFormat FILE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     private static final String EXTENSION = ".txt";
-    private static final String LOG_DIRECTORY_BASE_PATH = "./src/log/";
+    private static final String LOG_DIRECTORY_BASE_PATH = "./momolog/";
 
     private static final boolean IS_APPENDED = true;
 
@@ -53,14 +51,9 @@ public class LogFileManager {
 
     private static String createDirectory(Date today) {
         File baseDirectory = new File(LOG_DIRECTORY_BASE_PATH);
-        File yearDirectory = new File(LOG_DIRECTORY_BASE_PATH + YEAR_FOLDER_FORMAT.format(today));
-        File monthDirectory = new File(yearDirectory + "/" + MONTH_FOLDER_FORMAT.format(today) + "/");
-
         createDirectoryOrFile(baseDirectory);
-        createDirectoryOrFile(yearDirectory);
-        createDirectoryOrFile(monthDirectory);
 
-        return monthDirectory.getPath() + "/" + getLogFileName(today);
+        return baseDirectory.getPath() + "/" + getLogFileName(today);
     }
 
     private static void createDirectoryOrFile(File file) {
