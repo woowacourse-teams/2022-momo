@@ -88,7 +88,7 @@ function ControlButton({
   );
 
   if (finished) {
-    return <S.DisableButton>마감되었습니다</S.DisableButton>;
+    return <S.DisableButton>마감되었어요</S.DisableButton>;
   }
 
   if (user?.id === host.id) {
