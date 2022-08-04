@@ -5,12 +5,10 @@ import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Component
 public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);

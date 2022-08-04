@@ -15,5 +15,5 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  show: 'true'
+  show: 'false'
   file-path: './momolog/'

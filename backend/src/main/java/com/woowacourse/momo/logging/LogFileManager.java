@@ -7,13 +7,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import com.woowacourse.momo.logging.exception.LogException;
 
-@Component
 public class LogFileManager {
 
     private static final SimpleDateFormat FILE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
