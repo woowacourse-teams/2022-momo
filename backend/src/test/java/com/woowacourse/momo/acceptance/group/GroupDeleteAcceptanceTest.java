@@ -38,14 +38,14 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     @Test
     void deleteGroupByAnotherMember() {
         String anotherAccessToken = DUDU.로_로그인한다();
-        모임을_삭제한다(anotherAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임을_삭제한다(anotherAccessToken, groupId).statusCode(HttpStatus.FORBIDDEN.value());
         모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("비회원이 모임을 삭제한다")
     @Test
     void deleteGroupByNonMember() {
-        모임을_삭제한다(groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임을_삭제한다(groupId).statusCode(HttpStatus.UNAUTHORIZED.value());
         모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
     }
 

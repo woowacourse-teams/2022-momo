@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
@@ -83,7 +84,8 @@ class MemberServiceTest {
         memberService.deleteById(memberId);
 
         assertThatThrownBy(() -> memberService.findById(memberId))
-                .isInstanceOf(NotFoundMemberException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("멤버가 존재하지 않습니다.");
     }
 
     private Long createMember() {

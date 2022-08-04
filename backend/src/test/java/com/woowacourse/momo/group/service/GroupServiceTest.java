@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
@@ -110,7 +111,8 @@ class GroupServiceTest {
     @Test
     void findByIdWithNotExistGroupId() {
         assertThatThrownBy(() -> groupService.findById(0L))
-                .isInstanceOf(NotFoundGroupException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 모임입니다.");
     }
 
     @DisplayName("모임 목록을 조회한다")
@@ -140,8 +142,8 @@ class GroupServiceTest {
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedMember.getId(), groupId, groupRequest))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GROUP_ERROR_006");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
     }
 
     @DisplayName("모임을 조기 마감한다")
@@ -184,7 +186,8 @@ class GroupServiceTest {
         groupService.delete(savedMember.getId(), groupId);
 
         assertThatThrownBy(() -> groupService.findById(groupId))
-                .isInstanceOf(NotFoundGroupException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 모임입니다.");
     }
 
     @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다.")
@@ -197,7 +200,7 @@ class GroupServiceTest {
         long groupId = savedGroup.getId();
 
         assertThatThrownBy(() -> groupService.delete(savedMember.getId(), groupId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GROUP_ERROR_006");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
     }
 }

@@ -60,7 +60,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @DisplayName("비회원이 모임에 참여한다")
     @Test
     void participateByNonMember() {
-        모임에_참여한다(groupId).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임에_참여한다(groupId).statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("정원이 가득 찬 모임에 참여한다")

@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.exception.NotFoundMemberException;
@@ -18,6 +20,6 @@ public class MemberFindService {
 
     public Member findMember(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(NotFoundMemberException::new);
+                .orElseThrow(() -> new MomoException(ErrorCode.MEMBER_NOT_EXIST));
     }
 }

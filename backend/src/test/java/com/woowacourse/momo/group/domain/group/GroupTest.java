@@ -20,6 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -32,8 +33,8 @@ class GroupTest {
     @ValueSource(ints = {-1, 0, 100})
     void validateOutOfCapacityRange(int capacity) {
         assertThatThrownBy(() -> constructGroupWithSetCapacity(capacity))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GROUP_ERROR_008");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모임 내 인원은 1명 이상 99명 이하여야 합니다.");
     }
 
     @DisplayName("유효한 모임 정원 값으로 인스턴스 생성시 예외가 발생하지 않는다")
@@ -48,8 +49,8 @@ class GroupTest {
     void validatePastDeadline() {
         LocalDateTime deadline = LocalDateTime.now().minusMinutes(1);
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GROUP_ERROR_007");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감시간이 과거일 수 없습니다.");
     }
 
     @DisplayName("유효한 마감기한 날짜로 인스턴스 생성시 예외가 발생하지 않는다")
@@ -64,8 +65,8 @@ class GroupTest {
     void validateDeadlineIsBeforeStartDuration() {
         LocalDateTime deadline = 일주일후_23시_59분.getInstance();
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GROUP_ERROR_006");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
     }
 
     @DisplayName("회원이 모임의 주최자일 경우 True 를 반환한다")
@@ -104,8 +105,8 @@ class GroupTest {
         Member member = new Member("momo", "qwer123!@#", "모모");
         group.participate(member);
         assertThatThrownBy(() -> group.participate(member))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("PARTICIPANT_ERROR_002");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
     }
 
     @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
@@ -118,8 +119,8 @@ class GroupTest {
 
         Member member2 = new Member("dudu", "qwer123!@#", "두두");
         assertThatThrownBy(() -> group.participate(member2))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("PARTICIPANT_ERROR_003");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
     }
 
     @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
@@ -129,8 +130,8 @@ class GroupTest {
         Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
 
         assertThatThrownBy(() -> group.participate(member))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("PARTICIPANT_ERROR_003");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
     }
 
     @DisplayName("모임에 참여한 회원을 반환한다")
