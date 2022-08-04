@@ -29,7 +29,10 @@ interface CalendarProps {
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
   today: Date;
+  duration?: GroupDetailData['duration'];
   schedules: GroupDetailData['schedules'];
+  selectDate?: (year: number, month: number, date: number) => void;
+  selectedDate?: string;
   size: 'medium' | 'large';
 }
 
@@ -39,7 +42,10 @@ function Calendar({
   goToPrevMonth,
   goToNextMonth,
   today,
+  duration,
   schedules,
+  selectDate,
+  selectedDate,
   size,
 }: CalendarProps) {
   const { dates, prevDates, nextDates } = useCalendar(year, month);
@@ -60,6 +66,31 @@ function Calendar({
     );
   };
 
+  const isNotInDuration = (date: number) => {
+    const thisDate = `${year}-${month.toString().padStart(2, '0')}-${date
+      .toString()
+      .padStart(2, '0')}`;
+
+    if (!duration) return false;
+
+    return thisDate < duration.start || thisDate > duration.end;
+  };
+
+  const isSelectedDate = (date: number) => {
+    return (
+      selectedDate ===
+      `${year}-${month.toString().padStart(2, '0')}-${date
+        .toString()
+        .padStart(2, '0')}`
+    );
+  };
+
+  const pickDate = (date: number) => () => {
+    if (!selectDate) return;
+
+    selectDate(year, month, date);
+  };
+
   return (
     <S.Container size={size}>
       <S.Navigator size={size}>
@@ -73,7 +104,7 @@ function Calendar({
           <RightArrow width={30} color={theme.colors.yellow001} />
         </S.RightArrow>
       </S.Navigator>
-      <S.Content>
+      <S.Content key={month}>
         {/* 요일 */}
         {days.map(day => (
           <S.DayColor className={dayClassGenerator(day)} key={day}>
@@ -82,7 +113,13 @@ function Calendar({
         ))}
         {/* 지난달 */}
         {prevDates.map(date => (
-          <S.PrevNextDate key={`${month - 1}-${date}`}>{date}</S.PrevNextDate>
+          <S.PrevNextDate
+            className="disabled"
+            onClick={goToPrevMonth}
+            key={`${month - 1}-${date}`}
+          >
+            {date}
+          </S.PrevNextDate>
         ))}
         {/* 이번달 */}
         {dates.map(date => {
@@ -96,11 +133,17 @@ function Calendar({
             />
           ) : (
             <S.Date
-              className={
-                isToday(date)
-                  ? 'today'
-                  : dayClassGenerator(new Date(year, month - 1, date).getDay())
-              }
+              className={`
+                ${
+                  isNotInDuration(date)
+                    ? 'disabled'
+                    : isSelectedDate(date)
+                    ? 'selected'
+                    : dayClassGenerator(
+                        new Date(year, month - 1, date).getDay(),
+                      )
+                } ${isToday(date) ? 'today' : ''}`}
+              onClick={pickDate(date)}
               key={`${month}-${date}`}
             >
               {date}
@@ -109,7 +152,13 @@ function Calendar({
         })}
         {/* 다음달 */}
         {nextDates.map(date => (
-          <S.PrevNextDate key={`${month + 1}-${date}`}>{date}</S.PrevNextDate>
+          <S.PrevNextDate
+            className="disabled"
+            onClick={goToNextMonth}
+            key={`${month + 1}-${date}`}
+          >
+            {date}
+          </S.PrevNextDate>
         ))}
       </S.Content>
     </S.Container>
