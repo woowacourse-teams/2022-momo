@@ -7,23 +7,27 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import com.woowacourse.momo.logging.exception.LogException;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class LogFileManager {
 
     private static final SimpleDateFormat FILE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
     private static final String EXTENSION = ".txt";
-    private static final String LOG_DIRECTORY_BASE_PATH = "./momolog/";
-
     private static final boolean IS_APPENDED = true;
 
-    public static void writeExceptionStackTrace(String exceptionStackTrace) {
+    private final String logPath;
+
+    public LogFileManager(@Value("${logging.file-path}") String logPath) {
+        this.logPath = logPath;
+    }
+
+    public void writeExceptionStackTrace(String exceptionStackTrace) {
         Date today = new Date();
         String filePath = createDirectory(today);
         File file = new File(filePath);
@@ -36,7 +40,7 @@ public class LogFileManager {
         }
     }
 
-    public static void writeExceptionMessage(Exception exception) {
+    public void writeExceptionMessage(Exception exception) {
         Date today = new Date();
         String filePath = createDirectory(today);
         File file = new File(filePath);
@@ -49,24 +53,24 @@ public class LogFileManager {
         }
     }
 
-    private static String createDirectory(Date today) {
-        File baseDirectory = new File(LOG_DIRECTORY_BASE_PATH);
+    private String createDirectory(Date today) {
+        File baseDirectory = new File(logPath);
         createDirectoryOrFile(baseDirectory);
 
         return baseDirectory.getPath() + "/" + getLogFileName(today);
     }
 
-    private static void createDirectoryOrFile(File file) {
+    private void createDirectoryOrFile(File file) {
         if (!file.exists() && !file.mkdir()) {
             throw new LogException("로그 폴더 생성에 실패하였습니다");
         }
     }
 
-    private static String getLogFileName(Date today) {
+    private String getLogFileName(Date today) {
         return FILE_FORMAT.format(today) + EXTENSION;
     }
 
-    private static void writeExceptionMessage(Exception exception, BufferedWriter writer, Date today) throws IOException {
+    private void writeExceptionMessage(Exception exception, BufferedWriter writer, Date today) throws IOException {
         writer.append(LOG_DATE_FORMAT.format(today))
                 .append(" ")
                 .append(String.valueOf(exception.getClass()))

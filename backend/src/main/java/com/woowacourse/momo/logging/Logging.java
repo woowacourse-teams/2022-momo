@@ -3,31 +3,29 @@ package com.woowacourse.momo.logging;
 import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Component
 public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
 
-    @Pointcut("execution(* com.woowacourse.momo..*.*(..))")
-    protected void allMethod() {
-    }
+    private final LogFileManager logFileManager;
 
-    @Pointcut("execution(* com.woowacourse.momo.globalException.ControllerAdvice.handleException(..))")
-    protected void exceptionMethod() {
-    }
-
-    protected void printExceptionStackTrace(JoinPoint joinPoint) {
+    public void printExceptionStackTrace(JoinPoint joinPoint) {
         String logMessage = log(joinPoint);
         LOGGER.error(ConsolePrettier.red(logMessage));
-        LogFileManager.writeExceptionStackTrace(logMessage);
+        logFileManager.writeExceptionStackTrace(logMessage);
     }
 
-    protected void printExceptionMessage(JoinPoint joinPoint) {
+    public void printExceptionMessage(JoinPoint joinPoint) {
         LOGGER.error(ConsolePrettier.red("" + getException(joinPoint)));
-        LogFileManager.writeExceptionMessage(getException(joinPoint));
+        logFileManager.writeExceptionMessage(getException(joinPoint));
     }
 
     private String log(JoinPoint joinPoint) {
