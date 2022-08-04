@@ -44,6 +44,10 @@ function Create() {
     useDescriptionState,
     getGroupState,
   } = useCreateState();
+  const duration = {
+    start: getGroupState().startDate,
+    end: getGroupState().endDate,
+  };
   const [page, setPage] = useState(1);
   const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const navigate = useNavigate();
@@ -129,6 +133,7 @@ function Create() {
         />
         <Step5
           useScheduleState={useScheduleState}
+          duration={duration}
           ref={getPageRef(5)}
           pressEnterToNext={pressEnterToNext}
         />
