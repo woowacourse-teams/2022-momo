@@ -40,6 +40,7 @@ function Detail() {
           <DetailContent
             name={data.name}
             deadline={data.deadline}
+            finished={data.finished}
             categoryId={data.categoryId}
             description={data.description}
           />
