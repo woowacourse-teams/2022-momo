@@ -5,6 +5,8 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 import com.woowacourse.momo.auth.exception.AuthFailException;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 
 public class AuthorizationExtractor {
 
@@ -27,6 +29,6 @@ public class AuthorizationExtractor {
             }
         }
 
-        throw new AuthFailException("AUTH_ERROR_003"); // 토큰이 존재하지 않습니다.
+        throw new MomoException(ErrorCode.AUTH_REQUIRED_LOGIN);
     }
 }

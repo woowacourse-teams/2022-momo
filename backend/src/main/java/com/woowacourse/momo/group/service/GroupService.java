@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
@@ -84,7 +86,7 @@ public class GroupService {
         schedules.stream()
                 .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
                 .findAny()
-                .ifPresent(schedule -> { throw new IllegalArgumentException("GROUP_ERROR_004"); });
+                .ifPresent(schedule -> { throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION); } );
     }
 
     @Transactional
@@ -108,13 +110,13 @@ public class GroupService {
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
         if (!group.isSameHost(host)) {
-            throw new IllegalArgumentException("AUTH_ERROR_004"); // 해당 모임의 주최자가 아닙니다.
+            throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
         }
     }
 
     private void validateFinishedRecruitment(Group group) {
         if (group.isFinishedRecruitment()) {
-            throw new IllegalArgumentException("GROUP_ERROR_006"); // 모집 마감된 모임은 수정 및 삭제할 수 없습니다.
+            throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
         }
     }
 

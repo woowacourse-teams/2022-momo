@@ -26,6 +26,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
@@ -113,7 +115,7 @@ public class Group {
 
     private void validateCapacity(int capacity) {
         if (GroupCapacityRange.isOutOfRange(capacity)) {
-            throw new IllegalArgumentException("GROUP_ERROR_008");
+            throw new MomoException(ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE);
         }
     }
 
@@ -124,13 +126,13 @@ public class Group {
 
     private void validateFutureDeadline(LocalDateTime deadline) {
         if (deadline.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("GROUP_ERROR_007"); // 마감 시간은 현재 시간 이전일 수 없습니다.
+            throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
         }
     }
 
     private void validateDeadlineIsBeforeStartDuration(LocalDateTime deadline, Duration duration) {
         if (duration.isAfterStartDate(deadline)) {
-            throw new IllegalArgumentException("GROUP_ERROR_006"); // 마감 시간이 모임 시작 일자 이후가 되어서는 안된다.
+            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
 
@@ -155,19 +157,19 @@ public class Group {
 
     private void validateIsHost(Member member) {
         if (member == host) {
-            throw new IllegalArgumentException("PARTICIPANT_ERROR_001"); // 주최자는 모임에 참여할 수 없습니다.
+            throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
         }
     }
 
     private void validateFinishedRecruitment() {
         if (isFinishedRecruitment()) {
-            throw new IllegalArgumentException("PARTICIPANT_ERROR_003"); // 이미 마감된 모임입니다.
+            throw new MomoException(ErrorCode.PARTICIPANT_FINISHED);
         }
     }
 
     private void validateReParticipate(Member member) {
         if (getParticipants().contains(member)) {
-            throw new IllegalArgumentException("PARTICIPANT_ERROR_002"); // 이미 참여한 모임입니다.
+            throw new MomoException(ErrorCode.PARTICIPANT_RE_PARTICIPATE);
         }
     }
 

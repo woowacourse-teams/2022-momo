@@ -13,6 +13,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -40,7 +43,7 @@ public class Schedule {
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         if (!endTime.isAfter(startTime)) {
-            throw new IllegalArgumentException("GROUP_ERROR_003"); // 시작 시간은 종료 시간 이전이어야 합니다
+            throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
         }
     }
 
