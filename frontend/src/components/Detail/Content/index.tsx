@@ -19,7 +19,11 @@ function DetailContent({
       </S.TitleWrapper>
       <S.DescriptionContainer>
         <S.Duration>⏳ 모집 {convertDeadlineToRemainTime(deadline)}</S.Duration>
-        <S.Description>{description}</S.Description>
+        {description !== '' ? (
+          <S.Description>{description}</S.Description>
+        ) : (
+          <></>
+        )}
         <S.LocationMap imgSrc={map} />
       </S.DescriptionContainer>
     </S.Container>
