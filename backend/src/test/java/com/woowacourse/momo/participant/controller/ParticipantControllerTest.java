@@ -116,7 +116,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("존재하지 않는 회원입니다.")))
+                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_001")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),

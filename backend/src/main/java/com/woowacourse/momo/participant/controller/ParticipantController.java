@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.participant.service.ParticipantService;
@@ -22,6 +23,7 @@ public class ParticipantController {
 
     private final ParticipantService participantService;
 
+    @Authenticated
     @PostMapping
     public ResponseEntity<Void> participate(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         participantService.participate(groupId, memberId);

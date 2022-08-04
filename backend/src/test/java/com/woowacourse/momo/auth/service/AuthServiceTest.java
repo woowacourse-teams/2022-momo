@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.globalException.exception.MomoException;
 
 @Transactional
 @SpringBootTest
@@ -49,7 +50,8 @@ class AuthServiceTest {
         LoginRequest request = new LoginRequest(USER_ID, "wrongPassword");
 
         assertThatThrownBy(() -> authService.login(request))
-                .isInstanceOf(AuthFailException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("아이디나 비밀번호가 다릅니다.");
     }
 
     void createMember(String userId, String password, String name) {
