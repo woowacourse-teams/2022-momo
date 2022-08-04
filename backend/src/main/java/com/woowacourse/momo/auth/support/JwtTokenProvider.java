@@ -9,11 +9,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import com.woowacourse.momo.auth.exception.AuthFailException;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 
 @Component
 public class JwtTokenProvider {
@@ -50,6 +55,8 @@ public class JwtTokenProvider {
             Jws<Claims> claims = getClaims(token);
 
             return !claims.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            throw new MomoException(ErrorCode.AUTH_EXPIRED_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }

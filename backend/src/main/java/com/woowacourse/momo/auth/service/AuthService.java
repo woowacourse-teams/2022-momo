@@ -11,6 +11,8 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -26,7 +28,7 @@ public class AuthService {
     public LoginResponse login(LoginRequest request) {
         String password = passwordEncoder.encrypt(request.getPassword());
         Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
-                .orElseThrow(() -> new AuthFailException("LOGIN_ERROR_001")); // 로그인에 실패했습니다
+                .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD)); // 로그인에 실패했습니다
         String token = JwtTokenProvider.createToken(member.getId());
 
         return new LoginResponse(token);
@@ -45,13 +47,13 @@ public class AuthService {
 
     private void validateExistUser(String userId) {
         if (memberRepository.findByUserId(userId) != null) {
-            throw new IllegalArgumentException("SIGNUP_ERROR_003"); // 이미 가입된 아이디
+            throw new MomoException(ErrorCode.SIGNUP_ALREADY_REGISTER);
         }
     }
 
     private void validateUserId(String userId) {
         if (userId.contains("@")) {
-            throw new IllegalArgumentException("SIGNUP_ERROR_001"); // 잘못된 아이디 형식입니다.
+            throw new MomoException(ErrorCode.SIGNUP_INVALID_ID);
         }
     }
 }

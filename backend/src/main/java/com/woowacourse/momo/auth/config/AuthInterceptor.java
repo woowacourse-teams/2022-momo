@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
@@ -41,7 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private void validateToken(HttpServletRequest request) {
         String token = AuthorizationExtractor.extract(request);
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new AuthFailException("AUTH_ERROR_002"); // 유효하지 않는 토큰입니다.
+            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
     }
 }
