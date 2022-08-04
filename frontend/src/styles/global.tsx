@@ -47,6 +47,10 @@ const style = (theme: Theme) => css`
     font-family: 'GangwonEdu_Bold';
     font-size: 1.2rem;
 
+    &:disabled {
+      background: ${theme.colors.gray005};
+    }
+
     &:focus {
       border: 1.5px solid ${theme.colors.green002};
 

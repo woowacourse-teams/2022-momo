@@ -1,6 +1,17 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 type Size = 'medium' | 'large';
+
+const calendarAnimation = keyframes`
+  from {
+    transform: translate(0, 10px);
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -52,6 +63,8 @@ const Content = styled.div`
   place-items: center;
   text-align: center;
   gap: 1rem;
+
+  animation: ${calendarAnimation} 0.2s;
 `;
 
 const DayColor = styled.div`
@@ -66,6 +79,10 @@ const DayColor = styled.div`
 
 const PrevNextDate = styled.div`
   color: ${({ theme: { colors } }) => colors.gray001};
+
+  &.disabled {
+    color: ${({ theme: { colors } }) => colors.gray003};
+  }
 `;
 
 const Date = styled(DayColor)`
@@ -81,13 +98,20 @@ const Date = styled(DayColor)`
 
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &.selected {
     background: ${({ theme: { colors } }) => colors.yellow002};
   }
 
   &.today {
     background: ${({ theme: { colors } }) => colors.red003};
     color: ${({ theme: { colors } }) => colors.white001};
+  }
+
+  &.disabled {
+    color: ${({ theme: { colors } }) => colors.gray005};
+
+    pointer-events: none;
   }
 `;
 
