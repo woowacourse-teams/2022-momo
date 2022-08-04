@@ -20,7 +20,10 @@ function SelectedDate({ date, schedule }: DateProps) {
   return (
     <>
       {isHover && (
-        <S.TimeModal>
+        <S.TimeModal
+          onMouseOver={toggleHovering(true)}
+          onMouseOut={toggleHovering(false)}
+        >
           ⏰ {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}{' '}
           ⏰
         </S.TimeModal>
