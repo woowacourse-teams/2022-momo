@@ -15,6 +15,7 @@ const requestCreateGroup = async ({
   capacity,
   startDate,
   endDate,
+  schedules,
   deadline,
   location,
   description,
@@ -27,19 +28,7 @@ const requestCreateGroup = async ({
       start: startDate,
       end: endDate,
     },
-    // TODO: 달력 입력에 따라 스케줄 시간 바꾸기
-    schedules: [
-      {
-        date: startDate,
-        startTime: '10:00',
-        endTime: '18:00',
-      },
-      {
-        date: endDate,
-        startTime: '10:00',
-        endTime: '18:00',
-      },
-    ],
+    schedules,
     deadline,
     location,
     description,

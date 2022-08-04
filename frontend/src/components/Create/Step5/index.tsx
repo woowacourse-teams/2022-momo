@@ -1,28 +1,73 @@
-import { forwardRef, LegacyRef, memo } from 'react';
+import { forwardRef, LegacyRef, memo, useState } from 'react';
 
-import Calendar from 'components/@shared/Calendar';
-import useDate from 'hooks/useDate';
+import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
 
 import { Container, Heading } from '../@shared/styled';
+import Calendar from './Calendar';
 import * as S from './index.styled';
-
-// TODO: 달력은 나중에 ^^
 
 interface Step5Props {
   useScheduleState: () => {
     schedules: CreateGroupData['schedules'];
-    setSchedules: (schedules: ScheduleType) => void;
+    setSchedules: (schedule: ScheduleType) => void;
+  };
+  duration: {
+    start: CreateGroupData['startDate'];
+    end: CreateGroupData['endDate'];
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+// TODO: duration이 바뀌면 schedules 날림
+// TODO: schedule 관련 코드 리팩토링
 function Step5(
-  { useScheduleState, pressEnterToNext }: Step5Props,
+  { useScheduleState, duration, pressEnterToNext }: Step5Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { schedules } = useScheduleState();
-  const { today, year, month, goToPrevMonth, goToNextMonth } = useDate();
+  const { schedules, setSchedules } = useScheduleState();
+
+  const [selectedDate, setSelectedDate] = useState('');
+  const {
+    value: startTime,
+    setValue: setStartTime,
+    dangerouslySetValue: dangerouslySetStartTime,
+  } = useInput('');
+  const {
+    value: endTime,
+    setValue: setEndTime,
+    dangerouslySetValue: dangerouslySetEndTime,
+  } = useInput('');
+
+  const selectDate = (year: number, month: number, date: number) => {
+    setSelectedDate(
+      `${year}-${month.toString().padStart(2, '0')}-${date
+        .toString()
+        .padStart(2, '0')}`,
+    );
+  };
+
+  const addSchedule = () => {
+    if (startTime >= endTime) {
+      alert('시작 시간은 종료 시간 이전이어야 해요.');
+      return;
+    }
+
+    if (selectedDate < duration.start || selectedDate > duration.end) {
+      alert('잘못된 날짜예요. 다시 선택해주세요 😤');
+    }
+
+    const schedule = {
+      date: selectedDate,
+      startTime,
+      endTime,
+    };
+
+    setSchedules(schedule);
+    setSelectedDate('');
+    dangerouslySetStartTime('');
+    dangerouslySetEndTime('');
+  };
 
   return (
     <Container ref={ref}>
@@ -32,33 +77,33 @@ function Step5(
       <S.Content>
         <S.Left>
           <Calendar
-            year={year}
-            month={month}
-            goToPrevMonth={goToPrevMonth}
-            goToNextMonth={goToNextMonth}
-            today={today}
+            duration={duration}
             schedules={schedules}
-            size="large"
+            selectDate={selectDate}
+            selectedDate={selectedDate}
           />
         </S.Left>
         <S.Right>
-          <S.DailyButton type="button">매일</S.DailyButton>
-          <S.DayBox>
-            <span className="sun">일</span>
-            <span>월</span>
-            <span>화</span>
-            <span>수</span>
-            <span>목</span>
-            <span>금</span>
-            <span className="sat">토</span>
-          </S.DayBox>
           <S.InputWrapper>
-            <S.Input type="time" />
+            <S.Input
+              type="time"
+              value={startTime}
+              onChange={setStartTime}
+              disabled={!selectedDate}
+            />
             부터
-            <S.Input type="time" onKeyPress={pressEnterToNext} />
+            <S.Input
+              type="time"
+              value={endTime}
+              onChange={setEndTime}
+              onKeyPress={pressEnterToNext}
+              disabled={!selectedDate}
+            />
             까지
           </S.InputWrapper>
-          <S.AddButton type="button">달력에 추가하기</S.AddButton>
+          <S.AddButton type="button" onClick={addSchedule}>
+            달력에 추가하기
+          </S.AddButton>
         </S.Right>
       </S.Content>
     </Container>
