@@ -7,13 +7,6 @@ spring:
     hibernate:
       naming.physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
 
-    properties:
-      hibernate:
-        format_sql: 'true'
-    show-sql: 'true'
-
-logging:
-  level:
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+momo-logging:
   show: 'false'
   file-path: './momolog/'

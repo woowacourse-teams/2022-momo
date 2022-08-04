@@ -14,7 +14,7 @@ import com.woowacourse.momo.logging.Logging;
 @EnableAspectJAutoProxy
 public class AspectConfiguration {
 
-    @Value("${logging.file-path}")
+    @Value("${momo-logging.file-path}")
     private String logFilePath;
 
     @Bean
@@ -27,7 +27,7 @@ public class AspectConfiguration {
         return new Logging(logFileManager());
     }
 
-    @ConditionalOnExpression("${logging.show:true}")
+    @ConditionalOnExpression("${momo-logging.show:true}")
     @Bean
     public ExceptionLogging exceptionLogging() {
         return new ExceptionLogging(logging());

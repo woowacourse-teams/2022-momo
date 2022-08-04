@@ -20,7 +20,7 @@ public class LogFileManager {
 
     private final String logPath;
 
-    public LogFileManager(@Value("${logging.file-path}") String logPath) {
+    public LogFileManager(@Value("${momo-logging.file-path}") String logPath) {
         this.logPath = logPath;
     }
 
