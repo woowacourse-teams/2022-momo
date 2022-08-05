@@ -103,3 +103,21 @@ include::{snippets}/memberupdatepassword/http-request.adoc[]
 
 Response
 include::{snippets}/memberupdatepassword/http-response.adoc[]
+
+== 그룹 참여
+
+=== 그룹 참여
+
+Request
+include::{snippets}/participate/http-request.adoc[]
+
+Response
+include::{snippets}/participate/http-response.adoc[]
+
+=== 그룹 참여자 목록 조회
+
+Request
+include::{snippets}/findparticipants/http-request.adoc[]
+
+Response
+include::{snippets}/findparticipants/http-response.adoc[]
