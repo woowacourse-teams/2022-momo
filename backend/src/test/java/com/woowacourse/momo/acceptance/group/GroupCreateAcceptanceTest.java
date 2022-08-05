@@ -24,6 +24,6 @@ class GroupCreateAcceptanceTest extends AcceptanceTest {
     @DisplayName("비회원이 모임을 생성한다")
     @Test
     void createGroupByNonMember() {
-        모임을_생성한다(GROUP).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임을_생성한다(GROUP).statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

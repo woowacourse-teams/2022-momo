@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.exception.InvalidDurationException;
 
 @Getter
@@ -32,13 +34,13 @@ public class Duration {
 
     private void validatePastDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
-            throw new InvalidDurationException("시작일과 종료일은 과거의 날짜가 될 수 없습니다.");
+            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
         }
     }
 
     private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new InvalidDurationException("시작일은 종료일 이후가 될 수 없습니다.");
+            throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
         }
     }
 

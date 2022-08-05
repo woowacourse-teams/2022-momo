@@ -26,6 +26,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
@@ -92,7 +94,7 @@ public class Group {
 
         validateCapacity(capacity);
         validateDeadline(deadline, duration);
-        participate(host);
+        this.participants.add(new Participant(this, host));
         belongTo(schedules);
     }
 
@@ -113,7 +115,7 @@ public class Group {
 
     private void validateCapacity(int capacity) {
         if (GroupCapacityRange.isOutOfRange(capacity)) {
-            throw new IllegalArgumentException("모임 정원은 1명 이상 99명 이하여야 합니다.");
+            throw new MomoException(ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE);
         }
     }
 
@@ -124,13 +126,13 @@ public class Group {
 
     private void validateFutureDeadline(LocalDateTime deadline) {
         if (deadline.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("마감 시간은 현재 시간 이전일 수 없습니다.");
+            throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
         }
     }
 
     private void validateDeadlineIsBeforeStartDuration(LocalDateTime deadline, Duration duration) {
         if (duration.isAfterStartDate(deadline)) {
-            throw new IllegalArgumentException("마감 시간은 모임 시작 일자 이후일 수 없습니다.");
+            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
 
@@ -150,17 +152,24 @@ public class Group {
     private void validateParticipateAvailable(Member member) {
         validateFinishedRecruitment();
         validateReParticipate(member);
+        validateIsHost(member);
+    }
+
+    private void validateIsHost(Member member) {
+        if (member == host) {
+            throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
+        }
     }
 
     private void validateFinishedRecruitment() {
         if (isFinishedRecruitment()) {
-            throw new IllegalArgumentException("모집이 마감됐습니다.");
+            throw new MomoException(ErrorCode.PARTICIPANT_FINISHED);
         }
     }
 
     private void validateReParticipate(Member member) {
         if (getParticipants().contains(member)) {
-            throw new IllegalArgumentException("이미 참여한 모임입니다.");
+            throw new MomoException(ErrorCode.PARTICIPANT_RE_PARTICIPATE);
         }
     }
 

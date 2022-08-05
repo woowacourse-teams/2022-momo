@@ -80,13 +80,13 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     void updateGroupByAnotherMember() {
         String anotherAccessToken = DUDU.로_로그인한다();
         모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY).statusCode(
-                HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+                HttpStatus.FORBIDDEN.value());
     }
 
     @DisplayName("비회원이 모임을 수정한다")
     @Test
     void updateGroupByNonMember() {
-        모임을_수정한다(groupId, DUDU_STUDY).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: UNAUTHORIZED
+        모임을_수정한다(groupId, DUDU_STUDY).statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("존재하지 않은 모임을 삭제한다")

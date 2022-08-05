@@ -13,6 +13,7 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.exception.InvalidDurationException;
 
 class DurationTest {
@@ -21,16 +22,16 @@ class DurationTest {
     @Test
     void validateEndIsNotBeforeStart() {
         assertThatThrownBy(() -> new Duration(일주일후.getInstance(), 이틀후.getInstance()))
-                .isInstanceOf(InvalidDurationException.class)
-                .hasMessage("시작일은 종료일 이후가 될 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("기간의 시작일은 종료일 이전이어야 합니다.");
     }
 
     @DisplayName("시작일과 종료일은 과거의 날짜가 될 수 없다")
     @Test
     void validatePastDate() {
         assertThatThrownBy(() -> new Duration(어제.getInstance(), 어제.getInstance()))
-                .isInstanceOf(InvalidDurationException.class)
-                .hasMessage("시작일과 종료일은 과거의 날짜가 될 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("시작일과 종료일은 과거일 수 없습니다.");
     }
 
     @DisplayName("시작일 이후의 일자일 경우 True를 반환한다.")

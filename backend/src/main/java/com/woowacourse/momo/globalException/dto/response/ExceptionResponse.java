@@ -12,8 +12,8 @@ public class ExceptionResponse {
 
     private final String message;
 
-    public static ExceptionResponse from(Exception e) {
-        return new ExceptionResponse(e.getMessage());
+    public static ExceptionResponse from(String e) {
+        return new ExceptionResponse(e);
     }
 
     public static ExceptionResponse from(MethodArgumentNotValidException e) {
@@ -22,6 +22,7 @@ public class ExceptionResponse {
         for (FieldError error : e.getFieldErrors()) {
             message.append(error.getDefaultMessage()).append(" ");
         }
+
         return new ExceptionResponse(new String(message));
     }
 

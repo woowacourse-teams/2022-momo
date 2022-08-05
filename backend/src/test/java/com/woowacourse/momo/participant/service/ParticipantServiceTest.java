@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.exception.NotFoundGroupException;
@@ -77,7 +78,8 @@ class ParticipantServiceTest {
     @Test
     void participateNotExistGroup() {
         assertThatThrownBy(() -> participantService.participate(0L, participant1.getId()))
-                .isInstanceOf(NotFoundGroupException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 모임입니다.");
     }
 
     @DisplayName("존재하지 않는 사용자는 모임에 참여할 수 없다")
@@ -86,7 +88,8 @@ class ParticipantServiceTest {
         Group savedGroup = saveGroup();
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), 0L))
-                .isInstanceOf(NotFoundMemberException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("멤버가 존재하지 않습니다.");
     }
 
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
@@ -96,8 +99,8 @@ class ParticipantServiceTest {
         participantService.participate(savedGroup.getId(), participant1.getId());
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant1.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 참여한 모임입니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
     }
 
     @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
@@ -108,8 +111,8 @@ class ParticipantServiceTest {
         participantService.participate(savedGroup.getId(), participant1.getId());
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집이 마감됐습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
@@ -130,6 +133,7 @@ class ParticipantServiceTest {
     @Test
     void findParticipantsNotExistGroup() {
         assertThatThrownBy(() -> participantService.findParticipants(0L))
-                .isInstanceOf(NotFoundGroupException.class);
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 모임입니다.");
     }
 }

@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginRequest {
 
-    @NotBlank(message = "아이디는 빈 값일 수 없습니다.")
+    @NotBlank(message = "SIGNUP_ERROR_001") // 이메일은 빈 값일 수 없습니다.
     private String userId;
-    @NotBlank(message = "패스워드는 빈 값일 수 없습니다.")
+    @NotBlank(message = "SIGNUP_ERROR_002") // 비밀번호는 빈 값일 수 없습니다.
     private String password;
 }

@@ -93,7 +93,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("존재하지 않는 모임입니다.")))
+                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
                 .andDo(
                         document("participatenotexistgroup",
                                 preprocessRequest(prettyPrint()),
@@ -116,7 +116,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("존재하지 않는 회원입니다.")))
+                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_001")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),
@@ -139,7 +139,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("이미 참여한 모임입니다.")))
+                .andExpect(jsonPath("$.message", is("PARTICIPANT_ERROR_002")))
                 .andDo(
                         document("participateparticipant",
                                 preprocessRequest(prettyPrint()),
@@ -161,7 +161,7 @@ public class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("모집이 마감됐습니다.")))
+                .andExpect(jsonPath("$.message", is("PARTICIPANT_ERROR_003")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),
@@ -195,7 +195,7 @@ public class ParticipantControllerTest {
         mockMvc.perform(get("/api/groups/" + 0 + "/participants")
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("존재하지 않는 모임입니다.")))
+                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
                 .andDo(
                         document("findparticipantsnotexistgroup",
                                 preprocessRequest(prettyPrint()),
