@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.woowacourse.momo.logging.exception.LogException;
 
 public class LogFileManager {
@@ -26,7 +24,7 @@ public class LogFileManager {
 
     public void writeExceptionStackTrace(String exceptionStackTrace) {
         Date today = new Date();
-        String filePath = createDirectory(today);
+        String filePath = createFile(today);
         File file = new File(filePath);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
@@ -39,7 +37,7 @@ public class LogFileManager {
 
     public void writeExceptionMessage(Exception exception) {
         Date today = new Date();
-        String filePath = createDirectory(today);
+        String filePath = createFile(today);
         File file = new File(filePath);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
@@ -50,14 +48,14 @@ public class LogFileManager {
         }
     }
 
-    private String createDirectory(Date today) {
+    private String createFile(Date today) {
         File baseDirectory = new File(logPath);
-        createDirectoryOrFile(baseDirectory);
+        createDirectory(baseDirectory);
 
         return baseDirectory.getPath() + "/" + getLogFileName(today);
     }
 
-    private void createDirectoryOrFile(File file) {
+    private void createDirectory(File file) {
         if (!file.exists() && !file.mkdir()) {
             throw new LogException("로그 폴더 생성에 실패하였습니다");
         }
