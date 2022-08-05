@@ -13,21 +13,24 @@ interface DateProps {
 function SelectedDate({ date, schedule }: DateProps) {
   const [isHover, setIsHover] = useState(false);
 
-  const toggleHovering = (isHover: boolean) => () => {
+  const changeHoverState = (isHover: boolean) => () => {
     setIsHover(isHover);
   };
 
   return (
     <>
       {isHover && (
-        <S.TimeModal>
+        <S.TimeModal
+          onMouseOver={changeHoverState(true)}
+          onMouseOut={changeHoverState(false)}
+        >
           ⏰ {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}{' '}
           ⏰
         </S.TimeModal>
       )}
       <S.SelectedDate
-        onMouseOver={toggleHovering(true)}
-        onMouseOut={toggleHovering(false)}
+        onMouseOver={changeHoverState(true)}
+        onMouseOut={changeHoverState(false)}
       >
         {date}
       </S.SelectedDate>
