@@ -1,103 +1,123 @@
-== 모모의 API 명세
+= 모모의 API 명세
+:toc: left
+:toclevels: 4
 
 == 카테고리
 
 === 카테고리 조회
 
-==== Request
+Request
 include::{snippets}/categorylist/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/categorylist/http-response.adoc[]
 
 == 모임
 
 === 모임 조회
 
-==== Request
+Request
 include::{snippets}/groupget/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/groupget/http-response.adoc[]
 
 === 모임 생성
 
-==== Request
+Request
 include::{snippets}/groupcreate/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/groupcreate/http-response.adoc[]
 
 === 모임 삭제
 
-==== Request
+Request
 include::{snippets}/groupdelete/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/groupdelete/http-response.adoc[]
 
 === 모든 모임 조회
 
-==== Request
+Request
 include::{snippets}/grouplist/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/grouplist/http-response.adoc[]
 
-==== 본인이 가입하거나 주최한 모임 조회
+=== 본인이 가입하거나 주최한 모임 조회
 
-==== Request
+Request
 include::{snippets}/grouprelated/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/grouprelated/http-response.adoc[]
 
 == 유저
 
 === 회원가입
 
-==== Request
+Request
 include::{snippets}/membersignup/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/membersignup/http-response.adoc[]
 
 === 로그인
 
-==== Request
+Request
 include::{snippets}/memberlogin/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/memberlogin/http-response.adoc[]
 
 === 회원 조회
 
-==== Request
+Request
 include::{snippets}/memberfind/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/memberfind/http-response.adoc[]
 
 === 회원 탈퇴
 
-==== Request
+Request
 include::{snippets}/memberdelete/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/memberdelete/http-response.adoc[]
 
 === 회원 이름 변경
 
-==== Request
+Request
 include::{snippets}/memberupdatename/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/memberupdatename/http-response.adoc[]
 
 === 회원 비밀번호 변경
 
-==== Request
+Request
 include::{snippets}/memberupdatepassword/http-request.adoc[]
 
-==== Response
+Response
 include::{snippets}/memberupdatepassword/http-response.adoc[]
+
+== 그룹 참여
+
+=== 그룹 참여
+
+Request
+include::{snippets}/participate/http-request.adoc[]
+
+Response
+include::{snippets}/participate/http-response.adoc[]
+
+=== 그룹 참여자 목록 조회
+
+Request
+include::{snippets}/findparticipants/http-request.adoc[]
+
+Response
+include::{snippets}/findparticipants/http-response.adoc[]
