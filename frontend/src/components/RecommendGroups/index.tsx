@@ -32,7 +32,12 @@ function RecommendGroups() {
       if (entry.isIntersecting && !isLoading) {
         refetch().then(({ data }) => {
           if (!data) return;
-          if (!data.hasNextPage && groups.length > 0 && target.current) {
+          if (
+            !data.hasNextPage &&
+            data.groups.length === 0 &&
+            groups.length > 0 &&
+            target.current
+          ) {
             observer.unobserve(target.current);
             return;
           }
