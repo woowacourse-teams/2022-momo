@@ -1,0 +1,12 @@
+spring:
+  config:
+    import:
+      - security/application.yml
+
+  jpa:
+    hibernate:
+      naming.physical-strategy: com.woowacourse.momo.config.CustomNamingStrategy
+
+momo-logging:
+  show: 'false'
+  file-path: './momolog/'
