@@ -82,7 +82,6 @@ public class GroupService {
     }
 
     private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        // 일정의 일자가 모임 기간에 포함되지 않습니다.
         schedules.stream()
                 .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
                 .findAny()

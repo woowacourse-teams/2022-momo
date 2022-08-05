@@ -27,7 +27,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Authenticated
     @GetMapping
     public ResponseEntity<MyInfoResponse> find(@AuthenticationPrincipal Long id) {
         MyInfoResponse response = memberService.findById(id);
@@ -35,7 +34,6 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @Authenticated
     @PatchMapping("/password")
     public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Long id,
                                                @RequestBody @Valid ChangePasswordRequest request) {
@@ -44,7 +42,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @Authenticated
     @PatchMapping("/name")
     public ResponseEntity<Void> updateName(@AuthenticationPrincipal Long id,
                                            @RequestBody @Valid ChangeNameRequest request) {
@@ -53,7 +50,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @Authenticated
     @DeleteMapping
     public ResponseEntity<Void> delete(@AuthenticationPrincipal Long id) {
         memberService.deleteById(id);
