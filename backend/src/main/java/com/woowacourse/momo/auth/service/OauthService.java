@@ -22,7 +22,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 public class OauthService {
 
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider JwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final GoogleConnector oauthConnector;
     private final GoogleProvider oauthProvider;
@@ -35,7 +35,7 @@ public class OauthService {
         GoogleUserResponse response = requestUserInfo(code);
 
         Long memberId = findOrSaveMember(response);
-        String token = JwtTokenProvider.createToken(memberId);
+        String token = jwtTokenProvider.createToken(memberId);
         return new LoginResponse(token);
     }
 
