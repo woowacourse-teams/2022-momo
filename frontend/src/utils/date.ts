@@ -34,11 +34,15 @@ const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
 };
 
 const getNewDateString = (until: 'day' | 'min') => {
+  const nowTime = new Date();
+  const offset = nowTime.getTimezoneOffset() * 60 * 1000;
+  const timeInKorea = new Date(nowTime.getTime() - offset);
+
   switch (until) {
     case 'day':
-      return new Date().toISOString().slice(0, 10);
+      return timeInKorea.toISOString().slice(0, 10);
     case 'min':
-      return new Date().toISOString().slice(0, 16);
+      return timeInKorea.toISOString().slice(0, 16);
   }
 };
 
