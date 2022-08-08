@@ -13,32 +13,35 @@ import lombok.Getter;
 @Component
 public class GoogleProvider {
 
-    @Value("${oauth2.url.redirect}")
-    private String redirectUrl;
+    private final String redirectUrl;
+    private final String clientId;
+    private final String clientSecret;
+    private final String authUrl;
+    private final String accessTokenUrl;
+    private final String userInfoUrl;
+    private final String grantType;
+    private final String scope;
+    private final String temporaryPassword;
 
-    @Value("${oauth2.google.client.id}")
-    private String clientId;
-
-    @Value("${oauth2.google.client.secret}")
-    private String clientSecret;
-
-    @Value("${oauth2.google.url.auth}")
-    private String authUrl;
-
-    @Value("${oauth2.google.url.token}")
-    private String accessTokenUrl;
-
-    @Value("${oauth2.google.url.userinfo}")
-    private String userInfoUrl;
-
-    @Value("${oauth2.google.grant-type}")
-    private String grantType;
-
-    @Value("${oauth2.google.scope}")
-    private String scope;
-
-    @Value("${oauth2.member.temporary-password}")
-    private String temporaryPassword;
+    public GoogleProvider(@Value("${oauth2.url.redirect}") String redirectUrl,
+                          @Value("${oauth2.google.client.id}") String clientId,
+                          @Value("${oauth2.google.client.secret}") String clientSecret,
+                          @Value("${oauth2.google.url.auth}") String authUrl,
+                          @Value("${oauth2.google.url.token}") String accessTokenUrl,
+                          @Value("${oauth2.google.url.userinfo}") String userInfoUrl,
+                          @Value("${oauth2.google.grant-type}") String grantType,
+                          @Value("${oauth2.google.scope}") String scope,
+                          @Value("${oauth2.member.temporary-password}") String temporaryPassword) {
+        this.redirectUrl = redirectUrl;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.authUrl = authUrl;
+        this.accessTokenUrl = accessTokenUrl;
+        this.userInfoUrl = userInfoUrl;
+        this.grantType = grantType;
+        this.scope = scope;
+        this.temporaryPassword = temporaryPassword;
+    }
 
     public String generateAuthUrl() {
         Map<String, String> params = new HashMap<>();
