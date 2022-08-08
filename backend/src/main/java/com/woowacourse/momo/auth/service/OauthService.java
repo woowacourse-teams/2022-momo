@@ -24,11 +24,11 @@ public class OauthService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider JwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final GoogleConnector googleConnector;
-    private final GoogleProvider googleProvider;
+    private final GoogleConnector oauthConnector;
+    private final GoogleProvider oauthProvider;
 
     public String generateAuthUrl() {
-        return googleProvider.generateAuthUrl();
+        return oauthProvider.generateAuthUrl();
     }
 
     public LoginResponse requestAccessToken(String code) {
@@ -40,7 +40,7 @@ public class OauthService {
     }
 
     private GoogleUserResponse requestUserInfo(String code) {
-        ResponseEntity<GoogleUserResponse> responseEntity = googleConnector.requestUserInfo(code);
+        ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code);
 
         validateResponseStatusOk(responseEntity.getStatusCode());
 
@@ -65,7 +65,7 @@ public class OauthService {
     private Long saveMember(GoogleUserResponse response) {
         String userId = response.getEmail();
         String name = response.getName();
-        String password = passwordEncoder.encrypt(googleProvider.getTemporaryPassword());
+        String password = passwordEncoder.encrypt(oauthProvider.getTemporaryPassword());
 
         Member savedMember = memberRepository.save(new Member(userId, password, name));
         return savedMember.getId();
