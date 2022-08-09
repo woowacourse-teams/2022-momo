@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
 
-public interface RefreshTokenRepository extends Repository<RefreshToken, Long> {
+public interface TokenRepository extends Repository<Token, Long> {
 
-    RefreshToken save(RefreshToken refreshToken);
+    Token save(Token token);
 
-    Optional<RefreshToken> findByMemberId(Long memberId);
+    Optional<Token> findByMemberId(Long memberId);
 
     boolean existsByMemberId(Long memberId);
 

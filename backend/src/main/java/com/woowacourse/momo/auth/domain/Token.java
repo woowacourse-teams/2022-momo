@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class RefreshToken {
+public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class RefreshToken {
     @Column(nullable = false)
     private String refreshToken;
 
-    public RefreshToken(Long memberId, String refreshToken) {
+    public Token(Long memberId, String refreshToken) {
         this.memberId = memberId;
         this.refreshToken = refreshToken;
     }
