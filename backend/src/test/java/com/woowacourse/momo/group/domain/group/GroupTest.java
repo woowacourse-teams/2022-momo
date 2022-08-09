@@ -9,8 +9,6 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -147,7 +145,7 @@ class GroupTest {
         assertThat(participants).contains(host, member);
     }
 
-    @DisplayName("현재 참여 인원이 정원을 초과하면 모집이 종료된다.")
+    @DisplayName("현재 참여 인원이 정원을 초과하면 모집이 종료된다")
     @Test
     void isFinishedRecruitmentWithOverCapacity() {
         int capacity = 2;
@@ -184,7 +182,7 @@ class GroupTest {
         Group group = constructGroup();
         group.participate(participant);
 
-        assertTrue(group.isExistParticipants());
+        assertThat(group.isExistParticipants()).isTrue();
     }
 
     @DisplayName("주최자를 제외하고 참여자가 없을 경우 False 를 반환한다")
@@ -192,7 +190,7 @@ class GroupTest {
     void isExistParticipantsFalse() {
         Group group = constructGroup();
 
-        assertFalse(group.isExistParticipants());
+        assertThat(group.isExistParticipants()).isFalse();
     }
 
     private Group constructGroup() {
