@@ -72,6 +72,22 @@ include::{snippets}/memberlogin/http-request.adoc[]
 Response
 include::{snippets}/memberlogin/http-response.adoc[]
 
+=== OAuth 구글 링크
+
+Request
+include::{snippets}/oauthLink/http-request.adoc[]
+
+Response
+include::{snippets}/oauthLink/http-response.adoc[]
+
+=== OAuth 로그인
+
+Request
+include::{snippets}/oauthlogin/http-request.adoc[]
+
+Response
+include::{snippets}/oauthlogin/http-response.adoc[]
+
 === 회원 조회
 
 Request
@@ -121,3 +137,4 @@ include::{snippets}/findparticipants/http-request.adoc[]
 
 Response
 include::{snippets}/findparticipants/http-response.adoc[]
+
