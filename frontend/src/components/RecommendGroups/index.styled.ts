@@ -43,7 +43,7 @@ const GroupListBox = styled.div`
   `}
 `;
 
-const NoResultWrapper = styled.div`
+const NoResultContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,7 +72,7 @@ export {
   Container,
   Heading,
   GroupListBox,
-  NoResultWrapper,
+  NoResultContainer,
   NoResultDescription,
   LoadingWrapper,
 };

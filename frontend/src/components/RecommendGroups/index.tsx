@@ -75,14 +75,14 @@ function RecommendGroups() {
           </S.GroupListBox>
         </>
       ) : (
-        <S.NoResultWrapper>
+        <S.NoResultContainer>
           <NoResult />
           <S.NoResultDescription>
             찾고 계신 모임이 없어요 ・゜・(ノД`)
             <br />
             새로운 모임을 추가해보는 건 어떨까요?
           </S.NoResultDescription>
-        </S.NoResultWrapper>
+        </S.NoResultContainer>
       )}
       {isFetching && (
         <S.LoadingWrapper>
