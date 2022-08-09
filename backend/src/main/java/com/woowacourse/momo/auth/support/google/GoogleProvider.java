@@ -43,7 +43,7 @@ public class GoogleProvider {
         this.temporaryPassword = temporaryPassword;
     }
 
-    public String generateAuthUrl() {
+    public String generateAuthUrl(String redirectUrl) {
         Map<String, String> params = new HashMap<>();
         params.put("scope", scope);
         params.put("response_type", "code");

@@ -47,7 +47,7 @@ class OauthControllerTest {
     @Test
     void access() throws Exception {
         String oauthLink = "https://accounts.google.com/o/oauth2/auth?scope=openid%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&response_type=code&redirect_uri=http://localhost:8080/api/auth/oauth2/google/login&client_id=clientId";
-        BDDMockito.given(oauthService.generateAuthUrl())
+        BDDMockito.given(oauthService.generateAuthUrl(ArgumentMatchers.anyString()))
                 .willReturn(new OauthLinkResponse(oauthLink));
 
         mockMvc.perform(get("/api/auth/oauth2/google/login"))

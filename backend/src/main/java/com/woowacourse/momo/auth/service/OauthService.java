@@ -32,8 +32,8 @@ public class OauthService {
     private final GoogleConnector oauthConnector;
     private final GoogleProvider oauthProvider;
 
-    public OauthLinkResponse generateAuthUrl() {
-        String oauthLink = oauthProvider.generateAuthUrl();
+    public OauthLinkResponse generateAuthUrl(String redirectUrl) {
+        String oauthLink = oauthProvider.generateAuthUrl(redirectUrl);
         return new OauthLinkResponse(oauthLink);
     }
 
