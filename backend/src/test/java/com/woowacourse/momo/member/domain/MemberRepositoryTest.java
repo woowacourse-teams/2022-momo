@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
-    @DisplayName("회원을 저장한다.")
+    @DisplayName("회원을 저장한다")
     @Test
     void save() {
         Member member = new Member("aaaa", "1q2w3e4r!", "모모");

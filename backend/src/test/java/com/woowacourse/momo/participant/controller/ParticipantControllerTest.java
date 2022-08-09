@@ -5,6 +5,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,6 +48,9 @@ public class ParticipantControllerTest {
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
 
+    private static final String BASE_URL = "/api/groups/";
+    private static final String RESOURCE = "/participants";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -70,7 +74,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isOk())
@@ -89,7 +93,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + 0 + "/participants")
+        mockMvc.perform(post(BASE_URL + 0 + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -112,7 +116,7 @@ public class ParticipantControllerTest {
         String accessToken = accessToken("participant");
         deleteMember(participantId);
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -135,7 +139,7 @@ public class ParticipantControllerTest {
         String accessToken = accessToken("participant");
         participateMember(groupId, participantId);
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -157,7 +161,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -177,7 +181,7 @@ public class ParticipantControllerTest {
         Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
 
-        mockMvc.perform(get("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(get(BASE_URL + groupId + RESOURCE)
                 )
                 .andExpect(status().isOk())
                 .andDo(
@@ -192,7 +196,7 @@ public class ParticipantControllerTest {
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")
     @Test
     void findParticipantsNotExistGroup() throws Exception {
-        mockMvc.perform(get("/api/groups/" + 0 + "/participants")
+        mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
@@ -203,6 +207,25 @@ public class ParticipantControllerTest {
                                 )
                         )
                 );
+    }
+
+    @DisplayName("모임에 탈퇴한다")
+    @Test
+    void deleteParticipant() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                .header("Authorization", "bearer " + accessToken))
+            .andExpect(status().isNoContent())
+            .andDo(
+                document("deleteparticipant",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
+            );
     }
 
     Long saveMember(String userId) {

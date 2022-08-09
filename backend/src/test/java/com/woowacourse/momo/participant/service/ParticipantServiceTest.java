@@ -10,6 +10,7 @@ import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +23,10 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.exception.NotFoundMemberException;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
+import com.woowacourse.momo.participant.domain.Participant;
 
 @Transactional
 @SpringBootTest
@@ -40,6 +40,9 @@ class ParticipantServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private Member host;
     private Member participant1;
@@ -135,5 +138,27 @@ class ParticipantServiceTest {
         assertThatThrownBy(() -> participantService.findParticipants(0L))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
+    }
+
+    @DisplayName("모임에 탈퇴한다")
+    @Test
+    void delete() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        synchronize();
+
+        participantService.delete(savedGroup.getId(), participant1.getId());
+        synchronize();
+
+        List<Long> after = participantService.findParticipants(savedGroup.getId())
+            .stream()
+            .map(MemberResponse::getId)
+            .collect(Collectors.toList());
+        assertThat(after).doesNotContain(participant1.getId());
+    }
+
+    private void synchronize() {
+        entityManager.flush();
+        entityManager.clear();
     }
 }

@@ -1,6 +1,7 @@
 package com.woowacourse.momo.acceptance.participant;
 
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임을_탈퇴한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.참여목록을_조회한다;
 import static com.woowacourse.momo.fixture.MemberFixture.GUGU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
@@ -80,5 +81,14 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
 
         참여목록을_조회한다(groupId).statusCode(HttpStatus.OK.value());
+    }
+
+    @DisplayName("모임을 탈퇴한다")
+    @Test
+    void delete() {
+        String accessToken = MOMO.로_로그인한다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+
+        모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
