@@ -9,6 +9,8 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ import com.woowacourse.momo.member.domain.Member;
 class GroupTest {
 
     private final Member host = new Member("주최자", "password", "momo");
+    private final Member participant = new Member("참여자", "password", "momo");
 
     @DisplayName("유효하지 않은 모임 정원 값으로 인스턴스 생성시 예외가 발생한다")
     @ParameterizedTest
@@ -92,8 +95,7 @@ class GroupTest {
     @Test
     void participate() {
         Group group = constructGroup();
-        Member member = new Member("momo", "qwer123!@#", "모모");
-        group.participate(member);
+        group.participate(participant);
 
         assertThat(group.getParticipants()).hasSize(2);
     }
@@ -176,6 +178,23 @@ class GroupTest {
         assertThat(actual).isTrue();
     }
 
+    @DisplayName("주최자를 제외하고 참여자가 있을 경우 True 를 반환한다")
+    @Test
+    void isThereParticipantsTrue() {
+        Group group = constructGroup();
+        group.participate(participant);
+
+        assertTrue(group.isThereParticipants());
+    }
+
+    @DisplayName("주최자를 제외하고 참여자가 없을 경우 False 를 반환한다")
+    @Test
+    void isThereParticipantsFalse() {
+        Group group = constructGroup();
+
+        assertFalse(group.isThereParticipants());
+    }
+
     private Group constructGroup() {
         return constructGroupWithSetCapacity(10);
     }
@@ -198,10 +217,11 @@ class GroupTest {
         Group group = new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(), schedules, "", "");
 
+        int deadlineField = 8;
         Class<Group> clazz = Group.class;
         Field[] field = clazz.getDeclaredFields();
-        field[7].setAccessible(true);
-        field[7].set(group, deadline);
+        field[deadlineField].setAccessible(true);
+        field[deadlineField].set(group, deadline);
 
         return group;
     }

@@ -140,8 +140,10 @@ class GroupControllerTest {
     @DisplayName("그룹이 정상적으로 삭제되는 경우를 테스트한다")
     @Test
     void groupDeleteTest() throws Exception {
-        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
-        Long saveId = saveGroup("모모의 스터디", saveMemberId);
+        Long saveHostId = saveMember("woowa", "wooteco1!", "모모");
+        Long saveId = saveGroup("모모의 스터디", saveHostId);
+        Long saveParticipantId = saveMember("참여자", "wooteco1!", "모모");
+        participate(saveId, saveParticipantId);
         String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(delete("/api/groups/" + saveId)
@@ -246,5 +248,9 @@ class GroupControllerTest {
     Long saveMember(String id, String password, String name) {
         SignUpRequest request = new SignUpRequest(id, password, name);
         return authService.signUp(request);
+    }
+
+    void participate(Long groupId, Long memberId) {
+        participantService.participate(groupId, memberId);
     }
 }

@@ -2,6 +2,7 @@ package com.woowacourse.momo.acceptance.group;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_삭제한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +18,19 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
     private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;
     private static final MemberFixture HOST = MemberFixture.MOMO;
+    private static final MemberFixture PARTICIPANT = MemberFixture.DUDU;
 
     private String hostAccessToken;
+    private String participantAccessToken;
     private Long groupId;
 
     @BeforeEach
     void setUp() {
         hostAccessToken = HOST.로_로그인한다();
+        participantAccessToken = PARTICIPANT.로_로그인한다();
+
         groupId = GROUP.을_생성한다(hostAccessToken);
+        모임에_참여한다(participantAccessToken, groupId);
     }
 
     @DisplayName("주최자가 모임을 삭제한다")

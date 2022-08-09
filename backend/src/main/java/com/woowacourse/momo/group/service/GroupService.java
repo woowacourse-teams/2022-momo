@@ -101,6 +101,7 @@ public class GroupService {
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
+        validateNotExistParticipants(group);
         validateFinishedRecruitment(group);
 
         groupRepository.deleteById(groupId);
@@ -110,6 +111,12 @@ public class GroupService {
         Member host = memberFindService.findMember(hostId);
         if (!group.isSameHost(host)) {
             throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
+        }
+    }
+
+    private void validateNotExistParticipants(Group group) {
+        if (!group.isThereParticipants()) {
+            throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
         }
     }
 
