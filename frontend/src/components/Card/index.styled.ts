@@ -11,14 +11,24 @@ const Container = styled.div`
   border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 20px;
 
+  filter: ${({ finished }: { finished: boolean }) =>
+    finished ? `contrast(50%) grayscale(100%)` : ''};
+
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   width: 100%;
-  height: 60%;
+  height: 170%;
 
   border-radius: 20px 20px 0 0;
+
+  background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background-size: cover;
 `;
 
 const Description = styled.div`
