@@ -1,11 +1,12 @@
 package com.woowacourse.momo.auth.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
@@ -46,7 +47,8 @@ public class AuthService {
     }
 
     private void validateExistUser(String userId) {
-        if (memberRepository.findByUserId(userId) != null) {
+        Optional<Member> member = memberRepository.findByUserId(userId);
+        if (member.isPresent()) {
             throw new MomoException(ErrorCode.SIGNUP_ALREADY_REGISTER);
         }
     }

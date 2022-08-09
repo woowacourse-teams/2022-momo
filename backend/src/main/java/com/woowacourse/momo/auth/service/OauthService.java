@@ -55,19 +55,17 @@ public class OauthService {
     }
 
     private Long findOrSaveMember(GoogleUserResponse response) {
-        Member member = memberRepository.findByUserId(response.getEmail());
-        if (member != null) {
-            return member.getId();
-        }
-        return saveMember(response);
+        Member member = memberRepository.findByUserId(response.getEmail())
+                .orElseGet(() -> saveMember(response));
+
+        return member.getId();
     }
 
-    private Long saveMember(GoogleUserResponse response) {
+    private Member saveMember(GoogleUserResponse response) {
         String userId = response.getEmail();
         String name = response.getName();
         String password = passwordEncoder.encrypt(oauthProvider.getTemporaryPassword());
 
-        Member savedMember = memberRepository.save(new Member(userId, password, name));
-        return savedMember.getId();
+        return memberRepository.save(new Member(userId, password, name));
     }
 }
