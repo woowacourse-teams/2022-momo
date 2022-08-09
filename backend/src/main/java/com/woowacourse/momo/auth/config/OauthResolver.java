@@ -24,13 +24,13 @@ public class OauthResolver implements HandlerMethodArgumentResolver {
     @Override
     public String resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        String protocol = extractProtocl((ServletWebRequest) webRequest);
+        String protocol = extractProtocol((ServletWebRequest) webRequest);
         String domainHost = webRequest.getHeader(HttpHeaders.HOST);
 
         return protocol + "://" + domainHost + redirectPath;
     }
 
-    private String extractProtocl(ServletWebRequest request) {
+    private String extractProtocol(ServletWebRequest request) {
         return request.getRequest()
                 .getScheme();
     }
