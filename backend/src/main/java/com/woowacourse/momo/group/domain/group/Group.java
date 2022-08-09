@@ -38,6 +38,8 @@ import com.woowacourse.momo.participant.domain.Participant;
 @Entity
 public class Group {
 
+    private static final int NONE_PARTICIPANT = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -98,8 +100,9 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(Category category, int capacity, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
+        this.name = name;
         this.category = category;
         this.capacity = capacity;
         this.duration = duration;
@@ -183,6 +186,10 @@ public class Group {
 
     public void closeEarly() {
         this.isEarlyClosed = true;
+    }
+
+    public boolean isExistParticipants() {
+        return participants.size() > NONE_PARTICIPANT;
     }
 
     public List<Schedule> getSchedules() {

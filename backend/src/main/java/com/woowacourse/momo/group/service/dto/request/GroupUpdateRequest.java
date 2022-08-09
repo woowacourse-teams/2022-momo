@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupUpdateRequest {
 
+    private String name;
     private Long categoryId;
     private Integer capacity;
     private DurationRequest duration;

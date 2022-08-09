@@ -69,14 +69,13 @@ public class GroupService {
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        validateInitialState(hostId, group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         validateSchedulesInDuration(schedules, duration);
 
-        group.update(Category.from(request.getCategoryId()), request.getCapacity(),
+        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
                 duration, request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }
@@ -100,16 +99,27 @@ public class GroupService {
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        validateInitialState(hostId, group);
 
         groupRepository.deleteById(groupId);
+    }
+
+    private void validateInitialState(Long hostId, Group group) {
+        validateHost(group, hostId);
+        validateFinishedRecruitment(group);
+        validateNotExistParticipants(group);
     }
 
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
         if (!group.isSameHost(host)) {
             throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
+        }
+    }
+
+    private void validateNotExistParticipants(Group group) {
+        if (group.isExistParticipants()) {
+            throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
         }
     }
 
