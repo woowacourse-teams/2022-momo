@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.OauthService;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
+import com.woowacourse.momo.auth.service.dto.response.OauthLinkResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/oauth2/google")
@@ -19,9 +20,9 @@ public class OauthController {
     private final OauthService oauthService;
 
     @GetMapping("/login")
-    public ResponseEntity<String> access() {
-        String authUrl = oauthService.generateAuthUrl();
-        return ResponseEntity.ok(authUrl);
+    public ResponseEntity<OauthLinkResponse> access() {
+        OauthLinkResponse response = oauthService.generateAuthUrl();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/login", params = {"code"})

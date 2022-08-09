@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
+import com.woowacourse.momo.auth.service.dto.response.OauthLinkResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.google.GoogleConnector;
@@ -27,8 +28,9 @@ public class OauthService {
     private final GoogleConnector oauthConnector;
     private final GoogleProvider oauthProvider;
 
-    public String generateAuthUrl() {
-        return oauthProvider.generateAuthUrl();
+    public OauthLinkResponse generateAuthUrl() {
+        String oauthLink = oauthProvider.generateAuthUrl();
+        return new OauthLinkResponse(oauthLink);
     }
 
     public LoginResponse requestAccessToken(String code) {

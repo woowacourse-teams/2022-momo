@@ -38,7 +38,9 @@ class OauthControllerTest {
     @Test
     void access() throws Exception {
         mockMvc.perform(get("/api/auth/oauth2/google/login"))
-                .andExpect(status().isOk())
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("oauthLink", notNullValue()))
                 .andDo(
                         document("oauthLink",
                                 preprocessRequest(prettyPrint()),
