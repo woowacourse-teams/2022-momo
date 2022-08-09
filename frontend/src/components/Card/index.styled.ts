@@ -15,6 +15,10 @@ const Container = styled.div`
     finished ? `contrast(50%) grayscale(100%)` : ''};
 
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 const Image = styled.div`
