@@ -15,7 +15,7 @@ function Card({ group }: CardProps) {
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${group.id}`}>
       <S.Container>
-        <S.Image src={getCategoryImage(group.categoryId)} alt="category" />
+        <S.Image imgSrc={getCategoryImage(group.categoryId)} />
         <S.Description>
           <S.Left>
             <S.Title>{group.name}</S.Title>

@@ -14,11 +14,14 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   width: 100%;
-  height: 60%;
+  height: 170%;
 
   border-radius: 20px 20px 0 0;
+
+  background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background-size: cover;
 `;
 
 const Description = styled.div`
