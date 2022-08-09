@@ -8,11 +8,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class OauthResolver implements HandlerMethodArgumentResolver {
+public class OauthRedirectUrlResolver implements HandlerMethodArgumentResolver {
 
     private final String redirectPath;
 
-    public OauthResolver(String redirectPath) {
+    public OauthRedirectUrlResolver(String redirectPath) {
         this.redirectPath = redirectPath;
     }
 

@@ -13,7 +13,6 @@ import lombok.Getter;
 @Component
 public class GoogleProvider {
 
-    private final String redirectUrl;
     private final String clientId;
     private final String clientSecret;
     private final String authUrl;
@@ -23,8 +22,7 @@ public class GoogleProvider {
     private final String scope;
     private final String temporaryPassword;
 
-    public GoogleProvider(@Value("${oauth2.url.redirect}") String redirectUrl,
-                          @Value("${oauth2.google.client.id}") String clientId,
+    public GoogleProvider(@Value("${oauth2.google.client.id}") String clientId,
                           @Value("${oauth2.google.client.secret}") String clientSecret,
                           @Value("${oauth2.google.url.auth}") String authUrl,
                           @Value("${oauth2.google.url.token}") String accessTokenUrl,
@@ -32,7 +30,6 @@ public class GoogleProvider {
                           @Value("${oauth2.google.grant-type}") String grantType,
                           @Value("${oauth2.google.scope}") String scope,
                           @Value("${oauth2.member.temporary-password}") String temporaryPassword) {
-        this.redirectUrl = redirectUrl;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.authUrl = authUrl;

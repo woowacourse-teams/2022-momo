@@ -18,6 +18,7 @@ public class OauthConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new OauthResolver(redirectPath));
+        resolvers.add(new OauthRedirectUrlResolver(redirectPath));
+        resolvers.add(new OauthRequestUrlResolver());
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.OauthRedirectUrl;
+import com.woowacourse.momo.auth.config.OauthRequestUrl;
 import com.woowacourse.momo.auth.service.OauthService;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.service.dto.response.OauthLinkResponse;
@@ -27,8 +28,8 @@ public class OauthController {
     }
 
     @GetMapping(value = "/login", params = {"code"})
-    public ResponseEntity<LoginResponse> login(@RequestParam String code) {
-        LoginResponse loginResponse = oauthService.requestAccessToken(code);
+    public ResponseEntity<LoginResponse> login(@RequestParam String code, @OauthRequestUrl String requestUrl) {
+        LoginResponse loginResponse = oauthService.requestAccessToken(code, requestUrl);
         return ResponseEntity.ok(loginResponse);
     }
 }

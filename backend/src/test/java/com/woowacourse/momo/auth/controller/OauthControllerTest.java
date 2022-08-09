@@ -66,7 +66,7 @@ class OauthControllerTest {
     @Test
     void login() throws Exception {
         String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5OTI3MTMxLCJleHAiOjE2NTk5MzA3MzF9.VG8BIv3X1peT0e16OdSqq4EkkgDd1bHbYX99oglxkS4";
-        BDDMockito.given(oauthService.requestAccessToken(ArgumentMatchers.anyString()))
+        BDDMockito.given(oauthService.requestAccessToken(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
                 .willReturn(new LoginResponse(accessToken));
 
         String code = "code";
