@@ -26,10 +26,17 @@ function Step4(
   const { startDate, setStartDate, endDate, setEndDate } = useDateState();
 
   const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
+    const newDate = e.target.value;
+
+    setStartDate(newDate);
 
     if (!endDate) {
-      setEndDate(e.target.value);
+      setEndDate(newDate);
+      return;
+    }
+
+    if (newDate > endDate) {
+      setEndDate(newDate);
     }
   };
 
