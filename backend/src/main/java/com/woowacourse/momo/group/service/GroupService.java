@@ -69,9 +69,7 @@ public class GroupService {
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
-        validateNotExistParticipants(group);
+        validateInitialState(hostId, group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
@@ -101,11 +99,15 @@ public class GroupService {
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
+        validateInitialState(hostId, group);
+
+        groupRepository.deleteById(groupId);
+    }
+
+    private void validateInitialState(Long hostId, Group group) {
         validateHost(group, hostId);
         validateFinishedRecruitment(group);
         validateNotExistParticipants(group);
-
-        groupRepository.deleteById(groupId);
     }
 
     private void validateHost(Group group, Long hostId) {
