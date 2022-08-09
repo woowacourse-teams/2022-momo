@@ -11,6 +11,9 @@ const Container = styled.div`
   border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 20px;
 
+  filter: ${({ finished }: { finished: boolean }) =>
+    finished ? `contrast(50%) grayscale(100%)` : ''};
+
   cursor: pointer;
 `;
 
