@@ -26,6 +26,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 public class AuthService {
 
     private final MemberRepository memberRepository;
+    private final TokenRepository tokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
@@ -36,7 +37,18 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 
+        synchronizeRefreshToken(member, refreshToken);
+
         return new LoginResponse(accessToken, refreshToken);
+    }
+
+    private void synchronizeRefreshToken(Member member, String refreshToken) {
+        Optional<Token> token = tokenRepository.findByMemberId(member.getId());
+        if (token.isPresent()) {
+            token.get().updateRefreshToken(refreshToken);
+            return;
+        }
+        tokenRepository.save(new Token(member.getId(), refreshToken));
     }
 
     @Transactional

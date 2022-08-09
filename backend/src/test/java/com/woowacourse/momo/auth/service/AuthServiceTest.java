@@ -4,13 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.exception.AuthFailException;
+import com.woowacourse.momo.auth.domain.Token;
+import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
@@ -27,6 +30,9 @@ class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @DisplayName("회원 가입을 한다")
     @Test
@@ -49,6 +55,37 @@ class AuthServiceTest {
                 () -> assertThat(response.getAccessToken()).isNotNull(),
                 () -> assertThat(response.getRefreshToken()).isNotNull()
         );
+    }
+
+    @DisplayName("DB에 저장된 리프레시 토큰이 없을 경우 새로운 토큰 정보를 저장한다")
+    @Test
+    void loginWithoutTokenStoredInDB() {
+        Long memberId = createMember(USER_ID, PASSWORD, NAME);
+        Optional<Token> before = tokenRepository.findByMemberId(memberId);
+
+        LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
+        authService.login(request);
+        Optional<Token> after = tokenRepository.findByMemberId(memberId);
+
+        assertAll(
+                () -> assertThat(before).isEmpty(),
+                () -> assertThat(after).isPresent()
+        );
+    }
+
+    @DisplayName("DB에 저장된 리프레시 토큰이 있을 경우 새로운 토큰 정보로 갱신한다")
+    @Test
+    void loginWithTokenStoredInDB() {
+        Long memberId = createMember(USER_ID, PASSWORD, NAME);
+        String refreshTokenValue = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjAwMjk0OTUsImV4cCI6MTY2MDAzMzA5NX0.qwxal9Fp78G5l6RWbG9SMvOVnb0pnrEkWPHMPBmQw8c";
+        Token token = new Token(memberId, refreshTokenValue);
+        tokenRepository.save(token);
+
+        LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
+        authService.login(request);
+        Token actual = tokenRepository.findByMemberId(memberId).orElseThrow();
+
+        assertThat(actual.getRefreshToken()).isNotEqualTo(refreshTokenValue);
     }
 
     @DisplayName("로그인에 실패한다")

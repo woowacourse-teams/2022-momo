@@ -33,4 +33,8 @@ public class Token {
     public boolean ieSameRefreshToken(String refreshToken) {
         return this.refreshToken.equals(refreshToken);
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
