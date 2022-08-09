@@ -58,10 +58,18 @@ const NoResultDescription = styled.h3`
   font-size: 1.3rem;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+`;
+
 export {
   Heading,
   GroupListBox,
   NoResultContainer,
   NoResultWrapper,
   NoResultDescription,
+  LoadingWrapper,
 };

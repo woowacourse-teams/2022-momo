@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getGroups } from 'apis/request/group';
-import { NoResult } from 'components/Animation';
+import { Loading, NoResult } from 'components/Animation';
 import Card from 'components/Card';
 import { QUERY_KEY } from 'constants/key';
 import { GroupList } from 'types/data';
@@ -12,7 +12,7 @@ import * as S from './index.styled';
 
 function RecommendGroups() {
   const [pageNumber, setPageNumber] = useState(0);
-  const { isLoading, data, refetch } = useQuery(
+  const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
     getGroups(pageNumber),
     {
@@ -40,7 +40,7 @@ function RecommendGroups() {
       [entry]: IntersectionObserverEntry[],
       observer: IntersectionObserver,
     ) => {
-      if (!entry.isIntersecting || isLoading || !data?.hasNextPage) return;
+      if (!entry.isIntersecting || isFetching || !data?.hasNextPage) return;
 
       refetch().then(() => {
         if (!data || !target.current) return;
@@ -61,7 +61,7 @@ function RecommendGroups() {
     }
 
     return () => observer && observer.disconnect();
-  }, [isLoading, refetch, groups.length, data]);
+  }, [isFetching, refetch, groups.length, data]);
 
   return (
     <>
@@ -85,6 +85,11 @@ function RecommendGroups() {
             </S.NoResultDescription>
           </S.NoResultWrapper>
         </S.NoResultContainer>
+      )}
+      {isFetching && (
+        <S.LoadingWrapper>
+          <Loading />
+        </S.LoadingWrapper>
       )}
       <div ref={target} />
     </>
