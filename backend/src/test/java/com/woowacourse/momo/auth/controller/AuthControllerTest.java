@@ -127,7 +127,7 @@ class AuthControllerTest {
     @DisplayName("정상적으로 로그인될 시 토큰이 발급된다")
     @Test
     void login() throws Exception {
-        createNewMember(USER_ID, PASSWORD, NAME);
+        saveMember(USER_ID, PASSWORD, NAME);
         LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
 
         mockMvc.perform(post("/api/auth/login")
@@ -146,7 +146,7 @@ class AuthControllerTest {
     @DisplayName("비어있는 아이디 값으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithBlankUserId() throws Exception {
-        createNewMember(USER_ID, PASSWORD, NAME);
+        saveMember(USER_ID, PASSWORD, NAME);
         LoginRequest request = new LoginRequest("", PASSWORD);
 
         mockMvc.perform(post("/api/auth/login")
@@ -159,7 +159,7 @@ class AuthControllerTest {
     @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
     @Test
     void loginWithBlankPassword() throws Exception {
-        createNewMember(USER_ID, PASSWORD, NAME);
+        saveMember(USER_ID, PASSWORD, NAME);
         LoginRequest request = new LoginRequest("woowa", "");
 
         mockMvc.perform(post("/api/auth/login")
@@ -169,8 +169,32 @@ class AuthControllerTest {
                 .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
     }
 
-    void createNewMember(String userId, String password, String name) {
+    @DisplayName("리프레시 토큰을 통해 엑세스 토큰을 재발급받는다")
+    @Test
+    void reissueAccessToken() throws Exception {
+        saveMember(USER_ID, PASSWORD, NAME);
+        String refreshToken = refreshToken(USER_ID, PASSWORD);
+
+        mockMvc.perform(post("/api/auth/reissueAccessToken")
+                        .header("Authorization", "bearer " + refreshToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("accessToken", notNullValue()))
+                .andDo(
+                        document("memberlogin",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    void saveMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
         authService.signUp(request);
+    }
+
+    String refreshToken(String userId, String password) {
+        LoginRequest request = new LoginRequest(userId, password);
+
+        return authService.login(request).getRefreshToken();
     }
 }

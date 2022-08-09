@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @RequiredArgsConstructor
@@ -35,5 +37,11 @@ public class AuthController {
         authService.signUp(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/reissueAccessToken")
+    public ResponseEntity<AccessTokenResponse> reissueAccessToken(@AuthenticationPrincipal Long memberId) {
+        AccessTokenResponse response = authService.reissueAccessToken(memberId);
+        return ResponseEntity.ok(response);
     }
 }
