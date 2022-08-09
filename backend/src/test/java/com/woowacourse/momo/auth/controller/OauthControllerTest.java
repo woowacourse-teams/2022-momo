@@ -66,15 +66,17 @@ class OauthControllerTest {
     @Test
     void login() throws Exception {
         String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5OTI3MTMxLCJleHAiOjE2NTk5MzA3MzF9.VG8BIv3X1peT0e16OdSqq4EkkgDd1bHbYX99oglxkS4";
+        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjAwMjk0OTUsImV4cCI6MTY2MDAzMzA5NX0.qwxal9Fp78G5l6RWbG9SMvOVnb0pnrEkWPHMPBmQw8c";
         BDDMockito.given(oauthService.requestAccessToken(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
-                .willReturn(new LoginResponse(accessToken));
+                .willReturn(new LoginResponse(accessToken, refreshToken));
 
         String code = "code";
         mockMvc.perform(get("/api/auth/oauth2/google/login")
                         .queryParam("code", code))
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath("accessToken", notNullValue()))
+                        jsonPath("accessToken", notNullValue()),
+                        jsonPath("refreshToken", notNullValue()))
                 .andDo(
                         document("oauthlogin",
                                 preprocessRequest(prettyPrint()),
@@ -83,7 +85,8 @@ class OauthControllerTest {
                                         parameterWithName("code").description("code")
                                 ),
                                 responseFields(
-                                        fieldWithPath("accessToken").type(STRING).description("인증 토큰")
+                                        fieldWithPath("accessToken").type(STRING).description("인증 토큰"),
+                                        fieldWithPath("refreshToken").type(STRING).description("리프레시 토큰")
                                 )
 
                         )

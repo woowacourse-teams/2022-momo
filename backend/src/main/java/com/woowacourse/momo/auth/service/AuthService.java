@@ -31,8 +31,9 @@ public class AuthService {
         Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
                 .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD)); // 로그인에 실패했습니다
         String token = jwtTokenProvider.createToken(member.getId());
+        String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        return new LoginResponse(token);
+        return new LoginResponse(token, refreshToken);
     }
 
     @Transactional
