@@ -101,7 +101,7 @@ class GroupControllerTest {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 15,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 15,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
@@ -246,9 +246,5 @@ class GroupControllerTest {
     Long saveMember(String id, String password, String name) {
         SignUpRequest request = new SignUpRequest(id, password, name);
         return authService.signUp(request);
-    }
-
-    void participate(Long groupId, Long memberId) {
-        participantService.participate(groupId, memberId);
     }
 }

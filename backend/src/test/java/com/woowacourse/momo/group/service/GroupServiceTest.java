@@ -141,14 +141,14 @@ class GroupServiceTest {
     @Test
     void update() {
         Group savedGroup = saveGroup();
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
             DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest);
 
         assertThat(groupService.findById(savedGroup.getId()))
             .usingRecursiveComparison()
-            .ignoringFields("name", "host", "finished")
+            .ignoringFields("host", "finished")
             .isEqualTo(groupRequest);
     }
 
@@ -157,7 +157,7 @@ class GroupServiceTest {
     void updateExistParticipants() {
         Group savedGroup = saveGroup();
         savedGroup.participate(savedMember1);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
             DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))
@@ -173,7 +173,7 @@ class GroupServiceTest {
         savedGroup.participate(savedMember2);
         long groupId = savedGroup.getId();
 
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), groupId, groupRequest))

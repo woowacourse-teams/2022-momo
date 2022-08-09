@@ -77,7 +77,7 @@ public class GroupService {
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         validateSchedulesInDuration(schedules, duration);
 
-        group.update(Category.from(request.getCategoryId()), request.getCapacity(),
+        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
                 duration, request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }
