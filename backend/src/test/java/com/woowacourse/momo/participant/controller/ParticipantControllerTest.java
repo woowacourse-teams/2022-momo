@@ -228,6 +228,23 @@ public class ParticipantControllerTest {
             );
     }
 
+    @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
+    @Test
+    void deleteHost() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        String accessToken = accessToken("host");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                .header("Authorization", "bearer " + accessToken))
+            .andExpect(status().isBadRequest())
+            .andDo(
+                document("deletehost",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()))
+            );
+    }
+
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
         return authService.signUp(request);

@@ -43,7 +43,8 @@ public enum ErrorCode {
 
     PARTICIPANT_JOIN_BY_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_001", "주최자는 자신의 모임에 참여할 수 없습니다."),
     PARTICIPANT_RE_PARTICIPATE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_002", "참여자는 본인이 참여한 모임에 재참여할 수 없습니다."),
-    PARTICIPANT_FINISHED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_003", "마감된 모임에는 참여할 수 없습니다.")
+    PARTICIPANT_FINISHED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_003", "마감된 모임에는 참여할 수 없습니다."),
+    PARTICIPANT_WITHDRAW_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_004", "주최자는 모임에 탈퇴할 수 없습니다."),
     ;
 
     private final int statusCode;

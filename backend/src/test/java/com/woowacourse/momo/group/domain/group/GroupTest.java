@@ -74,7 +74,7 @@ class GroupTest {
     @Test
     void isSameHost() {
         Group group = constructGroup();
-        boolean actual = group.isSameHost(host);
+        boolean actual = group.isHost(host);
 
         assertThat(actual).isTrue();
     }
@@ -84,7 +84,7 @@ class GroupTest {
     void isNotSameHost() {
         Group group = constructGroup();
         Member member = new Member("주최자 아님", "password", "momo");
-        boolean actual = group.isSameHost(member);
+        boolean actual = group.isHost(member);
 
         assertThat(actual).isFalse();
     }
@@ -191,6 +191,14 @@ class GroupTest {
         Group group = constructGroup();
 
         assertThat(group.isExistParticipants()).isFalse();
+    }
+
+    @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
+    @Test
+    void canWithdraw() {
+        Group group = constructGroup();
+
+        assertThat(group.canWithdraw(host)).isFalse();
     }
 
     private Group constructGroup() {

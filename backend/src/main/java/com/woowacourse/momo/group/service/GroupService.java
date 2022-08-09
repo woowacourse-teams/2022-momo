@@ -112,7 +112,7 @@ public class GroupService {
 
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
-        if (!group.isSameHost(host)) {
+        if (!group.isHost(host)) {
             throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
         }
     }

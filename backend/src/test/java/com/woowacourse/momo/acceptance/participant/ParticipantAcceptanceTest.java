@@ -91,4 +91,10 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
 
         모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
+    @Test
+    void deleteHost() {
+        모임을_탈퇴한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }

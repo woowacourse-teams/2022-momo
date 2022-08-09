@@ -26,7 +26,6 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
-import com.woowacourse.momo.participant.domain.Participant;
 
 @Transactional
 @SpringBootTest
@@ -155,6 +154,17 @@ class ParticipantServiceTest {
             .map(MemberResponse::getId)
             .collect(Collectors.toList());
         assertThat(after).doesNotContain(participant1.getId());
+    }
+
+    @DisplayName("모임의 주최자일 경우 탈퇴할 수 없다")
+    @Test
+    void deleteHost() {
+        Group savedGroup = saveGroup();
+        synchronize();
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), host.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
 
     private void synchronize() {

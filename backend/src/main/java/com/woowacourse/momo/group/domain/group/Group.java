@@ -143,7 +143,7 @@ public class Group {
         this.schedules.addAll(schedules);
     }
 
-    public boolean isSameHost(Member host) {
+    public boolean isHost(Member host) {
         return this.host.equals(host);
     }
 
@@ -159,7 +159,7 @@ public class Group {
     }
 
     private void validateIsHost(Member member) {
-        if (member == host) {
+        if (isHost(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
         }
     }
@@ -190,6 +190,13 @@ public class Group {
 
     public boolean isExistParticipants() {
         return participants.size() > NONE_PARTICIPANT;
+    }
+
+    public boolean canWithdraw(Member member) {
+        if (isHost(member)) {
+            return false;
+        }
+        return true;
     }
 
     public List<Schedule> getSchedules() {

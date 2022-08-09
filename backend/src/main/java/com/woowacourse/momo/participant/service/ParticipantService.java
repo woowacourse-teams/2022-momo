@@ -1,5 +1,7 @@
 package com.woowacourse.momo.participant.service;
 
+import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_HOST;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
@@ -41,6 +44,12 @@ public class ParticipantService {
 
     @Transactional
     public void delete(Long groupId, Long memberId) {
+        Group group = groupFindService.findGroup(groupId);
+        Member member = memberFindService.findMember(memberId);
+
+        if (!group.canWithdraw(member)) {
+            throw new MomoException(PARTICIPANT_WITHDRAW_HOST);
+        }
         participantRepository.deleteByGroupIdAndMemberId(groupId, memberId);
     }
 }
