@@ -34,4 +34,34 @@ const GroupListBox = styled.div`
   `}
 `;
 
-export { Heading, GroupListBox };
+const NoResultContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  width: 100%;
+
+  margin-top: 5rem;
+`;
+
+const NoResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  width: 50rem;
+`;
+
+const NoResultDescription = styled.h3`
+  line-height: 2.5rem;
+
+  font-size: 1.3rem;
+`;
+
+export {
+  Heading,
+  GroupListBox,
+  NoResultContainer,
+  NoResultWrapper,
+  NoResultDescription,
+};

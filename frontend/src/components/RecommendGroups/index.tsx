@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getGroups } from 'apis/request/group';
+import { NoResult } from 'components/Animation';
 import Card from 'components/Card';
 import { QUERY_KEY } from 'constants/key';
 import { GroupList } from 'types/data';
@@ -62,13 +63,28 @@ function RecommendGroups() {
 
   return (
     <>
-      <S.Heading>이런 모임, 어때요?</S.Heading>
-      <S.GroupListBox>
-        {groups.map(group => (
-          <Card group={group} key={group.id} />
-        ))}
-        <div ref={target} />
-      </S.GroupListBox>
+      {groups.length > 0 ? (
+        <>
+          <S.Heading>이런 모임, 어때요?</S.Heading>
+          <S.GroupListBox>
+            {groups.map(group => (
+              <Card group={group} key={group.id} />
+            ))}
+            <div ref={target} />
+          </S.GroupListBox>
+        </>
+      ) : (
+        <S.NoResultContainer>
+          <S.NoResultWrapper>
+            <NoResult />
+            <S.NoResultDescription>
+              찾고 계신 모임이 없어요 ・゜・(ノД`)
+              <br />
+              새로운 모임을 추가해보는 건 어떨까요?
+            </S.NoResultDescription>
+          </S.NoResultWrapper>
+        </S.NoResultContainer>
+      )}
     </>
   );
 }
