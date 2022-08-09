@@ -12,16 +12,26 @@ import * as S from './index.styled';
 
 function RecommendGroups() {
   const [pageNumber, setPageNumber] = useState(0);
-  const { isLoading, refetch } = useQuery(
+  const { isLoading, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
     getGroups(pageNumber),
     {
       suspense: true,
     },
   );
+  const target = useRef<HTMLDivElement>(null);
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
-  const target = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!data) return;
+
+    setGroups(prevState => [...prevState, ...data.groups]);
+
+    if (!data.hasNextPage) return;
+
+    setPageNumber(data.pageNumber + 1);
+  }, [data]);
 
   useEffect(() => {
     let observer: IntersectionObserver;
@@ -30,23 +40,15 @@ function RecommendGroups() {
       [entry]: IntersectionObserverEntry[],
       observer: IntersectionObserver,
     ) => {
-      if (entry.isIntersecting && !isLoading) {
-        refetch().then(({ data }) => {
-          if (!data) return;
-          if (
-            !data.hasNextPage &&
-            data.groups.length === 0 &&
-            groups.length > 0 &&
-            target.current
-          ) {
-            observer.unobserve(target.current);
-            return;
-          }
+      if (!entry.isIntersecting || isLoading || !data?.hasNextPage) return;
 
-          setPageNumber(data.pageNumber + 1);
-          setGroups(prevState => [...prevState, ...data.groups]);
-        });
-      }
+      refetch().then(() => {
+        if (!data || !target.current) return;
+        if (!data.hasNextPage || groups.length > 0) {
+          observer.unobserve(target.current);
+          return;
+        }
+      });
     };
 
     if (target) {
@@ -59,7 +61,7 @@ function RecommendGroups() {
     }
 
     return () => observer && observer.disconnect();
-  }, [target, isLoading, refetch, groups]);
+  }, [isLoading, refetch, groups.length, data]);
 
   return (
     <>
@@ -70,7 +72,6 @@ function RecommendGroups() {
             {groups.map(group => (
               <Card group={group} key={group.id} />
             ))}
-            <div ref={target} />
           </S.GroupListBox>
         </>
       ) : (
@@ -85,6 +86,7 @@ function RecommendGroups() {
           </S.NoResultWrapper>
         </S.NoResultContainer>
       )}
+      <div ref={target} />
     </>
   );
 }
