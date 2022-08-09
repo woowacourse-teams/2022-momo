@@ -116,7 +116,7 @@ public class GroupService {
     }
 
     private void validateNotExistParticipants(Group group) {
-        if (group.isThereParticipants()) {
+        if (group.isExistParticipants()) {
             throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
         }
     }

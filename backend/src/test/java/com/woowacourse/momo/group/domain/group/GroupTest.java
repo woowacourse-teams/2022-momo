@@ -180,19 +180,19 @@ class GroupTest {
 
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 True 를 반환한다")
     @Test
-    void isThereParticipantsTrue() {
+    void isExistParticipantsTrue() {
         Group group = constructGroup();
         group.participate(participant);
 
-        assertTrue(group.isThereParticipants());
+        assertTrue(group.isExistParticipants());
     }
 
     @DisplayName("주최자를 제외하고 참여자가 없을 경우 False 를 반환한다")
     @Test
-    void isThereParticipantsFalse() {
+    void isExistParticipantsFalse() {
         Group group = constructGroup();
 
-        assertFalse(group.isThereParticipants());
+        assertFalse(group.isExistParticipants());
     }
 
     private Group constructGroup() {

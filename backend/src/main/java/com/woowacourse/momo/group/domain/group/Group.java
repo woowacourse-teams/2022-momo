@@ -188,7 +188,7 @@ public class Group {
         this.isEarlyClosed = true;
     }
 
-    public boolean isThereParticipants() {
+    public boolean isExistParticipants() {
         return participants.size() > NONE_PARTICIPANT;
     }
 
