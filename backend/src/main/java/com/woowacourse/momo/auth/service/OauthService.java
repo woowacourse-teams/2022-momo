@@ -41,8 +41,8 @@ public class OauthService {
         GoogleUserResponse response = requestUserInfo(code, requestUrl);
 
         Long memberId = findOrSaveMember(response);
-        String token = jwtTokenProvider.createToken(memberId);
-        String refreshToken = jwtTokenProvider.createRefreshToken();
+        String token = jwtTokenProvider.createAccessToken(memberId);
+        String refreshToken = jwtTokenProvider.createRefreshToken(memberId);
         return new LoginResponse(token, refreshToken);
     }
 

@@ -23,35 +23,32 @@ import com.woowacourse.momo.globalException.exception.MomoException;
 public class JwtTokenProvider {
 
     private final SecretKey key;
-    private final long tokenValidityInMilliseconds;
+    private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
 
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
-                            @Value("${security.jwt.token.expire-length}") final long tokenValidityInMilliseconds,
+                            @Value("${security.jwt.token.expire-length}") final long accessTokenValidityInMilliseconds,
                             @Value("${security.jwt.token.expire-length}") final long refreshTokenValidityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
-    public String createToken(Long payload) {
+    public String createAccessToken(Long payload) {
+        return createToken(payload, accessTokenValidityInMilliseconds);
+    }
+
+    public String createRefreshToken(Long payload) {
+        return createToken(payload, refreshTokenValidityInMilliseconds);
+    }
+
+    private String createToken(Long payload, long ValidityInMilliseconds) {
         Claims claims = Jwts.claims().setSubject(Long.toString(payload));
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
+        Date validity = new Date(now.getTime() + ValidityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    public String createRefreshToken() {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + refreshTokenValidityInMilliseconds);
-
-        return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
