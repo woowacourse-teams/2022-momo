@@ -97,14 +97,6 @@ const groupDetails = [
   },
 ];
 
-const groupSummaries = groupDetails.map((groupDetail, index) => ({
-  id: index + 1,
-  name: groupDetail.name,
-  host: groupDetail.host,
-  categoryId: groupDetail.categoryId,
-  deadline: groupDetail.deadline,
-}));
-
 const groupHandler = [
   // 모임 생성
   rest.post(apiURL, (req, res, ctx) => {
@@ -115,7 +107,140 @@ const groupHandler = [
 
   // 모임 목록 조회
   rest.get(apiURL, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(groupSummaries));
+    const pageNumber = req.url.searchParams.get('page');
+
+    const pageResponse = {
+      hasNextPage: true,
+      pageNumber: Number(pageNumber),
+      groups: [
+        {
+          id: 2,
+          name: '슬퍼하지마 nonono',
+          host: { id: 3, name: '유세지' },
+          categoryId: 2,
+          capacity: 1,
+          numOfParticipant: 1,
+          finished: true,
+          deadline: '2022-08-04T22:16',
+        },
+        {
+          id: 6,
+          name: '설명이 필요없는 모임',
+          host: { id: 3, name: '유세지' },
+          categoryId: 5,
+          capacity: 6,
+          numOfParticipant: 4,
+          finished: true,
+          deadline: '2022-08-05T18:49',
+        },
+        {
+          id: 7,
+          name: '모모',
+          host: { id: 2, name: '하리' },
+          categoryId: 2,
+          capacity: 99,
+          numOfParticipant: 4,
+          finished: false,
+          deadline: '2022-08-12T23:59',
+        },
+        {
+          id: 8,
+          name: '방학엠티~!!',
+          host: { id: 1, name: '이프' },
+          categoryId: 8,
+          capacity: 6,
+          numOfParticipant: 6,
+          finished: true,
+          deadline: '2022-08-19T23:59',
+        },
+        {
+          id: 10,
+          name: '롯데월드 팟 모집',
+          host: { id: 2, name: '하리' },
+          categoryId: 9,
+          capacity: 10,
+          numOfParticipant: 3,
+          finished: true,
+          deadline: '2022-08-06T23:59',
+        },
+        {
+          id: 11,
+          name: '카러플 하실분',
+          host: { id: 2, name: '하리' },
+          categoryId: 7,
+          capacity: 99,
+          numOfParticipant: 3,
+          finished: true,
+          deadline: '2022-08-07T23:59',
+        },
+        {
+          id: 12,
+          name: '연식 가자',
+          host: { id: 2, name: '하리' },
+          categoryId: 3,
+          capacity: 4,
+          numOfParticipant: 2,
+          finished: true,
+          deadline: '2022-08-15T00:00',
+        },
+        {
+          id: 14,
+          name: '같이 CS 공부해요',
+          host: { id: 4, name: '유콩' },
+          categoryId: 1,
+          capacity: 3,
+          numOfParticipant: 1,
+          finished: true,
+          deadline: '2022-08-06T11:32',
+        },
+        {
+          id: 15,
+          name: '이번 주말 잠실팟',
+          host: { id: 1, name: '이프' },
+          categoryId: 2,
+          capacity: 99,
+          numOfParticipant: 2,
+          finished: true,
+          deadline: '2022-08-05T23:59',
+        },
+        {
+          id: 16,
+          name: '제 단독 콘서트 초대합니다',
+          host: { id: 6, name: '아이유' },
+          categoryId: 9,
+          capacity: 99,
+          numOfParticipant: 3,
+          finished: false,
+          deadline: '2022-08-14T23:59',
+        },
+        {
+          id: 18,
+          name: '축구 하실분',
+          host: { id: 9, name: '리오넬메시' },
+          categoryId: 6,
+          capacity: 99,
+          numOfParticipant: 1,
+          finished: true,
+          deadline: '2022-08-06T13:00',
+        },
+        {
+          id: 19,
+          name: '선릉~정릉~나들이',
+          host: { id: 10, name: '봉봉' },
+          categoryId: 8,
+          capacity: 10,
+          numOfParticipant: 2,
+          finished: false,
+          deadline: '2022-08-30T23:59',
+        },
+      ],
+    };
+    const lastPageResponse = { ...pageResponse, hasNextPage: false };
+
+    if (Number(pageNumber) > 2)
+      return res(ctx.status(200), ctx.json(lastPageResponse));
+
+    return res(ctx.status(200), ctx.json(pageResponse));
   }),
 
   // 모임 단일 조회
