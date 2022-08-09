@@ -46,10 +46,11 @@ const GroupListBox = styled.div`
 const NoResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
   gap: 3rem;
 
-  width: 50rem;
+  width: 100%;
 
   margin-top: 5rem;
 `;
