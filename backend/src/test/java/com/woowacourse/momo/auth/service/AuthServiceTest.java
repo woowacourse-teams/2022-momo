@@ -2,6 +2,7 @@ package com.woowacourse.momo.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.globalException.exception.MomoException;
 
 @Transactional
@@ -40,7 +43,12 @@ class AuthServiceTest {
         createMember(USER_ID, PASSWORD, NAME);
         LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
 
-        assertThat(authService.login(request).getAccessToken()).isNotNull();
+        LoginResponse response = authService.login(request);
+
+        assertAll(
+                () -> assertThat(response.getAccessToken()).isNotNull(),
+                () -> assertThat(response.getRefreshToken()).isNotNull()
+        );
     }
 
     @DisplayName("로그인에 실패한다")
@@ -54,8 +62,17 @@ class AuthServiceTest {
                 .hasMessage("아이디나 비밀번호가 다릅니다.");
     }
 
-    void createMember(String userId, String password, String name) {
+    @DisplayName("Access Token을 재발급한다")
+    @Test
+    void reissueAccessToken() {
+        Long memberId = createMember(USER_ID, PASSWORD, NAME);
+        AccessTokenResponse response = authService.reissueAccessToken(memberId);
+
+        assertThat(response.getAccessToken()).isNotNull();
+    }
+
+    Long createMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
-        authService.signUp(request);
+        return authService.signUp(request);
     }
 }

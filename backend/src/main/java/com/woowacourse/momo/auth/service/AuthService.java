@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.domain.Token;
+import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
@@ -30,10 +33,10 @@ public class AuthService {
         String password = passwordEncoder.encrypt(request.getPassword());
         Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
                 .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD)); // 로그인에 실패했습니다
-        String token = jwtTokenProvider.createAccessToken(member.getId());
+        String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 
-        return new LoginResponse(token, refreshToken);
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     @Transactional
@@ -58,5 +61,14 @@ public class AuthService {
         if (userId.contains("@")) {
             throw new MomoException(ErrorCode.SIGNUP_INVALID_ID);
         }
+    }
+
+    public AccessTokenResponse reissueAccessToken(Long memberId) {
+        boolean isExistMember = memberRepository.existsById(memberId);
+        if (!isExistMember) {
+            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
+        }
+        String accessToken = jwtTokenProvider.createAccessToken(memberId);
+        return new AccessTokenResponse(accessToken);
     }
 }
