@@ -142,8 +142,6 @@ class GroupControllerTest {
     void groupDeleteTest() throws Exception {
         Long saveHostId = saveMember("woowa", "wooteco1!", "모모");
         Long saveId = saveGroup("모모의 스터디", saveHostId);
-        Long saveParticipantId = saveMember("참여자", "wooteco1!", "모모");
-        participate(saveId, saveParticipantId);
         String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(delete("/api/groups/" + saveId)

@@ -71,6 +71,7 @@ public class GroupService {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
         validateFinishedRecruitment(group);
+        validateNotExistParticipants(group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
@@ -101,8 +102,8 @@ public class GroupService {
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
-        validateNotExistParticipants(group);
         validateFinishedRecruitment(group);
+        validateNotExistParticipants(group);
 
         groupRepository.deleteById(groupId);
     }
@@ -115,7 +116,7 @@ public class GroupService {
     }
 
     private void validateNotExistParticipants(Group group) {
-        if (!group.isThereParticipants()) {
+        if (group.isThereParticipants()) {
             throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
         }
     }

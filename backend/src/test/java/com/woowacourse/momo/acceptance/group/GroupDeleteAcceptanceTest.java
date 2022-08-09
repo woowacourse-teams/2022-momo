@@ -21,16 +21,12 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     private static final MemberFixture PARTICIPANT = MemberFixture.DUDU;
 
     private String hostAccessToken;
-    private String participantAccessToken;
     private Long groupId;
 
     @BeforeEach
     void setUp() {
         hostAccessToken = HOST.로_로그인한다();
-        participantAccessToken = PARTICIPANT.로_로그인한다();
-
         groupId = GROUP.을_생성한다(hostAccessToken);
-        모임에_참여한다(participantAccessToken, groupId);
     }
 
     @DisplayName("주최자가 모임을 삭제한다")
@@ -60,5 +56,15 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     void deleteNonExistentGroup() {
         모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
         모임을_삭제한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
+    }
+
+    @DisplayName("참여자가 있는 모임을 삭제한다")
+    @Test
+    void deleteExistParticipant() {
+        String participantAccessToken = PARTICIPANT.로_로그인한다();
+        모임에_참여한다(participantAccessToken, groupId);
+
+        모임을_삭제한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
     }
 }

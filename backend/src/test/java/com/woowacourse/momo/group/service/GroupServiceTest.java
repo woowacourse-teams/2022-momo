@@ -137,6 +137,34 @@ class GroupServiceTest {
                 .isEqualTo(expected);
     }
 
+    @DisplayName("모임을 수정한다")
+    @Test
+    void update() {
+        Group savedGroup = saveGroup();
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
+            DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest);
+
+        assertThat(groupService.findById(savedGroup.getId()))
+            .usingRecursiveComparison()
+            .ignoringFields("name", "host", "finished")
+            .isEqualTo(groupRequest);
+    }
+
+    @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
+    @Test
+    void updateExistParticipants() {
+        Group savedGroup = saveGroup();
+        savedGroup.participate(savedMember1);
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest(1L, 2,
+            DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+    }
+
     @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
     @Test
     void updateFinishedRecruitmentGroup() {
@@ -189,7 +217,6 @@ class GroupServiceTest {
     @Test
     void delete() {
         long groupId = saveGroup().getId();
-        participantService.participate(groupId, savedMember1.getId());
         groupService.delete(savedHost.getId(), groupId);
 
         assertThatThrownBy(() -> groupService.findById(groupId))
@@ -208,10 +235,11 @@ class GroupServiceTest {
             .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
 
-    @DisplayName("주최자를 제외하고 참여자가 없을 경우 모임을 삭제하면 예외가 발생한다")
+    @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
     @Test
-    void deleteNotExistParticipants() {
+    void deleteExistParticipants() {
         long groupId = saveGroup().getId();
+        participantService.participate(groupId, savedMember1.getId());
 
         assertThatThrownBy(() -> groupService.delete(savedHost.getId(), groupId))
             .isInstanceOf(MomoException.class)
