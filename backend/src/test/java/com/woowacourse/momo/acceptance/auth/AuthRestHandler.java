@@ -29,4 +29,8 @@ public class AuthRestHandler extends RestHandler {
     public static ValidatableResponse 로그인을_한다(MemberFixture memberFixture) {
         return 로그인을_한다(memberFixture.getUserId(), memberFixture.getPassword());
     }
+
+    public static ValidatableResponse 엑세스토큰을_재발급받는다(String refreshToken) {
+        return postRequest(refreshToken, BASE_URL + "/reissueAccessToken");
+    }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.acceptance.AcceptanceTest;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.fixture.MemberFixture;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
@@ -25,6 +26,20 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         AuthRestHandler.회원가입을_한다(MEMBER_FIXTURE);
 
         AuthRestHandler.로그인을_한다(MEMBER_FIXTURE)
+                .statusCode(HttpStatus.OK.value())
+                .body("accessToken", Matchers.notNullValue())
+                .body("refreshToken", Matchers.notNullValue());
+    }
+
+    @DisplayName("리프레시토큰을 통해 새로운 엑세스 토큰을 발급받는다")
+    @Test
+    void reissueAccessToken() {
+        AuthRestHandler.회원가입을_한다(MEMBER_FIXTURE);
+
+        String refreshToken = AuthRestHandler.로그인을_한다(MEMBER_FIXTURE).extract()
+                .as(LoginResponse.class).getRefreshToken();
+
+        AuthRestHandler.엑세스토큰을_재발급받는다(refreshToken)
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }
