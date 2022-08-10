@@ -1,3 +1,4 @@
+import TopButton from 'components/@shared/TopButton';
 import Category from 'components/Category';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { CategoryFallback } from 'components/ErrorBoundary/CategoryFallback';
@@ -18,6 +19,7 @@ function Main() {
           <RecommendGroups />
         </ErrorBoundary>
       </S.Content>
+      <TopButton />
     </>
   );
 }
