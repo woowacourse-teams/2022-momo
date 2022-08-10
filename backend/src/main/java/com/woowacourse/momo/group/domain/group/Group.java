@@ -143,7 +143,7 @@ public class Group {
         this.schedules.addAll(schedules);
     }
 
-    public boolean isSameHost(Member host) {
+    public boolean isHost(Member host) {
         return this.host.equals(host);
     }
 
@@ -159,7 +159,7 @@ public class Group {
     }
 
     private void validateIsHost(Member member) {
-        if (member == host) {
+        if (isHost(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
         }
     }
@@ -177,7 +177,11 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isEarlyClosed || isFullCapacity() || isOverDeadline();
+    }
+
+    private boolean isOverDeadline() {
+        return deadline.isBefore(LocalDateTime.now());
     }
 
     private boolean isFullCapacity() {
@@ -190,6 +194,25 @@ public class Group {
 
     public boolean isExistParticipants() {
         return participants.size() > NONE_PARTICIPANT;
+    }
+
+    public void validateWithdraw(Member member) {
+        if (isHost(member)) {
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_HOST);
+        }
+        if (!isParticipant(member)) {
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+        }
+        if (isOverDeadline()) {
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE);
+        }
+        if (isEarlyClosed) {
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_EARLY_CLOSED);
+        }
+    }
+
+    private boolean isParticipant(Member member) {
+        return getParticipants().contains(member);
     }
 
     public List<Schedule> getSchedules() {
