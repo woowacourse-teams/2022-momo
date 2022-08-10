@@ -19,6 +19,8 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.MemberRepository;
 
 @Transactional
 @SpringBootTest
@@ -33,6 +35,9 @@ class AuthServiceTest {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @DisplayName("회원 가입을 한다")
     @Test
@@ -76,14 +81,14 @@ class AuthServiceTest {
     @DisplayName("DB에 저장된 리프레시 토큰이 있을 경우 새로운 토큰 정보로 갱신한다")
     @Test
     void loginWithTokenStoredInDB() {
-        Long memberId = createMember(USER_ID, PASSWORD, NAME);
         String refreshTokenValue = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjAwMjk0OTUsImV4cCI6MTY2MDAzMzA5NX0.qwxal9Fp78G5l6RWbG9SMvOVnb0pnrEkWPHMPBmQw8c";
-        Token token = new Token(memberId, refreshTokenValue);
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, NAME));
+        Token token = new Token(member, refreshTokenValue);
         tokenRepository.save(token);
 
         LoginRequest request = new LoginRequest(USER_ID, PASSWORD);
         authService.login(request);
-        Token actual = tokenRepository.findByMemberId(memberId).orElseThrow();
+        Token actual = tokenRepository.findByMemberId(member.getId()).orElseThrow();
 
         assertThat(actual.getRefreshToken()).isNotEqualTo(refreshTokenValue);
     }

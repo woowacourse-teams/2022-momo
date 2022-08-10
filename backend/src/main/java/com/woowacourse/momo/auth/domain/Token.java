@@ -5,10 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import com.woowacourse.momo.member.domain.Member;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,14 +23,15 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long memberId;
+    @OneToOne
+    @JoinColumn
+    private Member member;
 
     @Column(nullable = false)
     private String refreshToken;
 
-    public Token(Long memberId, String refreshToken) {
-        this.memberId = memberId;
+    public Token(Member member, String refreshToken) {
+        this.member = member;
         this.refreshToken = refreshToken;
     }
 
