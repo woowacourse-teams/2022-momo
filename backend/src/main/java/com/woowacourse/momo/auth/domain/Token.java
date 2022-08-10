@@ -35,7 +35,7 @@ public class Token {
         this.refreshToken = refreshToken;
     }
 
-    public boolean ieSameRefreshToken(String refreshToken) {
+    public boolean isSameRefreshToken(String refreshToken) {
         return this.refreshToken.equals(refreshToken);
     }
 

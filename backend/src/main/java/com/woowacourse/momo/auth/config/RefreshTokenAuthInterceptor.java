@@ -31,7 +31,7 @@ public class RefreshTokenAuthInterceptor implements HandlerInterceptor {
         Token token = tokenRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new MomoException(ErrorCode.AUTH_INVALID_TOKEN));
 
-        if (!token.ieSameRefreshToken(refreshToken)) {
+        if (!token.isSameRefreshToken(refreshToken)) {
             throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
         return true;
