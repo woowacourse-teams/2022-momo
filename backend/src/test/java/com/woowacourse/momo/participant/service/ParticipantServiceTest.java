@@ -25,6 +25,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
@@ -35,6 +36,9 @@ class ParticipantServiceTest {
 
     @Autowired
     private ParticipantService participantService;
+
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -192,6 +196,18 @@ class ParticipantServiceTest {
         assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("모집이 마감된 모임입니다.");
+    }
+
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteEarlyClosed() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        groupService.closeEarly(host.getId(), savedGroup.getId());
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("조기종료된 모임입니다.");
     }
 
     private void synchronize() {

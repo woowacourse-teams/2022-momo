@@ -226,6 +226,18 @@ class GroupTest {
             .hasMessage("모집이 마감된 모임입니다.");
     }
 
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void validateWithdrawEarlyClosed() {
+        Group group = constructGroup();
+        group.participate(participant);
+        group.closeEarly();
+
+        assertThatThrownBy(() -> group.validateWithdraw(participant))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("조기종료된 모임입니다.");
+    }
+
     private Group constructGroup() {
         return constructGroupWithSetCapacity(10);
     }

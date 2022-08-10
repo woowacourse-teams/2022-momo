@@ -1,5 +1,6 @@
 package com.woowacourse.momo.acceptance.participant;
 
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조기마감한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임을_탈퇴한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.참여목록을_조회한다;
@@ -18,15 +19,18 @@ import com.woowacourse.momo.fixture.MemberFixture;
 class ParticipantAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture HOST = MemberFixture.DUDU;
-    private static final GroupFixture GROUP = GroupFixture.DUDU_COFFEE_TIME;
+    private static final GroupFixture GROUP = GroupFixture.DUDU_STUDY;
+    private static final GroupFixture GROUP_CAPACITY_2 = GroupFixture.DUDU_COFFEE_TIME;
 
     private String hostAccessToken;
     private Long groupId;
+    private Long groupCapacityTwoId;
 
     @BeforeEach
     void setUp() {
         hostAccessToken = HOST.로_로그인한다();
         groupId = GROUP.을_생성한다(hostAccessToken);
+        groupCapacityTwoId = GROUP_CAPACITY_2.을_생성한다(hostAccessToken);
     }
 
     @DisplayName("회원이 모임에 참여한다")
@@ -68,10 +72,10 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @Test
     void participateFullGroup() {
         String accessToken = MOMO.로_로그인한다();
-        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임에_참여한다(accessToken, groupCapacityTwoId).statusCode(HttpStatus.OK.value());
 
         accessToken = GUGU.로_로그인한다();
-        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+        모임에_참여한다(accessToken, groupCapacityTwoId).statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
@@ -102,6 +106,16 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     @Test
     void deleteNotParticipant() {
         String accessToken = MOMO.로_로그인한다();
+
+        모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteEarlyClosed() {
+        String accessToken = MOMO.로_로그인한다();
+        모임에_참여한다(accessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임을_조기마감한다(hostAccessToken, groupId);
 
         모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
     }

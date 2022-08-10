@@ -292,6 +292,27 @@ public class ParticipantControllerTest {
             );
     }
 
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteEarlyClosed() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        groupService.closeEarly(hostId, groupId);
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                .header("Authorization", "bearer " + accessToken))
+            .andExpect(status().isBadRequest())
+            .andDo(
+                document("deleteearlyclosed",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()))
+            );
+    }
+
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
         return authService.signUp(request);
