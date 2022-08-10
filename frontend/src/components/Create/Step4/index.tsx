@@ -30,11 +30,6 @@ function Step4(
 
     setStartDate(newDate);
 
-    if (!endDate) {
-      setEndDate(newDate);
-      return;
-    }
-
     if (newDate > endDate) {
       setEndDate(newDate);
     }
