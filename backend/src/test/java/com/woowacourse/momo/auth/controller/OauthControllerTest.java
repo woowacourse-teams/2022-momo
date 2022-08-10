@@ -83,12 +83,7 @@ class OauthControllerTest {
                                 preprocessResponse(prettyPrint()),
                                 requestParameters(
                                         parameterWithName("code").description("code")
-                                ),
-                                responseFields(
-                                        fieldWithPath("accessToken").type(STRING).description("인증 토큰"),
-                                        fieldWithPath("refreshToken").type(STRING).description("리프레시 토큰")
                                 )
-
                         )
                 );
     }
