@@ -32,21 +32,21 @@ public class OauthService {
     private final GoogleConnector oauthConnector;
     private final GoogleProvider oauthProvider;
 
-    public OauthLinkResponse generateAuthUrl() {
-        String oauthLink = oauthProvider.generateAuthUrl();
+    public OauthLinkResponse generateAuthUrl(String redirectUrl) {
+        String oauthLink = oauthProvider.generateAuthUrl(redirectUrl);
         return new OauthLinkResponse(oauthLink);
     }
 
-    public LoginResponse requestAccessToken(String code) {
-        GoogleUserResponse response = requestUserInfo(code);
+    public LoginResponse requestAccessToken(String code, String requestUrl) {
+        GoogleUserResponse response = requestUserInfo(code, requestUrl);
 
         Long memberId = findOrSaveMember(response);
         String token = jwtTokenProvider.createToken(memberId);
         return new LoginResponse(token);
     }
 
-    private GoogleUserResponse requestUserInfo(String code) {
-        ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code);
+    private GoogleUserResponse requestUserInfo(String code, String requestUrl) {
+        ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code, requestUrl);
 
         validateResponseStatusOk(responseEntity.getStatusCode());
 
