@@ -23,4 +23,8 @@ public class TokenService {
                         () -> tokenRepository.save(new Token(member, refreshToken))
                 );
     }
+
+    public void deleteByMemberId(Long memberId) {
+        tokenRepository.findByMemberId(memberId);
+    }
 }

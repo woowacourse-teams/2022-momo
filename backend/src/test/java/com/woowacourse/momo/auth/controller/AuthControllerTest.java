@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -173,7 +174,7 @@ class AuthControllerTest {
     @Test
     void reissueAccessToken() throws Exception {
         saveMember(USER_ID, PASSWORD, NAME);
-        String refreshToken = refreshToken(USER_ID, PASSWORD);
+        String refreshToken = extractLoginResponse(USER_ID, PASSWORD).getRefreshToken();
 
         mockMvc.perform(post("/api/auth/reissueAccessToken")
                         .header("Authorization", "bearer " + refreshToken))
@@ -187,14 +188,31 @@ class AuthControllerTest {
                 );
     }
 
+    @DisplayName("로그아웃을 한다")
+    @Test
+    void logout() throws Exception {
+        saveMember(USER_ID, PASSWORD, NAME);
+        String accessToken = extractLoginResponse(USER_ID, PASSWORD).getAccessToken();
+
+        mockMvc.perform(post("/api/auth/logout")
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("memberlogin",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     void saveMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
         authService.signUp(request);
     }
 
-    String refreshToken(String userId, String password) {
+    LoginResponse extractLoginResponse(String userId, String password) {
         LoginRequest request = new LoginRequest(userId, password);
 
-        return authService.login(request).getRefreshToken();
+        return authService.login(request);
     }
 }

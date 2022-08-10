@@ -72,4 +72,8 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(memberId);
         return new AccessTokenResponse(accessToken);
     }
+
+    public void logout(Long memberId) {
+        tokenService.deleteByMemberId(memberId);
+    }
 }

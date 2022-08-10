@@ -43,4 +43,16 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("accessToken", Matchers.notNullValue());
     }
+
+    @DisplayName("로그아웃을 하다")
+    @Test
+    void logout() {
+        AuthRestHandler.회원가입을_한다(MEMBER_FIXTURE);
+
+        String accessToken = AuthRestHandler.로그인을_한다(MEMBER_FIXTURE).extract()
+                .as(LoginResponse.class).getAccessToken();
+
+        AuthRestHandler.로그아웃을_하다(accessToken)
+                .statusCode(HttpStatus.OK.value());
+    }
 }
