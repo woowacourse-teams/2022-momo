@@ -245,6 +245,24 @@ public class ParticipantControllerTest {
             );
     }
 
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void deleteNotParticipant() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long memberId = saveMember("member");
+        String accessToken = accessToken("member");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                .header("Authorization", "bearer " + accessToken))
+            .andExpect(status().isBadRequest())
+            .andDo(
+                document("deletenotparticipant",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()))
+            );
+    }
+
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
         return authService.signUp(request);

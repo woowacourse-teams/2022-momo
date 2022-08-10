@@ -1,5 +1,8 @@
 package com.woowacourse.momo.group.domain.group;
 
+import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_HOST;
+import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,11 +195,17 @@ public class Group {
         return participants.size() > NONE_PARTICIPANT;
     }
 
-    public boolean canWithdraw(Member member) {
+    public void validateWithdraw(Member member) {
         if (isHost(member)) {
-            return false;
+            throw new MomoException(PARTICIPANT_WITHDRAW_HOST);
         }
-        return true;
+        if (!isParticipants(member)) {
+            throw new MomoException(PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+        }
+    }
+
+    private boolean isParticipants(Member member) {
+        return getParticipants().contains(member);
     }
 
     public List<Schedule> getSchedules() {

@@ -47,9 +47,7 @@ public class ParticipantService {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
 
-        if (!group.canWithdraw(member)) {
-            throw new MomoException(PARTICIPANT_WITHDRAW_HOST);
-        }
+        group.validateWithdraw(member);
         participantRepository.deleteByGroupIdAndMemberId(groupId, memberId);
     }
 }

@@ -195,10 +195,22 @@ class GroupTest {
 
     @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
     @Test
-    void canWithdraw() {
+    void validateWithdrawHost() {
         Group group = constructGroup();
 
-        assertThat(group.canWithdraw(host)).isFalse();
+        assertThatThrownBy(() -> group.validateWithdraw(host))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+    }
+
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void validateWithdrawNotParticipant() {
+        Group group = constructGroup();
+
+        assertThatThrownBy(() -> group.validateWithdraw(participant))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모임의 참여자가 아닙니다.");
     }
 
     private Group constructGroup() {

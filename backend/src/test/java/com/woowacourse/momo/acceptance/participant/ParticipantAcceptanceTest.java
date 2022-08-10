@@ -97,4 +97,12 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     void deleteHost() {
         모임을_탈퇴한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void deleteNotParticipant() {
+        String accessToken = MOMO.로_로그인한다();
+
+        모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }

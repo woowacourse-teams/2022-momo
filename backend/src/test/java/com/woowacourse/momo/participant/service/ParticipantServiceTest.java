@@ -149,11 +149,11 @@ class ParticipantServiceTest {
         participantService.delete(savedGroup.getId(), participant1.getId());
         synchronize();
 
-        List<Long> after = participantService.findParticipants(savedGroup.getId())
+        List<Long> participantIds = participantService.findParticipants(savedGroup.getId())
             .stream()
             .map(MemberResponse::getId)
             .collect(Collectors.toList());
-        assertThat(after).doesNotContain(participant1.getId());
+        assertThat(participantIds).doesNotContain(participant1.getId());
     }
 
     @DisplayName("모임의 주최자일 경우 탈퇴할 수 없다")
@@ -165,6 +165,17 @@ class ParticipantServiceTest {
         assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), host.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+    }
+
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void deleteNotParticipant() {
+        Group savedGroup = saveGroup();
+        synchronize();
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모임의 참여자가 아닙니다.");
     }
 
     private void synchronize() {
