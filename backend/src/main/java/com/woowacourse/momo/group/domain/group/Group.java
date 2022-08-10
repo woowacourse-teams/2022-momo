@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.domain.group;
 
+import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE;
 import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_HOST;
 import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT;
 
@@ -180,7 +181,11 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isEarlyClosed || isFullCapacity() || isOverDeadline();
+    }
+
+    private boolean isOverDeadline() {
+        return deadline.isBefore(LocalDateTime.now());
     }
 
     private boolean isFullCapacity() {
@@ -201,6 +206,9 @@ public class Group {
         }
         if (!isParticipants(member)) {
             throw new MomoException(PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+        }
+        if (isOverDeadline()) {
+            throw new MomoException(PARTICIPANT_WITHDRAW_DEADLINE);
         }
     }
 

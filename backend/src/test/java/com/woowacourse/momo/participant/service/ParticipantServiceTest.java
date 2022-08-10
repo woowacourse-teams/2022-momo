@@ -7,6 +7,8 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -178,8 +180,30 @@ class ParticipantServiceTest {
             .hasMessage("모임의 참여자가 아닙니다.");
     }
 
+    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteDeadline() throws IllegalAccessException {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        setPastDeadline(savedGroup, yesterday);
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모집이 마감된 모임입니다.");
+    }
+
     private void synchronize() {
         entityManager.flush();
         entityManager.clear();
+    }
+
+    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
+        int deadlineField = 8;
+        Class<Group> clazz = Group.class;
+        Field[] field = clazz.getDeclaredFields();
+        field[deadlineField].setAccessible(true);
+        field[deadlineField].set(group, deadline);
     }
 }

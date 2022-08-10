@@ -213,6 +213,19 @@ class GroupTest {
             .hasMessage("모임의 참여자가 아닙니다.");
     }
 
+    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
+    @Test
+    void validateWithdrawDeadline() throws IllegalAccessException {
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        Group group = constructGroup();
+        group.participate(participant);
+        setPastDeadline(group, yesterday);
+
+        assertThatThrownBy(() -> group.validateWithdraw(participant))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모집이 마감된 모임입니다.");
+    }
+
     private Group constructGroup() {
         return constructGroupWithSetCapacity(10);
     }
@@ -235,12 +248,16 @@ class GroupTest {
         Group group = new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(), schedules, "", "");
 
+        setPastDeadline(group, deadline);
+
+        return group;
+    }
+
+    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
         int deadlineField = 8;
         Class<Group> clazz = Group.class;
         Field[] field = clazz.getDeclaredFields();
         field[deadlineField].setAccessible(true);
         field[deadlineField].set(group, deadline);
-
-        return group;
     }
 }

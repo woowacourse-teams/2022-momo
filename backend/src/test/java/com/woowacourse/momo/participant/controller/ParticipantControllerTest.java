@@ -16,6 +16,8 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -65,6 +69,9 @@ public class ParticipantControllerTest {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private GroupFindService groupFindService;
 
     @DisplayName("모임에 참여한다")
     @Test
@@ -263,6 +270,28 @@ public class ParticipantControllerTest {
             );
     }
 
+    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteDeadline() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        setPastDeadline(groupId, yesterday);
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                .header("Authorization", "bearer " + accessToken))
+            .andExpect(status().isBadRequest())
+            .andDo(
+                document("deletedeadline",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()))
+            );
+    }
+
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
         return authService.signUp(request);
@@ -291,5 +320,14 @@ public class ParticipantControllerTest {
 
     void participateMember(Long groupId, Long memberId) {
         participantService.participate(groupId, memberId);
+    }
+
+    private void setPastDeadline(Long groupId, LocalDateTime deadline) throws IllegalAccessException {
+        Group group = groupFindService.findGroup(groupId);
+        int deadlineField = 8;
+        Class<Group> clazz = Group.class;
+        Field[] field = clazz.getDeclaredFields();
+        field[deadlineField].setAccessible(true);
+        field[deadlineField].set(group, deadline);
     }
 }
