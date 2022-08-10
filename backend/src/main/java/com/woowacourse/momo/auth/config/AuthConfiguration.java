@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 
 @RequiredArgsConstructor
@@ -16,11 +17,15 @@ import com.woowacourse.momo.auth.support.JwtTokenProvider;
 public class AuthConfiguration implements WebMvcConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final TokenRepository tokenRepository;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(jwtTokenProvider))
                 .addPathPatterns("/api/**");
+
+        registry.addInterceptor(new RefreshTokenAuthInterceptor(jwtTokenProvider, tokenRepository))
+                .addPathPatterns("/api/auth/reissueAccessToken");
     }
 
     @Override
