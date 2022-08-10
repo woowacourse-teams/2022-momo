@@ -1,7 +1,5 @@
 package com.woowacourse.momo.auth.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +17,10 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     public void synchronizeRefreshToken(Member member, String refreshToken) {
-        Optional<Token> token = tokenRepository.findByMemberId(member.getId());
-        if (token.isPresent()) {
-            token.get().updateRefreshToken(refreshToken);
-            return;
-        }
-        tokenRepository.save(new Token(member, refreshToken));
+        tokenRepository.findByMemberId(member.getId())
+                .ifPresentOrElse(
+                        token -> token.updateRefreshToken(refreshToken),
+                        () -> tokenRepository.save(new Token(member, refreshToken))
+                );
     }
 }
