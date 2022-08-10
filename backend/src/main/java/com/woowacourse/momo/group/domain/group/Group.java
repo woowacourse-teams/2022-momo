@@ -1,10 +1,5 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE;
-import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_EARLY_CLOSED;
-import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_HOST;
-import static com.woowacourse.momo.globalException.exception.ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,16 +198,16 @@ public class Group {
 
     public void validateWithdraw(Member member) {
         if (isHost(member)) {
-            throw new MomoException(PARTICIPANT_WITHDRAW_HOST);
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_HOST);
         }
         if (!isParticipant(member)) {
-            throw new MomoException(PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
         }
         if (isOverDeadline()) {
-            throw new MomoException(PARTICIPANT_WITHDRAW_DEADLINE);
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE);
         }
         if (isEarlyClosed) {
-            throw new MomoException(PARTICIPANT_WITHDRAW_EARLY_CLOSED);
+            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_EARLY_CLOSED);
         }
     }
 
