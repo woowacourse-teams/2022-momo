@@ -34,8 +34,8 @@ public class GoogleConnector {
 
     private final GoogleProvider provider;
 
-    public ResponseEntity<GoogleUserResponse> requestUserInfo(String code, String requestUrl) {
-        String googleToken = requestAccessToken(code, requestUrl);
+    public ResponseEntity<GoogleUserResponse> requestUserInfo(String code, String redirectUrl) {
+        String googleToken = requestAccessToken(code, redirectUrl);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", String.join(" ", BEARER_TYPE, googleToken));
@@ -44,8 +44,8 @@ public class GoogleConnector {
         return REST_TEMPLATE.exchange(provider.getUserInfoUrl(), HttpMethod.GET, entity, GoogleUserResponse.class);
     }
 
-    private String requestAccessToken(String code, String requestUrl) {
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(createBody(code, requestUrl), createHeaders());
+    private String requestAccessToken(String code, String redirectUrl) {
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(createBody(code, redirectUrl), createHeaders());
 
         ResponseEntity<GoogleTokenResponse> response = REST_TEMPLATE.postForEntity(provider.getAccessTokenUrl(),
                 entity, GoogleTokenResponse.class);
@@ -60,12 +60,12 @@ public class GoogleConnector {
         return headers;
     }
 
-    private MultiValueMap<String, String> createBody(String code, String requestUrl) {
+    private MultiValueMap<String, String> createBody(String code, String redirectUrl) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("code", code);
         body.add("client_id", provider.getClientId());
         body.add("client_secret", provider.getClientSecret());
-        body.add("redirect_uri", requestUrl);
+        body.add("redirect_uri", redirectUrl);
         body.add("grant_type", provider.getGrantType());
         return body;
     }
