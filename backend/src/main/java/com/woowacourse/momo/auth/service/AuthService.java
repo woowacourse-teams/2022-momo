@@ -30,6 +30,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         String password = passwordEncoder.encrypt(request.getPassword());
         Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
