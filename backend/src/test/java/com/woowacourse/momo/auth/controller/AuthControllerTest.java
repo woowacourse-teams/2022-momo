@@ -176,7 +176,7 @@ class AuthControllerTest {
         saveMember(USER_ID, PASSWORD, NAME);
         String refreshToken = extractLoginResponse(USER_ID, PASSWORD).getRefreshToken();
 
-        mockMvc.perform(post("/api/auth/reissueAccessToken")
+        mockMvc.perform(post("/api/auth/token/refresh")
                         .header("Authorization", "bearer " + refreshToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("accessToken", notNullValue()))

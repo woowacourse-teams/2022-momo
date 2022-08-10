@@ -48,7 +48,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/reissueAccessToken")
+    @PostMapping("/token/refresh")
     public ResponseEntity<AccessTokenResponse> reissueAccessToken(@AuthenticationPrincipal Long memberId) {
         AccessTokenResponse response = authService.reissueAccessToken(memberId);
         return ResponseEntity.ok(response);

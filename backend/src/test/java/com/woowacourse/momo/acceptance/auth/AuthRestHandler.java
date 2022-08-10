@@ -31,7 +31,7 @@ public class AuthRestHandler extends RestHandler {
     }
 
     public static ValidatableResponse 엑세스토큰을_재발급받는다(String refreshToken) {
-        return postRequest(refreshToken, BASE_URL + "/reissueAccessToken");
+        return postRequest(refreshToken, BASE_URL + "/token/refresh");
     }
 
     public static ValidatableResponse 로그아웃을_하다(String accessToken) {
