@@ -5,13 +5,15 @@ const { join } = require('path');
 
 const common = require('./webpack.common.js');
 
-require('dotenv').config({ path: join(__dirname, '../.env/.production') });
+require('dotenv').config({
+  path: join(__dirname, '../fe-security/.env/.production'),
+});
 
 module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(process.env.API_URL),
+      'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
     }),
   ],
 });

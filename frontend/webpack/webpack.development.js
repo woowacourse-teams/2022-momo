@@ -6,7 +6,7 @@ const path = require('path');
 const common = require('./webpack.common.js');
 
 require('dotenv').config({
-  path: path.join(__dirname, '../.env/.env.development'),
+  path: path.join(__dirname, '../fe-security/.env/.env.development'),
 });
 
 module.exports = merge(common, {
