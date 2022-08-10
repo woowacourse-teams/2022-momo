@@ -205,7 +205,7 @@ public class Group {
         if (isHost(member)) {
             throw new MomoException(PARTICIPANT_WITHDRAW_HOST);
         }
-        if (!isParticipants(member)) {
+        if (!isParticipant(member)) {
             throw new MomoException(PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
         }
         if (isOverDeadline()) {
@@ -216,7 +216,7 @@ public class Group {
         }
     }
 
-    private boolean isParticipants(Member member) {
+    private boolean isParticipant(Member member) {
         return getParticipants().contains(member);
     }
 
