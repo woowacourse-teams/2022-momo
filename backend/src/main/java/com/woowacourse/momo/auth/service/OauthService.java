@@ -26,6 +26,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @Service
 public class OauthService {
 
+    private final TokenService tokenService;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -40,9 +41,12 @@ public class OauthService {
     public LoginResponse requestAccessToken(String code, String requestUrl) {
         GoogleUserResponse response = requestUserInfo(code, requestUrl);
 
-        Long memberId = findOrSaveMember(response);
-        String token = jwtTokenProvider.createAccessToken(memberId);
-        String refreshToken = jwtTokenProvider.createRefreshToken(memberId);
+        Member member = findOrSaveMember(response);
+        String token = jwtTokenProvider.createAccessToken(member.getId());
+        String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+
+        tokenService.synchronizeRefreshToken(member, refreshToken);
+
         return new LoginResponse(token, refreshToken);
     }
 
@@ -61,11 +65,9 @@ public class OauthService {
         }
     }
 
-    private Long findOrSaveMember(GoogleUserResponse response) {
-        Member member = memberRepository.findByUserId(response.getEmail())
+    private Member findOrSaveMember(GoogleUserResponse response) {
+        return memberRepository.findByUserId(response.getEmail())
                 .orElseGet(() -> saveMember(response));
-
-        return member.getId();
     }
 
     private Member saveMember(GoogleUserResponse response) {

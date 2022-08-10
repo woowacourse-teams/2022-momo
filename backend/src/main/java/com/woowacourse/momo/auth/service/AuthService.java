@@ -7,8 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.domain.Token;
-import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
@@ -25,12 +23,11 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @Service
 public class AuthService {
 
+    private final TokenService tokenService;
     private final MemberRepository memberRepository;
-    private final TokenRepository tokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public LoginResponse login(LoginRequest request) {
         String password = passwordEncoder.encrypt(request.getPassword());
         Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
@@ -38,18 +35,9 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 
-        synchronizeRefreshToken(member, refreshToken);
+        tokenService.synchronizeRefreshToken(member, refreshToken);
 
         return new LoginResponse(accessToken, refreshToken);
-    }
-
-    private void synchronizeRefreshToken(Member member, String refreshToken) {
-        Optional<Token> token = tokenRepository.findByMemberId(member.getId());
-        if (token.isPresent()) {
-            token.get().updateRefreshToken(refreshToken);
-            return;
-        }
-        tokenRepository.save(new Token(member.getId(), refreshToken));
     }
 
     @Transactional
