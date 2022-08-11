@@ -30,7 +30,7 @@ public class StorageService {
         try (OutputStream outputStream = new FileOutputStream(savedFile)) {
             outputStream.write(requestFile.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MomoException(ErrorCode.FILE_IO_ERROR);
         }
 
         return savedFile.getName();
@@ -42,7 +42,7 @@ public class StorageService {
         if (contentType == null || !(contentType.equals(MediaType.IMAGE_GIF_VALUE) ||
                 contentType.equals(MediaType.IMAGE_JPEG_VALUE) ||
                 contentType.equals(MediaType.IMAGE_PNG_VALUE))) {
-            throw new MomoException(ErrorCode.INVALID_FILE_EXTENSION);
+            throw new MomoException(ErrorCode.FILE_INVALID_EXTENSION);
         }
     }
 
@@ -53,7 +53,7 @@ public class StorageService {
             }
             temporary.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MomoException(ErrorCode.FILE_IO_ERROR);
         }
     }
 
@@ -62,7 +62,7 @@ public class StorageService {
         try (InputStream inputStream = new FileInputStream(file)) {
             return inputStream.readAllBytes();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MomoException(ErrorCode.FILE_IO_ERROR);
         }
     }
 }
