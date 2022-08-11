@@ -28,7 +28,7 @@ public class ImageController {
     public ResponseEntity<Void> imageUpload(@RequestParam("imageFile") MultipartFile imageFile) {
         String fileName = storageService.save(imageFile);
 
-        return ResponseEntity.created(URI.create("/api/images/" + fileName)).build(); // filename 받아온다면 수정 필요
+        return ResponseEntity.created(URI.create("/api/images/" + fileName)).build();
     }
 
     @GetMapping(
