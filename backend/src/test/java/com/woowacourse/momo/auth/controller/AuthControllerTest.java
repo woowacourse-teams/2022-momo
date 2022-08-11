@@ -181,7 +181,7 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("accessToken", notNullValue()))
                 .andDo(
-                        document("memberlogin",
+                        document("reissuetoken",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -198,7 +198,7 @@ class AuthControllerTest {
                         .header("Authorization", "bearer " + accessToken))
                 .andExpect(status().isOk())
                 .andDo(
-                        document("memberlogin",
+                        document("memberlogout",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

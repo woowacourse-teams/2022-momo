@@ -88,6 +88,22 @@ include::{snippets}/oauthlogin/http-request.adoc[]
 Response
 include::{snippets}/oauthlogin/http-response.adoc[]
 
+=== 리프레시토큰을 통한 엑세스 토큰 재발급
+
+Request
+include::{snippets}/reissuetoken/http-request.adoc[]
+
+Response
+include::{snippets}/reissuetoken/http-response.adoc[]
+
+=== 로그아웃
+
+Request
+include::{snippets}/memberlogout/http-request.adoc[]
+
+Response
+include::{snippets}/memberlogout/http-response.adoc[]
+
 === 회원 조회
 
 Request
