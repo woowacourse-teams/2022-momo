@@ -28,6 +28,9 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
+
     public Member(String userId, String password, String name) {
         this.userId = userId;
         this.password = password;
