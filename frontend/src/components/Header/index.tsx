@@ -1,39 +1,20 @@
-import { useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
-
-import { getUserInfo } from 'apis/request/user';
 import { ReactComponent as LogoSVG } from 'assets/svg/logo.svg';
 import NavLink from 'components/@shared/NavLink';
-import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
-import { accessTokenState, loginState, modalState } from 'store/states';
+import { loginState, modalState } from 'store/states';
 import { ModalStateType } from 'types/condition';
 
 import * as S from './index.styled';
+import User from './User';
 
 function Header() {
   const setModalState = useSetRecoilState(modalState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [{ isLogin }, setLoginInfo] = useRecoilState(loginState);
-
-  useEffect(() => {
-    if (accessToken) {
-      getUserInfo().then(userInfo => {
-        setLoginInfo({ isLogin: true, user: userInfo });
-      });
-    }
-  }, [accessToken, setLoginInfo]);
+  const { isLogin } = useRecoilValue(loginState);
 
   const changeModalState = (modalState: ModalStateType) => () => {
     setModalState(modalState);
-  };
-
-  const logout = () => {
-    if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
-
-    setLoginInfo({ isLogin: false });
-    setAccessToken('');
   };
 
   return (
@@ -47,9 +28,7 @@ function Header() {
         {isLogin ? (
           <>
             <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
-            <NavLink to={'NOT_THING'}>내 모임</NavLink>
-            <NavLink to={BROWSER_PATH.INFO}>내 정보</NavLink>
-            <div onClick={logout}>로그아웃</div>
+            <User />
           </>
         ) : (
           <>

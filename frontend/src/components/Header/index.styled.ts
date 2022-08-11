@@ -34,9 +34,10 @@ const Logo = styled.div`
 
 const Nav = styled.div`
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 
-  color: ${({ theme: { colors } }) => colors.white001};
+  color: ${({ theme: { colors } }) => colors.black002};
 
   font-size: 1.1rem;
   font-weight: 700;
