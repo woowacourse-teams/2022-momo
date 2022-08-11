@@ -3,6 +3,7 @@ const BROWSER_PATH = {
   DETAIL: '/detail',
   CREATE: '/create',
   INFO: '/info',
+  OAUTH_GOOGLE: '/auth/google',
 };
 
 const API_PATH = {
@@ -12,6 +13,7 @@ const API_PATH = {
   CLOSE: '/close',
   SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
+  GOOGLE_LOGIN: '/auth/oauth2/google/login',
   MEMBERS: '/members',
   NAME: '/members/name',
   PASSWORD: '/members/password',
