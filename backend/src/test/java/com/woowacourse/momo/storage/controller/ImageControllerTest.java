@@ -49,9 +49,9 @@ public class ImageControllerTest {
                 "abcdefgh".getBytes()
         );
 
-        this.mockMvc.perform(multipart("/api/file/").file(file))
+        this.mockMvc.perform(multipart("/api/images/").file(file))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(header().string("Location", "/api/file/abc.txt"))
+                .andExpect(header().string("Location", "/api/images/abc.txt"))
                 .andDo(
                         document("imageupload",
                                 preprocessRequest(prettyPrint()),
@@ -65,7 +65,7 @@ public class ImageControllerTest {
     void imageLoadTest() throws Exception {
         when(storageService.load("abc.txt")).thenReturn("abcdefgh".getBytes());
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/file/abc.txt"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.txt"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().bytes("abcdefgh".getBytes()))
                 .andDo(

@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 import com.woowacourse.momo.storage.service.StorageService;
 
 @RestController
-@RequestMapping("/api/file/")
+@RequestMapping("/api/images/")
 @AllArgsConstructor
 public class ImageController {
 
@@ -27,7 +27,7 @@ public class ImageController {
     public ResponseEntity<Void> imageUpload(@RequestParam("imageFile") MultipartFile imageFile) {
         String fileName = storageService.save(imageFile);
 
-        return ResponseEntity.created(URI.create("/api/file/" + fileName)).build(); // filename 받아온다면 수정 필요
+        return ResponseEntity.created(URI.create("/api/images/" + fileName)).build(); // filename 받아온다면 수정 필요
     }
 
     @GetMapping(
