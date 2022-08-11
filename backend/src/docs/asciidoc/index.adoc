@@ -138,3 +138,21 @@ include::{snippets}/findparticipants/http-request.adoc[]
 Response
 include::{snippets}/findparticipants/http-response.adoc[]
 
+== 이미지
+
+=== 이미지 업로드
+
+Request
+include::{snippets}/imageupload/http-request.adoc[]
+
+Response
+include::{snippets}/imageupload/http-response.adoc[]
+
+=== 이미지 불러오기
+
+Request
+include::{snippets}/imageload/http-request.adoc[]
+
+Response
+include::{snippets}/imageload/http-response.adoc[]
+
