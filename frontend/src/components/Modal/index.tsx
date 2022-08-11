@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Portal from 'components/Portal';
+import useClosingState from 'hooks/useClosingState';
 import { preventBubbling } from 'utils/event';
 
 import * as S from './index.styled';
@@ -14,22 +15,13 @@ interface ModalProps {
 const modalAnimationTime = 300;
 
 function Modal({ modalState, setOffModal, children }: ModalProps) {
-  const [isClosing, setIsClosing] = useState(false);
-
-  const setOffModalWithAnimation = () => {
-    setIsClosing(true);
-
-    setTimeout(() => {
-      setOffModal();
-      setIsClosing(false);
-    }, modalAnimationTime);
-  };
+  const { isClosing, close } = useClosingState(modalAnimationTime, setOffModal);
 
   return (
     <Portal>
       {modalState && (
         <S.Dimmer
-          onClick={setOffModalWithAnimation}
+          onClick={close}
           className={isClosing ? 'close' : ''}
           animationTime={modalAnimationTime}
         >
