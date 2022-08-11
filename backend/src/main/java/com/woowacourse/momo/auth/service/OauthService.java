@@ -38,8 +38,8 @@ public class OauthService {
         return new OauthLinkResponse(oauthLink);
     }
 
-    public LoginResponse requestAccessToken(String code, String requestUrl) {
-        GoogleUserResponse response = requestUserInfo(code, requestUrl);
+    public LoginResponse requestAccessToken(String code, String redirectUrl) {
+        GoogleUserResponse response = requestUserInfo(code, redirectUrl);
 
         Member member = findOrSaveMember(response);
         String token = jwtTokenProvider.createAccessToken(member.getId());
@@ -50,8 +50,8 @@ public class OauthService {
         return new LoginResponse(token, refreshToken);
     }
 
-    private GoogleUserResponse requestUserInfo(String code, String requestUrl) {
-        ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code, requestUrl);
+    private GoogleUserResponse requestUserInfo(String code, String redirectUrl) {
+        ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code, redirectUrl);
 
         validateResponseStatusOk(responseEntity.getStatusCode());
 

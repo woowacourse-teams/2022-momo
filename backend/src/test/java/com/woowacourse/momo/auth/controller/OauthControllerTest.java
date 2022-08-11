@@ -46,16 +46,17 @@ class OauthControllerTest {
     @DisplayName("정상적으로 Oauth 인증 링크가 반환되는지 테스트한다")
     @Test
     void access() throws Exception {
-        String oauthLink = "https://accounts.google.com/o/oauth2/auth?scope=openid%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&response_type=code&redirect_uri=http://localhost:8080/api/auth/oauth2/google/login&client_id=clientId";
+        String oauthLink = "https://accounts.google.com/o/oauth2/auth?redirect_uri=http://www.moyeora.com/auth/google&scope=openid+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&response_type=code&client_id=clientId";
         BDDMockito.given(oauthService.generateAuthUrl(ArgumentMatchers.anyString()))
                 .willReturn(new OauthLinkResponse(oauthLink));
 
-        mockMvc.perform(get("/api/auth/oauth2/google/login"))
+        mockMvc.perform(get("/api/auth/oauth2/google/login")
+                        .queryParam("redirectUrl", "https://www.moyeora.com/auth/google"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("oauthLink", notNullValue()))
                 .andDo(
-                        document("oauthLink",
+                        document("oauthlink",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -72,7 +73,8 @@ class OauthControllerTest {
 
         String code = "code";
         mockMvc.perform(get("/api/auth/oauth2/google/login")
-                        .queryParam("code", code))
+                        .queryParam("code", code)
+                        .queryParam("redirectUrl", "https://www.moyeora.com/auth/google"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("accessToken", notNullValue()),
@@ -80,10 +82,7 @@ class OauthControllerTest {
                 .andDo(
                         document("oauthlogin",
                                 preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
-                                requestParameters(
-                                        parameterWithName("code").description("code")
-                                )
+                                preprocessResponse(prettyPrint())
                         )
                 );
     }

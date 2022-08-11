@@ -75,10 +75,10 @@ include::{snippets}/memberlogin/http-response.adoc[]
 === OAuth 구글 링크
 
 Request
-include::{snippets}/oauthLink/http-request.adoc[]
+include::{snippets}/oauthlink/http-request.adoc[]
 
 Response
-include::{snippets}/oauthLink/http-response.adoc[]
+include::{snippets}/oauthlink/http-response.adoc[]
 
 === OAuth 로그인
 
