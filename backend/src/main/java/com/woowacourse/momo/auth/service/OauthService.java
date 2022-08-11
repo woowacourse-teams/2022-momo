@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,7 @@ public class OauthService {
         return new OauthLinkResponse(oauthLink);
     }
 
+    @Transactional
     public LoginResponse requestAccessToken(String code, String redirectUrl) {
         GoogleUserResponse response = requestUserInfo(code, redirectUrl);
 
