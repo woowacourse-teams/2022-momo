@@ -14,6 +14,7 @@ import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -153,7 +154,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
         List<GroupFixture> groups = groupIds.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
 

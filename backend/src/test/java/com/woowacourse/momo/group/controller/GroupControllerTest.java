@@ -184,8 +184,8 @@ class GroupControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0"))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("groups[0].name", is("모모의 스터디")))
-                .andExpect(jsonPath("groups[1].name", is("무무의 스터디")))
+                .andExpect(jsonPath("groups[0].name", is("무무의 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
                 .andDo(
                         document("grouplist",
                                 preprocessRequest(prettyPrint()),

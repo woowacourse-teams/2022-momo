@@ -58,7 +58,7 @@ public class GroupService {
     }
 
     public GroupPageResponse findAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
+        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
         Page<Group> groups = groupFindService.findGroups(pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);

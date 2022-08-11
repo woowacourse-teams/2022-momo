@@ -11,6 +11,7 @@ import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -142,14 +143,14 @@ class GroupServiceTest {
     void update() {
         Group savedGroup = saveGroup();
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
-            DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest);
 
         assertThat(groupService.findById(savedGroup.getId()))
-            .usingRecursiveComparison()
-            .ignoringFields("host", "finished")
-            .isEqualTo(groupRequest);
+                .usingRecursiveComparison()
+                .ignoringFields("host", "finished")
+                .isEqualTo(groupRequest);
     }
 
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
@@ -158,11 +159,11 @@ class GroupServiceTest {
         Group savedGroup = saveGroup();
         savedGroup.participate(savedMember1);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
-            DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
 
     @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
@@ -195,21 +196,22 @@ class GroupServiceTest {
     @DisplayName("모임 목록중 두번째 페이지를 조회한다")
     @Test
     void findAllWithPage() {
-        for (int i = 0; i < PAGE_SIZE; i++) {
-            saveGroup();
-        }
-
         List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
                 .mapToObj(i -> saveGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
+                .sorted(Comparator.comparing(GroupSummaryResponse::getId).reversed())
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < PAGE_SIZE; i++) {
+            saveGroup();
+        }
 
         GroupPageResponse actual = groupService.findAll(1);
 
         assertAll(
                 () -> assertThat(actual.isHasNextPage()).isFalse(),
                 () -> assertThat(actual.getGroups()).usingRecursiveFieldByFieldElementComparator()
-                    .isEqualTo(summaries)
+                        .isEqualTo(summaries)
         );
     }
 
@@ -231,8 +233,8 @@ class GroupServiceTest {
         long groupId = saveGroup().getId();
 
         assertThatThrownBy(() -> groupService.delete(memberId, groupId))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
 
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
@@ -242,8 +244,8 @@ class GroupServiceTest {
         participantService.participate(groupId, savedMember1.getId());
 
         assertThatThrownBy(() -> groupService.delete(savedHost.getId(), groupId))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
 
     @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다")

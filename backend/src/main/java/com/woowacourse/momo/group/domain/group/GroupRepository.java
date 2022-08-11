@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
+
     Page<Group> findAll(Pageable pageable);
 
     @Query("select distinct g from Group g join Participant p on g = p.group where p.member.id = :memberId")
