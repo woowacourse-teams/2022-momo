@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
+import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
 import LeftArrow from 'components/svg/LeftArrow';
 import RightArrow from 'components/svg/RightArrow';
 import { PageType } from 'types/data';

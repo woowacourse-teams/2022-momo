@@ -20,8 +20,6 @@ const Button = styled.button`
 
   border-radius: 50%;
 
-  font-size: 1.7rem;
-
   animation: 1s ${dungdung} infinite;
 
   ${({ theme: { colors } }) => css`

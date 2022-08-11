@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 
-import noResult from 'assets/no_result.json';
+import noResult from 'assets/lottie/no_result.json';
 
 const style = { width: '50rem' };
 

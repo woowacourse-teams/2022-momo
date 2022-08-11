@@ -10,7 +10,7 @@ function Page({ children }: PageProps) {
   return (
     <S.PageContainer>
       <Header />
-      {children}
+      <S.Content>{children}</S.Content>
     </S.PageContainer>
   );
 }

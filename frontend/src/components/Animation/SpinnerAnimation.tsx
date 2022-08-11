@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 
-import spinner from 'assets/spinner.json';
+import spinner from 'assets/lottie/spinner.json';
 
 const style = {
   height: 300,
