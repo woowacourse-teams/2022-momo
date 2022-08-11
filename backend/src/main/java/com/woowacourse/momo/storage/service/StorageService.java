@@ -19,21 +19,21 @@ public class StorageService {
 
     private static final String PATH_PREFIX = "./image-save/";
 
-    public String save(MultipartFile file) {
-        File temporary = new File(PATH_PREFIX + file.getOriginalFilename());
+    public String save(MultipartFile requestFile) {
+        File savedFile = new File(PATH_PREFIX + requestFile.getOriginalFilename());
         File directory = new File(PATH_PREFIX);
 
-        fileInit(temporary, directory);
+        fileInit(savedFile, directory);
 
-        validateExtension(file);
+        validateExtension(requestFile);
 
-        try (OutputStream outputStream = new FileOutputStream(temporary)) {
-            outputStream.write(file.getBytes());
+        try (OutputStream outputStream = new FileOutputStream(savedFile)) {
+            outputStream.write(requestFile.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return temporary.getName();
+        return savedFile.getName();
     }
 
     private void validateExtension(MultipartFile file) {

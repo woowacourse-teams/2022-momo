@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.storage.service.StorageService;
 
 @RestController
 @RequestMapping("/api/images/")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ImageController {
 
     private final StorageService storageService;
