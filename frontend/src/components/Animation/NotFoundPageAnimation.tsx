@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 
-import notFound from 'assets/not_found.json';
+import notFound from 'assets/lottie/not_found.json';
 
 const style = {
   height: 300,

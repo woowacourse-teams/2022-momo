@@ -2,7 +2,7 @@ import { Component, ReactNode } from 'react';
 
 import Lottie from 'lottie-react';
 
-import error from 'assets/error.json';
+import error from 'assets/lottie/error.json';
 
 import * as S from './index.styled';
 

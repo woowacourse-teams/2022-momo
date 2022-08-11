@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 
-import loading from 'assets/loading.json';
+import loading from 'assets/lottie/loading.json';
 
 const style = {
   width: '10rem',

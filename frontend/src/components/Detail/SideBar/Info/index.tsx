@@ -1,5 +1,5 @@
-import { ReactComponent as ClockSVG } from 'assets/clock.svg';
-import { ReactComponent as LocationSVG } from 'assets/location.svg';
+import { ReactComponent as ClockSVG } from 'assets/svg/clock.svg';
+import { ReactComponent as LocationSVG } from 'assets/svg/location.svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
 import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';

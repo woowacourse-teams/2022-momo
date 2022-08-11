@@ -8,8 +8,8 @@ import {
   requestChangePassword,
   requestWithdrawal,
 } from 'apis/request/user';
-import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
-import { ReactComponent as PencilSVG } from 'assets/pencil.svg';
+import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
+import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
 import cover from 'assets/userInfo_cover.jpg';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';

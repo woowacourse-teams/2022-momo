@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { getUserInfo } from 'apis/request/user';
-import { ReactComponent as LogoSVG } from 'assets/logo.svg';
+import { ReactComponent as LogoSVG } from 'assets/svg/logo.svg';
 import NavLink from 'components/@shared/NavLink';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
