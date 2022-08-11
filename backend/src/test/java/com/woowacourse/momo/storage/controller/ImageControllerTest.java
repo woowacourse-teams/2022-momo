@@ -1,17 +1,16 @@
 package com.woowacourse.momo.storage.controller;
 
 
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,8 +48,14 @@ public class ImageControllerTest {
         );
 
         this.mockMvc.perform(multipart("/api/file/").file(file))
-                        .andExpect(status().is2xxSuccessful())
-                        .andExpect(header().string("Location", "/api/file/abc.txt"));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(header().string("Location", "/api/file/abc.txt"))
+                .andDo(
+                        document("imageupload",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
     @DisplayName("이미지를 불러온다")
@@ -60,7 +65,13 @@ public class ImageControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/file/abc.txt"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().bytes("abcdefgh".getBytes()));
+                .andExpect(content().bytes("abcdefgh".getBytes()))
+                .andDo(
+                        document("imageload",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
     }
 
 }
