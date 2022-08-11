@@ -29,6 +29,13 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+`;
+
 const Button = styled.button`
   height: 3rem;
 
@@ -40,4 +47,51 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Form, Title, InputContainer, Label, Input, Button };
+const Divider = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 1px;
+
+  background: ${({ theme: { colors } }) => colors.gray003};
+
+  margin-top: 1rem;
+
+  span {
+    background: ${({ theme: { colors } }) => colors.white001};
+
+    padding: 0.2rem 1rem 0 1rem;
+  }
+`;
+
+const OAuthButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  padding-top: 1rem;
+`;
+
+const OAuthButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: 50%;
+`;
+
+export {
+  Form,
+  Title,
+  InputContainer,
+  Label,
+  Input,
+  ButtonContainer,
+  Button,
+  Divider,
+  OAuthButtonWrapper,
+  OAuthButton,
+};

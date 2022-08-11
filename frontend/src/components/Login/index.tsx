@@ -2,8 +2,9 @@ import { useRef } from 'react';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { requestLogin } from 'apis/request/auth';
+import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
+import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { accessTokenState, loginState, modalState } from 'store/states';
@@ -47,6 +48,16 @@ function Login() {
       });
   };
 
+  const googleLogin = () => {
+    requestGoogleOauthToken()
+      .then(oauthLink => {
+        window.location.assign(oauthLink);
+      })
+      .catch(({ message }) => {
+        alert(showErrorMessage(message));
+      });
+  };
+
   return (
     <Modal modalState={modalFlag === 'login'} setOffModal={setOffModal}>
       <S.Form onSubmit={login}>
@@ -66,7 +77,17 @@ function Login() {
             />
           </S.Label>
         </S.InputContainer>
-        <S.Button type="submit">로그인</S.Button>
+        <S.ButtonContainer>
+          <S.Button type="submit">로그인</S.Button>
+          <S.Divider>
+            <span>or</span>
+          </S.Divider>
+          <S.OAuthButtonWrapper>
+            <S.OAuthButton type="button" onClick={googleLogin}>
+              <GoogleSVG />
+            </S.OAuthButton>
+          </S.OAuthButtonWrapper>
+        </S.ButtonContainer>
       </S.Form>
     </Modal>
   );
