@@ -40,18 +40,18 @@ public class ImageControllerTest {
     @DisplayName("이미지를 업로드한다")
     @Test
     void imageUploadTest() throws Exception {
-        when(storageService.save(any())).thenReturn("abc.txt");
+        when(storageService.save(any())).thenReturn("abc.png");
 
         MockMultipartFile file = new MockMultipartFile(
                 "imageFile",
-                "abc.txt",
+                "abc.png",
                 MediaType.TEXT_PLAIN_VALUE,
                 "abcdefgh".getBytes()
         );
 
         this.mockMvc.perform(multipart("/api/images/").file(file))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(header().string("Location", "/api/images/abc.txt"))
+                .andExpect(header().string("Location", "/api/images/abc.png"))
                 .andDo(
                         document("imageupload",
                                 preprocessRequest(prettyPrint()),
@@ -63,9 +63,9 @@ public class ImageControllerTest {
     @DisplayName("이미지를 불러온다")
     @Test
     void imageLoadTest() throws Exception {
-        when(storageService.load("abc.txt")).thenReturn("abcdefgh".getBytes());
+        when(storageService.load("abc.png")).thenReturn("abcdefgh".getBytes());
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.txt"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.png"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().bytes("abcdefgh".getBytes()))
                 .andDo(

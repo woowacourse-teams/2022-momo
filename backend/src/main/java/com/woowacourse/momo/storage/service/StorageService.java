@@ -2,18 +2,17 @@ package com.woowacourse.momo.storage.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 
 @Service
 public class StorageService {
@@ -26,6 +25,8 @@ public class StorageService {
 
         fileInit(temporary, directory);
 
+        validateExtension(file);
+
         try (OutputStream outputStream = new FileOutputStream(temporary)) {
             outputStream.write(file.getBytes());
         } catch (IOException e) {
@@ -33,6 +34,16 @@ public class StorageService {
         }
 
         return temporary.getName();
+    }
+
+    private void validateExtension(MultipartFile file) {
+        String contentType = file.getContentType();
+
+        if (contentType == null || !(contentType.equals(MediaType.IMAGE_GIF_VALUE) ||
+                contentType.equals(MediaType.IMAGE_JPEG_VALUE) ||
+                contentType.equals(MediaType.IMAGE_PNG_VALUE))) {
+            throw new MomoException(ErrorCode.INVALID_FILE_EXTENSION);
+        }
     }
 
     private void fileInit(File temporary, File directory) {
