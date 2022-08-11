@@ -5,8 +5,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
-  top: 0;
+  position: fixed;
 
   z-index: 999;
 

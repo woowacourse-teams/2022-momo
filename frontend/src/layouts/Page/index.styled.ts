@@ -5,4 +5,8 @@ const PageContainer = styled.div`
   height: 100vh;
 `;
 
-export { PageContainer };
+const Content = styled.div`
+  padding-top: 4rem;
+`;
+
+export { PageContainer, Content };
