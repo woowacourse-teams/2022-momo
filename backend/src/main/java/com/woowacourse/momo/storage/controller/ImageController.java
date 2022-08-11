@@ -40,5 +40,4 @@ public class ImageController {
 
         return ResponseEntity.ok(imageBytes);
     }
-
 }

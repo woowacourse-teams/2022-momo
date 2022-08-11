@@ -1,6 +1,5 @@
 package com.woowacourse.momo.storage.controller;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -45,11 +44,11 @@ public class ImageControllerTest {
         MockMultipartFile file = new MockMultipartFile(
                 "imageFile",
                 "abc.png",
-                MediaType.TEXT_PLAIN_VALUE,
+                MediaType.IMAGE_PNG_VALUE,
                 "abcdefgh".getBytes()
         );
 
-        this.mockMvc.perform(multipart("/api/images/").file(file))
+        mockMvc.perform(multipart("/api/images/").file(file))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(header().string("Location", "/api/images/abc.png"))
                 .andDo(
@@ -65,7 +64,7 @@ public class ImageControllerTest {
     void imageLoadTest() throws Exception {
         when(storageService.load("abc.png")).thenReturn("abcdefgh".getBytes());
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.png"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.png"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().bytes("abcdefgh".getBytes()))
                 .andDo(
