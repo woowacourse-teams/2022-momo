@@ -1,4 +1,4 @@
-package com.woowacourse.momo.globalException.exception;
+package com.woowacourse.momo.global.exception.exception;
 
 import org.springframework.http.HttpStatus;
 

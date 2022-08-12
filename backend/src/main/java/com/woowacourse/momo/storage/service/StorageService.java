@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Service
 public class StorageService {

@@ -11,8 +11,8 @@ import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @RequiredArgsConstructor
 public class RefreshTokenAuthInterceptor implements HandlerInterceptor {

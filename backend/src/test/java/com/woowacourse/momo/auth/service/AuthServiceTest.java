@@ -18,7 +18,7 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 

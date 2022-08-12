@@ -1,13 +1,13 @@
-package com.woowacourse.momo.globalException.exception;
+package com.woowacourse.momo.global.exception.exception;
 
 import lombok.Getter;
 
 @Getter
 public class MomoException extends RuntimeException {
 
-    int statusCode;
-    String errorCode;
-    String message;
+    private final int statusCode;
+    private final String errorCode;
+    private final String message;
 
     public MomoException(ErrorCode code) {
         statusCode = code.getStatusCode();

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.globalException.dto.response;
+package com.woowacourse.momo.global.exception.dto.response;
 
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.logging.exception;
+package com.woowacourse.momo.global.logging.exception;
 
 public class LogException extends RuntimeException {
 

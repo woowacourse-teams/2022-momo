@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorizationExtractor {

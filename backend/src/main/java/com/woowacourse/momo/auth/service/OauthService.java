@@ -1,7 +1,7 @@
 package com.woowacourse.momo.auth.service;
 
-import static com.woowacourse.momo.globalException.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS;
-import static com.woowacourse.momo.globalException.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.google.GoogleConnector;
 import com.woowacourse.momo.auth.support.google.GoogleProvider;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 

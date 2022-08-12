@@ -20,7 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 
