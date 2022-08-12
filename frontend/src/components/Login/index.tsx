@@ -14,6 +14,7 @@ import * as S from './index.styled';
 
 function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
+  const setModalState = useSetRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
   const userIdRef = useRef<HTMLInputElement>(null);
@@ -58,6 +59,10 @@ function Login() {
       });
   };
 
+  const showSignupModal = () => {
+    setModalState('signup');
+  };
+
   return (
     <Modal modalState={modalFlag === 'login'} setOffModal={setOffModal}>
       <S.Form onSubmit={login}>
@@ -79,6 +84,10 @@ function Login() {
         </S.InputContainer>
         <S.ButtonContainer>
           <S.Button type="submit">로그인</S.Button>
+          <S.SignupButton>
+            모모가 처음이신가요? |{' '}
+            <span onClick={showSignupModal}>회원가입</span>
+          </S.SignupButton>
           <S.Divider>
             <span>or</span>
           </S.Divider>

@@ -32,11 +32,13 @@ const Input = styled.input`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   gap: 1rem;
 `;
 
 const Button = styled.button`
+  width: 20rem;
   height: 3rem;
 
   border-radius: 5px;
@@ -47,11 +49,30 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
+const SignupButton = styled.div`
+  font-size: 1rem;
+
+  color: ${({ theme: { colors } }) => colors.gray002};
+
+  cursor: default;
+
+  span {
+    color: ${({ theme: { colors } }) => colors.gray001};
+
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme: { colors } }) => colors.blue001};
+    }
+  }
+`;
+
 const Divider = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
+  width: 20rem;
   height: 1px;
 
   background: ${({ theme: { colors } }) => colors.gray003};
@@ -91,6 +112,7 @@ export {
   Input,
   ButtonContainer,
   Button,
+  SignupButton,
   Divider,
   OAuthButtonWrapper,
   OAuthButton,
