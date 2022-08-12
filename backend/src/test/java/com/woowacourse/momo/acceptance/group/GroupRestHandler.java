@@ -38,14 +38,6 @@ public class GroupRestHandler extends RestHandler {
         return getRequest(BASE_URL + "/" + groupId);
     }
 
-    public static ValidatableResponse 모임목록을_조회한다(String accessToken) {
-        return getRequest(accessToken, BASE_URL);
-    }
-
-    public static ValidatableResponse 모임목록을_조회한다() {
-        return getRequest(BASE_URL);
-    }
-
     public static ValidatableResponse 모임을_수정한다(String accessToken, Long groupId, GroupFixture group) {
         GroupUpdateRequest request = groupUpdateRequest(group);
         return putRequest(accessToken, request, BASE_URL + "/" + groupId);

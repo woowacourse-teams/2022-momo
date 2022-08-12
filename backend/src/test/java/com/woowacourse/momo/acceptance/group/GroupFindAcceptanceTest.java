@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
@@ -107,22 +106,6 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @Test
     void findNonExistentGroup() {
         모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TOD: NOT_FOUND
-    }
-
-    @DisplayName("회원이 모임목록을 조회한다")
-    @Test
-    void findGroupsByMember() {
-        ValidatableResponse response = 모임목록을_조회한다(hostAccessToken);
-
-        checkGroupSummaryResponses(response);
-    }
-
-    @DisplayName("비회원이 모임목록을 조회한다")
-    @Test
-    void findGroupsByNonMember() {
-        ValidatableResponse response = 모임목록을_조회한다();
-
-        checkGroupSummaryResponses(response);
     }
 
     @DisplayName("모임목록중 첫번째 페이지를 조회한다")
