@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +75,9 @@ class ParticipantControllerTest {
     @Autowired
     private GroupFindService groupFindService;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @DisplayName("모임에 참여한다")
     @Test
     void participate() throws Exception {
@@ -114,9 +119,9 @@ class ParticipantControllerTest {
                 );
     }
 
-    @DisplayName("존재하지 않는 사용자는 모임에 참여할 수 없다")
+    @DisplayName("탈퇴한 사용자는 모임에 참여할 수 없다")
     @Test
-    void participateNotExistMember() throws Exception {
+    void participateDeletedMember() throws Exception {
         Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
         Long participantId = saveMember("participant");
@@ -127,7 +132,7 @@ class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_002")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),

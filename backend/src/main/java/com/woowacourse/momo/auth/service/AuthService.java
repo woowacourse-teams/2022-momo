@@ -17,6 +17,7 @@ import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,6 +25,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 public class AuthService {
 
     private final TokenService tokenService;
+    private final MemberFindService memberFindService;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -31,8 +33,7 @@ public class AuthService {
     @Transactional
     public LoginResponse login(LoginRequest request) {
         String password = passwordEncoder.encrypt(request.getPassword());
-        Member member = memberRepository.findByUserIdAndPassword(request.getUserId(), password)
-                .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD)); // 로그인에 실패했습니다
+        Member member = memberFindService.findByUserIdAndPassword(request.getUserId(), password);
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 

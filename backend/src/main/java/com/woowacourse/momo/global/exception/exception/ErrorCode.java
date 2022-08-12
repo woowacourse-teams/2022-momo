@@ -12,6 +12,7 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SERVER_ERROR_001", "내부 서버 오류입니다."),
 
     MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_001", "멤버가 존재하지 않습니다."),
+    MEMBER_DELETED(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_002", "탈퇴한 멤버입니다."),
 
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_001", "토큰의 유효기간이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_002", "토큰이 유효하지 않습니다."),

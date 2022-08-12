@@ -19,18 +19,18 @@ import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 public class MemberService {
 
     private final MemberFindService memberFindService;
-    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public MyInfoResponse findById(Long id) {
-        Member member = memberFindService.findMember(id);
+        Member member = memberFindService.findExistMember(id);
 
         return MemberResponseAssembler.myInfoResponse(member);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        memberRepository.deleteById(id);
+        Member member = memberFindService.findExistMember(id);
+        member.delete();
     }
 
     @Transactional

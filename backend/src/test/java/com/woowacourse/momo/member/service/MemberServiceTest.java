@@ -84,7 +84,7 @@ class MemberServiceTest {
 
         assertThatThrownBy(() -> memberService.findById(memberId))
                 .isInstanceOf(MomoException.class)
-                .hasMessage("멤버가 존재하지 않습니다.");
+                .hasMessage("탈퇴한 멤버입니다.");
     }
 
     private Long createMember() {

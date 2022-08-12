@@ -27,7 +27,7 @@ public class ParticipantService {
     @Transactional
     public void participate(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findMember(memberId);
+        Member member = memberFindService.findExistMember(memberId);
 
         group.participate(member);
     }
