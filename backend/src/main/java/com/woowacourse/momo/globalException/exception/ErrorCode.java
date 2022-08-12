@@ -47,6 +47,9 @@ public enum ErrorCode {
     PARTICIPANT_WITHDRAW_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_005", "모임의 참여자가 아닙니다."),
     PARTICIPANT_WITHDRAW_DEADLINE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_006", "모집이 마감된 모임입니다."),
     PARTICIPANT_WITHDRAW_EARLY_CLOSED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_007", "조기종료된 모임입니다."),
+
+    FILE_INVALID_EXTENSION(HttpStatus.BAD_REQUEST.value(), "FILE_ERROR_001", "저장할 수 없는 확장자입니다."),
+    FILE_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "FILE_ERROR_002", "파일 입출력 에러입니다."),
     ;
 
     private final int statusCode;
