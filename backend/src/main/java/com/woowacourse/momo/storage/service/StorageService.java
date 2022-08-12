@@ -23,9 +23,9 @@ public class StorageService {
         File savedFile = new File(PATH_PREFIX + requestFile.getOriginalFilename());
         File directory = new File(PATH_PREFIX);
 
-        fileInit(savedFile, directory);
-
         validateExtension(requestFile);
+
+        fileInit(savedFile, directory);
 
         try (OutputStream outputStream = new FileOutputStream(savedFile)) {
             outputStream.write(requestFile.getBytes());
