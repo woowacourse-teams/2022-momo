@@ -81,10 +81,14 @@ public class GroupService {
     }
 
     private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        schedules.stream()
-                .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
-                .findAny()
-                .ifPresent(schedule -> { throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION); } );
+        if (existAnyScheduleOutOfDuration(schedules, duration)) {
+            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+        }
+    }
+
+    private boolean existAnyScheduleOutOfDuration(List<Schedule> schedules, Duration duration) {
+        return schedules.stream()
+                .anyMatch(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()));
     }
 
     @Transactional
