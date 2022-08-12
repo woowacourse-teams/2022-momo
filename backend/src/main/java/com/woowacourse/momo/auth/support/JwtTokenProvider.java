@@ -42,10 +42,10 @@ public class JwtTokenProvider {
         return createToken(payload, refreshTokenValidityInMilliseconds);
     }
 
-    private String createToken(Long payload, long ValidityInMilliseconds) {
+    private String createToken(Long payload, long validityInMilliseconds) {
         Claims claims = Jwts.claims().setSubject(Long.toString(payload));
         Date now = new Date();
-        Date validity = new Date(now.getTime() + ValidityInMilliseconds);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
