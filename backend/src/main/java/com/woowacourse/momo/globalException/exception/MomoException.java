@@ -14,5 +14,4 @@ public class MomoException extends RuntimeException {
         errorCode = code.getErrorCode();
         message = code.getMessage();
     }
-
 }
