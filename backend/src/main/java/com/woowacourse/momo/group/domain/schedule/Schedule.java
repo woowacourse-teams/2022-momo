@@ -48,7 +48,7 @@ public class Schedule {
     }
 
     public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
-        return (date.isAfter(startDate) | date.isEqual(startDate))
-                && (date.isBefore(endDate) | date.isEqual(endDate));
+        return (date.isAfter(startDate) || date.isEqual(startDate))
+                && (date.isBefore(endDate) || date.isEqual(endDate));
     }
 }
