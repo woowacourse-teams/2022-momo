@@ -75,14 +75,14 @@ const Divider = styled.div`
   width: 20rem;
   height: 1px;
 
-  background: ${({ theme: { colors } }) => colors.gray003};
-
   margin-top: 1rem;
 
-  span {
-    background: ${({ theme: { colors } }) => colors.white001};
+  background: ${({ theme: { colors } }) => colors.gray003};
 
+  span {
     padding: 0.2rem 1rem 0 1rem;
+
+    background: ${({ theme: { colors } }) => colors.white001};
   }
 `;
 

@@ -6,7 +6,7 @@ const PageContainer = styled.div`
   align-items: center;
 
   width: 100%;
-  height: calc(100vh - 5rem);
+  height: calc(100% - 5rem);
 `;
 
 export { PageContainer };

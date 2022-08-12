@@ -18,27 +18,21 @@ function Auth() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
 
-  if (!code) {
-    return (
-      <S.PageContainer>
-        <Loading />
-      </S.PageContainer>
-    );
-  }
+  if (code) {
+    requestGoogleLogin(code)
+      .then(accessToken => {
+        setAccessToken(accessToken);
 
-  requestGoogleLogin(code)
-    .then(accessToken => {
-      setAccessToken(accessToken);
-
-      getUserInfo().then(userInfo => {
-        setLoginInfo({ isLogin: true, user: userInfo });
+        getUserInfo().then(userInfo => {
+          setLoginInfo({ isLogin: true, user: userInfo });
+          navigate('/');
+        });
+      })
+      .catch(({ message }) => {
+        alert(showErrorMessage(message));
         navigate('/');
       });
-    })
-    .catch(({ message }) => {
-      alert(showErrorMessage(message));
-      navigate('/');
-    });
+  }
 
   return (
     <S.PageContainer>
