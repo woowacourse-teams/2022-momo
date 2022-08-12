@@ -53,9 +53,15 @@ public class GroupController {
         return ResponseEntity.ok(groupService.findGroupOfMember(memberId));
     }
 
-    @GetMapping
+    @GetMapping(params = {"page"})
     public ResponseEntity<GroupPageResponse> findAll(@RequestParam(required = false, defaultValue = "0") int page) {
         return ResponseEntity.ok(groupService.findAll(page));
+    }
+
+    @GetMapping(params = {"category", "page"})
+    public ResponseEntity<GroupPageResponse> findAllByCategory(
+            @RequestParam long category, @RequestParam(required = false, defaultValue = "0") int page) {
+        return ResponseEntity.ok(groupService.findAllByCategory(category, page));
     }
 
     @Authenticated

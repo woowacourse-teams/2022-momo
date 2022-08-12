@@ -32,11 +32,4 @@ public enum Category {
                 .findFirst()
                 .orElseThrow(() -> new MomoException(ErrorCode.CATEGORY_NOT_EXIST));
     }
-
-    public static Category from(String name) {
-        return Arrays.stream(values())
-                .filter(category -> category.name.equals(name))
-                .findFirst()
-                .orElseThrow(() -> new MomoException(ErrorCode.CATEGORY_NOT_EXIST));
-    }
 }

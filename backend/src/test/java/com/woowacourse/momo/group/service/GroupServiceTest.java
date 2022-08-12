@@ -213,7 +213,7 @@ class GroupServiceTest {
             saveDrinkGroup();
         }
 
-        GroupPageResponse actual = groupService.findAllByCategory(Category.DRINK.getName(), 1);
+        GroupPageResponse actual = groupService.findAllByCategory(Category.DRINK.getId(), 1);
 
         assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
     }

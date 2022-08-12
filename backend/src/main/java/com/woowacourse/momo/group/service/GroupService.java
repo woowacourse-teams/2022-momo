@@ -60,9 +60,9 @@ public class GroupService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
     }
 
-    public GroupPageResponse findAllByCategory(String categoryName, int pageNumber) {
+    public GroupPageResponse findAllByCategory(long categoryId, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
-        Category category = Category.from(categoryName);
+        Category category = Category.from(categoryId);
         Page<Group> groups = groupFindService.findGroupsByCategory(category, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);

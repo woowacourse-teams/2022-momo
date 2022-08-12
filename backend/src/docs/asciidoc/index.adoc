@@ -22,6 +22,14 @@ include::{snippets}/groupget/http-request.adoc[]
 Response
 include::{snippets}/groupget/http-response.adoc[]
 
+=== 카테고리별 모임 조회
+
+Request
+include::{snippets}/grouplistbycategory/http-request.adoc[]
+
+Response
+include::{snippets}/grouplistbycategory/http-response.adoc[]
+
 === 모임 생성
 
 Request

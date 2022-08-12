@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -100,7 +101,7 @@ class GroupControllerTest {
     void groupUpdateTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
-        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
+        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 15,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
@@ -123,7 +124,7 @@ class GroupControllerTest {
     void groupCloseEarlyTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
-        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId);
+        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
 
         mockMvc.perform(post("/api/groups/" + savedGroupId + "/close")
                         .header("Authorization", "bearer " + accessToken)
@@ -141,7 +142,7 @@ class GroupControllerTest {
     @Test
     void groupDeleteTest() throws Exception {
         Long saveHostId = saveMember("woowa", "wooteco1!", "모모");
-        Long saveId = saveGroup("모모의 스터디", saveHostId);
+        Long saveId = saveGroup("모모의 스터디", saveHostId, Category.STUDY);
         String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(delete("/api/groups/" + saveId)
@@ -160,7 +161,7 @@ class GroupControllerTest {
     @Test
     void groupGetTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
-        Long saveId = saveGroup("모모의 스터디", saveMemberId);
+        Long saveId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         String accessToken = accessToken("woowa", "wooteco1!");
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/" + saveId)
@@ -179,8 +180,8 @@ class GroupControllerTest {
     @Test
     void groupGetListTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
-        saveGroup("모모의 스터디", saveMemberId);
-        saveGroup("무무의 스터디", saveMemberId);
+        saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0"))
                 .andExpect(status().is(HttpStatus.OK.value()))
@@ -194,12 +195,36 @@ class GroupControllerTest {
                 );
     }
 
+    @DisplayName("카테고리별 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetListByCategoryTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("구구의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("브리의 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?category=1&page=0"))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("브리의 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("구구의 스터디")))
+                .andExpect(jsonPath("groups[2].name", is("무무의 스터디")))
+                .andExpect(jsonPath("groups[3].name", is("모모의 스터디")))
+                .andDo(
+                        document("grouplistbycategory",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다")
     @Test
     void groupGetListWithPaginationTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         for (int i = 0; i < TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE; i++) {
-            saveGroup("모모의 스터디" + i, saveMemberId);
+            saveGroup("모모의 스터디" + i, saveMemberId, Category.STUDY);
         }
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=1"))
@@ -212,10 +237,10 @@ class GroupControllerTest {
     void groupGetListRelatedMe() throws Exception {
         Long savedMember1 = saveMember("woowa", "wooteco1!", "모모");
         Long savedMember2 = saveMember("woowak", "wooteco1!", "머머");
-        saveGroup("모모의 스터디1", savedMember1);
+        saveGroup("모모의 스터디1", savedMember1, Category.STUDY);
         String token = accessToken("woowa", "wooteco1!");
 
-        Long GroupHeldByAnotherMember = saveGroup("머머의 스터디", savedMember2);
+        Long GroupHeldByAnotherMember = saveGroup("머머의 스터디", savedMember2, Category.STUDY);
         participantService.participate(GroupHeldByAnotherMember, savedMember1);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me")
@@ -230,8 +255,8 @@ class GroupControllerTest {
                 );
     }
 
-    Long saveGroup(String name, Long hostId) {
-        GroupRequest groupRequest = new GroupRequest(name, 1L, 10,
+    Long saveGroup(String name, Long hostId, Category category) {
+        GroupRequest groupRequest = new GroupRequest(name, category.getId(), 10,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
