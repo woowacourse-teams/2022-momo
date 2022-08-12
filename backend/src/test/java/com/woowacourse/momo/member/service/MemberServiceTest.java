@@ -15,7 +15,6 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.exception.NotFoundMemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;

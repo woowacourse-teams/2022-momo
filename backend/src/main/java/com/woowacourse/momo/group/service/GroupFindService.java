@@ -14,7 +14,6 @@ import com.woowacourse.momo.globalException.exception.ErrorCode;
 import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

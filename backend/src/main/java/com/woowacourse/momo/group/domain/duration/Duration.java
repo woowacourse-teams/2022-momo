@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.globalException.exception.ErrorCode;
 import com.woowacourse.momo.globalException.exception.MomoException;
-import com.woowacourse.momo.group.exception.InvalidDurationException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

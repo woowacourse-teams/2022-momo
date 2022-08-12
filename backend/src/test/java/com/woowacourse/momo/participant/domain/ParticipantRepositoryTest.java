@@ -1,9 +1,10 @@
 package com.woowacourse.momo.participant.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;

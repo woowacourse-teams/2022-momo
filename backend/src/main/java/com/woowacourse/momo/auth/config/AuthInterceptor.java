@@ -12,7 +12,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.globalException.exception.ErrorCode;

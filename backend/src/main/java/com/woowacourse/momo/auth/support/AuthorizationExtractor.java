@@ -4,7 +4,6 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.woowacourse.momo.auth.exception.AuthFailException;
 import com.woowacourse.momo.globalException.exception.ErrorCode;
 import com.woowacourse.momo.globalException.exception.MomoException;
 
