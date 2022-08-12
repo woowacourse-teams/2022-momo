@@ -35,7 +35,7 @@ import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 @AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
-public class MemberControllerTest {
+class MemberControllerTest {
 
     private static final String ID = "momo";
     private static final String PASSWORD = "1q2W3e4r!";

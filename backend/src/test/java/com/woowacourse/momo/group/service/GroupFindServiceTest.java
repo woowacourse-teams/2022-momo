@@ -25,7 +25,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 
 @Transactional
 @SpringBootTest
-public class GroupFindServiceTest {
+class GroupFindServiceTest {
 
     @Autowired
     private GroupFindService groupFindService;
