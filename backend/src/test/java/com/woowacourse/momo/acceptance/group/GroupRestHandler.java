@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
@@ -55,6 +56,10 @@ public class GroupRestHandler extends RestHandler {
         return getRequest(BASE_URL + "?page=0");
     }
 
+    public static ValidatableResponse 카테고리별_모임목록을_조회한다(Category category, int firstPageNumber) {
+        return getRequest(BASE_URL + "?category=" + category.getId() + "&page=" + firstPageNumber);
+    }
+
     public static ValidatableResponse 모임을_수정한다(Long groupId, GroupFixture group) {
         GroupUpdateRequest request = groupUpdateRequest(group);
         return putRequest(request, BASE_URL + "/" + groupId);
@@ -88,11 +93,13 @@ public class GroupRestHandler extends RestHandler {
     }
 
     public static GroupUpdateRequest groupUpdateRequest(GroupFixture group) {
-        return groupUpdateRequest(group.getName(), group.getCategoryId(), group.getCapacity(), group.getDuration(), group.getSchedules(),
+        return groupUpdateRequest(group.getName(), group.getCategoryId(), group.getCapacity(), group.getDuration(),
+                group.getSchedules(),
                 group.getDeadline(), group.getLocation(), group.getDescription());
     }
 
-    public static GroupUpdateRequest groupUpdateRequest(String name, Long categoryId, Integer capacity, Duration duration,
+    public static GroupUpdateRequest groupUpdateRequest(String name, Long categoryId, Integer capacity,
+                                                        Duration duration,
                                                         List<Schedule> schedules, LocalDateTime deadline,
                                                         String location, String description) {
         DurationRequest durationRequest = durationRequest(duration);

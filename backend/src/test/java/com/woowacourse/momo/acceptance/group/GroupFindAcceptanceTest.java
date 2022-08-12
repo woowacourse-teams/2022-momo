@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
+import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
@@ -29,6 +31,7 @@ import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
@@ -45,7 +48,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         hostAccessToken = HOST.로_로그인한다();
-        groupIds = Stream.of(MOMO_STUDY, MOMO_TRAVEL, DUDU_STUDY)
+        groupIds = Stream.of(MOMO_STUDY, MOMO_TRAVEL, DUDU_STUDY, DUDU_COFFEE_TIME)
                 .collect(Collectors.toMap(
                         group -> group,
                         group -> group.을_생성한다(hostAccessToken)
@@ -113,7 +116,15 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     void findGroupsByPageNumber() {
         ValidatableResponse response = 페이지로_모임목록을_조회한다(FIRST_PAGE_NUMBER);
 
-        checkGroupSummaryResponses(response);
+        checkGroupSummaryResponsesByPageNumber(response);
+    }
+
+    @DisplayName("카테고리별 모임 목록을 조회한다")
+    @Test
+    void findGroupsByCategoryAndPageNumber() {
+        ValidatableResponse response = 카테고리별_모임목록을_조회한다(Category.STUDY, FIRST_PAGE_NUMBER);
+
+        checkGroupSummaryResponsesByCategory(response, Category.STUDY);
     }
 
     @DisplayName("본인이 참여하고 있는 모임들을 조회한다.")
@@ -132,14 +143,29 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         response.body("$", hasSize(1));
     }
 
-    void checkGroupSummaryResponses(ValidatableResponse response) {
-        response.statusCode(HttpStatus.OK.value());
-
+    private void checkGroupSummaryResponsesByPageNumber(ValidatableResponse response) {
         List<GroupFixture> groups = groupIds.entrySet()
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponsesByCategory(ValidatableResponse response, Category category) {
+        List<GroupFixture> groups = groupIds.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .map(Entry::getKey)
+                .filter(g -> g.getCategoryId().equals(category.getId()))
+                .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponses(ValidatableResponse response, List<GroupFixture> groups) {
+        response.statusCode(HttpStatus.OK.value());
 
         for (int i = 0; i < groups.size(); i++) {
             GroupFixture group = groups.get(i);
