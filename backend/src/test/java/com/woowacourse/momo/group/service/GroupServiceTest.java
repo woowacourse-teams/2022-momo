@@ -13,7 +13,6 @@ import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -105,8 +104,8 @@ class GroupServiceTest {
                 SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.create(savedHost.getId(), request))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("카테고리를 찾을 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 카테고리입니다.");
     }
 
     @DisplayName("모임을 조회한다")
@@ -127,21 +126,6 @@ class GroupServiceTest {
         assertThatThrownBy(() -> groupService.findById(0L))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
-    }
-
-    @DisplayName("모임 목록을 조회한다")
-    @Test
-    void findAll() {
-        int count = 3;
-        List<GroupSummaryResponse> expected = IntStream.range(0, count)
-                .mapToObj(i -> saveStudyGroup())
-                .map(GroupResponseAssembler::groupSummaryResponse)
-                .collect(Collectors.toList());
-
-        List<GroupSummaryResponse> actual = groupService.findAll();
-
-        assertThat(actual).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(expected);
     }
 
     @DisplayName("모임을 수정한다")
@@ -229,7 +213,7 @@ class GroupServiceTest {
             saveDrinkGroup();
         }
 
-        GroupPageResponse actual = groupService.findGroupsByCategory(Category.DRINK.getName(), 1);
+        GroupPageResponse actual = groupService.findAllByCategory(Category.DRINK.getName(), 1);
 
         assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
     }

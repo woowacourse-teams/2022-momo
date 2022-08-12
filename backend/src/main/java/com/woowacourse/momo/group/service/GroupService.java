@@ -51,12 +51,6 @@ public class GroupService {
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public List<GroupSummaryResponse> findAll() {
-        List<Group> groups = groupFindService.findGroups();
-
-        return GroupResponseAssembler.groupSummaryResponses(groups);
-    }
-
     public GroupPageResponse findAll(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
         Page<Group> groups = groupFindService.findGroups(pageable);
@@ -66,7 +60,7 @@ public class GroupService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
     }
 
-    public GroupPageResponse findGroupsByCategory(String categoryName, int pageNumber) {
+    public GroupPageResponse findAllByCategory(String categoryName, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
         Category category = Category.from(categoryName);
         Page<Group> groups = groupFindService.findGroupsByCategory(category, pageable);
