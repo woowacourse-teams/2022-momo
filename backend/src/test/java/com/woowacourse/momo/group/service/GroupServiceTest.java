@@ -74,8 +74,14 @@ class GroupServiceTest {
         savedMember2 = memberRepository.save(new Member("사용자2", "password", "momo"));
     }
 
-    private Group saveGroup() {
+    private Group saveStudyGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedHost, Category.STUDY, 3,
+                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
+                "", ""));
+    }
+
+    private Group saveDrinkGroup() {
+        return groupRepository.save(new Group("모모의 술파티", savedHost, Category.DRINK, 3,
                 이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
                 "", ""));
     }
@@ -106,7 +112,7 @@ class GroupServiceTest {
     @DisplayName("모임을 조회한다")
     @Test
     void findById() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
         GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup);
 
         GroupResponse actual = groupService.findById(savedGroup.getId());
@@ -128,7 +134,7 @@ class GroupServiceTest {
     void findAll() {
         int count = 3;
         List<GroupSummaryResponse> expected = IntStream.range(0, count)
-                .mapToObj(i -> saveGroup())
+                .mapToObj(i -> saveStudyGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
 
@@ -141,7 +147,7 @@ class GroupServiceTest {
     @DisplayName("모임을 수정한다")
     @Test
     void update() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
@@ -156,7 +162,7 @@ class GroupServiceTest {
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
     @Test
     void updateExistParticipants() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
         savedGroup.participate(savedMember1);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
@@ -169,7 +175,7 @@ class GroupServiceTest {
     @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
     @Test
     void updateFinishedRecruitmentGroup() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
         savedGroup.participate(savedMember1);
         savedGroup.participate(savedMember2);
         long groupId = savedGroup.getId();
@@ -185,7 +191,7 @@ class GroupServiceTest {
     @DisplayName("모임을 조기 마감한다")
     @Test
     void closeEarly() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
 
         groupService.closeEarly(savedHost.getId(), savedGroup.getId());
 
@@ -197,13 +203,13 @@ class GroupServiceTest {
     @Test
     void findAllWithPage() {
         List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
-                .mapToObj(i -> saveGroup())
+                .mapToObj(i -> saveStudyGroup())
                 .map(GroupResponseAssembler::groupSummaryResponse)
                 .sorted(Comparator.comparing(GroupSummaryResponse::getId).reversed())
                 .collect(Collectors.toList());
 
         for (int i = 0; i < PAGE_SIZE; i++) {
-            saveGroup();
+            saveStudyGroup();
         }
 
         GroupPageResponse actual = groupService.findAll(1);
@@ -215,10 +221,23 @@ class GroupServiceTest {
         );
     }
 
+    @DisplayName("카테고리의 그룹 목록을 조회한다")
+    @Test
+    void findGroupsByCategory() {
+        for (int i = 0; i < PAGE_SIZE + TWO_PAGE_GROUPS; i++) {
+            saveStudyGroup();
+            saveDrinkGroup();
+        }
+
+        GroupPageResponse actual = groupService.findGroupsByCategory(Category.DRINK.getName(), 1);
+
+        assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
+    }
+
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void delete() {
-        long groupId = saveGroup().getId();
+        long groupId = saveStudyGroup().getId();
         groupService.delete(savedHost.getId(), groupId);
 
         assertThatThrownBy(() -> groupService.findById(groupId))
@@ -230,7 +249,7 @@ class GroupServiceTest {
     @Test
     void deleteNotHost() {
         long memberId = savedMember1.getId();
-        long groupId = saveGroup().getId();
+        long groupId = saveStudyGroup().getId();
 
         assertThatThrownBy(() -> groupService.delete(memberId, groupId))
                 .isInstanceOf(MomoException.class)
@@ -240,7 +259,7 @@ class GroupServiceTest {
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
     @Test
     void deleteExistParticipants() {
-        long groupId = saveGroup().getId();
+        long groupId = saveStudyGroup().getId();
         participantService.participate(groupId, savedMember1.getId());
 
         assertThatThrownBy(() -> groupService.delete(savedHost.getId(), groupId))
@@ -251,7 +270,7 @@ class GroupServiceTest {
     @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다")
     @Test
     void deleteFinishedRecruitmentGroup() {
-        Group savedGroup = saveGroup();
+        Group savedGroup = saveStudyGroup();
         savedGroup.participate(savedMember1);
         savedGroup.participate(savedMember2);
 

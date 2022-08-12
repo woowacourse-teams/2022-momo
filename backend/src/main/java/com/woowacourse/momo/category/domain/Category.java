@@ -30,4 +30,11 @@ public enum Category {
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("카테고리를 찾을 수 없습니다."));
     }
+
+    public static Category from(String name) {
+        return Arrays.stream(values())
+                .filter(category -> category.name.equals(name))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("카테고리를 찾을 수 없습니다."));
+    }
 }

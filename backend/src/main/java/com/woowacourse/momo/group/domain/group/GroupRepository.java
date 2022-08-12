@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.woowacourse.momo.category.domain.Category;
+
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Page<Group> findAll(Pageable pageable);
+
+    Page<Group> findAllByCategory(Category category, Pageable pageable);
 
     @Query("select distinct g from Group g join Participant p on g = p.group where p.member.id = :memberId")
     List<Group> findParticipatedGroups(@Param("memberId") Long memberId);
