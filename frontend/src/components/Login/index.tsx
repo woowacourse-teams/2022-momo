@@ -2,8 +2,9 @@ import { useRef } from 'react';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { requestLogin } from 'apis/request/auth';
+import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
+import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { accessTokenState, loginState, modalState } from 'store/states';
@@ -13,6 +14,7 @@ import * as S from './index.styled';
 
 function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
+  const setModalState = useSetRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
   const userIdRef = useRef<HTMLInputElement>(null);
@@ -47,6 +49,20 @@ function Login() {
       });
   };
 
+  const googleLogin = () => {
+    requestGoogleOauthToken()
+      .then(oauthLink => {
+        window.location.assign(oauthLink);
+      })
+      .catch(({ message }) => {
+        alert(showErrorMessage(message));
+      });
+  };
+
+  const showSignupModal = () => {
+    setModalState('signup');
+  };
+
   return (
     <Modal modalState={modalFlag === 'login'} setOffModal={setOffModal}>
       <S.Form onSubmit={login}>
@@ -66,7 +82,21 @@ function Login() {
             />
           </S.Label>
         </S.InputContainer>
-        <S.Button type="submit">로그인</S.Button>
+        <S.ButtonContainer>
+          <S.Button type="submit">로그인</S.Button>
+          <S.SignupButton>
+            모모가 처음이신가요? |{' '}
+            <span onClick={showSignupModal}>회원가입</span>
+          </S.SignupButton>
+          <S.Divider>
+            <span>or</span>
+          </S.Divider>
+          <S.OAuthButtonWrapper>
+            <S.OAuthButton type="button" onClick={googleLogin}>
+              <GoogleSVG />
+            </S.OAuthButton>
+          </S.OAuthButtonWrapper>
+        </S.ButtonContainer>
       </S.Form>
     </Modal>
   );
