@@ -41,7 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void validateToken(HttpServletRequest request) {
         String token = AuthorizationExtractor.extract(request);
-        if (!jwtTokenProvider.validateToken(token)) {
+        if (jwtTokenProvider.validateTokenNotUsable(token)) {
             throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
     }

@@ -23,7 +23,7 @@ public class RefreshTokenAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String refreshToken = AuthorizationExtractor.extract(request);
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
+        if (jwtTokenProvider.validateTokenNotUsable(refreshToken)) {
             throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
 

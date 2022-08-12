@@ -60,15 +60,15 @@ public class JwtTokenProvider {
                 getClaims(token).getBody().getSubject());
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateTokenNotUsable(String token) {
         try {
             Jws<Claims> claims = getClaims(token);
 
-            return !claims.getBody().getExpiration().before(new Date());
+            return claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             throw new MomoException(ErrorCode.AUTH_EXPIRED_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            return true;
         }
     }
 
