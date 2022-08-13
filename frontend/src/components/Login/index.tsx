@@ -7,6 +7,7 @@ import { getUserInfo } from 'apis/request/user';
 import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
+import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState, modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
@@ -19,6 +20,8 @@ function Login() {
   const setLoginInfo = useSetRecoilState(loginState);
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  const { setMessage } = useSnackbar();
 
   const setOffModal = () => {
     setModalFlag('off');
@@ -34,7 +37,7 @@ function Login() {
 
     requestLogin({ userId, password })
       .then(accessToken => {
-        alert(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
+        setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
         setAccessToken(accessToken);
 

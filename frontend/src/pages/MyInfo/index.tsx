@@ -13,6 +13,7 @@ import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
 import cover from 'assets/userInfo_cover.jpg';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
+import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
@@ -28,6 +29,8 @@ function MemberInfo() {
   const [isEditableName, setIsEditableName] = useState(false);
   const [isEditablePassword, setIsEditablePassword] = useState(false);
 
+  const { setMessage } = useSnackbar();
+
   const navigate = useNavigate();
 
   const changeNameEditable = () => {
@@ -41,7 +44,7 @@ function MemberInfo() {
   const editName = () => {
     requestChangeName(name)
       .then(() => {
-        alert(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
+        setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
         setIsEditableName(false);
       })
       .catch(() => {
@@ -57,7 +60,7 @@ function MemberInfo() {
 
     requestChangePassword(password)
       .then(() => {
-        alert(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
+        setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
         setIsEditablePassword(false);
       })
       .catch(() => {
@@ -73,7 +76,7 @@ function MemberInfo() {
       .then(() => {
         setLoginInfo({ isLogin: false });
         setAccessToken('');
-        alert(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
+        setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
         navigate('/');
       })
       .catch(() => {

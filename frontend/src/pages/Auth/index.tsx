@@ -5,6 +5,8 @@ import { useSetRecoilState } from 'recoil';
 import { requestGoogleLogin } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
 import { Loading } from 'components/Animation';
+import { GUIDE_MESSAGE } from 'constants/message';
+import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
@@ -13,6 +15,8 @@ import * as S from './index.styled';
 function Auth() {
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
+
+  const { setMessage } = useSnackbar();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -25,6 +29,7 @@ function Auth() {
 
         getUserInfo().then(userInfo => {
           setLoginInfo({ isLogin: true, user: userInfo });
+          setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
           navigate('/');
         });
       })
