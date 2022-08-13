@@ -69,7 +69,9 @@ function User() {
             <S.Profile width="4rem">❤️</S.Profile>
             <div>{user?.name}</div>
           </S.User>
-          <S.Option onClick={navigateToLocation('NOT_THING')}>내 모임</S.Option>
+          <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>
+            내 모임
+          </S.Option>
           <S.Option onClick={logout}>로그아웃</S.Option>
         </S.Dropdown>
       )}
