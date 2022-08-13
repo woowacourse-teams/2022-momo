@@ -18,7 +18,7 @@ function Modal({ modalState, setOffModal, children }: ModalProps) {
   const { isClosing, close } = useClosingState(modalAnimationTime, setOffModal);
 
   return (
-    <Portal>
+    <Portal to="modal">
       {modalState && (
         <S.Dimmer
           onClick={close}
