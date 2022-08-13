@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getGroups } from 'apis/request/group';
-import { Loading, NoResult } from 'components/Animation';
+import { Loading } from 'components/Animation';
 import Card from 'components/Card';
+import NoResult from 'components/NoResult';
 import { QUERY_KEY } from 'constants/key';
 import { GroupList } from 'types/data';
 
@@ -75,14 +76,11 @@ function RecommendGroups() {
           </S.GroupListBox>
         </>
       ) : (
-        <S.NoResultContainer>
-          <NoResult />
-          <S.NoResultDescription>
-            찾고 계신 모임이 없어요 ・゜・(ノД`)
-            <br />
-            새로운 모임을 추가해보는 건 어떨까요?
-          </S.NoResultDescription>
-        </S.NoResultContainer>
+        <NoResult>
+          찾고 계신 모임이 없어요 ・゜・(ノД`)
+          <br />
+          새로운 모임을 추가해보는 건 어떨까요?
+        </NoResult>
       )}
       {isFetching && (
         <S.LoadingWrapper>

@@ -43,24 +43,6 @@ const GroupListBox = styled.div`
   `}
 `;
 
-const NoResultContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 3rem;
-
-  width: 100%;
-
-  margin-top: 5rem;
-`;
-
-const NoResultDescription = styled.h3`
-  line-height: 2.5rem;
-
-  font-size: 1.3rem;
-`;
-
 const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -68,11 +50,4 @@ const LoadingWrapper = styled.div`
   width: 100%;
 `;
 
-export {
-  Container,
-  Heading,
-  GroupListBox,
-  NoResultContainer,
-  NoResultDescription,
-  LoadingWrapper,
-};
+export { Container, Heading, GroupListBox, LoadingWrapper };
