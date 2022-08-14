@@ -212,6 +212,19 @@ class GroupServiceTest {
         assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
     }
 
+    @DisplayName("키워드를 포함하는 이름의 모임을 조회한다")
+    @Test
+    void findAllByKeyword() {
+        saveGroup("모모의 스터디", Category.STUDY);
+        saveGroup("구구의 스터디", Category.STUDY);
+        saveGroup("모모의 술파티", Category.DRINK);
+        saveGroup("두두와의 헬스 클럽", Category.HEALTH);
+
+        GroupPageResponse actual = groupService.findAllByKeyword("모모", 0);
+
+        assertThat(actual.getGroups()).hasSize(2);
+    }
+
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void delete() {

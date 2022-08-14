@@ -21,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
@@ -111,6 +114,24 @@ class GroupRepositoryTest {
                 .isEqualTo(List.of(savedGroup1, savedGroup2));
     }
 
+    @DisplayName("키워드를 포함하는 이름의 모임을 조회한다")
+    @Test
+    void findAllByKeyword() {
+        Group group1 = constructGroup("모모 회식", host, List.of(이틀후_10시부터_12시까지.newInstance()));
+        Group group2 = constructGroup("구구 스터디", host, List.of(이틀후_10시부터_12시까지.newInstance()));
+        Group group3 = constructGroup("모모 스터디", host, List.of(이틀후_10시부터_12시까지.newInstance()));
+        Group savedGroup1 = groupRepository.save(group1);
+        Group savedGroup2 = groupRepository.save(group2);
+        Group savedGroup3 = groupRepository.save(group3);
+
+        synchronize();
+
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("id").descending());
+        List<Group> actual = groupRepository.findAllByKeyword("모모", pageable).getContent();
+
+        assertThat(actual).hasSize(2);
+    }
+
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
@@ -162,8 +183,11 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(Member host, List<Schedule> schedules) {
+        return constructGroup("momo 회의", host, schedules);
+    }
 
-        return new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+    private Group constructGroup(String name, Member host, List<Schedule> schedules) {
+        return new Group(name, host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(),
                 schedules, "", "");
     }

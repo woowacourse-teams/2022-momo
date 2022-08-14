@@ -1,6 +1,5 @@
 package com.woowacourse.momo.group.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -43,8 +42,10 @@ public class GroupFindService {
     }
 
     public List<Group> findRelatedGroups(Long memberId) {
-        List<Group> participatedGroup = groupRepository.findParticipatedGroups(memberId);
+        return groupRepository.findParticipatedGroups(memberId);
+    }
 
-        return new ArrayList<>(participatedGroup);
+    public Page<Group> findAllByKeyword(String keyword, Pageable pageable) {
+        return groupRepository.findAllByKeyword(keyword, pageable);
     }
 }

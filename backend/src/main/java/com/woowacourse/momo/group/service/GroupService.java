@@ -70,6 +70,15 @@ public class GroupService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
     }
 
+    public GroupPageResponse findAllByKeyword(String keyword, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
+        Page<Group> groups = groupFindService.findAllByKeyword(keyword, pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
+    }
+
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
