@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selector } from 'recoil';
 
-import { ModalStateType } from 'types/condition';
+import { ModalStateType, SnackbarState } from 'types/condition';
 import { CategoryType } from 'types/data';
 import { LoginState } from 'types/user';
 
@@ -12,6 +12,11 @@ const categoryState = atom<CategoryType[]>({
 const modalState = atom<ModalStateType>({
   key: 'modalState',
   default: 'off',
+});
+
+const snackbarState = atom<SnackbarState>({
+  key: 'snackbarState',
+  default: { isShowing: false, message: '' },
 });
 
 const loginState = atom<LoginState>({
@@ -35,4 +40,10 @@ const accessTokenState = selector<string>({
   },
 });
 
-export { categoryState, modalState, loginState, accessTokenState };
+export {
+  categoryState,
+  modalState,
+  snackbarState,
+  loginState,
+  accessTokenState,
+};

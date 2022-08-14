@@ -6,6 +6,7 @@ import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
+import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
@@ -42,6 +43,8 @@ function Signup() {
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
+  const { setMessage } = useSnackbar();
+
   const setOffModal = () => {
     setModalState('off');
   };
@@ -73,7 +76,7 @@ function Signup() {
 
     requestSignup({ userId, password, name })
       .then(() => {
-        alert(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
+        setMessage(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
         resetValues();
         showLoginModal();
       })

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useClosingState = (animationTime: number, setOffFunc: Function) => {
+const useClosingState = (animationTime: number, setOffFunc: () => void) => {
   const [isClosing, setIsClosing] = useState(false);
 
   const close = () => {
