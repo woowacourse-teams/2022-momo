@@ -55,7 +55,7 @@ const getJoinedGroups = () => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios
-    .get<GroupSummary[]>(`${API_PATH.JOINED_GROUP}`, {
+    .get<GroupSummary[]>(API_PATH.JOINED_GROUP, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

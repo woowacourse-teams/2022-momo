@@ -1,6 +1,6 @@
 const QUERY_KEY = {
   CATEGORY: 'category',
-  JOINED_GROUP_SUMMARIES: 'joindGroupSummaries',
+  JOINED_GROUP_SUMMARIES: 'joinedGroupSummaries',
   GROUP_SUMMARIES: 'groupSummaries',
   GROUP_DETAILS: 'groupDetails',
   GROUP_PARTICIPANTS: 'groupParticipants',

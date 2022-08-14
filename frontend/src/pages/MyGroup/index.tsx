@@ -13,19 +13,6 @@ const groupTypes = [
   { name: '내가 찜한 모임' },
 ];
 
-function RenderSelectedGroupType(groupType: number) {
-  switch (groupType) {
-    case 0:
-      return <JoinedGroups />;
-    // case 1:
-    //   return <HostedGroups />;
-    // case 2:
-    //   return <ZzimhanGroups />;
-    default:
-      return <NoResult>해당 페이지는 준비중이에요 ・゜・(ノД`)</NoResult>;
-  }
-}
-
 function MyGroup() {
   const [selectedGroupType, setSelectedGroupType] = useState(0);
 
@@ -56,6 +43,19 @@ function MyGroup() {
       </S.Content>
     </>
   );
+}
+
+function RenderSelectedGroupType(groupType: number) {
+  switch (groupType) {
+    case 0:
+      return <JoinedGroups />;
+    // case 1:
+    //   return <HostedGroups />;
+    // case 2:
+    //   return <ZzimhanGroups />;
+    default:
+      return <NoResult>해당 페이지는 준비중이에요 ・゜・(ノД`)</NoResult>;
+  }
 }
 
 export default MyGroup;
