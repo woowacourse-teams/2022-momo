@@ -33,9 +33,24 @@ const requestGoogleLogin = (code: string) => {
     .then(res => res.data.accessToken);
 };
 
+const requestLogout = () => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.post(
+    API_PATH.LOGOUT,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+};
+
 export {
   requestSignup,
   requestLogin,
   requestGoogleOauthToken,
   requestGoogleLogin,
+  requestLogout,
 };
