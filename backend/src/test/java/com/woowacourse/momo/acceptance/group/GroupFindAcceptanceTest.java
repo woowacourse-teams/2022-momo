@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.키워드로_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
@@ -127,6 +128,15 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         checkGroupSummaryResponsesByCategory(response, Category.STUDY);
     }
 
+    @DisplayName("키워드로 모임 목록을 조회한다")
+    @Test
+    void findGroupsByKeywordAndPageNumber() {
+        String keyword = "모모";
+        ValidatableResponse response = 키워드로_모임목록을_조회한다(keyword, FIRST_PAGE_NUMBER);
+
+        checkGroupSummaryResponsesByKeyword(keyword, response);
+    }
+
     @DisplayName("본인이 참여하고 있는 모임들을 조회한다.")
     @Test
     void findGroupsParticipated() {
@@ -159,6 +169,17 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
                 .filter(g -> g.getCategoryId().equals(category.getId()))
+                .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponsesByKeyword(String keyword, ValidatableResponse response) {
+        List<GroupFixture> groups = groupIds.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .map(Entry::getKey)
+                .filter(g -> g.getName().contains(keyword))
                 .collect(Collectors.toList());
 
         checkGroupSummaryResponses(response, groups);

@@ -219,6 +219,28 @@ class GroupControllerTest {
                 );
     }
 
+    @DisplayName("키워드로 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetListByKeywordTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("모모의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("구구의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("브리의 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?keyword=모모&page=0"))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("모모의 술파티")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
+                .andDo(
+                        document("grouplistbykeyword",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다")
     @Test
     void groupGetListWithPaginationTest() throws Exception {

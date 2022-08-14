@@ -60,6 +60,10 @@ public class GroupRestHandler extends RestHandler {
         return getRequest(BASE_URL + "?category=" + category.getId() + "&page=" + firstPageNumber);
     }
 
+    public static ValidatableResponse 키워드로_모임목록을_조회한다(String keyword, int firstPageNumber) {
+        return getRequest(BASE_URL + "?keyword=" + keyword + "&page=" + firstPageNumber);
+    }
+
     public static ValidatableResponse 모임을_수정한다(Long groupId, GroupFixture group) {
         GroupUpdateRequest request = groupUpdateRequest(group);
         return putRequest(request, BASE_URL + "/" + groupId);

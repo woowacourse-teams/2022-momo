@@ -64,6 +64,12 @@ public class GroupController {
         return ResponseEntity.ok(groupService.findAllByCategory(category, page));
     }
 
+    @GetMapping(params = {"keyword", "page"})
+    public ResponseEntity<GroupPageResponse> findAllByKeyword(
+            @RequestParam String keyword, @RequestParam(required = false, defaultValue = "0") int page) {
+        return ResponseEntity.ok(groupService.findAllByKeyword(keyword, page));
+    }
+
     @Authenticated
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
