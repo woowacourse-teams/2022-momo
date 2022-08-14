@@ -3,14 +3,14 @@ import Category from 'components/Category';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { CategoryFallback } from 'components/ErrorBoundary/CategoryFallback';
 import RecommendGroups from 'components/RecommendGroups';
-import Search from 'components/Search';
+import SearchSection from 'components/SearchSection';
 
 import * as S from './index.styled';
 
 function Main() {
   return (
     <>
-      <Search />
+      <SearchSection />
       <ErrorBoundary fallbackUI={<CategoryFallback />}>
         <Category />
       </ErrorBoundary>

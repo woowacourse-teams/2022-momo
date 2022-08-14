@@ -7,6 +7,7 @@ import {
   GroupDetailData,
   GroupParticipants,
   GroupList,
+  GroupSummary,
 } from 'types/data';
 
 const requestCreateGroup = async ({
@@ -48,6 +49,18 @@ const requestCreateGroup = async ({
     .catch(() => {
       throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
     });
+};
+
+const getJoinedGroups = () => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios
+    .get<GroupSummary[]>(API_PATH.JOINED_GROUP, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(response => response.data);
 };
 
 const getGroups = (pageNumber: number) => () => {
@@ -118,6 +131,7 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 export {
   requestCreateGroup,
+  getJoinedGroups,
   getGroups,
   getGroupDetail,
   deleteGroup,

@@ -12,7 +12,15 @@ import LoginModal from 'components/Login';
 import SignupModal from 'components/Signup';
 import { BROWSER_PATH } from 'constants/path';
 import PageLayout from 'layouts/Page';
-import { Main, Detail, Create, MyInfo, NotFound, Auth } from 'pages/index';
+import {
+  Main,
+  Detail,
+  Create,
+  MyInfo,
+  NotFound,
+  Auth,
+  MyGroup,
+} from 'pages/index';
 import GlobalStyle from 'styles/global';
 import theme from 'styles/theme';
 
@@ -42,6 +50,7 @@ function App() {
                       path={BROWSER_PATH.OAUTH_GOOGLE}
                       element={<Auth />}
                     />
+                    <Route path={BROWSER_PATH.MY_GROUP} element={<MyGroup />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>

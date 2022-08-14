@@ -14,7 +14,7 @@ const Container = styled.div`
   padding-bottom: 2.5rem;
 `;
 
-const Image = styled.div`
+const Background = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -38,11 +38,13 @@ const Heading = styled.h2`
   font-size: 1.5rem;
 `;
 
-const InputContainer = styled.div`
+const Form = styled.form`
   display: flex;
 
   width: 37rem;
   height: 2.5rem;
+
+  filter: drop-shadow(0 0 4px ${({ theme: { colors } }) => colors.gray001});
 `;
 
 const Input = styled.input`
@@ -71,4 +73,4 @@ const Button = styled.button`
   font-weight: 700;
 `;
 
-export { Container, Image, Heading, InputContainer, Input, Button };
+export { Container, Background, Heading, Form, Input, Button };
