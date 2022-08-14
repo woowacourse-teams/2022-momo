@@ -31,10 +31,16 @@ function User() {
   useEffect(() => {
     if (!accessToken) return;
 
-    getUserInfo().then(userInfo => {
-      setLoginInfo({ isLogin: true, user: userInfo });
-    });
-  }, [accessToken, setLoginInfo]);
+    getUserInfo()
+      .then(userInfo => {
+        setLoginInfo({ isLogin: true, user: userInfo });
+      })
+      .catch(() => {
+        // 액세스 토큰 만료 시 자동 로그아웃
+        setLoginInfo({ isLogin: false });
+        setAccessToken('');
+      });
+  }, [accessToken, setLoginInfo, setAccessToken]);
 
   useEffect(() => {
     setIsShownDropdown(false);
