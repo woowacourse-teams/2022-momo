@@ -111,7 +111,7 @@ class MemberServiceTest {
                 .hasMessage("탈퇴한 멤버입니다.");
     }
 
-    @DisplayName("회원 정보 삭제 시 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
+    @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
     void deleteAndWithdraw() {
         Group group = saveGroup();
@@ -122,6 +122,16 @@ class MemberServiceTest {
 
         List<Group> groups = groupRepository.findParticipatedGroups(memberId);
         assertThat(groups).doesNotContain(group);
+    }
+
+    @DisplayName("회원 정보 삭제 시 주최한 모임 중 진행중인 모임이 있을 경우 탈퇴할 수 없다")
+    @Test
+    void deleteExistInProgressGroup() {
+        Group group = saveGroup();
+
+        assertThatThrownBy(() -> memberService.deleteById(savedHost.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("진행중인 모임이 있어 탈퇴할 수 없습니다.");
     }
 
     private Long createMember() {

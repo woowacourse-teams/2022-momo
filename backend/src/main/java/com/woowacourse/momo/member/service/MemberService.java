@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.globalException.exception.ErrorCode;
+import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
@@ -43,9 +45,13 @@ public class MemberService {
     private void withdrawGroup(Member member) {
         List<Group> groups = groupFindService.findRelatedGroups(member.getId());
         for (Group group : groups) {
-            if (!group.isEnd()) {
-                participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId());
+            if (group.isEnd()) {
+                continue;
             }
+            if (group.isHost(member)) {
+                throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
+            }
+            participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId());
         }
     }
 

@@ -75,7 +75,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @DisplayName("회원 탈퇴 시 진행중인 모임에 탈퇴시킨다")
+    @DisplayName("회원 탈퇴 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
     void deleteAndWithdraw() {
         String hostAccessToken = MemberFixture.DUDU.로_로그인한다();
@@ -96,5 +96,14 @@ class MemberAcceptanceTest extends AcceptanceTest {
             .map(Group::getId)
             .collect(Collectors.toList());
         assertThat(groups).doesNotContain(groupId);
+    }
+
+    @DisplayName("회원 탈퇴 시 주최한 모임 중 진행중인 모임이 있을 경우 탈퇴할 수 없다")
+    @Test
+    void deleteExistInProgressGroup() {
+        GroupRestHandler.모임을_생성한다(accessToken, GroupFixture.DUDU_COFFEE_TIME);
+
+        MemberRestHandler.회원탈퇴를_한다(accessToken)
+            .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
