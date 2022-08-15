@@ -95,7 +95,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
             .stream()
             .map(Group::getId)
             .collect(Collectors.toList());
-        assertThat(groups).doesNotContain(groupId);
+        assertThat(groups).isEmpty();
     }
 
     @DisplayName("회원 탈퇴 시 주최한 모임 중 진행중인 모임이 있을 경우 탈퇴할 수 없다")

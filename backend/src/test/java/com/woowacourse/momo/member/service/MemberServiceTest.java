@@ -119,7 +119,7 @@ class MemberServiceTest {
         memberService.deleteById(memberId);
 
         List<Group> groups = groupRepository.findParticipatedGroups(memberId);
-        assertThat(groups).doesNotContain(group);
+        assertThat(groups).isEmpty();
     }
 
     @DisplayName("회원 정보 삭제 시 주최한 모임 중 진행중인 모임이 있을 경우 탈퇴할 수 없다")
