@@ -41,7 +41,8 @@ public class GroupFindRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
-    private Member host;
+    private Member momo;
+    private Member dudu;
     private Group group1;
     private Group group2;
     private Group group3;
@@ -51,16 +52,51 @@ public class GroupFindRepositoryTest {
 
     @BeforeEach
     void setUp() throws IllegalAccessException {
-        host = memberRepository.save(new Member("주최자", "password", "momo"));
-        group1 = groupRepository.save(constructGroup("모모의 스터디", Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
-        group2 = groupRepository.save(constructGroup("모모의 술파티", Category.DRINK, 15, 내일_23시_59분.getInstance()));
-        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));
-        group4 = groupRepository.save(constructGroup("두두의 스터디", Category.STUDY, 6, 내일_23시_59분.getInstance()));
-        group5 = groupRepository.save(constructGroup("두두의 스터디", Category.STUDY, 10, 이틀후_23시_59분.getInstance()));
+        momo = memberRepository.save(new Member("momo", "password", "momo"));
+        dudu = memberRepository.save(new Member("dudu", "password", "dudu"));
+        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
+        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
+        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));
+        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.getInstance()));
+        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.getInstance()));
+        group5.participate(momo);
 
-        Group group = constructGroup("두두의 스터디", Category.STUDY, 10, LocalDateTime.now().plusMinutes(1));
+        Group group = constructGroup("두두의 스터디", dudu, Category.STUDY, 10, LocalDateTime.now().plusMinutes(1));
         setPastDeadline(group, 어제_23시_59분.getInstance());
         group6 = groupRepository.save(group);
+
+        synchronize();
+    }
+
+    @DisplayName("카테고리에 해당하는 모임 목록을 조회한다")
+    @Test
+    void findAllThatFilterByCategory() {
+        Category category = Category.STUDY;
+        Specification<Group> specification = GroupSpecification.filterByCategory(category);
+        List<Group> actual = groupRepository.findAll(specification);
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group1, group4, group5, group6));
+    }
+
+    @DisplayName("회원이 참여한 모임 목록을 조회한다")
+    @Test
+    void findAllThatFilterByParticipated() {
+        Specification<Group> specification = GroupSpecification.filterByParticipated(momo.getId());
+        List<Group> actual = groupRepository.findAll(specification);
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group1, group2, group3, group5));
+    }
+
+    @DisplayName("회원이 주최한 모임 목록을 조회한다")
+    @Test
+    void findAllThatFilterByHosted() {
+        Specification<Group> specification = GroupSpecification.filterByHosted(dudu.getId());
+        List<Group> actual = groupRepository.findAll(specification);
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group4, group5, group6));
     }
 
     @DisplayName("키워드가 포함된 모임 목록을 조회한다")
@@ -70,19 +106,15 @@ public class GroupFindRepositoryTest {
         Specification<Group> specification = GroupSpecification.containKeyword(keyword);
         List<Group> actual = groupRepository.findAll(specification);
 
-        synchronize();
-
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group1, group2, group3));
     }
 
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatFilteredFinishedRecruitment() {
-        Specification<Group> specification = GroupSpecification.filterFinishedRecruitment();
+    void findAllThatExcludeFinishedRecruitment() {
+        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment();
         List<Group> actual = groupRepository.findAll(specification);
-
-        synchronize();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group1, group2, group4, group5));
@@ -94,8 +126,6 @@ public class GroupFindRepositoryTest {
         Specification<Group> specification = GroupSpecification.orderByDeadline();
         List<Group> actual = groupRepository.findAll(specification);
 
-        synchronize();
-
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1, group3));
     }
@@ -106,21 +136,17 @@ public class GroupFindRepositoryTest {
         Specification<Group> specification = GroupSpecification.orderByIdDesc();
         List<Group> actual = groupRepository.findAll(specification);
 
-        synchronize();
-
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group3, group2, group1));
     }
 
     @DisplayName("키워드가 포함된 목록 중 모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndFilteredFinishedRecruitment() {
+    void findAllThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.filterFinishedRecruitment());
+                .and(GroupSpecification.excludeFinishedRecruitment());
         List<Group> actual = groupRepository.findAll(specification);
-
-        synchronize();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group1, group2));
@@ -134,20 +160,16 @@ public class GroupFindRepositoryTest {
                 .and(GroupSpecification.orderByDeadline());
         List<Group> actual = groupRepository.findAll(specification);
 
-        synchronize();
-
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1, group3));
     }
 
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatFilteredFinishedRecruitmentOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.filterFinishedRecruitment()
+    void findAllThatExcludeFinishedRecruitmentOrderByDeadline() {
+        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment()
                 .and(GroupSpecification.orderByDeadline());
         List<Group> actual = groupRepository.findAll(specification);
-
-        synchronize();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1));
@@ -155,20 +177,18 @@ public class GroupFindRepositoryTest {
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndFilteredFinishedRecruitmentOrderByDeadline() {
+    void findAllThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.filterFinishedRecruitment())
+                .and(GroupSpecification.excludeFinishedRecruitment())
                 .and(GroupSpecification.orderByDeadline());
         List<Group> actual = groupRepository.findAll(specification);
-
-        synchronize();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
     }
 
-    private Group constructGroup(String name, Category category, int capacity, LocalDateTime deadline) {
+    private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
         return new Group(name, host, category, capacity, 일주일후_하루동안.getInstance(),
                 deadline, List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
     }

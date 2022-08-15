@@ -1,11 +1,30 @@
 package com.woowacourse.momo.group.domain.group;
 
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.participant.domain.Participant;
+
 public class GroupSpecification {
+
+    public static Specification<Group> filterByCategory(Category category) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
+    }
+
+    public static Specification<Group> filterByParticipated(Long memberId) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Participant, Group> groupParticipant = root.join("participants");
+            return criteriaBuilder.equal(groupParticipant.get("member"), memberId);
+        };
+    }
+
+    public static Specification<Group> filterByHosted(Long memberId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), memberId);
+    }
 
     public static Specification<Group> containKeyword(String keyword) {
         return (root, query, criteriaBuilder) -> {
@@ -15,7 +34,7 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> filterFinishedRecruitment() {
+    public static Specification<Group> excludeFinishedRecruitment() {
         return (root, query, criteriaBuilder) -> {
             root.join("participants");
             query.groupBy(root.get("id"));
