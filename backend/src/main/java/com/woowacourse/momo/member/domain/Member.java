@@ -52,7 +52,7 @@ public class Member {
         userId = GHOST_PRIVATE_INFO;
         password = GHOST_PRIVATE_INFO;
         name = GHOST_NAME;
-        this.deleted = true;
+        deleted = true;
     }
 
     public boolean isDeleted() {
