@@ -1,17 +1,21 @@
 package com.woowacourse.momo.member.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
+import com.woowacourse.momo.participant.domain.ParticipantRepository;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,6 +24,8 @@ public class MemberService {
 
     private final MemberFindService memberFindService;
     private final PasswordEncoder passwordEncoder;
+    private final GroupFindService groupFindService;
+    private final ParticipantRepository participantRepository;
 
     public MyInfoResponse findById(Long id) {
         Member member = memberFindService.findExistMember(id);
@@ -30,7 +36,17 @@ public class MemberService {
     @Transactional
     public void deleteById(Long id) {
         Member member = memberFindService.findExistMember(id);
+        withdrawGroup(member);
         member.delete();
+    }
+
+    private void withdrawGroup(Member member) {
+        List<Group> groups = groupFindService.findRelatedGroups(member.getId());
+        for (Group group : groups) {
+            if (!group.isEnd()) {
+                participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId());
+            }
+        }
     }
 
     @Transactional

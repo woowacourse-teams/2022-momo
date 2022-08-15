@@ -176,6 +176,25 @@ class GroupTest {
         assertThat(actual).isTrue();
     }
 
+    @DisplayName("모임이 조기마감되면 종료된 모임이다")
+    @Test
+    void isEndCloseEarly() {
+        Group group = constructGroup();
+        group.closeEarly();
+
+        boolean actual = group.isEnd();
+        assertThat(actual).isTrue();
+    }
+
+    @DisplayName("모집 마감시간이 지나면 종료된 모임이다")
+    @Test
+    void isEndOverDeadline() throws IllegalAccessException {
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
+
+        boolean actual = group.isEnd();
+        assertThat(actual).isTrue();
+    }
+
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 True 를 반환한다")
     @Test
     void isExistParticipantsTrue() {

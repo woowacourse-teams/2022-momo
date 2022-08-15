@@ -180,6 +180,10 @@ public class Group {
         return isEarlyClosed || isFullCapacity() || isOverDeadline();
     }
 
+    public boolean isEnd() {
+        return isEarlyClosed || isOverDeadline();
+    }
+
     private boolean isOverDeadline() {
         return deadline.isBefore(LocalDateTime.now());
     }

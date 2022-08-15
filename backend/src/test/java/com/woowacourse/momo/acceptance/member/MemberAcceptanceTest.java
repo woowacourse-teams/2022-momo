@@ -1,6 +1,10 @@
 package com.woowacourse.momo.acceptance.member;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +13,12 @@ import org.springframework.http.HttpStatus;
 
 import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
+import com.woowacourse.momo.acceptance.group.GroupRestHandler;
+import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -64,5 +73,28 @@ class MemberAcceptanceTest extends AcceptanceTest {
         // TODO: UNAUTHORIZED 상태코드여야 함.
         AuthRestHandler.로그인을_한다(MEMBER.getUserId(), MEMBER.getPassword())
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("회원 탈퇴 시 진행중인 모임에 탈퇴시킨다")
+    @Test
+    void deleteAndWithdraw() {
+        String hostAccessToken = MemberFixture.DUDU.로_로그인한다();
+        Long groupId = GroupRestHandler.모임을_생성한다(hostAccessToken, GroupFixture.DUDU_COFFEE_TIME)
+            .extract()
+            .as(GroupIdResponse.class)
+            .getGroupId();
+        ParticipantRestHandler.모임에_참여한다(accessToken, groupId);
+
+        MemberRestHandler.회원탈퇴를_한다(accessToken)
+            .statusCode(HttpStatus.NO_CONTENT.value());
+
+        List<Long> groups = GroupRestHandler.본인의_모임을_조회한다(accessToken)
+            .extract()
+            .jsonPath()
+            .getList(".", Group.class)
+            .stream()
+            .map(Group::getId)
+            .collect(Collectors.toList());
+        assertThat(groups).doesNotContain(groupId);
     }
 }
