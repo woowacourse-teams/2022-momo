@@ -11,6 +11,10 @@ import com.woowacourse.momo.participant.domain.Participant;
 
 public class GroupSpecification {
 
+    public static Specification<Group> initialize() {
+        return (root, query, criteriaBuilder) -> null;
+    }
+
     public static Specification<Group> filterByCategory(Category category) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
     }

@@ -6,6 +6,7 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -67,9 +69,11 @@ class GroupFindServiceTest {
                 .mapToObj(i -> groupRepository.save(new Group("모모의 스터디", savedMember, Category.STUDY, 10,
                         이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
                         List.of(이틀후_10시부터_12시까지.newInstance()), "", "")))
+                .sorted(Comparator.comparing(Group::getId).reversed())
                 .collect(Collectors.toList());
 
-        List<Group> actual = groupFindService.findGroups();
+        GroupFindRequest request = new GroupFindRequest();
+        List<Group> actual = groupFindService.findAll(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);

@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
@@ -53,21 +54,9 @@ public class GroupController {
         return ResponseEntity.ok(groupService.findGroupOfMember(memberId));
     }
 
-    @GetMapping(params = {"page"})
-    public ResponseEntity<GroupPageResponse> findAll(@RequestParam(required = false, defaultValue = "0") int page) {
-        return ResponseEntity.ok(groupService.findAll(page));
-    }
-
-    @GetMapping(params = {"category", "page"})
-    public ResponseEntity<GroupPageResponse> findAllByCategory(
-            @RequestParam long category, @RequestParam(required = false, defaultValue = "0") int page) {
-        return ResponseEntity.ok(groupService.findAllByCategory(category, page));
-    }
-
-    @GetMapping(params = {"keyword", "page"})
-    public ResponseEntity<GroupPageResponse> findAllByKeyword(
-            @RequestParam String keyword, @RequestParam(required = false, defaultValue = "0") int page) {
-        return ResponseEntity.ok(groupService.findAllByKeyword(keyword, page));
+    @GetMapping
+    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
+        return ResponseEntity.ok(groupService.findAll(groupFindRequest));
     }
 
     @Authenticated

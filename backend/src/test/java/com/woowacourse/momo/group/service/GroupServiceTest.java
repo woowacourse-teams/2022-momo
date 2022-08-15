@@ -28,6 +28,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
@@ -190,7 +191,9 @@ class GroupServiceTest {
             saveGroup("모모의 스터디", Category.STUDY);
         }
 
-        GroupPageResponse actual = groupService.findAll(1);
+        GroupFindRequest request = new GroupFindRequest();
+        request.setPage(1);
+        GroupPageResponse actual = groupService.findAll(request);
 
         assertAll(
                 () -> assertThat(actual.isHasNextPage()).isFalse(),
@@ -207,7 +210,10 @@ class GroupServiceTest {
             saveGroup("모모의 술파티", Category.DRINK);
         }
 
-        GroupPageResponse actual = groupService.findAllByCategory(Category.DRINK.getId(), 1);
+        GroupFindRequest request = new GroupFindRequest();
+        request.setCategory(Category.DRINK.getId());
+        request.setPage(1);
+        GroupPageResponse actual = groupService.findAll(request);
 
         assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
     }
@@ -220,7 +226,10 @@ class GroupServiceTest {
         saveGroup("모모의 술파티", Category.DRINK);
         saveGroup("두두와의 헬스 클럽", Category.HEALTH);
 
-        GroupPageResponse actual = groupService.findAllByKeyword("모모", 0);
+        GroupFindRequest request = new GroupFindRequest();
+        request.setKeyword("모모");
+        request.setPage(0);
+        GroupPageResponse actual = groupService.findAll(request);
 
         assertThat(actual.getGroups()).hasSize(2);
     }

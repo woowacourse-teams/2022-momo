@@ -17,6 +17,7 @@ import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -33,7 +34,6 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @Service
 public class GroupService {
 
-    private static final int DEFAULT_PAGE_SIZE = 12;
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
@@ -51,32 +51,12 @@ public class GroupService {
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public GroupPageResponse findAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
-        Page<Group> groups = groupFindService.findGroups(pageable);
+    public GroupPageResponse findAll(GroupFindRequest request) {
+        Page<Group> groups = groupFindService.findAll(request);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
-    }
-
-    public GroupPageResponse findAllByCategory(long categoryId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
-        Category category = Category.from(categoryId);
-        Page<Group> groups = groupFindService.findGroupsByCategory(category, pageable);
-        List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
-    }
-
-    public GroupPageResponse findAllByKeyword(String keyword, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by("id").descending());
-        Page<Group> groups = groupFindService.findAllByKeyword(keyword, pageable);
-        List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
     @Transactional
