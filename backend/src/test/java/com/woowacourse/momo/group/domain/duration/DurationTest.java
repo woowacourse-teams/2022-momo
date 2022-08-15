@@ -13,8 +13,7 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.momo.globalException.exception.MomoException;
-import com.woowacourse.momo.group.exception.InvalidDurationException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class DurationTest {
 

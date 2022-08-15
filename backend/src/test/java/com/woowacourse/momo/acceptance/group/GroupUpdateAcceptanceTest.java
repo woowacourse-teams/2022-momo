@@ -1,12 +1,12 @@
 package com.woowacourse.momo.acceptance.group;
 
-import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_수정한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조기마감한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 

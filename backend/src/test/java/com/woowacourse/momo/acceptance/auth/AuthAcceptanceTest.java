@@ -14,7 +14,7 @@ import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.fixture.MemberFixture;
 
-public class AuthAcceptanceTest extends AcceptanceTest {
+class AuthAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture MEMBER_FIXTURE = MemberFixture.MOMO;
 

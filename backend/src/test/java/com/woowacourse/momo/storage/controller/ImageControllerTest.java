@@ -28,7 +28,7 @@ import com.woowacourse.momo.storage.service.StorageService;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-public class ImageControllerTest {
+class ImageControllerTest {
 
     @Autowired
     MockMvc mockMvc;

@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
@@ -81,10 +81,14 @@ public class GroupService {
     }
 
     private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        schedules.stream()
-                .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
-                .findAny()
-                .ifPresent(schedule -> { throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION); } );
+        if (existAnyScheduleOutOfDuration(schedules, duration)) {
+            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+        }
+    }
+
+    private boolean existAnyScheduleOutOfDuration(List<Schedule> schedules, Duration duration) {
+        return schedules.stream()
+                .anyMatch(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()));
     }
 
     @Transactional

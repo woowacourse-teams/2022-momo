@@ -1,4 +1,4 @@
-package com.woowacourse.momo.logging;
+package com.woowacourse.momo.global.logging;
 
 import java.util.Arrays;
 

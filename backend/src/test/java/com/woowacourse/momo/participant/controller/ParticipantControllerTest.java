@@ -45,7 +45,7 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
-public class ParticipantControllerTest {
+class ParticipantControllerTest {
 
     private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
             이틀후.getInstance());

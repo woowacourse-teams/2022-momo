@@ -1,4 +1,4 @@
-package com.woowacourse.momo.config;
+package com.woowacourse.momo.global.config;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;

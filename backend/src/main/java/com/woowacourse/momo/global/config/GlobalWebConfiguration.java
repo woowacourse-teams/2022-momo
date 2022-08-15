@@ -1,4 +1,4 @@
-package com.woowacourse.momo.config;
+package com.woowacourse.momo.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

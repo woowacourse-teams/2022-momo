@@ -1,13 +1,13 @@
-package com.woowacourse.momo.globalException;
+package com.woowacourse.momo.global.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.woowacourse.momo.globalException.dto.response.ExceptionResponse;
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.dto.response.ExceptionResponse;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @RestControllerAdvice
 public class ControllerAdvice {

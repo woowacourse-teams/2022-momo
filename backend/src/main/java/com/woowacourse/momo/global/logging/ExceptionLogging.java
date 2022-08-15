@@ -1,4 +1,4 @@
-package com.woowacourse.momo.logging;
+package com.woowacourse.momo.global.logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,7 +19,7 @@ public class ExceptionLogging {
     public void allMethod() {
     }
 
-    @Pointcut("execution(* com.woowacourse.momo.globalException.ControllerAdvice.handleAnyException(..))")
+    @Pointcut("execution(* com.woowacourse.momo.global.exception.ControllerAdvice.handleAnyException(..))")
     public void exceptionMethod() {
     }
 

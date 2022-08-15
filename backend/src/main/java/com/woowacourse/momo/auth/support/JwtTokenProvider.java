@@ -16,8 +16,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Component
 public class JwtTokenProvider {
@@ -42,10 +42,10 @@ public class JwtTokenProvider {
         return createToken(payload, refreshTokenValidityInMilliseconds);
     }
 
-    private String createToken(Long payload, long ValidityInMilliseconds) {
+    private String createToken(Long payload, long validityInMilliseconds) {
         Claims claims = Jwts.claims().setSubject(Long.toString(payload));
         Date now = new Date();
-        Date validity = new Date(now.getTime() + ValidityInMilliseconds);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -60,15 +60,15 @@ public class JwtTokenProvider {
                 getClaims(token).getBody().getSubject());
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateTokenNotUsable(String token) {
         try {
             Jws<Claims> claims = getClaims(token);
 
-            return !claims.getBody().getExpiration().before(new Date());
+            return claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             throw new MomoException(ErrorCode.AUTH_EXPIRED_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            return true;
         }
     }
 
