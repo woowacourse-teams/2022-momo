@@ -16,7 +16,7 @@ import {
   Main,
   Detail,
   Create,
-  MyInfo,
+  MyInformation,
   NotFound,
   Auth,
   MyGroup,
@@ -45,7 +45,10 @@ function App() {
                       <Route path=":id" element={<Detail />} />
                     </Route>
                     <Route path={BROWSER_PATH.CREATE} element={<Create />} />
-                    <Route path={BROWSER_PATH.INFO} element={<MyInfo />} />
+                    <Route
+                      path={BROWSER_PATH.MY_INFORMATION}
+                      element={<MyInformation />}
+                    />
                     <Route
                       path={BROWSER_PATH.OAUTH_GOOGLE}
                       element={<Auth />}

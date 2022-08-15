@@ -83,7 +83,7 @@ function User() {
           className={isClosing ? 'close' : ''}
           animationTime={dropdownAnimationTime}
         >
-          <S.User onClick={navigateToLocation(BROWSER_PATH.INFO)}>
+          <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
             <S.Profile width="4rem">❤️</S.Profile>
             <div>{user?.name}</div>
           </S.User>

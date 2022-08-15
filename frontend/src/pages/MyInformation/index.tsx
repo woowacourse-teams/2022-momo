@@ -18,7 +18,7 @@ import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
 
-function MemberInfo() {
+function MyInformation() {
   const setAccessToken = useSetRecoilState(accessTokenState);
   const [{ user }, setLoginInfo] = useRecoilState(loginState);
 
@@ -156,4 +156,4 @@ function MemberInfo() {
   );
 }
 
-export default MemberInfo;
+export default MyInformation;
