@@ -111,7 +111,7 @@ class MemberServiceTest {
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
-    void deleteAndWithdraw() {
+    void deleteAndLeave() {
         Group group = saveGroup();
         Long memberId = createMember();
         participate(group, memberId);

@@ -214,45 +214,45 @@ class GroupTest {
 
     @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
     @Test
-    void validateWithdrawHost() {
+    void validateLeaveHost() {
         Group group = constructGroup();
 
-        assertThatThrownBy(() -> group.validateWithdraw(host))
+        assertThatThrownBy(() -> group.validateLeave(host))
             .isInstanceOf(MomoException.class)
             .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
     @Test
-    void validateWithdrawNotParticipant() {
+    void validateLeaveNotParticipant() {
         Group group = constructGroup();
 
-        assertThatThrownBy(() -> group.validateWithdraw(participant))
+        assertThatThrownBy(() -> group.validateLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("모임의 참여자가 아닙니다.");
     }
 
     @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
     @Test
-    void validateWithdrawDeadline() throws IllegalAccessException {
+    void validateLeaveDeadline() throws IllegalAccessException {
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
         Group group = constructGroup();
         group.participate(participant);
         setPastDeadline(group, yesterday);
 
-        assertThatThrownBy(() -> group.validateWithdraw(participant))
+        assertThatThrownBy(() -> group.validateLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("모집이 마감된 모임입니다.");
     }
 
     @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
     @Test
-    void validateWithdrawEarlyClosed() {
+    void validateLeaveEarlyClosed() {
         Group group = constructGroup();
         group.participate(participant);
         group.closeEarly();
 
-        assertThatThrownBy(() -> group.validateWithdraw(participant))
+        assertThatThrownBy(() -> group.validateLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("조기종료된 모임입니다.");
     }

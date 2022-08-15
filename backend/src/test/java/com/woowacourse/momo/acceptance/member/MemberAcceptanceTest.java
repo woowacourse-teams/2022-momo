@@ -77,7 +77,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("회원 탈퇴 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
-    void deleteAndWithdraw() {
+    void deleteAndLeave() {
         String hostAccessToken = MemberFixture.DUDU.로_로그인한다();
         Long groupId = GroupRestHandler.모임을_생성한다(hostAccessToken, GroupFixture.DUDU_COFFEE_TIME)
             .extract()

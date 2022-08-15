@@ -200,7 +200,7 @@ public class Group {
         return participants.size() > NONE_PARTICIPANT;
     }
 
-    public void validateWithdraw(Member member) {
+    public void validateLeave(Member member) {
         if (isHost(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_HOST);
         }

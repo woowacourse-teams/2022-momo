@@ -38,11 +38,11 @@ public class MemberService {
     @Transactional
     public void deleteById(Long id) {
         Member member = memberFindService.findExistMember(id);
-        withdrawGroup(member);
+        leaveGroup(member);
         member.delete();
     }
 
-    private void withdrawGroup(Member member) {
+    private void leaveGroup(Member member) {
         List<Group> groups = groupFindService.findRelatedGroups(member.getId());
         for (Group group : groups) {
             if (group.isEnd()) {
