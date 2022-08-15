@@ -79,7 +79,7 @@ class GroupFindServiceTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("참여하거나 가입한 모임 목록을 조회한다")
+    @DisplayName("참여한 모임 목록을 조회한다")
     @Test
     void findRelatedGroups() {
         int count = 3;
@@ -92,7 +92,8 @@ class GroupFindServiceTest {
                 이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(),
                 List.of(이틀후_10시부터_12시까지.newInstance()), "", ""));
 
-        assertThat(groupFindService.findRelatedGroups(savedMember.getId()))
+        GroupFindRequest request = new GroupFindRequest();
+        assertThat(groupFindService.findAllThatParticipated(request, savedMember.getId()).getContent())
                 .hasSize(count);
     }
 }

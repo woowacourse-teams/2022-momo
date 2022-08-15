@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +24,6 @@ import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
@@ -49,9 +47,10 @@ public class GroupController {
     }
 
     @Authenticated
-    @GetMapping("/me")
-    public ResponseEntity<List<GroupSummaryResponse>> findMyGroup(@AuthenticationPrincipal Long memberId) {
-        return ResponseEntity.ok(groupService.findGroupOfMember(memberId));
+    @GetMapping("/me/participated")
+    public ResponseEntity<GroupPageResponse> findAllThatParticipated(@AuthenticationPrincipal Long memberId,
+                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
+        return ResponseEntity.ok(groupService.findAllThatParticipated(groupFindRequest, memberId));
     }
 
     @GetMapping

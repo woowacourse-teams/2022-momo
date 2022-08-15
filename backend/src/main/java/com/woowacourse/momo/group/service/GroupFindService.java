@@ -1,7 +1,5 @@
 package com.woowacourse.momo.group.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,13 +32,31 @@ public class GroupFindService {
                 .orElseThrow(() -> new MomoException(ErrorCode.GROUP_NOT_EXIST));
     }
 
-    public List<Group> findRelatedGroups(Long memberId) {
-        return groupRepository.findParticipatedGroups(memberId);
-    }
-
     public Page<Group> findAll(GroupFindRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Specification<Group> specification = Specification.where(GroupSpecification.initialize());
+        if (request.getCategory() != null) {
+            Category category = Category.from(request.getCategory());
+            specification = specification.and(GroupSpecification.filterByCategory(category));
+        }
+        if (request.getExcludeFinished() != null) {
+            specification = specification.and(GroupSpecification.excludeFinishedRecruitment());
+        }
+        if (request.getKeyword() != null) {
+            specification = specification.and(GroupSpecification.containKeyword(request.getKeyword()));
+        }
+        if (request.getOrderByDeadline() != null) {
+            specification = specification.and(GroupSpecification.orderByDeadline());
+        } else {
+            specification = specification.and(GroupSpecification.orderByIdDesc());
+        }
+
+        return groupRepository.findAll(specification, pageable);
+    }
+
+    public Page<Group> findAllThatParticipated(GroupFindRequest request, Long memberId) {
+        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(memberId));
         if (request.getCategory() != null) {
             Category category = Category.from(request.getCategory());
             specification = specification.and(GroupSpecification.filterByCategory(category));

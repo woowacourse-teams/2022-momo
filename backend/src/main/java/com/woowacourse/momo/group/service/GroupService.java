@@ -59,6 +59,14 @@ public class GroupService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
+    public GroupPageResponse findAllThatParticipated(GroupFindRequest request, Long memberId) {
+        Page<Group> groups = groupFindService.findAllThatParticipated(request, memberId);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
@@ -124,11 +132,5 @@ public class GroupService {
         if (group.isFinishedRecruitment()) {
             throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
         }
-    }
-
-    public List<GroupSummaryResponse> findGroupOfMember(Long memberId) {
-        List<Group> participatedGroups = groupFindService.findRelatedGroups(memberId);
-
-        return GroupResponseAssembler.groupSummaryResponses(participatedGroups);
     }
 }

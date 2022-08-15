@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
-import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_참여한_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.키워드로_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
@@ -143,14 +143,14 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         String anotherHostAccessToken = MemberFixture.DUDU.로_로그인한다();
         DUDU_STUDY.을_생성한다(anotherHostAccessToken);
 
-        ValidatableResponse response = 본인의_모임을_조회한다(anotherHostAccessToken);
+        ValidatableResponse response = 본인이_참여한_모임을_조회한다(anotherHostAccessToken);
 
         checkGroupParticipated(response);
     }
 
     private void checkGroupParticipated(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
-        response.body("$", hasSize(1));
+        response.body("groups", hasSize(1));
     }
 
     private void checkGroupSummaryResponsesByPageNumber(ValidatableResponse response) {

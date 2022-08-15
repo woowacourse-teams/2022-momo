@@ -254,7 +254,7 @@ class GroupControllerTest {
                 .andExpect(jsonPath("groups", hasSize(8)));
     }
 
-    @DisplayName("본인이 참여하거나 개최한 그룹들을 조회한다")
+    @DisplayName("본인이 참여하거나 참여한 그룹들을 조회한다")
     @Test
     void groupGetListRelatedMe() throws Exception {
         Long savedMember1 = saveMember("woowa", "wooteco1!", "모모");
@@ -265,10 +265,10 @@ class GroupControllerTest {
         Long GroupHeldByAnotherMember = saveGroup("머머의 스터디", savedMember2, Category.STUDY);
         participantService.participate(GroupHeldByAnotherMember, savedMember1);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me/participated")
                         .header("Authorization", "bearer " + token))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("groups", hasSize(2)))
                 .andDo(
                         document("grouprelated",
                                 preprocessRequest(prettyPrint()),
