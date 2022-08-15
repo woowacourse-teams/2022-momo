@@ -40,7 +40,7 @@ public class GroupService {
 
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest groupRequest) {
-        Member host = memberFindService.findMember(memberId);
+        Member host = memberFindService.findExistMember(memberId);
         Group group = groupRepository.save(GroupRequestAssembler.group(host, groupRequest));
 
         return GroupResponseAssembler.groupIdResponse(group);

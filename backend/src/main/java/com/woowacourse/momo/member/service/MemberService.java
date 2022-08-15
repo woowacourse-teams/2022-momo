@@ -57,7 +57,7 @@ public class MemberService {
 
     @Transactional
     public void updatePassword(Long id, ChangePasswordRequest request) {
-        Member member = memberFindService.findMember(id);
+        Member member = memberFindService.findExistMember(id);
 
         String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
         member.changePassword(encryptedPassword);
@@ -65,7 +65,7 @@ public class MemberService {
 
     @Transactional
     public void updateName(Long id, ChangeNameRequest request) {
-        Member member = memberFindService.findMember(id);
+        Member member = memberFindService.findExistMember(id);
 
         member.changeName(request.getName());
     }
