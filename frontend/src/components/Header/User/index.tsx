@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
+import { requestLogout } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
-import { GUIDE_MESSAGE } from 'constants/message';
+import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useClosingState from 'hooks/useClosingState';
+import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
@@ -20,16 +22,25 @@ function User() {
   const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
     setIsShownDropdown(false);
   });
+
+  const { setMessage } = useSnackbar();
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   useEffect(() => {
     if (!accessToken) return;
 
-    getUserInfo().then(userInfo => {
-      setLoginInfo({ isLogin: true, user: userInfo });
-    });
-  }, [accessToken, setLoginInfo]);
+    getUserInfo()
+      .then(userInfo => {
+        setLoginInfo({ isLogin: true, user: userInfo });
+      })
+      .catch(() => {
+        // 액세스 토큰 만료 시 자동 로그아웃
+        setLoginInfo({ isLogin: false });
+        setAccessToken('');
+      });
+  }, [accessToken, setLoginInfo, setAccessToken]);
 
   useEffect(() => {
     setIsShownDropdown(false);
@@ -51,8 +62,15 @@ function User() {
   const logout = () => {
     if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
 
-    setLoginInfo({ isLogin: false });
-    setAccessToken('');
+    requestLogout()
+      .then(() => {
+        setLoginInfo({ isLogin: false });
+        setAccessToken('');
+        setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
+      })
+      .catch(() => {
+        alert(ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
+      });
   };
 
   return (

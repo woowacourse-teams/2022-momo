@@ -16,6 +16,7 @@ const API_PATH = {
   SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
   GOOGLE_LOGIN: '/auth/oauth2/google/login',
+  LOGOUT: '/auth/logout',
   MEMBERS: '/members',
   NAME: '/members/name',
   PASSWORD: '/members/password',

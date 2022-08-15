@@ -6,6 +6,7 @@ const GUIDE_MESSAGE = {
     LOGIN_SUCCESS: '로그인에 성공했어요.',
     SIGNUP_SUCCESS: '회원가입에 성공했어요.',
     CONFIRM_LOGOUT: '로그아웃 하실건가요?',
+    LOGOUT_SUCCESS: '로그아웃에 성공했어요.',
   },
   DELETE: {
     CONFIRM_REQUEST: '정말로 삭제하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
@@ -41,6 +42,8 @@ const ERROR_MESSAGE = {
     FAILURE_LOGIN_REQUEST: '로그인에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_SIGNUP_REQUEST:
       '회원가입에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_LOGOUT_REQUEST:
+      '로그아웃에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
   CREATE: {
     NAME: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
@@ -51,30 +54,30 @@ const ERROR_MESSAGE = {
     LOCATION: `장소는 ${GROUP_RULE.LOCATION.MAX_LENGTH}자 이내여야 해요.`,
     DESCRIPTION: `설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자 이내여야 해요.`,
     FAILURE_REQUEST:
-      '모임을 생성하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '모임을 생성하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
   DELETE: {
     FAILURE_REQUEST:
-      '모임을 삭제하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '모임을 삭제하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
   MEMBER: {
     FAILURE_CONFIRM_PASSWORD: '비밀번호 확인이 일치하지 않아요.',
     FAILURE_REQUEST:
-      '유저 정보를 불러오는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '유저 정보를 불러오는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_NAME_REQUEST:
-      '닉네임을 변경하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '닉네임을 변경하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_PASSWORD_REQUEST:
-      '비밀번호를 변경하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '비밀번호를 변경하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_WITHDRAWAL_REQUEST:
-      '회원 탈퇴에 문제가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '회원 탈퇴 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
   GROUP: {
     FAILURE_CLOSE_GROUP:
-      '모임 모집을 마감하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '모임 모집을 마감하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_JOIN_GROUP:
-      '모임에 참여하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '모임에 참여하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_EXIT_GROUP:
-      '모임 참여를 취소하는데 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
 };
 
