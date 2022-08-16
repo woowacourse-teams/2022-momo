@@ -284,7 +284,7 @@ class GroupTest {
         return group;
     }
 
-    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
+    private void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
         int deadlineField = 8;
         Class<Group> clazz = Group.class;
         Field[] field = clazz.getDeclaredFields();
