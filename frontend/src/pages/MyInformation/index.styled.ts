@@ -2,96 +2,102 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 2rem;
+  justify-content: center;
+  align-items: center;
 
   width: 100%;
-  height: calc(100% - 4rem);
-
-  margin: 0 auto;
+  height: 100%;
 `;
 
-const Image = styled.img`
-  object-fit: cover;
-
-  width: 100%;
-  height: 17.5rem;
-`;
-
-const Content = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 2rem;
 
-  width: 70%;
-
-  margin: 0 auto;
+  width: fit-content;
 `;
 
-const Title = styled.h2`
-  margin-bottom: 2rem;
+const MyInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
 
-  font-size: 1.6rem;
+  border: 1px solid ${({ theme: { colors } }) => colors.gray003};
+  border-radius: 10px;
+  padding: 2rem;
+`;
+
+const MyInfo = styled.div`
+  display: flex;
+  gap: 3rem;
+`;
+
+const Right = styled.div`
+  display: flex;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 1rem;
 `;
 
 const Label = styled.label`
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const Input = styled.input`
-  width: 20rem;
+  width: 15rem;
   height: 2rem;
 
   box-sizing: border-box;
 `;
 
-const InputLineContainer = styled.span`
+const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.5rem;
+
+  margin-bottom: 0.2rem;
 `;
 
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 2rem;
-  height: 2rem;
-
+const EditButton = styled.button`
   background: none;
+`;
+
+const WithdrawalWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
 `;
 
 const WithdrawalButton = styled.button`
   width: 5rem;
+  height: 2.5rem;
 
-  border: none;
-  border-radius: 5px;
+  border-radius: 8px;
 
-  padding: 1rem;
-
-  background: ${({ theme: { colors } }) => colors.red002};
+  background: ${({ theme: { colors } }) => colors.red001};
+  color: ${({ theme: { colors } }) => colors.white001};
 `;
 
 export {
   Container,
-  Image,
-  Content,
-  Title,
+  Wrapper,
+  MyInfoContainer,
+  MyInfo,
+  Right,
   InputContainer,
   Label,
   Input,
-  InputLineContainer,
-  Button,
+  ButtonContainer,
+  EditButton,
+  WithdrawalWrapper,
   WithdrawalButton,
 };
