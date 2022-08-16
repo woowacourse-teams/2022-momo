@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getGroups } from 'apis/request/group';
-import { Loading } from 'components/Animation';
-import Card from 'components/Card';
-import NoResult from 'components/NoResult';
+import { Loading } from 'components/@shared/Animation';
+import Card from 'components/@shared/Card';
+import NoResult from 'components/@shared/NoResult';
 import { QUERY_KEY } from 'constants/key';
 import { GroupList } from 'types/data';
 

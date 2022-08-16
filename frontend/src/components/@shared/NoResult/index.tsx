@@ -1,4 +1,4 @@
-import { NoResult as NoResultAnimation } from 'components/Animation';
+import { NoResult as NoResultAnimation } from 'components/@shared/Animation';
 
 import * as S from './index.styled';
 

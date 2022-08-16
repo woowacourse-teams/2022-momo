@@ -6,6 +6,8 @@ const PageContainer = styled.div`
 `;
 
 const Content = styled.div`
+  height: calc(100% - 4rem);
+
   padding-top: 4rem;
 `;
 

@@ -1,4 +1,4 @@
-import { Spinner } from 'components/Animation';
+import { Spinner } from 'components/@shared/Animation';
 
 import * as S from './index.styled';
 

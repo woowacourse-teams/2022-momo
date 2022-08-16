@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 
 import { getJoinedGroups } from 'apis/request/group';
-import Card from 'components/Card';
-import NoResult from 'components/NoResult';
+import Card from 'components/@shared/Card';
+import NoResult from 'components/@shared/NoResult';
 import { QUERY_KEY } from 'constants/key';
 
 import * as S from './index.styled';

@@ -1,20 +1,21 @@
 import React from 'react';
 
-import Portal from 'components/Portal';
+import Portal from 'components/@shared/Portal';
 import useClosingState from 'hooks/useClosingState';
+import useModal from 'hooks/useModal';
 import { preventBubbling } from 'utils/event';
 
 import * as S from './index.styled';
 
 interface ModalProps {
   modalState: boolean;
-  setOffModal: () => void;
   children: React.ReactNode;
 }
 
 const modalAnimationTime = 300;
 
-function Modal({ modalState, setOffModal, children }: ModalProps) {
+function Modal({ modalState, children }: ModalProps) {
+  const { setOffModal } = useModal();
   const { isClosing, close } = useClosingState(modalAnimationTime, setOffModal);
 
   return (

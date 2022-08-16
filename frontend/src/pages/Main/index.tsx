@@ -1,7 +1,7 @@
+import ErrorBoundary from 'components/@shared/ErrorBoundary';
+import { CategoryFallback } from 'components/@shared/ErrorBoundary/CategoryFallback';
 import TopButton from 'components/@shared/TopButton';
 import Category from 'components/Category';
-import ErrorBoundary from 'components/ErrorBoundary';
-import { CategoryFallback } from 'components/ErrorBoundary/CategoryFallback';
 import RecommendGroups from 'components/RecommendGroups';
 import SearchSection from 'components/SearchSection';
 

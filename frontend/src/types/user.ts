@@ -10,5 +10,8 @@ export interface UserProfile extends Omit<User, 'password'> {
 
 export interface LoginState {
   isLogin: boolean;
+  loginType?: 'basic' | 'oauth';
   user?: UserProfile;
 }
+
+export type EditableType = 'name' | 'password';

@@ -2,7 +2,7 @@ const BROWSER_PATH = {
   BASE: '/',
   DETAIL: '/detail',
   CREATE: '/create',
-  INFO: '/info',
+  MY_INFORMATION: '/myinformation',
   MY_GROUP: '/mygroup',
   OAUTH_GOOGLE: '/auth/google',
 };

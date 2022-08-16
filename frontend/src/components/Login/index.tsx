@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
 import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
-import Modal from 'components/Modal';
+import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
+import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState, modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
@@ -14,18 +15,16 @@ import { showErrorMessage } from 'utils/errorController';
 import * as S from './index.styled';
 
 function Login() {
-  const [modalFlag, setModalFlag] = useRecoilState(modalState);
-  const setModalState = useSetRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
-  const userIdRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const modalFlag = useRecoilValue(modalState);
+  const { setOffModal, showSignupModal } = useModal();
 
   const { setMessage } = useSnackbar();
 
-  const setOffModal = () => {
-    setModalFlag('off');
-  };
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +41,7 @@ function Login() {
         setAccessToken(accessToken);
 
         getUserInfo().then(userInfo => {
-          setLoginInfo({ isLogin: true, user: userInfo });
+          setLoginInfo({ isLogin: true, loginType: 'basic', user: userInfo });
         });
 
         setOffModal();
@@ -62,12 +61,8 @@ function Login() {
       });
   };
 
-  const showSignupModal = () => {
-    setModalState('signup');
-  };
-
   return (
-    <Modal modalState={modalFlag === 'login'} setOffModal={setOffModal}>
+    <Modal modalState={modalFlag === 'login'}>
       <S.Form onSubmit={login}>
         <S.Title>로그인</S.Title>
         <S.InputContainer>

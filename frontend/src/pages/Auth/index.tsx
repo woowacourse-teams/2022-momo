@@ -4,8 +4,9 @@ import { useSetRecoilState } from 'recoil';
 
 import { requestGoogleLogin } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
-import { Loading } from 'components/Animation';
+import { Loading } from 'components/@shared/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
+import { BROWSER_PATH } from 'constants/path';
 import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
@@ -28,14 +29,16 @@ function Auth() {
         setAccessToken(accessToken);
 
         getUserInfo().then(userInfo => {
-          setLoginInfo({ isLogin: true, user: userInfo });
+          setLoginInfo({ isLogin: true, loginType: 'oauth', user: userInfo });
           setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
-          navigate('/');
         });
+
+        navigate(BROWSER_PATH.BASE);
       })
       .catch(({ message }) => {
         alert(showErrorMessage(message));
-        navigate('/');
+
+        navigate(BROWSER_PATH.BASE);
       });
   }
 
