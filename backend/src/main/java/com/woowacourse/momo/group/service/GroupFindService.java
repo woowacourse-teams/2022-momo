@@ -56,7 +56,7 @@ public class GroupFindService {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
 
         specification = specification.and(GroupSpecification.filterByCategory(request.getCategory()))
-                .and(GroupSpecification.excludeFinishedRecruitment(request.getExcludeFinished()))
+                .and(GroupSpecification.excludeFinished(request.getExcludeFinished()))
                 .and(GroupSpecification.containKeyword(request.getKeyword()))
                 .and(GroupSpecification.orderByDeadline(request.getOrderByDeadline()));
 

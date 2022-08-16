@@ -50,7 +50,7 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> excludeFinishedRecruitment(Boolean excludeFinished) {
+    public static Specification<Group> excludeFinished(Boolean excludeFinished) {
         if (excludeFinished == null) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }

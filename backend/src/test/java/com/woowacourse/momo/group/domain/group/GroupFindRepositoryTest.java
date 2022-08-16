@@ -113,7 +113,7 @@ class GroupFindRepositoryTest {
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
     void findGroupThatExcludeFinishedRecruitment() {
-        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true);
+        Specification<Group> specification = GroupSpecification.excludeFinished(true);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -145,7 +145,7 @@ class GroupFindRepositoryTest {
     void findGroupThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinishedRecruitment(true));
+                .and(GroupSpecification.excludeFinished(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -167,7 +167,7 @@ class GroupFindRepositoryTest {
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
     void findGroupThatExcludeFinishedRecruitmentOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true)
+        Specification<Group> specification = GroupSpecification.excludeFinished(true)
                 .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -180,7 +180,7 @@ class GroupFindRepositoryTest {
     void findGroupThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinishedRecruitment(true))
+                .and(GroupSpecification.excludeFinished(true))
                 .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
