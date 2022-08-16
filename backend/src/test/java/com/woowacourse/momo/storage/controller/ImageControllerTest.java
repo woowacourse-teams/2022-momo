@@ -36,39 +36,78 @@ class ImageControllerTest {
     @MockBean
     private StorageService storageService;
 
-    @DisplayName("이미지를 업로드한다")
+    @DisplayName("유저 이미지를 저장한다")
     @Test
-    void imageUploadTest() throws Exception {
-        when(storageService.save(any())).thenReturn("abc.png");
+    void userImageUploadTest() throws Exception {
+        when(storageService.saveMemberImage(any(), any())).thenReturn("1.png");
 
         MockMultipartFile file = new MockMultipartFile(
                 "imageFile",
-                "abc.png",
+                "1.png",
                 MediaType.IMAGE_PNG_VALUE,
                 "abcdefgh".getBytes()
         );
 
-        mockMvc.perform(multipart("/api/images/").file(file))
+        mockMvc.perform(multipart("/api/images/members/1").file(file))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(header().string("Location", "/api/images/abc.png"))
+                .andExpect(header().string("Location", "/api/images/members/1.png"))
                 .andDo(
-                        document("imageupload",
+                        document("userimageupload",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
                 );
     }
 
-    @DisplayName("이미지를 불러온다")
+    @DisplayName("모임 이미지를 저장한다")
     @Test
-    void imageLoadTest() throws Exception {
-        when(storageService.load("abc.png")).thenReturn("abcdefgh".getBytes());
+    void groupImageUploadTest() throws Exception {
+        when(storageService.saveGroupImage(any(), any())).thenReturn("1.png");
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/images/abc.png"))
+        MockMultipartFile file = new MockMultipartFile(
+                "imageFile",
+                "1.png",
+                MediaType.IMAGE_PNG_VALUE,
+                "abcdefgh".getBytes()
+        );
+
+        mockMvc.perform(multipart("/api/images/groups/1").file(file))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(header().string("Location", "/api/images/groups/1.png"))
+                .andDo(
+                        document("groupimageupload",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("유저의 이미지를 불러온다")
+    @Test
+    void userImageLoadTest() throws Exception {
+        when(storageService.loadMemberImage(1L)).thenReturn("abcdefgh".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/images/members/1"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().bytes("abcdefgh".getBytes()))
                 .andDo(
-                        document("imageload",
+                        document("userimageload",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("모임의 이미지를 불러온다")
+    @Test
+    void groupImageLoadTest() throws Exception {
+        when(storageService.loadGroupImage(1L)).thenReturn("abcdefgh".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/images/groups/1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().bytes("abcdefgh".getBytes()))
+                .andDo(
+                        document("groupimageload",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
