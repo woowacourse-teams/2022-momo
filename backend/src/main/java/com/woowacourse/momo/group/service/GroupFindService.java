@@ -26,6 +26,7 @@ public class GroupFindService {
 
     private static final int DEFAULT_PAGE_SIZE = 12;
     private final GroupRepository groupRepository;
+    private final GroupSpecification groupSpecification;
 
     public Group findGroup(Long id) {
         return groupRepository.findById(id)
@@ -33,32 +34,32 @@ public class GroupFindService {
     }
 
     public Page<Group> findGroups(GroupFindRequest request) {
-        Specification<Group> specification = Specification.where(GroupSpecification.initialize());
+        Specification<Group> specification = Specification.where(groupSpecification.initialize());
         return findGroups(specification, request);
     }
 
     public List<Group> findParticipatedGroups(Member member) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
+        Specification<Group> specification = Specification.where(groupSpecification.filterByParticipated(member));
         return groupRepository.findAll(specification);
     }
 
     public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
+        Specification<Group> specification = Specification.where(groupSpecification.filterByParticipated(member));
         return findGroups(specification, request);
     }
 
     public Page<Group> findHostedGroups(GroupFindRequest request, Member member) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByHosted(member));
+        Specification<Group> specification = Specification.where(groupSpecification.filterByHosted(member));
         return findGroups(specification, request);
     }
 
     private Page<Group> findGroups(Specification<Group> specification, GroupFindRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
 
-        specification = specification.and(GroupSpecification.filterByCategory(request.getCategory()))
-                .and(GroupSpecification.excludeFinished(request.getExcludeFinished()))
-                .and(GroupSpecification.containKeyword(request.getKeyword()))
-                .and(GroupSpecification.orderByDeadline(request.getOrderByDeadline()));
+        specification = specification.and(groupSpecification.filterByCategory(request.getCategory()))
+                .and(groupSpecification.excludeFinished(request.getExcludeFinished()))
+                .and(groupSpecification.containKeyword(request.getKeyword()))
+                .and(groupSpecification.orderByDeadline(request.getOrderByDeadline()));
 
         return groupRepository.findAll(specification, pageable);
     }

@@ -32,6 +32,8 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class GroupFindRepositoryTest {
 
+    private static final GroupSpecification groupSpecification = new GroupSpecification();
+
     @Autowired
     private GroupRepository groupRepository;
 
@@ -72,7 +74,7 @@ class GroupFindRepositoryTest {
     @Test
     void findGroupThatFilterByCategory() {
         Category category = Category.STUDY;
-        Specification<Group> specification = GroupSpecification.filterByCategory(category.getId());
+        Specification<Group> specification = groupSpecification.filterByCategory(category.getId());
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -82,7 +84,7 @@ class GroupFindRepositoryTest {
     @DisplayName("회원이 참여한 모임 목록을 조회한다")
     @Test
     void findGroupThatFilterByParticipated() {
-        Specification<Group> specification = GroupSpecification.filterByParticipated(momo);
+        Specification<Group> specification = groupSpecification.filterByParticipated(momo);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -92,7 +94,7 @@ class GroupFindRepositoryTest {
     @DisplayName("회원이 주최한 모임 목록을 조회한다")
     @Test
     void findGroupThatFilterByHosted() {
-        Specification<Group> specification = GroupSpecification.filterByHosted(dudu);
+        Specification<Group> specification = groupSpecification.filterByHosted(dudu);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -103,7 +105,7 @@ class GroupFindRepositoryTest {
     @Test
     void findGroupThatContainKeywords() {
         String keyword = "모모";
-        Specification<Group> specification = GroupSpecification.containKeyword(keyword);
+        Specification<Group> specification = groupSpecification.containKeyword(keyword);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -113,7 +115,7 @@ class GroupFindRepositoryTest {
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
     void findGroupThatExcludeFinishedRecruitment() {
-        Specification<Group> specification = GroupSpecification.excludeFinished(true);
+        Specification<Group> specification = groupSpecification.excludeFinished(true);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -123,7 +125,7 @@ class GroupFindRepositoryTest {
     @DisplayName("마감기한이 적은 순으로 목록을 조회한다")
     @Test
     void findGroupThatOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.orderByDeadline(true);
+        Specification<Group> specification = groupSpecification.orderByDeadline(true);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -133,7 +135,7 @@ class GroupFindRepositoryTest {
     @DisplayName("생성된 역순으로 목록을 조회한다")
     @Test
     void findGroupThatOrderByIdDesc() {
-        Specification<Group> specification = GroupSpecification.orderByDeadline(null);
+        Specification<Group> specification = groupSpecification.orderByDeadline(null);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -144,8 +146,8 @@ class GroupFindRepositoryTest {
     @Test
     void findGroupThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
-        Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinished(true));
+        Specification<Group> specification = groupSpecification.containKeyword(keyword)
+                .and(groupSpecification.excludeFinished(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -156,8 +158,8 @@ class GroupFindRepositoryTest {
     @Test
     void findGroupThatContainKeywordsOrderByDeadline() {
         String keyword = "모모";
-        Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.orderByDeadline(true));
+        Specification<Group> specification = groupSpecification.containKeyword(keyword)
+                .and(groupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -167,8 +169,8 @@ class GroupFindRepositoryTest {
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
     void findGroupThatExcludeFinishedRecruitmentOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.excludeFinished(true)
-                .and(GroupSpecification.orderByDeadline(true));
+        Specification<Group> specification = groupSpecification.excludeFinished(true)
+                .and(groupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -179,9 +181,9 @@ class GroupFindRepositoryTest {
     @Test
     void findGroupThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
-        Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinished(true))
-                .and(GroupSpecification.orderByDeadline(true));
+        Specification<Group> specification = groupSpecification.containKeyword(keyword)
+                .and(groupSpecification.excludeFinished(true))
+                .and(groupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()

@@ -5,33 +5,31 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.participant.domain.Participant;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class GroupSpecification {
 
-    public static Specification<Group> initialize() {
+    public Specification<Group> initialize() {
         return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
     }
 
-    public static Specification<Group> filterByParticipated(Member member) {
+    public Specification<Group> filterByParticipated(Member member) {
         return (root, query, criteriaBuilder) -> {
             Join<Participant, Group> groupParticipant = root.join("participants");
             return criteriaBuilder.equal(groupParticipant.get("member"), member);
         };
     }
 
-    public static Specification<Group> filterByHosted(Member member) {
+    public Specification<Group> filterByHosted(Member member) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), member);
     }
 
-    public static Specification<Group> filterByCategory(Long categoryId) {
+    public Specification<Group> filterByCategory(Long categoryId) {
         if (categoryId == null) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
@@ -39,7 +37,7 @@ public class GroupSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
     }
 
-    public static Specification<Group> containKeyword(String keyword) {
+    public Specification<Group> containKeyword(String keyword) {
         if (keyword == null) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
@@ -50,7 +48,7 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> excludeFinished(Boolean excludeFinished) {
+    public Specification<Group> excludeFinished(Boolean excludeFinished) {
         if (excludeFinished == null) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
@@ -69,7 +67,7 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> orderByDeadline(Boolean orderByDeadline) {
+    public Specification<Group> orderByDeadline(Boolean orderByDeadline) {
         if (orderByDeadline == null) {
             return orderByIdDesc();
         }
@@ -79,7 +77,7 @@ public class GroupSpecification {
         };
     }
 
-    private static Specification<Group> orderByIdDesc() {
+    private Specification<Group> orderByIdDesc() {
         return (root, query, criteriaBuilder) -> {
             query.orderBy(criteriaBuilder.desc(root.get("id")));
             return criteriaBuilder.conjunction();
