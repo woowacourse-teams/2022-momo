@@ -79,10 +79,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     void deleteAndLeave() {
         String hostAccessToken = MemberFixture.DUDU.로_로그인한다();
-        Long groupId = GroupRestHandler.모임을_생성한다(hostAccessToken, GroupFixture.DUDU_COFFEE_TIME)
-            .extract()
-            .as(GroupIdResponse.class)
-            .getGroupId();
+        Long groupId = GroupFixture.DUDU_COFFEE_TIME.을_생성한다(hostAccessToken);
         ParticipantRestHandler.모임에_참여한다(accessToken, groupId);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
