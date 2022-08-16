@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,9 +22,18 @@ public class GroupImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn
+    @JoinColumn(name = "group_id")
     @OneToOne
     private Group group;
 
     private String fileName;
+
+    public GroupImage(Group group, String fileName) {
+        this.group = group;
+        this.fileName = fileName;
+    }
+
+    public void updateFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }
