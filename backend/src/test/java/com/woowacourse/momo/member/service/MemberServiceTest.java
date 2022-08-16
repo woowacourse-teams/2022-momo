@@ -1,11 +1,12 @@
 package com.woowacourse.momo.member.service;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+
+import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.util.List;
 
@@ -18,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.GroupFindService;

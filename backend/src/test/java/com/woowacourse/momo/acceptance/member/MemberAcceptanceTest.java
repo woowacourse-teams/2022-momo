@@ -18,9 +18,6 @@ import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
