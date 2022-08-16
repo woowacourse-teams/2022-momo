@@ -202,16 +202,16 @@ public class Group {
 
     public void validateLeave(Member member) {
         if (isHost(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_HOST);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
         }
         if (!isParticipant(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         }
         if (isOverDeadline()) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
         }
         if (isEarlyClosed) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_EARLY_CLOSED);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
         }
     }
 
