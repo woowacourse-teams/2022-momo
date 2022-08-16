@@ -15,9 +15,9 @@ import * as S from './index.styled';
 
 function Login() {
   const [modalFlag, setModalFlag] = useRecoilState(modalState);
-  const setModalState = useSetRecoilState(modalState);
   const setAccessToken = useSetRecoilState(accessTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
+
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -63,7 +63,7 @@ function Login() {
   };
 
   const showSignupModal = () => {
-    setModalState('signup');
+    setModalFlag('signup');
   };
 
   return (

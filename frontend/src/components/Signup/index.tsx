@@ -18,7 +18,8 @@ import {
 } from './validate';
 
 function Signup() {
-  const [isModalOpen, setModalState] = useRecoilState(modalState);
+  const [modalFlag, setModalFlag] = useRecoilState(modalState);
+
   const {
     value: userId,
     setValue: setUserId,
@@ -46,11 +47,11 @@ function Signup() {
   const { setMessage } = useSnackbar();
 
   const setOffModal = () => {
-    setModalState('off');
+    setModalFlag('off');
   };
 
   const showLoginModal = () => {
-    setModalState('login');
+    setModalFlag('login');
   };
 
   const resetValues = () => {
@@ -97,7 +98,7 @@ function Signup() {
   }, [name]);
 
   return (
-    <Modal modalState={isModalOpen === 'signup'} setOffModal={setOffModal}>
+    <Modal modalState={modalFlag === 'signup'} setOffModal={setOffModal}>
       <S.Form onSubmit={signup}>
         <S.Title>회원가입</S.Title>
         <S.InputContainer>
