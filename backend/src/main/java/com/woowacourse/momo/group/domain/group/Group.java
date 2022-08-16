@@ -180,6 +180,10 @@ public class Group {
         return isEarlyClosed || isFullCapacity() || isOverDeadline();
     }
 
+    public boolean isEnd() {
+        return isEarlyClosed || isOverDeadline();
+    }
+
     private boolean isOverDeadline() {
         return deadline.isBefore(LocalDateTime.now());
     }
@@ -196,18 +200,18 @@ public class Group {
         return participants.size() > NONE_PARTICIPANT;
     }
 
-    public void validateWithdraw(Member member) {
+    public void validateLeave(Member member) {
         if (isHost(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_HOST);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
         }
         if (!isParticipant(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_NOT_PARTICIPANT);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         }
         if (isOverDeadline()) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_DEADLINE);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
         }
         if (isEarlyClosed) {
-            throw new MomoException(ErrorCode.PARTICIPANT_WITHDRAW_EARLY_CLOSED);
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
         }
     }
 

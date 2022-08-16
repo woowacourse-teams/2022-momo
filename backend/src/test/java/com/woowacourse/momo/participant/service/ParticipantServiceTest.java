@@ -28,6 +28,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 @Transactional
@@ -39,6 +40,9 @@ class ParticipantServiceTest {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -143,6 +147,20 @@ class ParticipantServiceTest {
         assertThatThrownBy(() -> participantService.findParticipants(0L))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
+    }
+
+    @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")
+    @Test
+    void findParticipantsExistGhost() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        memberService.deleteById(participant1.getId());
+
+        List<String> names = participantService.findParticipants(savedGroup.getId())
+            .stream()
+            .map(MemberResponse::getName)
+            .collect(Collectors.toList());
+        assertThat(names).contains("알 수 없음");
     }
 
     @DisplayName("모임에 탈퇴한다")

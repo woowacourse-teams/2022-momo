@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Member {
 
+    private static final String GHOST_NAME = "알 수 없음";
+    private static final String GHOST_PRIVATE_INFO = "";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +31,9 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
+
     public Member(String userId, String password, String name) {
         this.userId = userId;
         this.password = password;
@@ -40,5 +46,12 @@ public class Member {
 
     public void changeName(String name) {
         this.name = name;
+    }
+
+    public void delete() {
+        userId = GHOST_PRIVATE_INFO;
+        password = GHOST_PRIVATE_INFO;
+        name = GHOST_NAME;
+        deleted = true;
     }
 }

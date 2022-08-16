@@ -259,4 +259,18 @@ class GroupServiceTest {
                 .isInstanceOf(MomoException.class)
                 .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
     }
+
+    @DisplayName("자신이 참여한 모임들의 목록을 조회한다")
+    @Test
+    void findGroupOfMember() {
+        Group savedGroup = saveGroup();
+        savedGroup.participate(savedMember1);
+
+        List<Long> groups = groupService.findGroupOfMember(savedMember1.getId())
+            .stream()
+            .map(GroupSummaryResponse::getId)
+            .collect(Collectors.toList());
+
+        assertThat(groups).contains(savedGroup.getId());
+    }
 }

@@ -18,7 +18,22 @@ public class MemberFindService {
     private final MemberRepository memberRepository;
 
     public Member findMember(Long id) {
-        return memberRepository.findById(id)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MomoException(ErrorCode.MEMBER_NOT_EXIST));
+        validateExistMember(member);
+        return member;
+    }
+
+    public Member findByUserIdAndPassword(String userId, String password) {
+        Member member = memberRepository.findByUserIdAndPassword(userId, password)
+            .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD));
+        validateExistMember(member);
+        return member;
+    }
+
+    private void validateExistMember(Member member) {
+        if (member.isDeleted()) {
+            throw new MomoException(ErrorCode.MEMBER_DELETED);
+        }
     }
 }

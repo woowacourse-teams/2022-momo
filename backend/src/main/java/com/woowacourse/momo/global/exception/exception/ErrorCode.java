@@ -12,6 +12,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SERVER_ERROR_001", "내부 서버 오류입니다."),
 
     MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_001", "멤버가 존재하지 않습니다."),
+    MEMBER_DELETED(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_002", "탈퇴한 멤버입니다."),
+    MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_003", "진행중인 모임이 있어 탈퇴할 수 없습니다."),
 
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_001", "토큰의 유효기간이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_002", "토큰이 유효하지 않습니다."),
@@ -43,10 +45,10 @@ public enum ErrorCode {
     PARTICIPANT_JOIN_BY_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_001", "주최자는 자신의 모임에 참여할 수 없습니다."),
     PARTICIPANT_RE_PARTICIPATE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_002", "참여자는 본인이 참여한 모임에 재참여할 수 없습니다."),
     PARTICIPANT_FINISHED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_003", "마감된 모임에는 참여할 수 없습니다."),
-    PARTICIPANT_WITHDRAW_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_004", "주최자는 모임에 탈퇴할 수 없습니다."),
-    PARTICIPANT_WITHDRAW_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_005", "모임의 참여자가 아닙니다."),
-    PARTICIPANT_WITHDRAW_DEADLINE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_006", "모집이 마감된 모임입니다."),
-    PARTICIPANT_WITHDRAW_EARLY_CLOSED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_007", "조기종료된 모임입니다."),
+    PARTICIPANT_LEAVE_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_004", "주최자는 모임에 탈퇴할 수 없습니다."),
+    PARTICIPANT_LEAVE_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_005", "모임의 참여자가 아닙니다."),
+    PARTICIPANT_LEAVE_DEADLINE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_006", "모집이 마감된 모임입니다."),
+    PARTICIPANT_LEAVE_EARLY_CLOSED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_007", "조기종료된 모임입니다."),
 
     FILE_INVALID_EXTENSION(HttpStatus.BAD_REQUEST.value(), "FILE_ERROR_001", "저장할 수 없는 확장자입니다."),
     FILE_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "FILE_ERROR_002", "파일 입출력 에러입니다."),
