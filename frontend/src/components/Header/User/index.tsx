@@ -17,7 +17,7 @@ const dropdownAnimationTime = 300;
 
 function User() {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [{ isLogin, user }, setLoginInfo] = useRecoilState(loginState);
+  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
   const [isShownDropdown, setIsShownDropdown] = useState(false);
   const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
     setIsShownDropdown(false);
@@ -33,18 +33,22 @@ function User() {
 
     getUserInfo()
       .then(userInfo => {
-        setLoginInfo({ isLogin: true, user: userInfo });
+        setLoginInfo({
+          isLogin: true,
+          loginType: loginInfo.loginType,
+          user: userInfo,
+        });
       })
       .catch(() => {
         // 액세스 토큰 만료 시 자동 로그아웃
         setLoginInfo({ isLogin: false });
         setAccessToken('');
       });
-  }, [accessToken, setLoginInfo, setAccessToken]);
+  }, [accessToken, loginInfo.loginType, setAccessToken, setLoginInfo]);
 
   useEffect(() => {
     setIsShownDropdown(false);
-  }, [pathname, isLogin]);
+  }, [pathname, loginInfo.isLogin]);
 
   const navigateToLocation = (location: string) => () => {
     navigate(location);
@@ -67,6 +71,8 @@ function User() {
         setLoginInfo({ isLogin: false });
         setAccessToken('');
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
+
+        navigate(BROWSER_PATH.BASE);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
@@ -85,7 +91,7 @@ function User() {
         >
           <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
             <S.Profile width="4rem">❤️</S.Profile>
-            <div>{user?.name}</div>
+            <div>{loginInfo.user?.name}</div>
           </S.User>
           <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>
             내 모임

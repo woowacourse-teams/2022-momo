@@ -41,7 +41,7 @@ function Login() {
         setAccessToken(accessToken);
 
         getUserInfo().then(userInfo => {
-          setLoginInfo({ isLogin: true, user: userInfo });
+          setLoginInfo({ isLogin: true, loginType: 'basic', user: userInfo });
         });
 
         setOffModal();

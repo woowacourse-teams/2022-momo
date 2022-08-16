@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
   getUserInfo,
@@ -27,7 +27,7 @@ function ConfirmPassword({
   newValue,
   setIsEditable,
 }: ConfirmPasswordProps) {
-  const setLoginInfo = useSetRecoilState(loginState);
+  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
 
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal } = useModal();
@@ -45,7 +45,7 @@ function ConfirmPassword({
             setIsEditable(false);
 
             getUserInfo().then(userInfo => {
-              setLoginInfo({ isLogin: true, user: userInfo });
+              setLoginInfo({ ...loginInfo, user: userInfo });
             });
           })
           .catch(() => {
@@ -60,7 +60,7 @@ function ConfirmPassword({
             setIsEditable(false);
 
             getUserInfo().then(userInfo => {
-              setLoginInfo({ isLogin: true, user: userInfo });
+              setLoginInfo({ ...loginInfo, user: userInfo });
             });
           })
           .catch(() => {
