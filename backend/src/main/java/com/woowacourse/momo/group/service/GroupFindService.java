@@ -33,30 +33,22 @@ public class GroupFindService {
     }
 
     public Page<Group> findAll(GroupFindRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Specification<Group> specification = Specification.where(GroupSpecification.initialize());
-        if (request.getCategory() != null) {
-            Category category = Category.from(request.getCategory());
-            specification = specification.and(GroupSpecification.filterByCategory(category));
-        }
-        if (request.getExcludeFinished() != null) {
-            specification = specification.and(GroupSpecification.excludeFinishedRecruitment());
-        }
-        if (request.getKeyword() != null) {
-            specification = specification.and(GroupSpecification.containKeyword(request.getKeyword()));
-        }
-        if (request.getOrderByDeadline() != null) {
-            specification = specification.and(GroupSpecification.orderByDeadline());
-        } else {
-            specification = specification.and(GroupSpecification.orderByIdDesc());
-        }
-
-        return groupRepository.findAll(specification, pageable);
+        return findAll(specification, request);
     }
 
     public Page<Group> findAllThatParticipated(GroupFindRequest request, Long memberId) {
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(memberId));
+        return findAll(specification, request);
+    }
+
+    public Page<Group> findAllThatHosted(GroupFindRequest request, Long memberId) {
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByHosted(memberId));
+        return findAll(specification, request);
+    }
+
+    public Page<Group> findAll(Specification<Group> specification, GroupFindRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         if (request.getCategory() != null) {
             Category category = Category.from(request.getCategory());
             specification = specification.and(GroupSpecification.filterByCategory(category));
