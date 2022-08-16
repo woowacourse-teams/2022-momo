@@ -17,7 +17,7 @@ import com.woowacourse.momo.participant.domain.Participant;
 public class GroupSpecification {
 
     public static Specification<Group> initialize() {
-        return (root, query, criteriaBuilder) -> null;
+        return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
     }
 
     public static Specification<Group> filterByParticipated(Member member) {
@@ -82,7 +82,7 @@ public class GroupSpecification {
     private static Specification<Group> orderByIdDesc() {
         return (root, query, criteriaBuilder) -> {
             query.orderBy(criteriaBuilder.desc(root.get("id")));
-            return null;
+            return criteriaBuilder.conjunction();
         };
     }
 }
