@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
 import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
-import Modal from 'components/Modal';
+import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState, modalState } from 'store/states';

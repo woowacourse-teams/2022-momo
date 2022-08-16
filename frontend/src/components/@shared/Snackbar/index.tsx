@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import Portal from 'components/Portal';
+import Portal from 'components/@shared/Portal';
 import useClosingState from 'hooks/useClosingState';
 import useSnackbar from 'hooks/useSnackbar';
 

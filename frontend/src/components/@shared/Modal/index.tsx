@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Portal from 'components/Portal';
+import Portal from 'components/@shared/Portal';
 import useClosingState from 'hooks/useClosingState';
 import { preventBubbling } from 'utils/event';
 

@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { requestGoogleLogin } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
-import { Loading } from 'components/Animation';
+import { Loading } from 'components/@shared/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';

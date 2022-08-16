@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import ErrorBoundary from 'components/ErrorBoundary';
+import ErrorBoundary from 'components/@shared/ErrorBoundary';
+import NoResult from 'components/@shared/NoResult';
 import JoinedGroups from 'components/JoinedGroups';
-import NoResult from 'components/NoResult';
 import SearchForm from 'components/SearchSection/SearchForm';
 
 import * as S from './index.styled';

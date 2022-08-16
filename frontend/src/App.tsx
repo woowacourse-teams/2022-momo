@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import ScrollToTop from 'components/@shared/ScrollToTop';
-import ErrorBoundary from 'components/ErrorBoundary';
 import Loading from 'components/Loading';
 import LoginModal from 'components/Login';
 import SignupModal from 'components/Signup';

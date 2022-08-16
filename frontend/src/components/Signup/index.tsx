@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
-import Modal from 'components/Modal';
+import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import useSnackbar from 'hooks/useSnackbar';
