@@ -29,7 +29,7 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -76,7 +76,7 @@ class MemberControllerTest {
     @DisplayName("정상적으로 비밀번호를 수정한 경우를 테스트한다")
     @Test
     void updatePassword() throws Exception {
-        ChangePasswordRequest passwordRequest = new ChangePasswordRequest("1q2wW34R!");
+        PasswordRequest passwordRequest = new PasswordRequest("1q2wW34R!");
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/members/password")
                         .header("authorization", "bearer " + accessToken)

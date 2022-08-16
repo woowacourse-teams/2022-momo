@@ -4,7 +4,7 @@ import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class MemberRestHandler extends RestHandler {
@@ -16,7 +16,7 @@ public class MemberRestHandler extends RestHandler {
     }
 
     public static ValidatableResponse 비밀번호를_수정한다(String accessToken, String newPassword) {
-        ChangePasswordRequest request = new ChangePasswordRequest(newPassword);
+        PasswordRequest request = new PasswordRequest(newPassword);
         return patchRequest(accessToken, request, BASE_URL + "/password");
     }
 

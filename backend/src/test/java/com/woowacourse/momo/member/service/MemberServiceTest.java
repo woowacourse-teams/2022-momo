@@ -27,7 +27,7 @@ import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional
@@ -81,7 +81,7 @@ class MemberServiceTest {
         Member beforeMember = memberRepository.findById(memberId).get();
         String beforePassword = beforeMember.getPassword();
 
-        ChangePasswordRequest request = new ChangePasswordRequest("wooteco2!");
+        PasswordRequest request = new PasswordRequest("wooteco2!");
         memberService.updatePassword(memberId, request);
 
         Member member = memberRepository.findById(memberId).get();

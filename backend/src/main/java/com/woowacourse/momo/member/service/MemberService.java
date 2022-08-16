@@ -65,7 +65,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePassword(Long id, ChangePasswordRequest request) {
+    public void updatePassword(Long id, PasswordRequest request) {
         Member member = memberFindService.findMember(id);
 
         String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
