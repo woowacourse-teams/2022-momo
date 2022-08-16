@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,21 +39,28 @@ public class MemberService {
     @Transactional
     public void deleteById(Long id) {
         Member member = memberFindService.findMember(id);
-        leaveGroup(member);
+        leaveProgressingGroup(member);
         member.delete();
     }
 
-    private void leaveGroup(Member member) {
-        List<Group> groups = groupFindService.findRelatedGroups(member.getId());
-        for (Group group : groups) {
-            if (group.isEnd()) {
-                continue;
-            }
-            if (group.isHost(member)) {
-                throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
-            }
-            participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId());
+    private void leaveProgressingGroup(Member member) {
+        List<Group> progressingGroups = groupFindService.findRelatedGroups(member.getId())
+            .stream()
+            .filter(group -> !group.isEnd())
+            .collect(Collectors.toList());
+        validateMemberNotHost(member, progressingGroups);
+        progressingGroups.forEach(
+            group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
+    }
+
+    private void validateMemberNotHost(Member member, List<Group> groups) {
+        if (isMemberHost(member, groups)) {
+            throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
+    }
+    private boolean isMemberHost(Member member, List<Group> groups) {
+        return groups.stream()
+            .anyMatch(group -> group.isHost(member));
     }
 
     @Transactional
