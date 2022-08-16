@@ -33,10 +33,13 @@ const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
   return `마감까지 ${remainTime}`;
 };
 
+const getTimeInKorea = (time: Date = new Date()) => {
+  const offset = time.getTimezoneOffset() * 60 * 1000;
+  return new Date(time.getTime() - offset);
+};
+
 const getNewDateString = (until: 'day' | 'min') => {
-  const nowTime = new Date();
-  const offset = nowTime.getTimezoneOffset() * 60 * 1000;
-  const timeInKorea = new Date(nowTime.getTime() - offset);
+  const timeInKorea = getTimeInKorea();
 
   switch (until) {
     case 'day':
@@ -46,9 +49,13 @@ const getNewDateString = (until: 'day' | 'min') => {
   }
 };
 
-const resetDateToMidnight = (date: Date) => {
+const resetDateToStartOfDay = (date: Date) => {
   date.setHours(0, 0, 0, 0);
+  return date;
+};
 
+const resetDateToEndOfDay = (date: Date) => {
+  date.setHours(23, 59, 59, 999);
   return date;
 };
 
@@ -86,7 +93,9 @@ export {
   convertRemainTime,
   convertDeadlineToRemainTime,
   getNewDateString,
-  resetDateToMidnight,
+  getTimeInKorea,
+  resetDateToStartOfDay,
+  resetDateToEndOfDay,
   parsedDurationDate,
   parsedTime,
 };
