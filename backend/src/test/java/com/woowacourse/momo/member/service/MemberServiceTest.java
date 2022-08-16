@@ -124,7 +124,7 @@ class MemberServiceTest {
 
         memberService.deleteById(memberId);
 
-        List<Group> groups = groupFindService.findAllThatParticipated(member);
+        List<Group> groups = groupFindService.findParticipatedGroups(member);
         assertThat(groups).isEmpty();
     }
 

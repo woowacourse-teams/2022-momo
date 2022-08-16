@@ -70,7 +70,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("카테고리에 해당하는 모임 목록을 조회한다")
     @Test
-    void findAllThatFilterByCategory() {
+    void findGroupThatFilterByCategory() {
         Category category = Category.STUDY;
         Specification<Group> specification = GroupSpecification.filterByCategory(category.getId());
         List<Group> actual = groupRepository.findAll(specification);
@@ -81,7 +81,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("회원이 참여한 모임 목록을 조회한다")
     @Test
-    void findAllThatFilterByParticipated() {
+    void findGroupThatFilterByParticipated() {
         Specification<Group> specification = GroupSpecification.filterByParticipated(momo);
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -91,7 +91,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("회원이 주최한 모임 목록을 조회한다")
     @Test
-    void findAllThatFilterByHosted() {
+    void findGroupThatFilterByHosted() {
         Specification<Group> specification = GroupSpecification.filterByHosted(dudu);
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -101,7 +101,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("키워드가 포함된 모임 목록을 조회한다")
     @Test
-    void findAllThatContainKeywords() {
+    void findGroupThatContainKeywords() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword);
         List<Group> actual = groupRepository.findAll(specification);
@@ -112,7 +112,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatExcludeFinishedRecruitment() {
+    void findGroupThatExcludeFinishedRecruitment() {
         Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true);
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -122,7 +122,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("마감기한이 적은 순으로 목록을 조회한다")
     @Test
-    void findAllThatOrderByDeadline() {
+    void findGroupThatOrderByDeadline() {
         Specification<Group> specification = GroupSpecification.orderByDeadline(true);
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -132,7 +132,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("생성된 역순으로 목록을 조회한다")
     @Test
-    void findAllThatOrderByIdDesc() {
+    void findGroupThatOrderByIdDesc() {
         Specification<Group> specification = GroupSpecification.orderByDeadline(null);
         List<Group> actual = groupRepository.findAll(specification);
 
@@ -142,7 +142,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("키워드가 포함된 목록 중 모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndExcludeFinishedRecruitment() {
+    void findGroupThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
                 .and(GroupSpecification.excludeFinishedRecruitment(true));
@@ -154,7 +154,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("키워드가 포함된 목록 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsOrderByDeadline() {
+    void findGroupThatContainKeywordsOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
                 .and(GroupSpecification.orderByDeadline(true));
@@ -166,7 +166,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatExcludeFinishedRecruitmentOrderByDeadline() {
+    void findGroupThatExcludeFinishedRecruitmentOrderByDeadline() {
         Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true)
                 .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
@@ -177,7 +177,7 @@ class GroupFindRepositoryTest {
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
+    void findGroupThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
                 .and(GroupSpecification.excludeFinishedRecruitment(true))

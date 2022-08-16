@@ -109,7 +109,7 @@ class GroupServiceTest {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         GroupResponse expected = GroupResponseAssembler.groupResponse(savedGroup);
 
-        GroupResponse actual = groupService.findById(savedGroup.getId());
+        GroupResponse actual = groupService.findGroup(savedGroup.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -118,7 +118,7 @@ class GroupServiceTest {
     @DisplayName("존재하지 않는 모임을 조회할 수 없다")
     @Test
     void findByIdWithNotExistGroupId() {
-        assertThatThrownBy(() -> groupService.findById(0L))
+        assertThatThrownBy(() -> groupService.findGroup(0L))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -132,7 +132,7 @@ class GroupServiceTest {
 
         groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest);
 
-        assertThat(groupService.findById(savedGroup.getId()))
+        assertThat(groupService.findGroup(savedGroup.getId()))
                 .usingRecursiveComparison()
                 .ignoringFields("host", "finished")
                 .isEqualTo(groupRequest);
@@ -174,7 +174,7 @@ class GroupServiceTest {
 
         groupService.closeEarly(savedHost.getId(), savedGroup.getId());
 
-        boolean actual = groupService.findById(savedGroup.getId()).isFinished();
+        boolean actual = groupService.findGroup(savedGroup.getId()).isFinished();
         assertThat(actual).isTrue();
     }
 
@@ -193,7 +193,7 @@ class GroupServiceTest {
 
         GroupFindRequest request = new GroupFindRequest();
         request.setPage(1);
-        GroupPageResponse actual = groupService.findAll(request);
+        GroupPageResponse actual = groupService.findGroups(request);
 
         assertAll(
                 () -> assertThat(actual.isHasNextPage()).isFalse(),
@@ -213,7 +213,7 @@ class GroupServiceTest {
         GroupFindRequest request = new GroupFindRequest();
         request.setCategory(Category.DRINK.getId());
         request.setPage(1);
-        GroupPageResponse actual = groupService.findAll(request);
+        GroupPageResponse actual = groupService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
     }
@@ -229,7 +229,7 @@ class GroupServiceTest {
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword("모모");
         request.setPage(0);
-        GroupPageResponse actual = groupService.findAll(request);
+        GroupPageResponse actual = groupService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(2);
     }
@@ -240,7 +240,7 @@ class GroupServiceTest {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         groupService.delete(savedHost.getId(), savedGroup.getId());
 
-        assertThatThrownBy(() -> groupService.findById(savedGroup.getId()))
+        assertThatThrownBy(() -> groupService.findGroup(savedGroup.getId()))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }

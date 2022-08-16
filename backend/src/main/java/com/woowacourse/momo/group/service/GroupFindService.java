@@ -27,32 +27,32 @@ public class GroupFindService {
     private static final int DEFAULT_PAGE_SIZE = 12;
     private final GroupRepository groupRepository;
 
-    public Group findById(Long id) {
+    public Group findGroup(Long id) {
         return groupRepository.findById(id)
                 .orElseThrow(() -> new MomoException(ErrorCode.GROUP_NOT_EXIST));
     }
 
-    public Page<Group> findAll(GroupFindRequest request) {
+    public Page<Group> findGroups(GroupFindRequest request) {
         Specification<Group> specification = Specification.where(GroupSpecification.initialize());
-        return findAll(specification, request);
+        return findGroups(specification, request);
     }
 
-    public List<Group> findAllThatParticipated(Member member) {
+    public List<Group> findParticipatedGroups(Member member) {
         Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
         return groupRepository.findAll(specification);
     }
 
-    public Page<Group> findAllThatParticipated(GroupFindRequest request, Member member) {
+    public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member) {
         Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
-        return findAll(specification, request);
+        return findGroups(specification, request);
     }
 
-    public Page<Group> findAllThatHosted(GroupFindRequest request, Member member) {
+    public Page<Group> findHostedGroups(GroupFindRequest request, Member member) {
         Specification<Group> specification = Specification.where(GroupSpecification.filterByHosted(member));
-        return findAll(specification, request);
+        return findGroups(specification, request);
     }
 
-    private Page<Group> findAll(Specification<Group> specification, GroupFindRequest request) {
+    private Page<Group> findGroups(Specification<Group> specification, GroupFindRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
 
         specification = specification.and(GroupSpecification.filterByCategory(request.getCategory()))

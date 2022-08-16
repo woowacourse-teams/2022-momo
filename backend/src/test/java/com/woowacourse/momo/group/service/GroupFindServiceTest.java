@@ -67,8 +67,8 @@ class GroupFindServiceTest {
 
     @DisplayName("모임을 조회한다")
     @Test
-    void findById() {
-        Group actual = groupFindService.findById(group1.getId());
+    void findGroup() {
+        Group actual = groupFindService.findGroup(group1.getId());
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(group1);
@@ -76,9 +76,9 @@ class GroupFindServiceTest {
 
     @DisplayName("모임 목록을 조회한다")
     @Test
-    void findAll() {
+    void findGroups() {
         GroupFindRequest request = new GroupFindRequest();
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group3, group2, group1));
@@ -86,9 +86,9 @@ class GroupFindServiceTest {
 
     @DisplayName("참여한 모임 목록을 조회한다")
     @Test
-    void findAllThatParticipated() {
+    void findParticipatedGroups() {
         GroupFindRequest request = new GroupFindRequest();
-        List<Group> actual = groupFindService.findAllThatParticipated(request, momo).getContent();
+        List<Group> actual = groupFindService.findParticipatedGroups(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group3, group2, group1));
@@ -96,9 +96,9 @@ class GroupFindServiceTest {
 
     @DisplayName("주최한 모임을 조회한다")
     @Test
-    void findAllThatHosted() {
+    void findHostedGroups() {
         GroupFindRequest request = new GroupFindRequest();
-        List<Group> actual = groupFindService.findAllThatHosted(request, momo).getContent();
+        List<Group> actual = groupFindService.findHostedGroups(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
@@ -106,10 +106,10 @@ class GroupFindServiceTest {
 
     @DisplayName("카테고리에 해당하는 모임 목록을 조회한다")
     @Test
-    void findAllThatFilterByCategory() {
+    void findGroupThatFilterByCategory() {
         GroupFindRequest request = new GroupFindRequest();
         request.setCategory(Category.STUDY.getId());
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group1));
@@ -117,11 +117,11 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함된 모임 목록을 조회한다")
     @Test
-    void findAllThatContainKeywords() {
+    void findGroupThatContainKeywords() {
         String keyword = "모모";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
@@ -129,10 +129,10 @@ class GroupFindServiceTest {
 
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatExcludeFinishedRecruitment() {
+    void findGroupThatExcludeFinishedRecruitment() {
         GroupFindRequest request = new GroupFindRequest();
         request.setExcludeFinished(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group4, group2, group1));
@@ -140,10 +140,10 @@ class GroupFindServiceTest {
 
     @DisplayName("마감기한이 적은 순으로 목록을 조회한다")
     @Test
-    void findAllThatOrderByDeadline() {
+    void findGroupThatOrderByDeadline() {
         GroupFindRequest request = new GroupFindRequest();
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1, group3));
@@ -151,12 +151,12 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함된 목록 중 모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndExcludeFinishedRecruitment() {
+    void findGroupThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
@@ -164,12 +164,12 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함된 목록 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsOrderByDeadline() {
+    void findGroupThatContainKeywordsOrderByDeadline() {
         String keyword = "모모";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1, group3));
@@ -177,11 +177,11 @@ class GroupFindServiceTest {
 
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatExcludeFinishedRecruitmentOrderByDeadline() {
+    void findGroupThatExcludeFinishedRecruitmentOrderByDeadline() {
         GroupFindRequest request = new GroupFindRequest();
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1));
@@ -189,13 +189,13 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
-    void findAllThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
+    void findGroupThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAll(request).getContent();
+        List<Group> actual = groupFindService.findGroups(request).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
@@ -203,13 +203,13 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 참여한 모임 목록을 조회한다")
     @Test
-    void findAllThatParticipatedAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
+    void findParticipatedGroupsAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "두두";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAllThatParticipated(request, momo).getContent();
+        List<Group> actual = groupFindService.findParticipatedGroups(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5));
@@ -217,13 +217,13 @@ class GroupFindServiceTest {
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 주최한 모임을 조회한다")
     @Test
-    void findAllThatHostedAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
+    void findHostedGroupsAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         GroupFindRequest request = new GroupFindRequest();
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAllThatHosted(request, momo).getContent();
+        List<Group> actual = groupFindService.findHostedGroups(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));

@@ -349,7 +349,7 @@ class ParticipantControllerTest {
     }
 
     private void setPastDeadline(Long groupId, LocalDateTime deadline) throws IllegalAccessException {
-        Group group = groupFindService.findById(groupId);
+        Group group = groupFindService.findGroup(groupId);
         int deadlineField = 8;
         Class<Group> clazz = Group.class;
         Field[] field = clazz.getDeclaredFields();

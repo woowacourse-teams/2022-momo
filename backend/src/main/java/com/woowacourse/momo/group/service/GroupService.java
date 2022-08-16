@@ -44,31 +44,31 @@ public class GroupService {
         return GroupResponseAssembler.groupIdResponse(group);
     }
 
-    public GroupResponse findById(Long id) {
-        Group group = groupFindService.findById(id);
+    public GroupResponse findGroup(Long id) {
+        Group group = groupFindService.findGroup(id);
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public GroupPageResponse findAll(GroupFindRequest request) {
-        Page<Group> groups = groupFindService.findAll(request);
+    public GroupPageResponse findGroups(GroupFindRequest request) {
+        Page<Group> groups = groupFindService.findGroups(request);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    public GroupPageResponse findAllThatParticipated(GroupFindRequest request, Long memberId) {
+    public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindService.findAllThatParticipated(request, member);
+        Page<Group> groups = groupFindService.findParticipatedGroups(request, member);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    public GroupPageResponse findAllThatHosted(GroupFindRequest request, Long memberId) {
+    public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindService.findAllThatHosted(request, member);
+        Page<Group> groups = groupFindService.findHostedGroups(request, member);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
@@ -77,7 +77,7 @@ public class GroupService {
 
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
-        Group group = groupFindService.findById(groupId);
+        Group group = groupFindService.findGroup(groupId);
         validateInitialState(hostId, group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
@@ -102,7 +102,7 @@ public class GroupService {
 
     @Transactional
     public void closeEarly(Long hostId, Long groupId) {
-        Group group = groupFindService.findById(groupId);
+        Group group = groupFindService.findGroup(groupId);
         validateHost(group, hostId);
         validateFinishedRecruitment(group);
 
@@ -111,7 +111,7 @@ public class GroupService {
 
     @Transactional
     public void delete(Long hostId, Long groupId) {
-        Group group = groupFindService.findById(groupId);
+        Group group = groupFindService.findGroup(groupId);
         validateInitialState(hostId, group);
 
         groupRepository.deleteById(groupId);
