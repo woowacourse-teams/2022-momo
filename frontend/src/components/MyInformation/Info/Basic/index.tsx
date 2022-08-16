@@ -34,7 +34,7 @@ function Basic({
       <S.InputBox>
         <S.Label>
           아이디
-          <S.Input type="text" value={user?.userId} disabled />
+          <S.Input type="text" value={user?.userId || ''} disabled />
         </S.Label>
         <S.Label>
           닉네임
