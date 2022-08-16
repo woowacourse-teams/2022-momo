@@ -63,6 +63,13 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 .body("name", is(expected));
     }
 
+    @DisplayName("비밀번호가 같은지 확인한다")
+    @Test
+    void conformPassword() {
+        MemberRestHandler.비밀번호를_확인한다(accessToken, MEMBER.getPassword())
+                .statusCode(HttpStatus.OK.value());
+    }
+
     @DisplayName("회원탈퇴를 하다")
     @Test
     void delete() {
@@ -82,15 +89,15 @@ class MemberAcceptanceTest extends AcceptanceTest {
         ParticipantRestHandler.모임에_참여한다(accessToken, groupId);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
-            .statusCode(HttpStatus.NO_CONTENT.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
 
         List<Long> groups = GroupRestHandler.본인이_참여한_모임을_조회한다(accessToken)
-            .extract()
-            .jsonPath()
-            .getList("groups", Group.class)
-            .stream()
-            .map(Group::getId)
-            .collect(Collectors.toList());
+                .extract()
+                .jsonPath()
+                .getList("groups", Group.class)
+                .stream()
+                .map(Group::getId)
+                .collect(Collectors.toList());
         assertThat(groups).isEmpty();
     }
 
@@ -100,6 +107,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         GroupRestHandler.모임을_생성한다(accessToken, GroupFixture.DUDU_COFFEE_TIME);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
-            .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
