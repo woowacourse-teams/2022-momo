@@ -13,3 +13,5 @@ export interface LoginState {
   loginType?: 'basic' | 'oauth';
   user?: UserProfile;
 }
+
+export type EditableType = 'name' | 'password';

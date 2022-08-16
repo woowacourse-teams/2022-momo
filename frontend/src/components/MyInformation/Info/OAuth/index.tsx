@@ -1,10 +1,7 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
-import { getUserInfo, requestChangeName } from 'apis/request/user';
 import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
-import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
 
 import * as S from '../index.styled';
@@ -13,6 +10,7 @@ interface OAuthProps {
   name: string;
   setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isNameEditable: boolean;
+  editName: () => void;
   changeNameEditable: () => void;
 }
 
@@ -20,33 +18,17 @@ function OAuth({
   name,
   setName,
   isNameEditable,
+  editName,
   changeNameEditable,
 }: OAuthProps) {
-  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
-
-  const { setMessage } = useSnackbar();
-
-  const editName = () => {
-    requestChangeName(name)
-      .then(() => {
-        setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
-        changeNameEditable();
-
-        getUserInfo().then(userInfo => {
-          setLoginInfo({ ...loginInfo, user: userInfo });
-        });
-      })
-      .catch(() => {
-        alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
-      });
-  };
+  const { user } = useRecoilValue(loginState);
 
   return (
     <>
       <S.InputBox>
         <S.Label>
           아이디
-          <S.Input value={loginInfo.user?.userId} disabled />
+          <S.Input value={user?.userId} disabled />
         </S.Label>
         <S.Label>
           닉네임
