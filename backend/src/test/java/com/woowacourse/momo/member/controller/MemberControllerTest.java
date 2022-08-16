@@ -109,6 +109,24 @@ class MemberControllerTest {
                 );
     }
 
+    @DisplayName("비밀번호가 올바른지 테스트한다")
+    @Test
+    void confirmPassword() throws Exception {
+        PasswordRequest request = new PasswordRequest(PASSWORD);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/members/password/confirm")
+                        .header("authorization", "bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andDo(
+                        document("memberconfirmpassword",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     @DisplayName("정상적으로 사용자를 삭제한 경우를 테스트한다.")
     @Test
     void delete() throws Exception {

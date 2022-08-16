@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @RequiredArgsConstructor
@@ -46,6 +47,14 @@ public class MemberController {
     public ResponseEntity<Void> updateName(@AuthenticationPrincipal Long id,
                                            @RequestBody @Valid ChangeNameRequest request) {
         memberService.updateName(id, request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/password/confirm")
+    public ResponseEntity<Void> confirmPassword(@AuthenticationPrincipal Long id,
+                                                @RequestBody PasswordRequest request) {
+        memberService.confirmPassword(id, request);
 
         return ResponseEntity.ok().build();
     }

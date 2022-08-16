@@ -145,6 +145,14 @@ include::{snippets}/memberfind/http-request.adoc[]
 Response
 include::{snippets}/memberfind/http-response.adoc[]
 
+=== 비밀번호 확인
+
+Request
+include::{snippets}/memberconfirmpassword/http-request.adoc[]
+
+Response
+include::{snippets}/memberconfirmpassword/http-response.adoc[]
+
 === 회원 탈퇴
 
 Request
