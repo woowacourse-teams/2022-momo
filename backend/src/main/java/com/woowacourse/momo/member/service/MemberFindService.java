@@ -18,12 +18,8 @@ public class MemberFindService {
     private final MemberRepository memberRepository;
 
     public Member findMember(Long id) {
-        return memberRepository.findById(id)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MomoException(ErrorCode.MEMBER_NOT_EXIST));
-    }
-
-    public Member findExistMember(Long id) {
-        Member member = findMember(id);
         validateExistMember(member);
         return member;
     }

@@ -30,14 +30,14 @@ public class MemberService {
     private final ParticipantRepository participantRepository;
 
     public MyInfoResponse findById(Long id) {
-        Member member = memberFindService.findExistMember(id);
+        Member member = memberFindService.findMember(id);
 
         return MemberResponseAssembler.myInfoResponse(member);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        Member member = memberFindService.findExistMember(id);
+        Member member = memberFindService.findMember(id);
         leaveGroup(member);
         member.delete();
     }
@@ -57,7 +57,7 @@ public class MemberService {
 
     @Transactional
     public void updatePassword(Long id, ChangePasswordRequest request) {
-        Member member = memberFindService.findExistMember(id);
+        Member member = memberFindService.findMember(id);
 
         String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
         member.changePassword(encryptedPassword);
@@ -65,7 +65,7 @@ public class MemberService {
 
     @Transactional
     public void updateName(Long id, ChangeNameRequest request) {
-        Member member = memberFindService.findExistMember(id);
+        Member member = memberFindService.findMember(id);
 
         member.changeName(request.getName());
     }

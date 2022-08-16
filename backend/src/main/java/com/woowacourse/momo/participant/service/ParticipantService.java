@@ -27,7 +27,7 @@ public class ParticipantService {
     @Transactional
     public void participate(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findExistMember(memberId);
+        Member member = memberFindService.findMember(memberId);
 
         group.participate(member);
     }
@@ -47,7 +47,7 @@ public class ParticipantService {
 
     private void validateLeave(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findExistMember(memberId);
+        Member member = memberFindService.findMember(memberId);
         group.validateLeave(member);
     }
 }
