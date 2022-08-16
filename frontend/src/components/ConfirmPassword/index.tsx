@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
+  getUserInfo,
   requestChangeName,
   requestChangePassword,
   requestConfirmPassword,
@@ -11,7 +12,7 @@ import Modal from 'components/@shared/Modal';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
-import { modalState } from 'store/states';
+import { loginState, modalState } from 'store/states';
 
 import * as S from './index.styled';
 
@@ -26,6 +27,8 @@ function ConfirmPassword({
   newValue,
   setIsEditable,
 }: ConfirmPasswordProps) {
+  const setLoginInfo = useSetRecoilState(loginState);
+
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal } = useModal();
 
@@ -40,6 +43,10 @@ function ConfirmPassword({
           .then(() => {
             setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
             setIsEditable(false);
+
+            getUserInfo().then(userInfo => {
+              setLoginInfo({ isLogin: true, user: userInfo });
+            });
           })
           .catch(() => {
             alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
@@ -51,6 +58,10 @@ function ConfirmPassword({
           .then(() => {
             setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
             setIsEditable(false);
+
+            getUserInfo().then(userInfo => {
+              setLoginInfo({ isLogin: true, user: userInfo });
+            });
           })
           .catch(() => {
             alert(ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
