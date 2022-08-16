@@ -180,15 +180,66 @@ class GroupControllerTest {
     @Test
     void groupGetListTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
-        saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
         saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=0"))
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                        "/api/groups?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0"))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("groups[0].name", is("무무의 스터디")))
-                .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
                         document("grouplist",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("내가 참여한 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetParticipatedListTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String token = accessToken("woowa", "wooteco1!");
+        saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                                "/api/groups/me/participated?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                        .header("Authorization", "bearer " + token))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
+                .andDo(
+                        document("participatedgrouplist",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("내가 주최한 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetHostedListTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String token = accessToken("woowa", "wooteco1!");
+        saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                                "/api/groups/me/hosted?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                        .header("Authorization", "bearer " + token))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
+                .andDo(
+                        document("hostedgrouplist",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -252,29 +303,6 @@ class GroupControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/groups?page=1"))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("groups", hasSize(8)));
-    }
-
-    @DisplayName("본인이 참여하거나 참여한 그룹들을 조회한다")
-    @Test
-    void groupGetListRelatedMe() throws Exception {
-        Long savedMember1 = saveMember("woowa", "wooteco1!", "모모");
-        Long savedMember2 = saveMember("woowak", "wooteco1!", "머머");
-        saveGroup("모모의 스터디1", savedMember1, Category.STUDY);
-        String token = accessToken("woowa", "wooteco1!");
-
-        Long GroupHeldByAnotherMember = saveGroup("머머의 스터디", savedMember2, Category.STUDY);
-        participantService.participate(GroupHeldByAnotherMember, savedMember1);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me/participated")
-                        .header("Authorization", "bearer " + token))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("groups", hasSize(2)))
-                .andDo(
-                        document("grouprelated",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint())
-                        )
-                );
     }
 
     Long saveGroup(String name, Long hostId, Category category) {

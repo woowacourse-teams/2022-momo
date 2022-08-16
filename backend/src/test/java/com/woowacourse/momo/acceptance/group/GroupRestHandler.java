@@ -48,6 +48,10 @@ public class GroupRestHandler extends RestHandler {
         return getRequest(accessToken, BASE_URL + "/me/participated");
     }
 
+    public static ValidatableResponse 본인이_주최한_모임을_조회한다(String accessToken) {
+        return getRequest(accessToken, BASE_URL + "/me/hosted");
+    }
+
     public static ValidatableResponse 페이지로_모임목록을_조회한다(int pageNumber) {
         return getRequest(BASE_URL + "?page=" + pageNumber);
     }
