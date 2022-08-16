@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { requestWithdrawal } from 'apis/request/user';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { BROWSER_PATH } from 'constants/path';
 import useSnackbar from 'hooks/useSnackbar';
 import { accessTokenState, loginState } from 'store/states';
 
@@ -26,7 +27,7 @@ function Withdrawal() {
         setAccessToken('');
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
 
-        navigate('/');
+        navigate(BROWSER_PATH.BASE);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.MEMBER.FAILURE_WITHDRAWAL_REQUEST);

@@ -10,6 +10,7 @@ import {
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { BROWSER_PATH } from 'constants/path';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
@@ -59,7 +60,8 @@ function ControlButton({
     requestDeleteGroup(id)
       .then(() => {
         setMessage(GUIDE_MESSAGE.DELETE.SUCCESS_REQUEST);
-        navigate('/');
+
+        navigate(BROWSER_PATH.BASE);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
