@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import { getUserInfo } from 'apis/request/user';
 import NavLink from 'components/@shared/NavLink';
@@ -14,6 +14,7 @@ import User from './User';
 
 function Header() {
   const [{ isLogin, loginType }, setLoginInfo] = useRecoilState(loginState);
+  const resetLoginInfo = useResetRecoilState(loginState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   const { showSignupModal, showLoginModal } = useModal();
@@ -31,10 +32,10 @@ function Header() {
       })
       .catch(() => {
         // 액세스 토큰 만료 시 자동 로그아웃
-        setLoginInfo({ isLogin: false });
+        resetLoginInfo();
         setAccessToken('');
       });
-  }, [accessToken, loginType, setAccessToken, setLoginInfo]);
+  }, [accessToken, loginType, setAccessToken, setLoginInfo, resetLoginInfo]);
 
   return (
     <S.Container>

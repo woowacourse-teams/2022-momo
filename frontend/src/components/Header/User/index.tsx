@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestLogout } from 'apis/request/auth';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
@@ -16,7 +16,8 @@ const dropdownAnimationTime = 300;
 
 function User() {
   const setAccessToken = useSetRecoilState(accessTokenState);
-  const [{ isLogin, user }, setLoginInfo] = useRecoilState(loginState);
+  const { isLogin, user } = useRecoilValue(loginState);
+  const resetLoginInfo = useResetRecoilState(loginState);
 
   const [isShownDropdown, setIsShownDropdown] = useState(false);
   const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
@@ -50,7 +51,7 @@ function User() {
 
     requestLogout()
       .then(() => {
-        setLoginInfo({ isLogin: false });
+        resetLoginInfo();
         setAccessToken('');
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
 
