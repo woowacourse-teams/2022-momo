@@ -64,6 +64,8 @@ const ERROR_MESSAGE = {
     FAILURE_CONFIRM_PASSWORD: '비밀번호 확인이 일치하지 않아요.',
     FAILURE_REQUEST:
       '유저 정보를 불러오는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_CONFIRM_PASSWORD_REQUEST:
+      '비밀번호를 확인하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_NAME_REQUEST:
       '닉네임을 변경하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_PASSWORD_REQUEST:
