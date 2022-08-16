@@ -1,7 +1,7 @@
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { ReactComponent as LogoSVG } from 'assets/svg/logo.svg';
 import NavLink from 'components/@shared/NavLink';
+import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import { loginState, modalState } from 'store/states';
 import { ModalStateType } from 'types/condition';
@@ -21,7 +21,7 @@ function Header() {
     <S.Container>
       <NavLink to={BROWSER_PATH.BASE}>
         <S.Logo>
-          <LogoSVG />
+          <Logo />
         </S.Logo>
       </NavLink>
       <S.Nav>
