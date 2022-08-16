@@ -6,7 +6,7 @@ const PageContainer = styled.div`
   justify-content: center;
   gap: 2rem;
 
-  height: calc(100% - 4rem);
+  height: 100%;
 `;
 
 const ScrollContainer = styled.div`
