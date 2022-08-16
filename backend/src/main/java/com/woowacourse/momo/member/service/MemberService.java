@@ -15,7 +15,7 @@ import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 import com.woowacourse.momo.participant.domain.ParticipantRepository;
@@ -77,5 +77,13 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
 
         member.changeName(request.getName());
+    }
+
+    public void confirmPassword(Long id, PasswordRequest request) {
+        Member member = memberFindService.findMember(id);
+        String password = passwordEncoder.encrypt(request.getPassword());
+        if (member.confirmWrongPassword(password)) {
+            throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
+        }
     }
 }

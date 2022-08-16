@@ -3,6 +3,7 @@ package com.woowacourse.momo.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
@@ -78,13 +79,13 @@ class MemberServiceTest {
     @Test
     void updatePassword() {
         Long memberId = createMember();
-        Member beforeMember = memberRepository.findById(memberId).get();
+        Member beforeMember = memberFindService.findMember(memberId);
         String beforePassword = beforeMember.getPassword();
 
         PasswordRequest request = new PasswordRequest("wooteco2!");
         memberService.updatePassword(memberId, request);
 
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberFindService.findMember(memberId);
         assertThat(member.getPassword()).isNotEqualTo(beforePassword);
     }
 
@@ -92,14 +93,38 @@ class MemberServiceTest {
     @Test
     void updateName() {
         Long memberId = createMember();
-        Member beforeMember = memberRepository.findById(memberId).get();
+        Member beforeMember = memberFindService.findMember(memberId);
         String beforeName = beforeMember.getName();
 
         ChangeNameRequest request = new ChangeNameRequest("무무");
         memberService.updateName(memberId, request);
 
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberFindService.findMember(memberId);
         assertThat(member.getName()).isNotEqualTo(beforeName);
+    }
+
+    @DisplayName("올바른 비밀번호인지 확인한다")
+    @Test
+    void confirmPassword() {
+        String password = "wooteco1!";
+        SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
+        Long memberId = authService.signUp(signUpRequest);
+
+        PasswordRequest passwordRequest = new PasswordRequest(password);
+        assertDoesNotThrow(() -> memberService.confirmPassword(memberId, passwordRequest));
+    }
+
+    @DisplayName("잘못된 비밀번호면 예외가 발생한다")
+    @Test
+    void confirmWrongPassword() {
+        String password = "wooteco1!";
+        SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
+        Long memberId = authService.signUp(signUpRequest);
+
+        PasswordRequest passwordRequest = new PasswordRequest("wrongPassword");
+        assertThatThrownBy(() -> memberService.confirmPassword(memberId, passwordRequest))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 
     @DisplayName("회원 정보를 삭제한다")
