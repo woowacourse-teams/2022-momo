@@ -30,6 +30,14 @@ include::{snippets}/groupcreate/http-request.adoc[]
 Response
 include::{snippets}/groupcreate/http-response.adoc[]
 
+=== 모임 수정
+
+Request
+include::{snippets}/groupupdate/http-request.adoc[]
+
+Response
+include::{snippets}/groupupdate/http-response.adoc[]
+
 === 모임 삭제
 
 Request
