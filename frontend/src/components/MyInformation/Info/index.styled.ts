@@ -12,6 +12,7 @@ const Right = styled.div`
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 1rem;
 `;
