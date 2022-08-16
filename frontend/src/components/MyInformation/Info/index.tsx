@@ -1,30 +1,28 @@
 import { useState } from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { requestChangeName, requestChangePassword } from 'apis/request/user';
 import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
+import ConfirmPasswordModal from 'components/ConfirmPassword';
 import Logo from 'components/svg/Logo';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
-import useSnackbar from 'hooks/useSnackbar';
-import { loginState } from 'store/states';
+import { loginState, modalState } from 'store/states';
 
 import * as S from './index.styled';
 
 const svgSize = 20;
 
 function Info() {
+  const setModalFlag = useSetRecoilState(modalState);
   const { user } = useRecoilValue(loginState);
 
   const { value: name, setValue: setName } = useInput(user?.name || '');
   const { value: password, setValue: setPassword } = useInput('');
 
+  const [type, setType] = useState('');
   const [isNameEditable, setIsNameEditable] = useState(false);
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
-
-  const { setMessage } = useSnackbar();
 
   const changeElementEditable = (type: 'name' | 'password') => () => {
     switch (type) {
@@ -39,31 +37,9 @@ function Info() {
     }
   };
 
-  const editValue = (type: 'name' | 'password') => () => {
-    switch (type) {
-      case 'name':
-        requestChangeName(name)
-          .then(() => {
-            setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
-            setIsNameEditable(false);
-          })
-          .catch(() => {
-            alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
-          });
-
-        break;
-      case 'password':
-        requestChangePassword(password)
-          .then(() => {
-            setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
-            setIsPasswordEditable(false);
-          })
-          .catch(() => {
-            alert(ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
-          });
-
-        break;
-    }
+  const showConfirmPasswordModal = (newType: 'name' | 'password') => () => {
+    setType(newType);
+    setModalFlag('confirmPassword');
   };
 
   return (
@@ -100,7 +76,7 @@ function Info() {
               <CompleteSVG
                 width={svgSize}
                 height={svgSize}
-                onClick={editValue('name')}
+                onClick={showConfirmPasswordModal('name')}
               />
             </S.EditButton>
           ) : (
@@ -117,7 +93,7 @@ function Info() {
               <CompleteSVG
                 width={svgSize}
                 height={svgSize}
-                onClick={editValue('password')}
+                onClick={showConfirmPasswordModal('password')}
               />
             </S.EditButton>
           ) : (
@@ -131,6 +107,13 @@ function Info() {
           )}
         </S.ButtonBox>
       </S.Right>
+      <ConfirmPasswordModal
+        type={type}
+        newValue={type === 'name' ? name : password}
+        setIsEditable={
+          type === 'name' ? setIsNameEditable : setIsPasswordEditable
+        }
+      />
     </S.Container>
   );
 }
