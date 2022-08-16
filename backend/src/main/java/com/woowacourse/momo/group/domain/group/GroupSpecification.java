@@ -15,10 +15,6 @@ public class GroupSpecification {
         return (root, query, criteriaBuilder) -> null;
     }
 
-    public static Specification<Group> filterByCategory(Category category) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
-    }
-
     public static Specification<Group> filterByParticipated(Long memberId) {
         return (root, query, criteriaBuilder) -> {
             Join<Participant, Group> groupParticipant = root.join("participants");
@@ -30,7 +26,18 @@ public class GroupSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), memberId);
     }
 
+    public static Specification<Group> filterByCategory(Long categoryId) {
+        if (categoryId == null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        }
+        Category category = Category.from(categoryId);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
+    }
+
     public static Specification<Group> containKeyword(String keyword) {
+        if (keyword == null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        }
         return (root, query, criteriaBuilder) -> {
             Predicate nameContainKeyword = criteriaBuilder.like(root.get("name"), "%" + keyword + "%");
             Predicate descriptionContainKeyword = criteriaBuilder.like(root.get("description"), "%" + keyword + "%");
@@ -38,7 +45,10 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> excludeFinishedRecruitment() {
+    public static Specification<Group> excludeFinishedRecruitment(Boolean excludeFinished) {
+        if (excludeFinished == null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        }
         return (root, query, criteriaBuilder) -> {
             root.join("participants");
             query.groupBy(root.get("id"));
@@ -54,14 +64,17 @@ public class GroupSpecification {
         };
     }
 
-    public static Specification<Group> orderByDeadline() {
+    public static Specification<Group> orderByDeadline(Boolean orderByDeadline) {
+        if (orderByDeadline == null) {
+            return orderByIdDesc();
+        }
         return (root, query, criteriaBuilder) -> {
             query.orderBy(criteriaBuilder.asc(root.get("deadline")), criteriaBuilder.desc(root.get("id")));
             return criteriaBuilder.greaterThan(root.get("deadline"), criteriaBuilder.currentTimestamp());
         };
     }
 
-    public static Specification<Group> orderByIdDesc() {
+    private static Specification<Group> orderByIdDesc() {
         return (root, query, criteriaBuilder) -> {
             query.orderBy(criteriaBuilder.desc(root.get("id")));
             return null;

@@ -72,7 +72,7 @@ public class GroupFindRepositoryTest {
     @Test
     void findAllThatFilterByCategory() {
         Category category = Category.STUDY;
-        Specification<Group> specification = GroupSpecification.filterByCategory(category);
+        Specification<Group> specification = GroupSpecification.filterByCategory(category.getId());
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -113,7 +113,7 @@ public class GroupFindRepositoryTest {
     @DisplayName("모집 완료된 모임을 제외한 목록을 조회한다")
     @Test
     void findAllThatExcludeFinishedRecruitment() {
-        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment();
+        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -123,7 +123,7 @@ public class GroupFindRepositoryTest {
     @DisplayName("마감기한이 적은 순으로 목록을 조회한다")
     @Test
     void findAllThatOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.orderByDeadline();
+        Specification<Group> specification = GroupSpecification.orderByDeadline(true);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -133,7 +133,7 @@ public class GroupFindRepositoryTest {
     @DisplayName("생성된 역순으로 목록을 조회한다")
     @Test
     void findAllThatOrderByIdDesc() {
-        Specification<Group> specification = GroupSpecification.orderByIdDesc();
+        Specification<Group> specification = GroupSpecification.orderByDeadline(null);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -145,7 +145,7 @@ public class GroupFindRepositoryTest {
     void findAllThatContainKeywordsAndExcludeFinishedRecruitment() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinishedRecruitment());
+                .and(GroupSpecification.excludeFinishedRecruitment(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -157,7 +157,7 @@ public class GroupFindRepositoryTest {
     void findAllThatContainKeywordsOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.orderByDeadline());
+                .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -167,8 +167,8 @@ public class GroupFindRepositoryTest {
     @DisplayName("모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
     @Test
     void findAllThatExcludeFinishedRecruitmentOrderByDeadline() {
-        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment()
-                .and(GroupSpecification.orderByDeadline());
+        Specification<Group> specification = GroupSpecification.excludeFinishedRecruitment(true)
+                .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -180,8 +180,8 @@ public class GroupFindRepositoryTest {
     void findAllThatContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
         String keyword = "모모";
         Specification<Group> specification = GroupSpecification.containKeyword(keyword)
-                .and(GroupSpecification.excludeFinishedRecruitment())
-                .and(GroupSpecification.orderByDeadline());
+                .and(GroupSpecification.excludeFinishedRecruitment(true))
+                .and(GroupSpecification.orderByDeadline(true));
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()

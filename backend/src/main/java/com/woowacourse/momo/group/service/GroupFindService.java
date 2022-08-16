@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.globalException.exception.ErrorCode;
 import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
@@ -47,23 +46,13 @@ public class GroupFindService {
         return findAll(specification, request);
     }
 
-    public Page<Group> findAll(Specification<Group> specification, GroupFindRequest request) {
+    private Page<Group> findAll(Specification<Group> specification, GroupFindRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        if (request.getCategory() != null) {
-            Category category = Category.from(request.getCategory());
-            specification = specification.and(GroupSpecification.filterByCategory(category));
-        }
-        if (request.getExcludeFinished() != null) {
-            specification = specification.and(GroupSpecification.excludeFinishedRecruitment());
-        }
-        if (request.getKeyword() != null) {
-            specification = specification.and(GroupSpecification.containKeyword(request.getKeyword()));
-        }
-        if (request.getOrderByDeadline() != null) {
-            specification = specification.and(GroupSpecification.orderByDeadline());
-        } else {
-            specification = specification.and(GroupSpecification.orderByIdDesc());
-        }
+
+        specification = specification.and(GroupSpecification.filterByCategory(request.getCategory()))
+                .and(GroupSpecification.excludeFinishedRecruitment(request.getExcludeFinished()))
+                .and(GroupSpecification.containKeyword(request.getKeyword()))
+                .and(GroupSpecification.orderByDeadline(request.getOrderByDeadline()));
 
         return groupRepository.findAll(specification, pageable);
     }
