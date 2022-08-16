@@ -5,8 +5,8 @@ import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @RequiredArgsConstructor

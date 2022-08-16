@@ -46,7 +46,7 @@ public class ParticipantService {
     }
 
     private void validateLeave(Long groupId, Long memberId) {
-        Group group = groupFindService.findGroup(groupId);
+        Group group = groupFindService.findById(groupId);
         Member member = memberFindService.findMember(memberId);
         group.validateLeave(member);
     }

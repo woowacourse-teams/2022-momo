@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -34,6 +34,11 @@ public class GroupFindService {
     public Page<Group> findAll(GroupFindRequest request) {
         Specification<Group> specification = Specification.where(GroupSpecification.initialize());
         return findAll(specification, request);
+    }
+
+    public List<Group> findAllThatParticipated(Long memberId) {
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(memberId));
+        return groupRepository.findAll(specification);
     }
 
     public Page<Group> findAllThatParticipated(GroupFindRequest request, Long memberId) {

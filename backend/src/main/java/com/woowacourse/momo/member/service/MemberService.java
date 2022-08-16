@@ -44,7 +44,7 @@ public class MemberService {
     }
 
     private void leaveProgressingGroup(Member member) {
-        List<Group> progressingGroups = groupFindService.findRelatedGroups(member.getId())
+        List<Group> progressingGroups = groupFindService.findAllThatParticipated(member.getId())
             .stream()
             .filter(group -> !group.isEnd())
             .collect(Collectors.toList());
