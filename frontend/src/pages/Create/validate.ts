@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE } from 'constants/message';
 import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
-import { resetDateToMidnight } from 'utils/date';
+import { resetDateToStartOfDay, resetDateToEndOfDay } from 'utils/date';
 import PageError from 'utils/PageError';
 
 const validateName = (name: CreateGroupData['name']) => () => {
@@ -25,20 +25,27 @@ const validateCapacity = (capacity: CreateGroupData['capacity']) => () => {
 
 const validateDurationDate =
   (startDate: Date, endDate: Date, today: Date) => () => {
-    return startDate <= endDate && startDate >= today;
+    return startDate <= endDate && startDate <= resetDateToStartOfDay(today);
   };
 
 const validateDeadlineDate =
   (
     deadline: CreateGroupData['deadline'],
-    startDate: CreateGroupData['startDate'],
+    schedules: CreateGroupData['schedules'],
   ) =>
   () => {
     const parsedDeadline = new Date(deadline);
-    const parsedStartDate = new Date(startDate);
     const now = new Date();
 
-    return parsedDeadline < parsedStartDate && parsedDeadline >= now;
+    schedules.sort((scheduleA, scheduleB) =>
+      scheduleA.date.localeCompare(scheduleB.date),
+    );
+
+    return (
+      parsedDeadline <=
+        new Date(`${schedules[0].date}T${schedules[0].startTime}`) &&
+      parsedDeadline > now
+    );
   };
 
 const validateLocation = (location: CreateGroupData['location']) => () => {
@@ -56,13 +63,14 @@ const generateValidators = ({
   capacity,
   startDate,
   endDate,
+  schedules,
   deadline,
   location,
   description,
 }: CreateGroupData) => {
-  const startDateInMidnight = resetDateToMidnight(new Date(startDate));
-  const endDateInMidnight = resetDateToMidnight(new Date(endDate));
-  const todayInMidnight = resetDateToMidnight(new Date());
+  const startDateInMidnight = resetDateToStartOfDay(new Date(startDate));
+  const endDateInMidnight = resetDateToEndOfDay(new Date(endDate));
+  const todayInMidnight = new Date();
 
   return [
     {
@@ -91,7 +99,7 @@ const generateValidators = ({
     },
     // TODO: 4번째는 달력
     {
-      validator: validateDeadlineDate(deadline, startDate),
+      validator: validateDeadlineDate(deadline, schedules),
       errorMessage: ERROR_MESSAGE.CREATE.DEADLINE,
       targetPageNumber: 6,
     },
