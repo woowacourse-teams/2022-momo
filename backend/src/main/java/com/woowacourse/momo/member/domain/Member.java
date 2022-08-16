@@ -54,8 +54,4 @@ public class Member {
         name = GHOST_NAME;
         deleted = true;
     }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
 }
