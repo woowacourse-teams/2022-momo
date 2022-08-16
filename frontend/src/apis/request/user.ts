@@ -20,6 +20,20 @@ const getUserInfo = () => {
     });
 };
 
+const requestConfirmPassword = (password: string) => {
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
+  return axios.put(
+    API_PATH.MEMBERS,
+    { password },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+};
+
 const requestChangeName = (data: string) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
@@ -60,6 +74,7 @@ const requestWithdrawal = () => {
 
 export {
   getUserInfo,
+  requestConfirmPassword,
   requestChangeName,
   requestChangePassword,
   requestWithdrawal,
