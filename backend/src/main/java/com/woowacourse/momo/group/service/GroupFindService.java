@@ -17,6 +17,7 @@ import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.group.GroupSpecification;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.member.domain.Member;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,18 +37,18 @@ public class GroupFindService {
         return findAll(specification, request);
     }
 
-    public List<Group> findAllThatParticipated(Long memberId) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(memberId));
+    public List<Group> findAllThatParticipated(Member member) {
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
         return groupRepository.findAll(specification);
     }
 
-    public Page<Group> findAllThatParticipated(GroupFindRequest request, Long memberId) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(memberId));
+    public Page<Group> findAllThatParticipated(GroupFindRequest request, Member member) {
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByParticipated(member));
         return findAll(specification, request);
     }
 
-    public Page<Group> findAllThatHosted(GroupFindRequest request, Long memberId) {
-        Specification<Group> specification = Specification.where(GroupSpecification.filterByHosted(memberId));
+    public Page<Group> findAllThatHosted(GroupFindRequest request, Member member) {
+        Specification<Group> specification = Specification.where(GroupSpecification.filterByHosted(member));
         return findAll(specification, request);
     }
 

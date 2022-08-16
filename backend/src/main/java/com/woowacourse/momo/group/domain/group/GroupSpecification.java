@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.participant.domain.Participant;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,15 +20,15 @@ public class GroupSpecification {
         return (root, query, criteriaBuilder) -> null;
     }
 
-    public static Specification<Group> filterByParticipated(Long memberId) {
+    public static Specification<Group> filterByParticipated(Member member) {
         return (root, query, criteriaBuilder) -> {
             Join<Participant, Group> groupParticipant = root.join("participants");
-            return criteriaBuilder.equal(groupParticipant.get("member"), memberId);
+            return criteriaBuilder.equal(groupParticipant.get("member"), member);
         };
     }
 
-    public static Specification<Group> filterByHosted(Long memberId) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), memberId);
+    public static Specification<Group> filterByHosted(Member member) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), member);
     }
 
     public static Specification<Group> filterByCategory(Long categoryId) {

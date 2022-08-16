@@ -119,11 +119,12 @@ class MemberServiceTest {
     void deleteAndLeave() {
         Group group = saveGroup();
         Long memberId = createMember();
-        participate(group, memberId);
+        Member member = memberFindService.findMember(memberId);
+        group.participate(member);
 
         memberService.deleteById(memberId);
 
-        List<Group> groups = groupFindService.findAllThatParticipated(memberId);
+        List<Group> groups = groupFindService.findAllThatParticipated(member);
         assertThat(groups).isEmpty();
     }
 
@@ -133,8 +134,8 @@ class MemberServiceTest {
         Group group = saveGroup();
 
         assertThatThrownBy(() -> memberService.deleteById(savedHost.getId()))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("진행중인 모임이 있어 탈퇴할 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("진행중인 모임이 있어 탈퇴할 수 없습니다.");
     }
 
     private Long createMember() {
@@ -144,12 +145,7 @@ class MemberServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group("모모의 스터디", savedHost, Category.STUDY, 3,
-            이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
-            "", ""));
-    }
-
-    private void participate(Group group, Long memberId) {
-        Member member = memberFindService.findMember(memberId);
-        group.participate(member);
+                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
+                "", ""));
     }
 }

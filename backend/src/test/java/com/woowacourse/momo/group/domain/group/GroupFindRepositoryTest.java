@@ -82,7 +82,7 @@ class GroupFindRepositoryTest {
     @DisplayName("회원이 참여한 모임 목록을 조회한다")
     @Test
     void findAllThatFilterByParticipated() {
-        Specification<Group> specification = GroupSpecification.filterByParticipated(momo.getId());
+        Specification<Group> specification = GroupSpecification.filterByParticipated(momo);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -92,7 +92,7 @@ class GroupFindRepositoryTest {
     @DisplayName("회원이 주최한 모임 목록을 조회한다")
     @Test
     void findAllThatFilterByHosted() {
-        Specification<Group> specification = GroupSpecification.filterByHosted(dudu.getId());
+        Specification<Group> specification = GroupSpecification.filterByHosted(dudu);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()

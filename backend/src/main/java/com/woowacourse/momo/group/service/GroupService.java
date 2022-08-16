@@ -58,7 +58,8 @@ public class GroupService {
     }
 
     public GroupPageResponse findAllThatParticipated(GroupFindRequest request, Long memberId) {
-        Page<Group> groups = groupFindService.findAllThatParticipated(request, memberId);
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findAllThatParticipated(request, member);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
@@ -66,7 +67,8 @@ public class GroupService {
     }
 
     public GroupPageResponse findAllThatHosted(GroupFindRequest request, Long memberId) {
-        Page<Group> groups = groupFindService.findAllThatHosted(request, memberId);
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findAllThatHosted(request, member);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 

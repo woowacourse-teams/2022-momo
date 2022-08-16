@@ -88,7 +88,7 @@ class GroupFindServiceTest {
     @Test
     void findAllThatParticipated() {
         GroupFindRequest request = new GroupFindRequest();
-        List<Group> actual = groupFindService.findAllThatParticipated(request, momo.getId()).getContent();
+        List<Group> actual = groupFindService.findAllThatParticipated(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group3, group2, group1));
@@ -98,7 +98,7 @@ class GroupFindServiceTest {
     @Test
     void findAllThatHosted() {
         GroupFindRequest request = new GroupFindRequest();
-        List<Group> actual = groupFindService.findAllThatHosted(request, momo.getId()).getContent();
+        List<Group> actual = groupFindService.findAllThatHosted(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
@@ -209,7 +209,7 @@ class GroupFindServiceTest {
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAllThatParticipated(request, momo.getId()).getContent();
+        List<Group> actual = groupFindService.findAllThatParticipated(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5));
@@ -223,7 +223,7 @@ class GroupFindServiceTest {
         request.setKeyword(keyword);
         request.setExcludeFinished(true);
         request.setOrderByDeadline(true);
-        List<Group> actual = groupFindService.findAllThatHosted(request, momo.getId()).getContent();
+        List<Group> actual = groupFindService.findAllThatHosted(request, momo).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
