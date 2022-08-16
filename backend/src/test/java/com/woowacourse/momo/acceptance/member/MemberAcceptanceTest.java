@@ -18,7 +18,6 @@ import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -85,10 +84,10 @@ class MemberAcceptanceTest extends AcceptanceTest {
         MemberRestHandler.회원탈퇴를_한다(accessToken)
             .statusCode(HttpStatus.NO_CONTENT.value());
 
-        List<Long> groups = GroupRestHandler.본인의_모임을_조회한다(accessToken)
+        List<Long> groups = GroupRestHandler.본인이_참여한_모임을_조회한다(accessToken)
             .extract()
             .jsonPath()
-            .getList(".", Group.class)
+            .getList("groups", Group.class)
             .stream()
             .map(Group::getId)
             .collect(Collectors.toList());

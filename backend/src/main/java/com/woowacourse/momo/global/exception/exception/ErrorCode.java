@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST.value(), "VALIDATION_ERROR_001", "잘못된 요청입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SERVER_ERROR_001", "내부 서버 오류입니다."),
 
@@ -30,6 +31,8 @@ public enum ErrorCode {
     SIGNUP_ALREADY_REGISTER(HttpStatus.BAD_REQUEST.value(), "SIGNUP_ERROR_003", "이미 가입된 아이디입니다."),
 
     LOGIN_INVALID_ID_AND_PASSWORD(HttpStatus.BAD_REQUEST.value(), "LOGIN_ERROR_001", "아이디나 비밀번호가 다릅니다."),
+
+    CATEGORY_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "CATEGORY_ERROR_001", "존재하지 않는 카테고리입니다."),
 
     GROUP_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_001", "존재하지 않는 모임입니다."),
     GROUP_DURATION_START_AFTER_END(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_002", "기간의 시작일은 종료일 이전이어야 합니다."),

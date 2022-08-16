@@ -5,15 +5,19 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
-import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인의_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_주최한_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_참여한_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.키워드로_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
+import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +33,7 @@ import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
@@ -45,7 +50,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         hostAccessToken = HOST.로_로그인한다();
-        groupIds = Stream.of(MOMO_STUDY, MOMO_TRAVEL, DUDU_STUDY)
+        groupIds = Stream.of(MOMO_STUDY, MOMO_TRAVEL, DUDU_STUDY, DUDU_COFFEE_TIME)
                 .collect(Collectors.toMap(
                         group -> group,
                         group -> group.을_생성한다(hostAccessToken)
@@ -108,54 +113,96 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TOD: NOT_FOUND
     }
 
-    @DisplayName("회원이 모임목록을 조회한다")
-    @Test
-    void findGroupsByMember() {
-        ValidatableResponse response = 모임목록을_조회한다(hostAccessToken);
-
-        checkGroupSummaryResponses(response);
-    }
-
-    @DisplayName("비회원이 모임목록을 조회한다")
-    @Test
-    void findGroupsByNonMember() {
-        ValidatableResponse response = 모임목록을_조회한다();
-
-        checkGroupSummaryResponses(response);
-    }
-
     @DisplayName("모임목록중 첫번째 페이지를 조회한다")
     @Test
     void findGroupsByPageNumber() {
         ValidatableResponse response = 페이지로_모임목록을_조회한다(FIRST_PAGE_NUMBER);
 
-        checkGroupSummaryResponses(response);
+        checkGroupSummaryResponsesByPageNumber(response);
+    }
+
+    @DisplayName("카테고리별 모임 목록을 조회한다")
+    @Test
+    void findGroupsByCategoryAndPageNumber() {
+        ValidatableResponse response = 카테고리별_모임목록을_조회한다(Category.STUDY, FIRST_PAGE_NUMBER);
+
+        checkGroupSummaryResponsesByCategory(response, Category.STUDY);
+    }
+
+    @DisplayName("키워드로 모임 목록을 조회한다")
+    @Test
+    void findGroupsByKeywordAndPageNumber() {
+        String keyword = "모모";
+        ValidatableResponse response = 키워드로_모임목록을_조회한다(keyword, FIRST_PAGE_NUMBER);
+
+        checkGroupSummaryResponsesByKeyword(keyword, response);
     }
 
     @DisplayName("본인이 참여하고 있는 모임들을 조회한다.")
     @Test
-    void findGroupsParticipated() {
+    void findParticipatedGroupss() {
         String anotherHostAccessToken = MemberFixture.DUDU.로_로그인한다();
         DUDU_STUDY.을_생성한다(anotherHostAccessToken);
 
-        ValidatableResponse response = 본인의_모임을_조회한다(anotherHostAccessToken);
+        ValidatableResponse response = 본인이_참여한_모임을_조회한다(anotherHostAccessToken);
 
-        checkGroupParticipated(response);
+        checkParticipatedGroup(response);
     }
 
-    private void checkGroupParticipated(ValidatableResponse response) {
-        response.statusCode(HttpStatus.OK.value());
-        response.body("$", hasSize(1));
+    @DisplayName("본인이 주최하고 있는 모임들을 조회한다.")
+    @Test
+    void findHostedGroupss() {
+        hostAccessToken = HOST.로_로그인한다();
+
+        ValidatableResponse response = 본인이_주최한_모임을_조회한다(hostAccessToken);
+
+        checkHostedGroup(response);
     }
 
-    void checkGroupSummaryResponses(ValidatableResponse response) {
+    private void checkParticipatedGroup(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
+        response.body("groups", hasSize(1));
+    }
 
+    private void checkHostedGroup(ValidatableResponse response) {
+        response.statusCode(HttpStatus.OK.value());
+        response.body("groups", hasSize(4));
+    }
+
+    private void checkGroupSummaryResponsesByPageNumber(ValidatableResponse response) {
         List<GroupFixture> groups = groupIds.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponsesByCategory(ValidatableResponse response, Category category) {
+        List<GroupFixture> groups = groupIds.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .map(Entry::getKey)
+                .filter(g -> g.getCategoryId().equals(category.getId()))
+                .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponsesByKeyword(String keyword, ValidatableResponse response) {
+        List<GroupFixture> groups = groupIds.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .map(Entry::getKey)
+                .filter(g -> g.getName().contains(keyword))
+                .collect(Collectors.toList());
+
+        checkGroupSummaryResponses(response, groups);
+    }
+
+    private void checkGroupSummaryResponses(ValidatableResponse response, List<GroupFixture> groups) {
+        response.statusCode(HttpStatus.OK.value());
 
         for (int i = 0; i < groups.size(); i++) {
             GroupFixture group = groups.get(i);

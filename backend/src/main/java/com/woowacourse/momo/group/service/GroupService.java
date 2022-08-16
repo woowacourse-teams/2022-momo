@@ -3,8 +3,6 @@ package com.woowacourse.momo.group.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +15,7 @@ import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -33,7 +32,6 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @Service
 public class GroupService {
 
-    private static final int DEFAULT_PAGE_SIZE = 12;
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
@@ -46,24 +44,35 @@ public class GroupService {
         return GroupResponseAssembler.groupIdResponse(group);
     }
 
-    public GroupResponse findById(Long id) {
+    public GroupResponse findGroup(Long id) {
         Group group = groupFindService.findGroup(id);
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public List<GroupSummaryResponse> findAll() {
-        List<Group> groups = groupFindService.findGroups();
-
-        return GroupResponseAssembler.groupSummaryResponses(groups);
-    }
-
-    public GroupPageResponse findAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupFindService.findGroups(pageable);
+    public GroupPageResponse findGroups(GroupFindRequest request) {
+        Page<Group> groups = groupFindService.findGroups(request);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findParticipatedGroups(request, member);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findHostedGroups(request, member);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
     @Transactional
@@ -131,11 +140,5 @@ public class GroupService {
         if (group.isFinishedRecruitment()) {
             throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
         }
-    }
-
-    public List<GroupSummaryResponse> findGroupOfMember(Long memberId) {
-        List<Group> participatedGroups = groupFindService.findRelatedGroups(memberId);
-
-        return GroupResponseAssembler.groupSummaryResponses(participatedGroups);
     }
 }

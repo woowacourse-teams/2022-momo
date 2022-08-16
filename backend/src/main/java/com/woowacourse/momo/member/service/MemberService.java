@@ -44,13 +44,13 @@ public class MemberService {
     }
 
     private void leaveProgressingGroup(Member member) {
-        List<Group> progressingGroups = groupFindService.findRelatedGroups(member.getId())
-            .stream()
-            .filter(group -> !group.isEnd())
-            .collect(Collectors.toList());
+        List<Group> progressingGroups = groupFindService.findParticipatedGroups(member)
+                .stream()
+                .filter(group -> !group.isEnd())
+                .collect(Collectors.toList());
         validateMemberNotHost(member, progressingGroups);
         progressingGroups.forEach(
-            group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
+                group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
     }
 
     private void validateMemberNotHost(Member member, List<Group> groups) {
@@ -58,9 +58,10 @@ public class MemberService {
             throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
     }
+
     private boolean isMemberHost(Member member, List<Group> groups) {
         return groups.stream()
-            .anyMatch(group -> group.isHost(member));
+                .anyMatch(group -> group.isHost(member));
     }
 
     @Transactional

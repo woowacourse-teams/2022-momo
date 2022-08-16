@@ -22,6 +22,22 @@ include::{snippets}/groupget/http-request.adoc[]
 Response
 include::{snippets}/groupget/http-response.adoc[]
 
+=== 카테고리별 모임 조회
+
+Request
+include::{snippets}/grouplistbycategory/http-request.adoc[]
+
+Response
+include::{snippets}/grouplistbycategory/http-response.adoc[]
+
+=== 검색을 통한 모임 조회
+
+Request
+include::{snippets}/grouplistbykeyword/http-request.adoc[]
+
+Response
+include::{snippets}/grouplistbykeyword/http-response.adoc[]
+
 === 모임 생성
 
 Request
@@ -54,13 +70,22 @@ include::{snippets}/grouplist/http-request.adoc[]
 Response
 include::{snippets}/grouplist/http-response.adoc[]
 
-=== 본인이 가입하거나 주최한 모임 조회
+=== 본인이 가입한 모임 조회
 
 Request
-include::{snippets}/grouprelated/http-request.adoc[]
+include::{snippets}/participatedgrouplist/http-request.adoc[]
 
 Response
-include::{snippets}/grouprelated/http-response.adoc[]
+include::{snippets}/participatedgrouplist/http-response.adoc[]
+
+=== 본인이 주최한 모임 조회
+
+Request
+include::{snippets}/hostedgrouplist/http-request.adoc[]
+
+Response
+include::{snippets}/hostedgrouplist/http-response.adoc[]
+
 
 == 유저
 
