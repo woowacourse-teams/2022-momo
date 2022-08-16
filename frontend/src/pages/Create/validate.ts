@@ -97,7 +97,6 @@ const generateValidators = ({
       errorMessage: ERROR_MESSAGE.CREATE.DURATION,
       targetPageNumber: 4,
     },
-    // TODO: 4번째는 달력
     {
       validator: validateDeadlineDate(deadline, schedules),
       errorMessage: ERROR_MESSAGE.CREATE.DEADLINE,
