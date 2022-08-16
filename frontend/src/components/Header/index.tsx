@@ -1,18 +1,40 @@
-import { useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
 
+import { useRecoilState } from 'recoil';
+
+import { getUserInfo } from 'apis/request/user';
 import NavLink from 'components/@shared/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import useModal from 'hooks/useModal';
-import { loginState } from 'store/states';
+import { accessTokenState, loginState } from 'store/states';
 
 import * as S from './index.styled';
 import User from './User';
 
 function Header() {
-  const { isLogin } = useRecoilValue(loginState);
+  const [{ isLogin, loginType }, setLoginInfo] = useRecoilState(loginState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   const { showSignupModal, showLoginModal } = useModal();
+
+  useEffect(() => {
+    if (!accessToken) return;
+
+    getUserInfo()
+      .then(userInfo => {
+        setLoginInfo({
+          isLogin: true,
+          loginType,
+          user: userInfo,
+        });
+      })
+      .catch(() => {
+        // 액세스 토큰 만료 시 자동 로그아웃
+        setLoginInfo({ isLogin: false });
+        setAccessToken('');
+      });
+  }, [accessToken, loginType, setAccessToken, setLoginInfo]);
 
   return (
     <S.Container>
