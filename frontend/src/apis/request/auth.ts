@@ -14,7 +14,7 @@ const requestLogin = (userData: Omit<User, 'name'>) => {
 
 const requestGoogleOauthToken = () => {
   const redirectPath = BROWSER_PATH.OAUTH_GOOGLE.toString().substring(1);
-  const redirectUrl = `${window.location.href}${redirectPath}`;
+  const redirectUrl = `${window.location.origin}/${redirectPath}`;
 
   return axios
     .get<{ oauthLink: string }>(
