@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +33,8 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
     public Member(String userId, String password, String name) {
