@@ -156,19 +156,35 @@ include::{snippets}/findparticipants/http-response.adoc[]
 
 == 이미지
 
-=== 이미지 업로드
+=== 유저 이미지 업로드
 
 Request
-include::{snippets}/imageupload/http-request.adoc[]
+include::{snippets}/userimageupload/http-request.adoc[]
 
 Response
-include::{snippets}/imageupload/http-response.adoc[]
+include::{snippets}/userimageupload/http-response.adoc[]
 
-=== 이미지 불러오기
+=== 유저 이미지 불러오기
 
 Request
-include::{snippets}/imageload/http-request.adoc[]
+include::{snippets}/userimageload/http-request.adoc[]
 
 Response
-include::{snippets}/imageload/http-response.adoc[]
+include::{snippets}/userimageload/http-response.adoc[]
+
+=== 모임 이미지 업로드
+
+Request
+include::{snippets}/groupimageupload/http-request.adoc[]
+
+Response
+include::{snippets}/groupimageupload/http-response.adoc[]
+
+=== 모임 이미지 불러오기
+
+Request
+include::{snippets}/groupimageload/http-request.adoc[]
+
+Response
+include::{snippets}/groupimageload/http-response.adoc[]
 
