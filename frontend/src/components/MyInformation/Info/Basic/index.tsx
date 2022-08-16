@@ -49,6 +49,7 @@ function Basic({
           비밀번호
           <S.Input
             type="password"
+            placeholder="********"
             value={password}
             onChange={setPassword}
             disabled={!isPasswordEditable}
