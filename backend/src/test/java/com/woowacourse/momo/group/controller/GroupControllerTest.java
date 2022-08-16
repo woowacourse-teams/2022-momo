@@ -206,13 +206,13 @@ class GroupControllerTest {
         saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
         saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
         saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
-        saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
+        saveGroup("모모의 리액트 스터디", saveMemberId, Category.STUDY);
 
         mockMvc.perform(MockMvcRequestBuilders.get(
                                 "/api/groups/me/participated?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
                         .header("Authorization", "bearer " + token))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리액트 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
                         document("participatedgrouplist",

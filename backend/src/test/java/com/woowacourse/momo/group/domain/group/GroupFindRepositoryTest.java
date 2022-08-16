@@ -30,7 +30,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class GroupFindRepositoryTest {
+class GroupFindRepositoryTest {
 
     @Autowired
     private GroupRepository groupRepository;

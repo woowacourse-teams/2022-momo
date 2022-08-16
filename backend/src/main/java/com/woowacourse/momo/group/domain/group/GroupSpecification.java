@@ -6,9 +6,13 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.participant.domain.Participant;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupSpecification {
 
     public static Specification<Group> initialize() {
