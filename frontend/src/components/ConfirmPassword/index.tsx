@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import {
   requestChangeName,
@@ -9,6 +9,7 @@ import {
 } from 'apis/request/user';
 import Modal from 'components/@shared/Modal';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
 
@@ -25,15 +26,12 @@ function ConfirmPassword({
   newValue,
   setIsEditable,
 }: ConfirmPasswordProps) {
-  const [modalFlag, setModalFlag] = useRecoilState(modalState);
-
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const modalFlag = useRecoilValue(modalState);
+  const { setOffModal } = useModal();
 
   const { setMessage } = useSnackbar();
 
-  const setOffModal = () => {
-    setModalFlag('off');
-  };
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   const editValue = () => {
     switch (type) {
@@ -80,10 +78,7 @@ function ConfirmPassword({
   };
 
   return (
-    <Modal
-      modalState={modalFlag === 'confirmPassword'}
-      setOffModal={setOffModal}
-    >
+    <Modal modalState={modalFlag === 'confirmPassword'}>
       <S.Form onSubmit={confirmPassword}>
         <S.Title>비밀번호 확인</S.Title>
         <S.Input

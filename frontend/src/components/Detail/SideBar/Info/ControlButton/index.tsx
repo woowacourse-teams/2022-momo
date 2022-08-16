@@ -1,6 +1,6 @@
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import {
   deleteGroup as requestDeleteGroup,
@@ -10,8 +10,9 @@ import {
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
-import { loginState, modalState } from 'store/states';
+import { loginState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
@@ -27,8 +28,8 @@ function ControlButton({
   participants,
 }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
-  const setModalState = useSetRecoilState(modalState);
 
+  const { showLoginModal } = useModal();
   const { setMessage } = useSnackbar();
 
   const navigate = useNavigate();
@@ -68,7 +69,8 @@ function ControlButton({
   const joinGroup = () => {
     if (!isLogin) {
       alert(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
-      setModalState('login');
+      showLoginModal();
+
       return;
     }
 

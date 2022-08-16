@@ -1,21 +1,18 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import NavLink from 'components/@shared/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
-import { loginState, modalState } from 'store/states';
-import { ModalStateType } from 'types/condition';
+import useModal from 'hooks/useModal';
+import { loginState } from 'store/states';
 
 import * as S from './index.styled';
 import User from './User';
 
 function Header() {
-  const setModalState = useSetRecoilState(modalState);
   const { isLogin } = useRecoilValue(loginState);
 
-  const changeModalState = (modalState: ModalStateType) => () => {
-    setModalState(modalState);
-  };
+  const { showSignupModal, showLoginModal } = useModal();
 
   return (
     <S.Container>
@@ -32,8 +29,8 @@ function Header() {
           </>
         ) : (
           <>
-            <div onClick={changeModalState('signup')}>회원가입</div>
-            <div onClick={changeModalState('login')}>로그인</div>
+            <div onClick={showSignupModal}>회원가입</div>
+            <div onClick={showLoginModal}>로그인</div>
           </>
         )}
       </S.Nav>

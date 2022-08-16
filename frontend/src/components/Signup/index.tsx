@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
+import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
@@ -18,7 +19,8 @@ import {
 } from './validate';
 
 function Signup() {
-  const [modalFlag, setModalFlag] = useRecoilState(modalState);
+  const modalFlag = useRecoilValue(modalState);
+  const { showLoginModal } = useModal();
 
   const {
     value: userId,
@@ -45,14 +47,6 @@ function Signup() {
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
   const { setMessage } = useSnackbar();
-
-  const setOffModal = () => {
-    setModalFlag('off');
-  };
-
-  const showLoginModal = () => {
-    setModalFlag('login');
-  };
 
   const resetValues = () => {
     dangerouslySetUserId('');
@@ -98,7 +92,7 @@ function Signup() {
   }, [name]);
 
   return (
-    <Modal modalState={modalFlag === 'signup'} setOffModal={setOffModal}>
+    <Modal modalState={modalFlag === 'signup'}>
       <S.Form onSubmit={signup}>
         <S.Title>회원가입</S.Title>
         <S.InputContainer>
