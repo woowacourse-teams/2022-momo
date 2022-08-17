@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import { getJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
+import TopButton from 'components/@shared/TopButton';
 import JoinedGroups from 'components/JoinedGroups';
 import SearchForm from 'components/SearchSection/SearchForm';
 import { QUERY_KEY } from 'constants/key';
@@ -96,6 +97,7 @@ function MyGroup() {
           />
         </ErrorBoundary>
       </S.Content>
+      <TopButton />
     </>
   );
 }
