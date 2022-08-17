@@ -80,7 +80,7 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    private boolean isEarlyClosed;
+    private boolean earlyClosed;
 
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
@@ -117,7 +117,7 @@ public class Group {
     }
 
     public void closeEarly() {
-        this.isEarlyClosed = true;
+        this.earlyClosed = true;
     }
 
     private void belongTo(List<Schedule> schedules) {
@@ -133,11 +133,11 @@ public class Group {
     }
 
     public boolean isEnd() {
-        return isEarlyClosed || isOverDeadline();
+        return earlyClosed || isOverDeadline();
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || isOverDeadline();
+        return earlyClosed || isFullCapacity() || isOverDeadline();
     }
 
     private boolean isOverDeadline() {
@@ -186,7 +186,7 @@ public class Group {
         if (isOverDeadline()) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
         }
-        if (isEarlyClosed) {
+        if (earlyClosed) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
         }
     }
