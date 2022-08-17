@@ -8,12 +8,12 @@ interface SearchFormProps {
 
 function SearchForm({ keyword, setKeyword, search }: SearchFormProps) {
   return (
-    <S.Form>
+    <S.Container>
       <S.Input type="text" value={keyword} onChange={setKeyword} />
       <S.Button type="button" onClick={search}>
         🔎
       </S.Button>
-    </S.Form>
+    </S.Container>
   );
 }
 
