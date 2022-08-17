@@ -8,7 +8,7 @@ import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useClosingState from 'hooks/useClosingState';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState } from 'store/states';
+import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 
 import * as S from './index.styled';
 
@@ -16,6 +16,7 @@ const dropdownAnimationTime = 300;
 
 function User() {
   const setAccessToken = useSetRecoilState(accessTokenState);
+  const setRefreshToken = useSetRecoilState(refreshTokenState);
   const { isLogin, user } = useRecoilValue(loginState);
   const resetLoginInfo = useResetRecoilState(loginState);
 
@@ -52,7 +53,10 @@ function User() {
     requestLogout()
       .then(() => {
         resetLoginInfo();
+
         setAccessToken('');
+        setRefreshToken('');
+
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
 
         navigate(BROWSER_PATH.BASE);
