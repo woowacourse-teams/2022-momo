@@ -7,7 +7,6 @@ import {
   GroupDetailData,
   GroupParticipants,
   GroupList,
-  GroupSummary,
 } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 
@@ -50,9 +49,9 @@ const requestCreateGroup = async ({
     });
 };
 
-const getJoinedGroups = () => {
+const getParticipatedGroups = (pageNumber: number) => () => {
   return axios
-    .get<GroupSummary[]>(API_PATH.JOINED_GROUP, {
+    .get<GroupList>(`${API_PATH.PARTICIPATED_GROUP}?page=${pageNumber}`, {
       headers: {
         Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
@@ -120,7 +119,7 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 export {
   requestCreateGroup,
-  getJoinedGroups,
+  getParticipatedGroups,
   getGroups,
   getGroupDetail,
   deleteGroup,

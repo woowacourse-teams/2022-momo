@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import NoResult from 'components/@shared/NoResult';
-import JoinedGroups from 'components/JoinedGroups';
+import ParticipatedGroups from 'components/ParticipatedGroups';
 import SearchForm from 'components/SearchSection/SearchForm';
 
 import * as S from './index.styled';
@@ -48,7 +48,7 @@ function MyGroup() {
 function RenderSelectedGroupType(groupType: number) {
   switch (groupType) {
     case 0:
-      return <JoinedGroups />;
+      return <ParticipatedGroups />;
     // case 1:
     //   return <HostedGroups />;
     // case 2:
