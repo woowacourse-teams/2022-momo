@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestLogout } from 'apis/request/auth';
-import { getUserInfo } from 'apis/request/user';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useClosingState from 'hooks/useClosingState';
@@ -16,8 +15,10 @@ import * as S from './index.styled';
 const dropdownAnimationTime = 300;
 
 function User() {
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const { isLogin, user } = useRecoilValue(loginState);
+  const resetLoginInfo = useResetRecoilState(loginState);
+
   const [isShownDropdown, setIsShownDropdown] = useState(false);
   const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
     setIsShownDropdown(false);
@@ -29,26 +30,8 @@ function User() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (!accessToken) return;
-
-    getUserInfo()
-      .then(userInfo => {
-        setLoginInfo({
-          isLogin: true,
-          loginType: loginInfo.loginType,
-          user: userInfo,
-        });
-      })
-      .catch(() => {
-        // 액세스 토큰 만료 시 자동 로그아웃
-        setLoginInfo({ isLogin: false });
-        setAccessToken('');
-      });
-  }, [accessToken, loginInfo.loginType, setAccessToken, setLoginInfo]);
-
-  useEffect(() => {
     setIsShownDropdown(false);
-  }, [pathname, loginInfo.isLogin]);
+  }, [pathname, isLogin]);
 
   const navigateToLocation = (location: string) => () => {
     navigate(location);
@@ -68,7 +51,7 @@ function User() {
 
     requestLogout()
       .then(() => {
-        setLoginInfo({ isLogin: false });
+        resetLoginInfo();
         setAccessToken('');
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
 
@@ -91,7 +74,7 @@ function User() {
         >
           <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
             <S.Profile width="4rem">❤️</S.Profile>
-            <div>{loginInfo.user?.name}</div>
+            <div>{user?.name}</div>
           </S.User>
           <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>
             내 모임

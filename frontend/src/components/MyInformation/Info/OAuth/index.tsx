@@ -28,11 +28,16 @@ function OAuth({
       <S.InputBox>
         <S.Label>
           아이디
-          <S.Input value={user?.userId} disabled />
+          <S.Input type="text" value={user?.userId || ''} disabled />
         </S.Label>
         <S.Label>
           닉네임
-          <S.Input value={name} onChange={setName} disabled={!isNameEditable} />
+          <S.Input
+            type="text"
+            value={name}
+            onChange={setName}
+            disabled={!isNameEditable}
+          />
         </S.Label>
       </S.InputBox>
       <S.ButtonBox>
