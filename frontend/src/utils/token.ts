@@ -10,4 +10,16 @@ const accessTokenProvider = {
   },
 };
 
-export { accessTokenProvider };
+const refreshTokenProvider = {
+  get: () => {
+    return sessionStorage.getItem('refreshToken') ?? '';
+  },
+  set: (refreshToken: string) => {
+    sessionStorage.setItem('refreshToken', refreshToken);
+  },
+  remove: () => {
+    sessionStorage.removeItem('refreshToken');
+  },
+};
+
+export { accessTokenProvider, refreshTokenProvider };
