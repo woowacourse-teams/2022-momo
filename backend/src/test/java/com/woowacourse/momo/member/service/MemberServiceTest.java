@@ -114,7 +114,7 @@ class MemberServiceTest {
         assertDoesNotThrow(() -> memberService.confirmPassword(memberId, passwordRequest));
     }
 
-    @DisplayName("잘못된 비밀번호면 예외가 발생한다")
+    @DisplayName("비밀번호 확인 시 입력한 값이 잘못된 비밀번호면 예외가 발생한다")
     @Test
     void confirmWrongPassword() {
         String password = "wooteco1!";
