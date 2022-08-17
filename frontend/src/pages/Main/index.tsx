@@ -15,10 +15,13 @@ import { CategoryType, GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
+const invalidCategoryId = -1;
+
 function Main() {
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
   const { value: keyword, setValue: setKeyword } = useInput('');
-  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState(invalidCategoryId);
 
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
@@ -64,7 +67,7 @@ function Main() {
   };
 
   const resetSelectedCategoryId = () => {
-    selectCategory(-1)();
+    selectCategory(invalidCategoryId)();
   };
 
   return (
