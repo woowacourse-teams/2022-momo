@@ -3,7 +3,7 @@ import { atom, DefaultValue, selector } from 'recoil';
 import { ModalStateType, SnackbarState } from 'types/condition';
 import { CategoryType } from 'types/data';
 import { LoginState } from 'types/user';
-import { accessTokenProvider } from 'utils/token';
+import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
 
 const categoryState = atom<CategoryType[]>({
   key: 'categoryState',
@@ -41,10 +41,27 @@ const accessTokenState = selector<string>({
   },
 });
 
+const refreshTokenState = selector<string>({
+  key: 'refreshToken',
+  get: () => {
+    return refreshTokenProvider.get();
+  },
+  set: (_, refreshToken) => {
+    if (!refreshToken) {
+      refreshTokenProvider.remove();
+    }
+
+    if (!(refreshToken instanceof DefaultValue)) {
+      refreshTokenProvider.set(refreshToken);
+    }
+  },
+});
+
 export {
   categoryState,
   modalState,
   snackbarState,
   loginState,
   accessTokenState,
+  refreshTokenState,
 };
