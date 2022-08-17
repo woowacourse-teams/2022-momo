@@ -14,10 +14,12 @@ import { GroupList } from 'types/data';
 import * as S from './index.styled';
 
 function RecommendGroups() {
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getGroups(pageNumber),
+    getGroups(pageNumber, isExcludeFinished),
     {
       suspense: true,
     },
@@ -26,22 +28,27 @@ function RecommendGroups() {
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
 
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-
   useEffect(() => {
     if (!data) return;
 
+    if (data.hasNextPage) {
+      setPageNumber(data.pageNumber + 1);
+    }
+
+    if (data.pageNumber === 0) {
+      setGroups(data.groups);
+      return;
+    }
+
     setGroups(prevState => [...prevState, ...data.groups]);
-
-    if (!data.hasNextPage) return;
-
-    setPageNumber(data.pageNumber + 1);
   }, [data]);
 
   useInfiniteScroll(target, isFetching, data, refetch, groups);
 
-  const toggleIsExcludeFinished = () => {
-    setIsExcludeFinished(prevState => !prevState);
+  const toggleIsExcludeFinished = async () => {
+    await setIsExcludeFinished(prevState => !prevState);
+    await setPageNumber(0);
+    refetch();
   };
 
   return (

@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { getParticipatedGroups } from 'apis/request/group';
 import { Loading } from 'components/@shared/Animation';
 import Card from 'components/@shared/Card';
+import Checkbox from 'components/@shared/Checkbox';
 import NoResult from 'components/@shared/NoResult';
 import { QUERY_KEY } from 'constants/key';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
@@ -13,10 +14,12 @@ import { GroupList } from 'types/data';
 import * as S from './index.styled';
 
 function ParticipatedGroups() {
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getParticipatedGroups(pageNumber),
+    getParticipatedGroups(pageNumber, isExcludeFinished),
     {
       suspense: true,
     },
@@ -28,17 +31,33 @@ function ParticipatedGroups() {
   useEffect(() => {
     if (!data) return;
 
+    if (data.hasNextPage) {
+      setPageNumber(data.pageNumber + 1);
+    }
+
+    if (data.pageNumber === 0) {
+      setGroups(data.groups);
+      return;
+    }
+
     setGroups(prevState => [...prevState, ...data.groups]);
-
-    if (!data.hasNextPage) return;
-
-    setPageNumber(data.pageNumber + 1);
   }, [data]);
 
   useInfiniteScroll(target, isFetching, data, refetch, groups);
 
+  const toggleIsExcludeFinished = async () => {
+    await setIsExcludeFinished(prevState => !prevState);
+    await setPageNumber(0);
+    refetch();
+  };
+
   return (
     <S.Container>
+      <Checkbox
+        description="마감된 모임 제외"
+        checked={isExcludeFinished}
+        toggleChecked={toggleIsExcludeFinished}
+      />
       {groups.length > 0 ? (
         <>
           <S.GroupListBox>

@@ -10,6 +10,12 @@ const Container = styled.div`
   width: 100%;
 `;
 
+const HeadingContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const Heading = styled.h2`
   margin-left: 1rem;
 
@@ -50,4 +56,4 @@ const LoadingWrapper = styled.div`
   width: 100%;
 `;
 
-export { Container, Heading, GroupListBox, LoadingWrapper };
+export { Container, HeadingContainer, Heading, GroupListBox, LoadingWrapper };

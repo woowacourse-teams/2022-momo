@@ -9,6 +9,7 @@ import {
   GroupList,
 } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
+import { makeUrl } from 'utils/url';
 
 const requestCreateGroup = async ({
   name,
@@ -49,19 +50,30 @@ const requestCreateGroup = async ({
     });
 };
 
-const getParticipatedGroups = (pageNumber: number) => () => {
-  return axios
-    .get<GroupList>(`${API_PATH.PARTICIPATED_GROUP}?page=${pageNumber}`, {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    })
-    .then(response => response.data);
-};
+const getParticipatedGroups =
+  (pageNumber: number, excludeFinished: boolean) => () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+    };
 
-const getGroups = (pageNumber: number) => () => {
+    return axios
+      .get<GroupList>(makeUrl(API_PATH.PARTICIPATED_GROUP, queryParams), {
+        headers: {
+          Authorization: `Bearer ${accessTokenProvider.get()}`,
+        },
+      })
+      .then(response => response.data);
+  };
+
+const getGroups = (pageNumber: number, excludeFinished: boolean) => () => {
+  const queryParams = {
+    page: pageNumber,
+    excludeFinished,
+  };
+
   return axios
-    .get<GroupList>(`${API_PATH.GROUP}?page=${pageNumber}`)
+    .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
     .then(response => response.data);
 };
 
