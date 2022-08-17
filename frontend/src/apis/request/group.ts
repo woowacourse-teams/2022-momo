@@ -8,6 +8,7 @@ import {
   GroupParticipants,
   GroupList,
   CategoryType,
+  SelectableGroup,
 } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
@@ -51,17 +52,29 @@ const requestCreateGroup = async ({
     });
 };
 
-// orderByDeadline=true
-const getParticipatedGroups =
-  (pageNumber: number, excludeFinished: boolean, keyword: string) => () => {
+const getJoinedGroups =
+  (
+    type: SelectableGroup,
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+  ) =>
+  () => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
       keyword,
     };
 
+    const baseUrl =
+      type === 'participated'
+        ? API_PATH.PARTICIPATED_GROUP
+        : type === 'hosted'
+        ? API_PATH.HOSTED_GROUP
+        : API_PATH.LIKED_GROUP;
+
     return axios
-      .get<GroupList>(makeUrl(API_PATH.PARTICIPATED_GROUP, queryParams), {
+      .get<GroupList>(makeUrl(baseUrl, queryParams), {
         headers: {
           Authorization: `Bearer ${accessTokenProvider.get()}`,
         },
@@ -69,7 +82,6 @@ const getParticipatedGroups =
       .then(response => response.data);
   };
 
-// orderByDeadline=true
 const getGroups =
   (
     pageNumber: number,
@@ -144,7 +156,7 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 export {
   requestCreateGroup,
-  getParticipatedGroups,
+  getJoinedGroups,
   getGroups,
   getGroupDetail,
   deleteGroup,
