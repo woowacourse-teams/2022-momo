@@ -25,6 +25,7 @@ const GUIDE_MESSAGE = {
     SUCCESS_JOIN_REQUEST: '참여에 성공했어요.',
     CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
     SUCCESS_EXIT_REQUEST: '참여 취소에 성공했어요.',
+    SUCCESS_EDIT_REQUEST: '모임 정보 수정에 성공했어요.',
   },
 };
 
@@ -79,6 +80,8 @@ const ERROR_MESSAGE = {
     FAILURE_JOIN_GROUP:
       '모임에 참여하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_EXIT_GROUP:
+      '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_EDIT_GROUP:
       '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
 };
