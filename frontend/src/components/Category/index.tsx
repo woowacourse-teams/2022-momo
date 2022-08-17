@@ -1,30 +1,37 @@
-import { useState } from 'react';
-
 import useCategory from 'hooks/useCategory';
 import { CategoryType } from 'types/data';
 
 import * as S from './index.styled';
 
-function Category() {
-  const { categories } = useCategory();
-  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
+interface CategoryProps {
+  selectedCategoryId: CategoryType['id'];
+  selectCategory: (id: CategoryType['id']) => () => void;
+  resetSelectedCategoryId: () => void;
+}
 
-  const selectCategory = (id: CategoryType['id']) => () => {
-    setSelectedCategoryId(id);
-  };
+function Category({
+  selectedCategoryId,
+  selectCategory,
+  resetSelectedCategoryId,
+}: CategoryProps) {
+  const { categories } = useCategory();
 
   return (
     <S.Box>
-      {categories.map(({ id, name }) => (
-        <S.Button
-          type="button"
-          onClick={selectCategory(id)}
-          className={selectedCategoryId === id ? 'select' : ''}
-          key={id}
-        >
-          <p>{name}</p>
-        </S.Button>
-      ))}
+      {categories.map(({ id, name }) => {
+        const isSelected = selectedCategoryId === id;
+
+        return (
+          <S.Button
+            type="button"
+            onClick={isSelected ? resetSelectedCategoryId : selectCategory(id)}
+            className={isSelected ? 'select' : ''}
+            key={id}
+          >
+            <p>{name}</p>
+          </S.Button>
+        );
+      })}
     </S.Box>
   );
 }

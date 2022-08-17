@@ -7,6 +7,7 @@ import {
   GroupDetailData,
   GroupParticipants,
   GroupList,
+  CategoryType,
 } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
@@ -50,6 +51,7 @@ const requestCreateGroup = async ({
     });
 };
 
+// orderByDeadline=true
 const getParticipatedGroups =
   (pageNumber: number, excludeFinished: boolean, keyword: string) => () => {
     const queryParams = {
@@ -67,14 +69,20 @@ const getParticipatedGroups =
       .then(response => response.data);
   };
 
-// category=1
 // orderByDeadline=true
 const getGroups =
-  (pageNumber: number, excludeFinished: boolean, keyword: string) => () => {
+  (
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+    categoryId: CategoryType['id'],
+  ) =>
+  () => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
       keyword,
+      category: categoryId,
     };
 
     return axios

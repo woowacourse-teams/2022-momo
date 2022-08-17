@@ -11,18 +11,19 @@ import RecommendGroups from 'components/RecommendGroups';
 import SearchSection from 'components/SearchSection';
 import { QUERY_KEY } from 'constants/key';
 import useInput from 'hooks/useInput';
-import { GroupList } from 'types/data';
+import { CategoryType, GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
 function Main() {
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
   const { value: keyword, setValue: setKeyword } = useInput('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
 
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getGroups(pageNumber, isExcludeFinished, keyword),
+    getGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
     {
       suspense: true,
     },
@@ -56,6 +57,16 @@ function Main() {
     refetch();
   };
 
+  const selectCategory = (id: CategoryType['id']) => async () => {
+    await setSelectedCategoryId(id);
+    await setPageNumber(0);
+    refetch();
+  };
+
+  const resetSelectedCategoryId = () => {
+    selectCategory(-1)();
+  };
+
   return (
     <>
       <SearchSection
@@ -64,7 +75,11 @@ function Main() {
         search={search}
       />
       <ErrorBoundary fallbackUI={<CategoryFallback />}>
-        <Category />
+        <Category
+          selectedCategoryId={selectedCategoryId}
+          selectCategory={selectCategory}
+          resetSelectedCategoryId={resetSelectedCategoryId}
+        />
       </ErrorBoundary>
       <S.Content>
         <ErrorBoundary>
