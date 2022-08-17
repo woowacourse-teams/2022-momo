@@ -20,10 +20,9 @@ public class Deadline {
     @Column(name = "deadline", nullable = false)
     private LocalDateTime value;
 
-    public Deadline(LocalDateTime value, Duration duration) {
+    public Deadline(LocalDateTime value) {
         this.value = value;
         validateFuture();
-        validateIsBeforeStartDuration(duration);
     }
 
     public boolean isOver() {
@@ -33,12 +32,6 @@ public class Deadline {
     private void validateFuture() {
         if (isOver()) {
             throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
-        }
-    }
-
-    private void validateIsBeforeStartDuration(Duration duration) {
-        if (duration.isAfterStartDate(value)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
 }

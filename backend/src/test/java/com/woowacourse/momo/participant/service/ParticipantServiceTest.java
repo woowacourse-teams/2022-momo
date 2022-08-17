@@ -238,7 +238,7 @@ class ParticipantServiceTest {
 
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
-        Deadline deadline = new Deadline(original, group.getDuration());
+        Deadline deadline = new Deadline(original);
         Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
 
         int index = 0;

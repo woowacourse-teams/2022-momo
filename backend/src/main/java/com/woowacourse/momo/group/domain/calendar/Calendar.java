@@ -15,6 +15,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -34,17 +37,25 @@ public class Calendar {
     public Calendar(List<Schedule> schedules, Duration duration, LocalDateTime deadline) {
         this.schedules.addAll(schedules);
         this.duration = duration;
-        this.deadline = new Deadline(deadline, this.duration);
+        this.deadline = new Deadline(deadline);
+        validateIsBeforeStartDuration();
     }
 
     public void update(List<Schedule> schedules, Duration duration, LocalDateTime deadline) {
         this.schedules.clear();
         this.schedules.addAll(schedules);
         this.duration = duration;
-        this.deadline = new Deadline(deadline, this.duration);
+        this.deadline = new Deadline(deadline);
+        validateIsBeforeStartDuration();
     }
 
     public boolean isDeadlineOver() {
         return deadline.isOver();
+    }
+
+    private void validateIsBeforeStartDuration() {
+        if (duration.isAfterStartDate(deadline.getValue())) {
+            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
+        }
     }
 }
