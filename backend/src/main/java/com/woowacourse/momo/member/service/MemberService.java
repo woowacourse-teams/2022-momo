@@ -82,7 +82,7 @@ public class MemberService {
 
     private void confirmPassword(Member member, String password) {
         String encryptedPassword = passwordEncoder.encrypt(password);
-        if (member.confirmWrongPassword(encryptedPassword)) {
+        if (member.isNotSamePassword(encryptedPassword)) {
             throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
         }
     }

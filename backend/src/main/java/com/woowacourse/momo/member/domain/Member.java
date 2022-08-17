@@ -43,7 +43,7 @@ public class Member {
         this.name = name;
     }
 
-    public boolean confirmWrongPassword(String password) {
+    public boolean isNotSamePassword(String password) {
         return !this.password.equals(password);
     }
 
