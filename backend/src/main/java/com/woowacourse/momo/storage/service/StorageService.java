@@ -40,8 +40,6 @@ public class StorageService {
     }
 
     public String saveMemberImage(Long memberId, MultipartFile imageFile) {
-        //TODO : 동일한 파일명인 경우에 대한 처리 필요
-
         String savedFileName = imageFileManager.save(ImageFileManager.PATH_PREFIX + "member/", imageFile);
         Member member = memberFindService.findMember(memberId);
 
