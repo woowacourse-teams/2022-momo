@@ -35,8 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
@@ -354,6 +355,7 @@ class ParticipantControllerTest {
         Group group = groupFindService.findGroup(groupId);
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original, group.getDuration());
+        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;
@@ -361,10 +363,16 @@ class ParticipantControllerTest {
         fieldDeadline[index].setAccessible(true);
         fieldDeadline[index].set(deadline, date);
 
-        int deadlineField = 8;
+        int calendarField = 2;
+        Class<Calendar> clazzCalendar = Calendar.class;
+        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
+        fieldCalendar[calendarField].setAccessible(true);
+        fieldCalendar[calendarField].set(calendar, deadline);
+
+        int deadlineField = 6;
         Class<Group> clazzGroup = Group.class;
         Field[] fieldGroup = clazzGroup.getDeclaredFields();
         fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, deadline);
+        fieldGroup[deadlineField].set(group, calendar);
     }
 }

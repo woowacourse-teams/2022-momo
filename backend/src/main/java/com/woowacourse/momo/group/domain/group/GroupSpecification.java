@@ -61,7 +61,7 @@ public class GroupSpecification {
             query.having(isOverCapacity);
 
             Predicate isEarlyClosed = criteriaBuilder.isFalse(root.get("isEarlyClosed"));
-            Predicate isOverDeadline = criteriaBuilder.greaterThan(root.get("deadline"),
+            Predicate isOverDeadline = criteriaBuilder.greaterThan(root.get("calendar").get("deadline"),
                     criteriaBuilder.currentTimestamp());
             return criteriaBuilder.and(isEarlyClosed, isOverDeadline);
         };
@@ -72,8 +72,8 @@ public class GroupSpecification {
             return orderByIdDesc();
         }
         return (root, query, criteriaBuilder) -> {
-            query.orderBy(criteriaBuilder.asc(root.get("deadline")), criteriaBuilder.desc(root.get("id")));
-            return criteriaBuilder.greaterThan(root.get("deadline"), criteriaBuilder.currentTimestamp());
+            query.orderBy(criteriaBuilder.asc(root.get("calendar").get("deadline")), criteriaBuilder.desc(root.get("id")));
+            return criteriaBuilder.greaterThan(root.get("calendar").get("deadline"), criteriaBuilder.currentTimestamp());
         };
     }
 

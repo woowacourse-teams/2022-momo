@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
@@ -59,20 +59,12 @@ public class Group {
     @Embedded
     private Capacity capacity;
 
+    @Embedded
+    private Calendar calendar;
+
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Participant> participants = new ArrayList<>();
-
-    @Embedded
-    private Duration duration;
-
-    @Embedded
-    private Deadline deadline;
-
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "group_id")
-    private List<Schedule> schedules = new ArrayList<>();
 
     @Column(nullable = false)
     private String location;
@@ -81,7 +73,7 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
-    private boolean earlyClosed;
+    private boolean isEarlyClosed;
 
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
@@ -89,13 +81,11 @@ public class Group {
         this.host = host;
         this.category = category;
         this.capacity = new Capacity(capacity);
-        this.duration = duration;
-        this.deadline = new Deadline(deadline, this.duration);
+        this.calendar = new Calendar(schedules, duration, deadline);
         this.location = location;
         this.description = description;
 
         this.participants.add(new Participant(this, host));
-        belongTo(schedules);
     }
 
     public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
@@ -103,13 +93,10 @@ public class Group {
         this.name = name;
         this.category = category;
         this.capacity = new Capacity(capacity);
-        this.duration = duration;
-        this.deadline = new Deadline(deadline, this.duration);
         this.location = location;
         this.description = description;
 
-        this.schedules.clear();
-        belongTo(schedules);
+        calendar.update(schedules, duration, deadline);
     }
 
     public void participate(Member member) {
@@ -118,11 +105,7 @@ public class Group {
     }
 
     public void closeEarly() {
-        this.earlyClosed = true;
-    }
-
-    private void belongTo(List<Schedule> schedules) {
-        this.schedules.addAll(schedules);
+        this.isEarlyClosed = true;
     }
 
     public boolean isExistParticipants() {
@@ -134,15 +117,15 @@ public class Group {
     }
 
     public boolean isEnd() {
-        return earlyClosed || isOverDeadline();
+        return isEarlyClosed || isOverDeadline();
     }
 
     public boolean isFinishedRecruitment() {
-        return earlyClosed || isFullCapacity() || isOverDeadline();
+        return isEarlyClosed || isFullCapacity() || isOverDeadline();
     }
 
     private boolean isOverDeadline() {
-        return deadline.isOver();
+        return calendar.isDeadlineOver();
     }
 
     private boolean isFullCapacity() {
@@ -187,27 +170,31 @@ public class Group {
         if (isOverDeadline()) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
         }
-        if (earlyClosed) {
+        if (isEarlyClosed) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
         }
-    }
-
-    public List<Schedule> getSchedules() {
-        return schedules;
-    }
-
-    public List<Member> getParticipants() {
-        return participants.stream()
-                .map(Participant::getMember)
-                .collect(Collectors.toList());
     }
 
     public int getCapacity() {
         return capacity.getValue();
     }
 
+    public List<Schedule> getSchedules() {
+        return calendar.getSchedules();
+    }
+
+    public Duration getDuration() {
+        return calendar.getDuration();
+    }
+
     public LocalDateTime getDeadline() {
-        return deadline.getValue();
+        return calendar.getDeadline().getValue();
+    }
+
+    public List<Member> getParticipants() {
+        return participants.stream()
+                .map(Participant::getMember)
+                .collect(Collectors.toList());
     }
 
     public static class Builder {

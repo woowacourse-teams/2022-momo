@@ -26,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -200,6 +201,7 @@ class GroupFindRepositoryTest {
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original, group.getDuration());
+        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;
@@ -207,11 +209,17 @@ class GroupFindRepositoryTest {
         fieldDeadline[index].setAccessible(true);
         fieldDeadline[index].set(deadline, date);
 
-        int deadlineField = 8;
+        int calendarField = 2;
+        Class<Calendar> clazzCalendar = Calendar.class;
+        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
+        fieldCalendar[calendarField].setAccessible(true);
+        fieldCalendar[calendarField].set(calendar, deadline);
+
+        int deadlineField = 6;
         Class<Group> clazzGroup = Group.class;
         Field[] fieldGroup = clazzGroup.getDeclaredFields();
         fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, deadline);
+        fieldGroup[deadlineField].set(group, calendar);
     }
 
     private void synchronize() {
