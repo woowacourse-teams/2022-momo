@@ -9,13 +9,19 @@ import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState, modalState } from 'store/states';
+import {
+  accessTokenState,
+  loginState,
+  modalState,
+  refreshTokenState,
+} from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
 function Login() {
   const setAccessToken = useSetRecoilState(accessTokenState);
+  const setRefreshToken = useSetRecoilState(refreshTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
 
   const modalFlag = useRecoilValue(modalState);
@@ -35,10 +41,11 @@ function Login() {
     const password = passwordRef.current.value;
 
     requestLogin({ userId, password })
-      .then(accessToken => {
+      .then(({ accessToken, refreshToken }) => {
         setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
 
         setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
 
         getUserInfo().then(userInfo => {
           setLoginInfo({ isLogin: true, loginType: 'basic', user: userInfo });
