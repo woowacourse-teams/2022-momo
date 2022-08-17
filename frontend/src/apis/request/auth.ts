@@ -1,6 +1,7 @@
 import axios from 'apis/axios';
 import { API_PATH, BROWSER_PATH } from 'constants/path';
 import { User } from 'types/user';
+import { accessTokenProvider } from 'utils/token';
 
 const requestSignup = (userData: User) => {
   return axios.post(API_PATH.SIGNUP, userData);
@@ -34,14 +35,12 @@ const requestGoogleLogin = (code: string) => {
 };
 
 const requestLogout = () => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.post(
     API_PATH.LOGOUT,
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
