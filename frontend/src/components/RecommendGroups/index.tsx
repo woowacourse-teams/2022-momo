@@ -5,8 +5,10 @@ import { useQuery } from 'react-query';
 import { getGroups } from 'apis/request/group';
 import { Loading } from 'components/@shared/Animation';
 import Card from 'components/@shared/Card';
+import Checkbox from 'components/@shared/Checkbox';
 import NoResult from 'components/@shared/NoResult';
 import { QUERY_KEY } from 'constants/key';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
@@ -24,6 +26,8 @@ function RecommendGroups() {
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
 
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+
   useEffect(() => {
     if (!data) return;
 
@@ -34,41 +38,24 @@ function RecommendGroups() {
     setPageNumber(data.pageNumber + 1);
   }, [data]);
 
-  useEffect(() => {
-    let observer: IntersectionObserver;
+  useInfiniteScroll(target, isFetching, data, refetch, groups);
 
-    const onIntersection = async (
-      [entry]: IntersectionObserverEntry[],
-      observer: IntersectionObserver,
-    ) => {
-      if (!entry.isIntersecting || isFetching || !data?.hasNextPage) return;
-
-      refetch().then(() => {
-        if (!data || !target.current) return;
-        if (!data.hasNextPage || groups.length > 0) {
-          observer.unobserve(target.current);
-          return;
-        }
-      });
-    };
-
-    if (target) {
-      observer = new IntersectionObserver(onIntersection, {
-        threshold: 0.5,
-      });
-
-      if (!target.current) return;
-      observer.observe(target.current);
-    }
-
-    return () => observer && observer.disconnect();
-  }, [isFetching, refetch, groups.length, data]);
+  const toggleIsExcludeFinished = () => {
+    setIsExcludeFinished(prevState => !prevState);
+  };
 
   return (
     <S.Container>
       {groups.length > 0 ? (
         <>
-          <S.Heading>이런 모임, 어때요?</S.Heading>
+          <S.HeadingContainer>
+            <S.Heading>이런 모임, 어때요?</S.Heading>
+            <Checkbox
+              description="마감된 모임 제외"
+              checked={isExcludeFinished}
+              toggleChecked={toggleIsExcludeFinished}
+            />
+          </S.HeadingContainer>
           <S.GroupListBox>
             {groups.map(group => (
               <Card group={group} key={group.id} />
