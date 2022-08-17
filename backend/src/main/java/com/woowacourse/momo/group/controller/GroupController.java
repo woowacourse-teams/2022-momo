@@ -2,6 +2,8 @@ package com.woowacourse.momo.group.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ public class GroupController {
     @Authenticated
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
-                                                  @RequestBody GroupRequest groupRequest) {
+                                                  @RequestBody @Valid GroupRequest groupRequest) {
         GroupIdResponse groupIdResponse = groupService.create(memberId, groupRequest);
         return ResponseEntity.created(URI.create("/api/groups/" + groupIdResponse.getGroupId()))
                 .body(groupIdResponse);
@@ -49,27 +51,27 @@ public class GroupController {
     @Authenticated
     @GetMapping("/me/participated")
     public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
+                                                                     @ModelAttribute @Valid GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findParticipatedGroups(groupFindRequest, memberId));
     }
 
     @Authenticated
     @GetMapping("/me/hosted")
     public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
+                                                                     @ModelAttribute @Valid GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findHostedGroups(groupFindRequest, memberId));
     }
 
 
     @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
+    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute @Valid GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findGroups(groupFindRequest));
     }
 
     @Authenticated
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
-                                       @RequestBody GroupUpdateRequest groupUpdateRequest) {
+                                       @RequestBody @Valid GroupUpdateRequest groupUpdateRequest) {
         groupService.update(memberId, groupId, groupUpdateRequest);
         return ResponseEntity.ok().build();
     }
