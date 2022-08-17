@@ -9,7 +9,9 @@ const BROWSER_PATH = {
 
 const API_PATH = {
   GROUP: '/groups',
-  JOINED_GROUP: '/groups/me',
+  PARTICIPATED_GROUP: '/groups/me/participated',
+  HOSTED_GROUP: '/groups/me/hosted',
+  LIKED_GROUP: '/groups/me/liked',
   CATEGORY: '/categories',
   PARTICIPANTS: '/participants',
   CLOSE: '/close',
@@ -17,6 +19,7 @@ const API_PATH = {
   LOGIN: '/auth/login',
   GOOGLE_LOGIN: '/auth/oauth2/google/login',
   LOGOUT: '/auth/logout',
+  REISSUE_ACCESS_TOKEN: '/auth/token/refresh',
   MEMBERS: '/members',
   NAME: '/members/name',
   PASSWORD: '/members/password',

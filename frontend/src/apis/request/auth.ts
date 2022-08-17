@@ -1,15 +1,14 @@
 import axios from 'apis/axios';
 import { API_PATH, BROWSER_PATH } from 'constants/path';
-import { User } from 'types/user';
+import { Token, User } from 'types/user';
+import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
 
 const requestSignup = (userData: User) => {
   return axios.post(API_PATH.SIGNUP, userData);
 };
 
 const requestLogin = (userData: Omit<User, 'name'>) => {
-  return axios
-    .post<{ accessToken: string }>(API_PATH.LOGIN, userData)
-    .then(res => res.data.accessToken);
+  return axios.post<Token>(API_PATH.LOGIN, userData).then(res => res.data);
 };
 
 const requestGoogleOauthToken = () => {
@@ -27,24 +26,36 @@ const requestGoogleLogin = (code: string) => {
   const redirectUrl = `${window.location.origin}${BROWSER_PATH.OAUTH_GOOGLE}`;
 
   return axios
-    .get<{ accessToken: string; refreshToken: string }>(
+    .get<Token>(
       `${API_PATH.GOOGLE_LOGIN}?redirectUrl=${redirectUrl}&code=${code}`,
     )
-    .then(res => res.data.accessToken);
+    .then(res => res.data);
 };
 
 const requestLogout = () => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.post(
     API_PATH.LOGOUT,
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
+};
+
+const requestReissueAccessToken = () => {
+  return axios
+    .post<{ accessToken: string }>(
+      API_PATH.REISSUE_ACCESS_TOKEN,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${refreshTokenProvider.get()}`,
+        },
+      },
+    )
+    .then(res => res.data.accessToken);
 };
 
 export {
@@ -53,4 +64,5 @@ export {
   requestGoogleOauthToken,
   requestGoogleLogin,
   requestLogout,
+  requestReissueAccessToken,
 };

@@ -1,25 +1,50 @@
-import { useQuery } from 'react-query';
+import { useRef } from 'react';
 
-import { getJoinedGroups } from 'apis/request/group';
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from 'react-query';
+
+import { Loading } from 'components/@shared/Animation';
 import Card from 'components/@shared/Card';
+import Checkbox from 'components/@shared/Checkbox';
 import NoResult from 'components/@shared/NoResult';
-import { QUERY_KEY } from 'constants/key';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
+import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
-function JoinedGroups() {
-  const { data: groups } = useQuery(
-    QUERY_KEY.JOINED_GROUP_SUMMARIES,
-    getJoinedGroups,
-    {
-      suspense: true,
-    },
-  );
+interface JoinedGroupsProps {
+  isFetching: boolean;
+  data: GroupList | undefined;
+  refetch: (
+    options?: (RefetchOptions & RefetchQueryFilters<GroupList>) | undefined,
+  ) => Promise<QueryObserverResult<GroupList, unknown>>;
+  groups: GroupList['groups'];
+  isExcludeFinished: boolean;
+  toggleIsExcludeFinished: () => void;
+}
 
-  if (!groups) return <></>;
+function JoinedGroups({
+  isFetching,
+  data,
+  refetch,
+  groups,
+  isExcludeFinished,
+  toggleIsExcludeFinished,
+}: JoinedGroupsProps) {
+  const target = useRef<HTMLDivElement>(null);
+
+  useInfiniteScroll(target, isFetching, data, refetch, groups);
 
   return (
     <S.Container>
+      <Checkbox
+        description="마감된 모임 제외"
+        checked={isExcludeFinished}
+        toggleChecked={toggleIsExcludeFinished}
+      />
       {groups.length > 0 ? (
         <>
           <S.GroupListBox>
@@ -35,6 +60,12 @@ function JoinedGroups() {
           새로운 모임에 참여해보는 건 어떨까요?
         </NoResult>
       )}
+      {isFetching && (
+        <S.LoadingWrapper>
+          <Loading />
+        </S.LoadingWrapper>
+      )}
+      <div ref={target} />
     </S.Container>
   );
 }

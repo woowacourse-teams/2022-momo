@@ -2,14 +2,13 @@ import axios from 'apis/axios';
 import { ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
 import { UserProfile } from 'types/user';
+import { accessTokenProvider } from 'utils/token';
 
 const getUserInfo = () => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios
     .get<UserProfile>(API_PATH.MEMBERS, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     })
     .then(response => {
@@ -20,61 +19,40 @@ const getUserInfo = () => {
     });
 };
 
-const requestConfirmPassword = (password: string) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
-  return axios.put(
-    API_PATH.MEMBERS,
-    { password },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  );
-};
-
 const requestChangeName = (data: string) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.patch(
     API_PATH.NAME,
     { name: data },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
 };
 
-const requestChangePassword = (data: string) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
+const requestChangePassword = (oldPassword: string, newPassword: string) => {
   return axios.patch(
     API_PATH.PASSWORD,
-    { password: data },
+    { oldPassword, newPassword },
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
 };
 
 const requestWithdrawal = () => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.delete(API_PATH.MEMBERS, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
     },
   });
 };
 
 export {
   getUserInfo,
-  requestConfirmPassword,
   requestChangeName,
   requestChangePassword,
   requestWithdrawal,

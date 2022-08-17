@@ -15,3 +15,8 @@ export interface LoginState {
 }
 
 export type EditableType = 'name' | 'password';
+
+export interface Token {
+  accessToken: string;
+  refreshToken: string;
+}

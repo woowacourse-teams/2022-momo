@@ -8,13 +8,14 @@ import { Loading } from 'components/@shared/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState } from 'store/states';
+import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
 function Auth() {
   const setAccessToken = useSetRecoilState(accessTokenState);
+  const setRefreshToken = useSetRecoilState(refreshTokenState);
   const setLoginInfo = useSetRecoilState(loginState);
 
   const { setMessage } = useSnackbar();
@@ -25,8 +26,9 @@ function Auth() {
 
   if (code) {
     requestGoogleLogin(code)
-      .then(accessToken => {
+      .then(({ accessToken, refreshToken }) => {
         setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
 
         getUserInfo().then(userInfo => {
           setLoginInfo({ isLogin: true, loginType: 'oauth', user: userInfo });
