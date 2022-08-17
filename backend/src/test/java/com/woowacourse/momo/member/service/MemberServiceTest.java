@@ -78,6 +78,15 @@ class MemberServiceTest {
         );
     }
 
+    @DisplayName("존재하지 않는 회원 정보를 조회하는 경우 예외가 발생한다")
+    @Test
+    void findByIdNotExist() {
+
+        assertThatThrownBy(() -> memberService.findById(1000L))
+                .isInstanceOf(MomoException.class)
+                .hasMessageContaining("멤버가 존재하지 않습니다.");
+    }
+
     @DisplayName("회원 이름을 수정한다")
     @Test
     void updateName() {
@@ -90,6 +99,16 @@ class MemberServiceTest {
 
         Member member = memberFindService.findMember(memberId);
         assertThat(member.getName()).isNotEqualTo(beforeName);
+    }
+
+    @DisplayName("존재하지 않는 회원의 이름을 수정하는 경우 예외가 발생한다")
+    @Test
+    void updateNameNotExist() {
+        assertThatThrownBy(() -> {
+            ChangeNameRequest request = new ChangeNameRequest("무무");
+            memberService.updateName(1000L, request);
+        }).isInstanceOf(MomoException.class)
+                .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
     @DisplayName("비밀번호를 업데이트한다")
@@ -131,6 +150,14 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.findById(memberId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("탈퇴한 멤버입니다.");
+    }
+
+    @DisplayName("존재하지 않는 회원 정보를 삭제한다")
+    @Test
+    void deleteNotExistMember() {
+        assertThatThrownBy(() -> memberService.findById(1000L))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("멤버가 존재하지 않습니다.");
     }
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
