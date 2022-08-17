@@ -38,7 +38,7 @@ const Heading = styled.h2`
   font-size: 1.5rem;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
 
   width: 37rem;

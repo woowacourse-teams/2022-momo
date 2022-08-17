@@ -1,55 +1,42 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { useQuery } from 'react-query';
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from 'react-query';
 
-import { getParticipatedGroups } from 'apis/request/group';
 import { Loading } from 'components/@shared/Animation';
 import Card from 'components/@shared/Card';
 import Checkbox from 'components/@shared/Checkbox';
 import NoResult from 'components/@shared/NoResult';
-import { QUERY_KEY } from 'constants/key';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
-function ParticipatedGroups() {
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+interface JoinedGroupsProps {
+  isFetching: boolean;
+  data: GroupList | undefined;
+  refetch: (
+    options?: (RefetchOptions & RefetchQueryFilters<GroupList>) | undefined,
+  ) => Promise<QueryObserverResult<GroupList, unknown>>;
+  groups: GroupList['groups'];
+  isExcludeFinished: boolean;
+  toggleIsExcludeFinished: () => void;
+}
 
-  const [pageNumber, setPageNumber] = useState(0);
-  const { isFetching, data, refetch } = useQuery(
-    QUERY_KEY.GROUP_SUMMARIES,
-    getParticipatedGroups(pageNumber, isExcludeFinished),
-    {
-      suspense: true,
-    },
-  );
+function JoinedGroups({
+  isFetching,
+  data,
+  refetch,
+  groups,
+  isExcludeFinished,
+  toggleIsExcludeFinished,
+}: JoinedGroupsProps) {
   const target = useRef<HTMLDivElement>(null);
 
-  const [groups, setGroups] = useState<GroupList['groups']>([]);
-
-  useEffect(() => {
-    if (!data) return;
-
-    if (data.hasNextPage) {
-      setPageNumber(data.pageNumber + 1);
-    }
-
-    if (data.pageNumber === 0) {
-      setGroups(data.groups);
-      return;
-    }
-
-    setGroups(prevState => [...prevState, ...data.groups]);
-  }, [data]);
-
   useInfiniteScroll(target, isFetching, data, refetch, groups);
-
-  const toggleIsExcludeFinished = async () => {
-    await setIsExcludeFinished(prevState => !prevState);
-    await setPageNumber(0);
-    refetch();
-  };
 
   return (
     <S.Container>
@@ -83,4 +70,4 @@ function ParticipatedGroups() {
   );
 }
 
-export default ParticipatedGroups;
+export default JoinedGroups;

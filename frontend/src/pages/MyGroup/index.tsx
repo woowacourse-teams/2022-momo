@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useQuery } from 'react-query';
+
+import { getParticipatedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
-import NoResult from 'components/@shared/NoResult';
-import ParticipatedGroups from 'components/ParticipatedGroups';
+import JoinedGroups from 'components/JoinedGroups';
 import SearchForm from 'components/SearchSection/SearchForm';
+import { QUERY_KEY } from 'constants/key';
+import useInput from 'hooks/useInput';
+import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
@@ -14,16 +19,56 @@ const groupTypes = [
 ];
 
 function MyGroup() {
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const { value: keyword, setValue: setKeyword } = useInput('');
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const { isFetching, data, refetch } = useQuery(
+    QUERY_KEY.GROUP_SUMMARIES,
+    getParticipatedGroups(pageNumber, isExcludeFinished, keyword),
+    {
+      suspense: true,
+    },
+  );
+
+  const [groups, setGroups] = useState<GroupList['groups']>([]);
+
   const [selectedGroupType, setSelectedGroupType] = useState(0);
+
+  useEffect(() => {
+    if (!data) return;
+
+    if (data.hasNextPage) {
+      setPageNumber(data.pageNumber + 1);
+    }
+
+    if (data.pageNumber === 0) {
+      setGroups(data.groups);
+      return;
+    }
+
+    setGroups(prevState => [...prevState, ...data.groups]);
+  }, [data]);
 
   const changeSelectedGroupType = (index: number) => {
     setSelectedGroupType(index);
   };
 
+  const toggleIsExcludeFinished = async () => {
+    await setIsExcludeFinished(prevState => !prevState);
+    await setPageNumber(0);
+    refetch();
+  };
+
+  const search = async () => {
+    await setPageNumber(0);
+    refetch();
+  };
+
   return (
     <>
       <S.SearchWrapper>
-        <SearchForm />
+        <SearchForm keyword={keyword} setKeyword={setKeyword} search={search} />
       </S.SearchWrapper>
       <S.GroupTypeBox>
         {groupTypes.map((groupType, i) => (
@@ -38,24 +83,18 @@ function MyGroup() {
       </S.GroupTypeBox>
       <S.Content>
         <ErrorBoundary>
-          {RenderSelectedGroupType(selectedGroupType)}
+          <JoinedGroups
+            isFetching={isFetching}
+            data={data}
+            refetch={refetch}
+            groups={groups}
+            isExcludeFinished={isExcludeFinished}
+            toggleIsExcludeFinished={toggleIsExcludeFinished}
+          />
         </ErrorBoundary>
       </S.Content>
     </>
   );
-}
-
-function RenderSelectedGroupType(groupType: number) {
-  switch (groupType) {
-    case 0:
-      return <ParticipatedGroups />;
-    // case 1:
-    //   return <HostedGroups />;
-    // case 2:
-    //   return <ZzimhanGroups />;
-    default:
-      return <NoResult>해당 페이지는 준비중이에요 ・゜・(ノД`)</NoResult>;
-  }
 }
 
 export default MyGroup;

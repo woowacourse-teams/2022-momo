@@ -1,10 +1,18 @@
 import * as S from './index.styled';
 
-function SearchForm() {
+interface SearchFormProps {
+  keyword: string;
+  setKeyword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  search: () => void;
+}
+
+function SearchForm({ keyword, setKeyword, search }: SearchFormProps) {
   return (
     <S.Form>
-      <S.Input type="text" />
-      <S.Button type="button">🔎</S.Button>
+      <S.Input type="text" value={keyword} onChange={setKeyword} />
+      <S.Button type="button" onClick={search}>
+        🔎
+      </S.Button>
     </S.Form>
   );
 }

@@ -51,10 +51,11 @@ const requestCreateGroup = async ({
 };
 
 const getParticipatedGroups =
-  (pageNumber: number, excludeFinished: boolean) => () => {
+  (pageNumber: number, excludeFinished: boolean, keyword: string) => () => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
+      keyword,
     };
 
     return axios
@@ -66,16 +67,20 @@ const getParticipatedGroups =
       .then(response => response.data);
   };
 
-const getGroups = (pageNumber: number, excludeFinished: boolean) => () => {
-  const queryParams = {
-    page: pageNumber,
-    excludeFinished,
-  };
+// category=1
+// orderByDeadline=true
+const getGroups =
+  (pageNumber: number, excludeFinished: boolean, keyword: string) => () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+      keyword,
+    };
 
-  return axios
-    .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
-    .then(response => response.data);
-};
+    return axios
+      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
+      .then(response => response.data);
+  };
 
 const getGroupDetail = (id: GroupDetailData['id']) => {
   return axios
