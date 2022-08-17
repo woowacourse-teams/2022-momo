@@ -9,6 +9,7 @@ import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.domain.group.Deadline;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.GroupService;
@@ -233,11 +235,20 @@ class ParticipantServiceTest {
         entityManager.clear();
     }
 
-    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
+    private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
+        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
+        Deadline deadline = new Deadline(original, group.getDuration());
+
+        int index = 0;
+        Class<Deadline> clazzDeadline = Deadline.class;
+        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
+        fieldDeadline[index].setAccessible(true);
+        fieldDeadline[index].set(deadline, date);
+
         int deadlineField = 8;
-        Class<Group> clazz = Group.class;
-        Field[] field = clazz.getDeclaredFields();
-        field[deadlineField].setAccessible(true);
-        field[deadlineField].set(group, deadline);
+        Class<Group> clazzGroup = Group.class;
+        Field[] fieldGroup = clazzGroup.getDeclaredFields();
+        fieldGroup[deadlineField].setAccessible(true);
+        fieldGroup[deadlineField].set(group, deadline);
     }
 }

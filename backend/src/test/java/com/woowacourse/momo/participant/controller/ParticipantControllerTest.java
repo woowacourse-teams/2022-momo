@@ -18,6 +18,7 @@ import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.group.domain.group.Deadline;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
@@ -348,12 +350,21 @@ class ParticipantControllerTest {
         participantService.participate(groupId, memberId);
     }
 
-    private void setPastDeadline(Long groupId, LocalDateTime deadline) throws IllegalAccessException {
+    private void setPastDeadline(Long groupId, LocalDateTime date) throws IllegalAccessException {
         Group group = groupFindService.findGroup(groupId);
+        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
+        Deadline deadline = new Deadline(original, group.getDuration());
+
+        int index = 0;
+        Class<Deadline> clazzDeadline = Deadline.class;
+        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
+        fieldDeadline[index].setAccessible(true);
+        fieldDeadline[index].set(deadline, date);
+
         int deadlineField = 8;
-        Class<Group> clazz = Group.class;
-        Field[] field = clazz.getDeclaredFields();
-        field[deadlineField].setAccessible(true);
-        field[deadlineField].set(group, deadline);
+        Class<Group> clazzGroup = Group.class;
+        Field[] fieldGroup = clazzGroup.getDeclaredFields();
+        fieldGroup[deadlineField].setAccessible(true);
+        fieldGroup[deadlineField].set(group, deadline);
     }
 }

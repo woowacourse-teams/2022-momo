@@ -65,8 +65,8 @@ public class Group {
     @Embedded
     private Duration duration;
 
-    @Column(nullable = false)
-    private LocalDateTime deadline;
+    @Embedded
+    private Deadline deadline;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -89,11 +89,10 @@ public class Group {
         this.category = category;
         this.capacity = new Capacity(capacity);
         this.duration = duration;
-        this.deadline = deadline;
+        this.deadline = new Deadline(deadline, this.duration);
         this.location = location;
         this.description = description;
 
-        validateDeadline(deadline, duration);
         this.participants.add(new Participant(this, host));
         belongTo(schedules);
     }
@@ -104,30 +103,12 @@ public class Group {
         this.category = category;
         this.capacity = new Capacity(capacity);
         this.duration = duration;
-        this.deadline = deadline;
+        this.deadline = new Deadline(deadline, this.duration);
         this.location = location;
         this.description = description;
 
-        validateDeadline(deadline, duration);
         this.schedules.clear();
         belongTo(schedules);
-    }
-
-    private void validateDeadline(LocalDateTime deadline, Duration duration) {
-        validateFutureDeadline(deadline);
-        validateDeadlineIsBeforeStartDuration(deadline, duration);
-    }
-
-    private void validateFutureDeadline(LocalDateTime deadline) {
-        if (deadline.isBefore(LocalDateTime.now())) {
-            throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
-        }
-    }
-
-    private void validateDeadlineIsBeforeStartDuration(LocalDateTime deadline, Duration duration) {
-        if (duration.isAfterStartDate(deadline)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
-        }
     }
 
     private void belongTo(List<Schedule> schedules) {
@@ -176,7 +157,7 @@ public class Group {
     }
 
     private boolean isOverDeadline() {
-        return deadline.isBefore(LocalDateTime.now());
+        return deadline.isOver();
     }
 
     private boolean isFullCapacity() {
@@ -222,6 +203,10 @@ public class Group {
 
     public int getCapacity() {
         return capacity.getValue();
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline.getValue();
     }
 
     public static class Builder {
