@@ -41,13 +41,13 @@ public class ParticipantService {
 
     @Transactional
     public void delete(Long groupId, Long memberId) {
-        validateLeave(groupId, memberId);
+        validateMemberCanLeave(groupId, memberId);
         participantRepository.deleteByGroupIdAndMemberId(groupId, memberId);
     }
 
-    private void validateLeave(Long groupId, Long memberId) {
+    private void validateMemberCanLeave(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
-        group.validateLeave(member);
+        group.validateMemberCanLeave(member);
     }
 }

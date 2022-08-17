@@ -78,13 +78,13 @@ public class GroupService {
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
-        validateInitialState(hostId, group);
+        Member host = memberFindService.findMember(hostId);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         validateSchedulesInDuration(schedules, duration);
 
-        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
+        group.update(request.getName(), host, Category.from(request.getCategoryId()), request.getCapacity(),
                 duration, request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }
@@ -103,42 +103,17 @@ public class GroupService {
     @Transactional
     public void closeEarly(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        Member member = memberFindService.findMember(hostId);
 
-        group.closeEarly();
+        group.closeEarly(member);
     }
 
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateInitialState(hostId, group);
+        Member member = memberFindService.findMember(hostId);
+        group.validateGroupIsInitialState(member);
 
         groupRepository.deleteById(groupId);
-    }
-
-    private void validateInitialState(Long hostId, Group group) {
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
-        validateNotExistParticipants(group);
-    }
-
-    private void validateHost(Group group, Long hostId) {
-        Member host = memberFindService.findMember(hostId);
-        if (!group.isHost(host)) {
-            throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
-        }
-    }
-
-    private void validateNotExistParticipants(Group group) {
-        if (group.isExistParticipants()) {
-            throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
-        }
-    }
-
-    private void validateFinishedRecruitment(Group group) {
-        if (group.isFinishedRecruitment()) {
-            throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
-        }
     }
 }

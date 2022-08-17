@@ -170,7 +170,7 @@ class GroupTest {
     @Test
     void isFinishedRecruitmentWithPassedDeadline() {
         Group group = constructGroup();
-        group.closeEarly();
+        group.closeEarly(group.getHost());
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
@@ -187,7 +187,7 @@ class GroupTest {
     @Test
     void isEndCloseEarly() {
         Group group = constructGroup();
-        group.closeEarly();
+        group.closeEarly(group.getHost());
 
         assertThat(group.isEnd()).isTrue();
     }
@@ -222,7 +222,7 @@ class GroupTest {
     void validateLeaveHost() {
         Group group = constructGroup();
 
-        assertThatThrownBy(() -> group.validateLeave(host))
+        assertThatThrownBy(() -> group.validateMemberCanLeave(host))
             .isInstanceOf(MomoException.class)
             .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
@@ -232,7 +232,7 @@ class GroupTest {
     void validateLeaveNotParticipant() {
         Group group = constructGroup();
 
-        assertThatThrownBy(() -> group.validateLeave(participant))
+        assertThatThrownBy(() -> group.validateMemberCanLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("모임의 참여자가 아닙니다.");
     }
@@ -245,7 +245,7 @@ class GroupTest {
         group.participate(participant);
         setPastDeadline(group, yesterday);
 
-        assertThatThrownBy(() -> group.validateLeave(participant))
+        assertThatThrownBy(() -> group.validateMemberCanLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("모집이 마감된 모임입니다.");
     }
@@ -255,9 +255,9 @@ class GroupTest {
     void validateLeaveEarlyClosed() {
         Group group = constructGroup();
         group.participate(participant);
-        group.closeEarly();
+        group.closeEarly(group.getHost());
 
-        assertThatThrownBy(() -> group.validateLeave(participant))
+        assertThatThrownBy(() -> group.validateMemberCanLeave(participant))
             .isInstanceOf(MomoException.class)
             .hasMessage("조기종료된 모임입니다.");
     }

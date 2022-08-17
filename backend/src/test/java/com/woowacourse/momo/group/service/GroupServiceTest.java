@@ -154,7 +154,7 @@ class GroupServiceTest {
     void updateExistParticipants() {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         savedGroup.participate(savedMember1);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 3,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))

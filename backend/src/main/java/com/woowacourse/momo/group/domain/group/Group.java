@@ -88,7 +88,7 @@ public class Group {
         this.participants.add(new Participant(this, host));
     }
 
-    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
+    public void update(String name, Member host, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.category = category;
@@ -97,14 +97,18 @@ public class Group {
         this.description = description;
 
         calendar.update(schedules, duration, deadline);
+        validateGroupIsInitialState(host);
     }
 
     public void participate(Member member) {
-        validateParticipateAvailable(member);
+        validateMemberCanParticipate(member);
         this.participants.add(new Participant(this, member));
     }
 
-    public void closeEarly() {
+    public void closeEarly(Member member) {
+        validateMemberIsHost(member, ErrorCode.AUTH_DELETE_NO_HOST);
+        validateRecruitmentDoesNotFinish(ErrorCode.GROUP_ALREADY_FINISH);
+
         this.isEarlyClosed = true;
     }
 
@@ -128,42 +132,70 @@ public class Group {
         return getParticipants().contains(member);
     }
 
-    private void validateParticipateAvailable(Member member) {
-        validateFinishedRecruitment();
-        validateReParticipate(member);
-        validateIsHost(member);
+    public void validateMemberCanLeave(Member member) {
+        validateMemberIsNotHost(member, ErrorCode.PARTICIPANT_LEAVE_HOST);
+        validateMemberIsParticipating(member, ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validateDeadlineIsNotOver(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
+        validateGroupIsNotEarlyClosed(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
 
-    private void validateIsHost(Member member) {
-        if (isHost(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
+    public void validateGroupIsInitialState(Member member) {
+        validateMemberIsHost(member, ErrorCode.AUTH_DELETE_NO_HOST);
+        validateRecruitmentDoesNotFinish(ErrorCode.GROUP_ALREADY_FINISH);
+        validateParticipantDoesNotExist(ErrorCode.GROUP_EXIST_PARTICIPANTS);
+    }
+
+    private void validateMemberCanParticipate(Member member) {
+        validateRecruitmentDoesNotFinish(ErrorCode.PARTICIPANT_FINISHED);
+        validateMemberIsNotParticipating(member, ErrorCode.PARTICIPANT_RE_PARTICIPATE);
+        validateMemberIsNotHost(member, ErrorCode.PARTICIPANT_JOIN_BY_HOST);
+    }
+
+    private void validateMemberIsHost(Member member, ErrorCode errorCode) {
+        if (!isHost(member)) {
+            throw new MomoException(errorCode);
         }
     }
 
-    private void validateFinishedRecruitment() {
+    private void validateMemberIsNotHost(Member member, ErrorCode errorCode) {
+        if (isHost(member)) {
+            throw new MomoException(errorCode);
+        }
+    }
+
+    private void validateRecruitmentDoesNotFinish(ErrorCode errorCode) {
         if (isFinishedRecruitment()) {
-            throw new MomoException(ErrorCode.PARTICIPANT_FINISHED);
+            throw new MomoException(errorCode);
         }
     }
 
-    private void validateReParticipate(Member member) {
+    private void validateMemberIsNotParticipating(Member member, ErrorCode errorCode) {
         if (isParticipant(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_RE_PARTICIPATE);
+            throw new MomoException(errorCode);
         }
     }
 
-    public void validateLeave(Member member) {
-        if (isHost(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
-        }
+    private void validateMemberIsParticipating(Member member, ErrorCode errorCode) {
         if (!isParticipant(member)) {
-            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+            throw new MomoException(errorCode);
         }
+    }
+
+    private void validateParticipantDoesNotExist(ErrorCode errorCode) {
+        if (isExistParticipants()) {
+            throw new MomoException(errorCode);
+        }
+    }
+
+    private void validateDeadlineIsNotOver(ErrorCode errorCode) {
         if (calendar.isDeadlineOver()) {
-            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
+            throw new MomoException(errorCode);
         }
+    }
+
+    private void validateGroupIsNotEarlyClosed(ErrorCode errorCode) {
         if (isEarlyClosed) {
-            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
+            throw new MomoException(errorCode);
         }
     }
 
