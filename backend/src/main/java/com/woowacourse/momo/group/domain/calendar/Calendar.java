@@ -44,11 +44,6 @@ public class Calendar {
         this.deadline = new Deadline(deadline, this.duration);
     }
 
-    public void updateSchedule(List<Schedule> schedules) {
-        this.schedules.clear();
-        this.schedules.addAll(schedules);
-    }
-
     public boolean isDeadlineOver() {
         return deadline.isOver();
     }

@@ -117,19 +117,11 @@ public class Group {
     }
 
     public boolean isEnd() {
-        return isEarlyClosed || isOverDeadline();
+        return isEarlyClosed || calendar.isDeadlineOver();
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || isOverDeadline();
-    }
-
-    private boolean isOverDeadline() {
-        return calendar.isDeadlineOver();
-    }
-
-    private boolean isFullCapacity() {
-        return capacity.isFull(participants.size());
+        return isEarlyClosed || capacity.isFull(participants.size()) || calendar.isDeadlineOver();
     }
 
     private boolean isParticipant(Member member) {
@@ -155,7 +147,7 @@ public class Group {
     }
 
     private void validateReParticipate(Member member) {
-        if (getParticipants().contains(member)) {
+        if (isParticipant(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_RE_PARTICIPATE);
         }
     }
@@ -167,7 +159,7 @@ public class Group {
         if (!isParticipant(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         }
-        if (isOverDeadline()) {
+        if (calendar.isDeadlineOver()) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
         }
         if (isEarlyClosed) {
