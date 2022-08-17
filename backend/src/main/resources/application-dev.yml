@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
     import:
       - security/application.yml
       - security/application-dev-datasource.yml
