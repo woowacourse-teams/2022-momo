@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Form = styled.form`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -29,4 +29,4 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Form, Title, Input, Button };
+export { Container, Title, Input, Button };
