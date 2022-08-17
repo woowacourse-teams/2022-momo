@@ -65,3 +65,5 @@ export type GroupSummary = Pick<
 > & { numOfParticipant: number };
 
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
+
+export type SelectableGroup = 'participated' | 'hosted' | 'liked';

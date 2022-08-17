@@ -7,9 +7,11 @@ import {
   GroupDetailData,
   GroupParticipants,
   GroupList,
-  GroupSummary,
+  CategoryType,
+  SelectableGroup,
 } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
+import { makeUrl } from 'utils/url';
 
 const requestCreateGroup = async ({
   name,
@@ -50,21 +52,55 @@ const requestCreateGroup = async ({
     });
 };
 
-const getJoinedGroups = () => {
-  return axios
-    .get<GroupSummary[]>(API_PATH.JOINED_GROUP, {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    })
-    .then(response => response.data);
-};
+const getJoinedGroups =
+  (
+    type: SelectableGroup,
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+  ) =>
+  () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+      keyword,
+    };
 
-const getGroups = (pageNumber: number) => () => {
-  return axios
-    .get<GroupList>(`${API_PATH.GROUP}?page=${pageNumber}`)
-    .then(response => response.data);
-};
+    const baseUrl =
+      type === 'participated'
+        ? API_PATH.PARTICIPATED_GROUP
+        : type === 'hosted'
+        ? API_PATH.HOSTED_GROUP
+        : API_PATH.LIKED_GROUP;
+
+    return axios
+      .get<GroupList>(makeUrl(baseUrl, queryParams), {
+        headers: {
+          Authorization: `Bearer ${accessTokenProvider.get()}`,
+        },
+      })
+      .then(response => response.data);
+  };
+
+const getGroups =
+  (
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+    categoryId: CategoryType['id'],
+  ) =>
+  () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+      keyword,
+      category: categoryId,
+    };
+
+    return axios
+      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
+      .then(response => response.data);
+  };
 
 const getGroupDetail = (id: GroupDetailData['id']) => {
   return axios
