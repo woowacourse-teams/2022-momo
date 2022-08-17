@@ -8,12 +8,13 @@ import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import useModal from 'hooks/useModal';
 import { accessTokenState, loginState } from 'store/states';
+import { getLoginType } from 'utils/user';
 
 import * as S from './index.styled';
 import User from './User';
 
 function Header() {
-  const [{ isLogin, loginType }, setLoginInfo] = useRecoilState(loginState);
+  const [{ isLogin }, setLoginInfo] = useRecoilState(loginState);
   const resetLoginInfo = useResetRecoilState(loginState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
@@ -26,7 +27,7 @@ function Header() {
       .then(userInfo => {
         setLoginInfo({
           isLogin: true,
-          loginType,
+          loginType: getLoginType(userInfo.userId),
           user: userInfo,
         });
       })
@@ -35,7 +36,7 @@ function Header() {
         resetLoginInfo();
         setAccessToken('');
       });
-  }, [accessToken, loginType, setAccessToken, setLoginInfo, resetLoginInfo]);
+  }, [accessToken, setAccessToken, setLoginInfo, resetLoginInfo]);
 
   return (
     <S.Container>
