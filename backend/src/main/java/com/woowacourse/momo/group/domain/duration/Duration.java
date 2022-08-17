@@ -25,25 +25,25 @@ public class Duration {
     private LocalDate endDate;
 
     public Duration(LocalDate startDate, LocalDate endDate) {
-        validatePastDate(startDate, endDate);
-        validateEndIsNotBeforeStart(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
+        validatePastDate();
+        validateEndIsNotBeforeStart();
     }
 
-    private void validatePastDate(LocalDate startDate, LocalDate endDate) {
+    public boolean isAfterStartDate(LocalDateTime date) {
+        return startDate.isBefore(LocalDate.from(date));
+    }
+
+    private void validatePastDate() {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
             throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
         }
     }
 
-    private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
+    private void validateEndIsNotBeforeStart() {
         if (endDate.isBefore(startDate)) {
             throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
         }
-    }
-
-    public boolean isAfterStartDate(LocalDateTime localDateTime) {
-        return startDate.isBefore(LocalDate.from(localDateTime));
     }
 }

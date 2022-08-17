@@ -35,20 +35,20 @@ public class Schedule {
     private LocalTime endTime;
 
     public Schedule(LocalDate date, LocalTime startTime, LocalTime endTime) {
-        validateStartIsBeforeEnd(startTime, endTime);
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        if (!endTime.isAfter(startTime)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
-        }
+        validateStartIsBeforeEnd();
     }
 
     public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
         return (date.isAfter(startDate) || date.isEqual(startDate))
                 && (date.isBefore(endDate) || date.isEqual(endDate));
+    }
+
+    private void validateStartIsBeforeEnd() {
+        if (!endTime.isAfter(startTime)) {
+            throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
+        }
     }
 }

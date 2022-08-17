@@ -111,17 +111,45 @@ public class Group {
         belongTo(schedules);
     }
 
+    public void participate(Member member) {
+        validateParticipateAvailable(member);
+        this.participants.add(new Participant(this, member));
+    }
+
+    public void closeEarly() {
+        this.isEarlyClosed = true;
+    }
+
     private void belongTo(List<Schedule> schedules) {
         this.schedules.addAll(schedules);
+    }
+
+    public boolean isExistParticipants() {
+        return participants.size() > NONE_PARTICIPANT;
     }
 
     public boolean isHost(Member host) {
         return this.host.equals(host);
     }
 
-    public void participate(Member member) {
-        validateParticipateAvailable(member);
-        this.participants.add(new Participant(this, member));
+    public boolean isEnd() {
+        return isEarlyClosed || isOverDeadline();
+    }
+
+    public boolean isFinishedRecruitment() {
+        return isEarlyClosed || isFullCapacity() || isOverDeadline();
+    }
+
+    private boolean isOverDeadline() {
+        return deadline.isOver();
+    }
+
+    private boolean isFullCapacity() {
+        return capacity.isFull(participants.size());
+    }
+
+    private boolean isParticipant(Member member) {
+        return getParticipants().contains(member);
     }
 
     private void validateParticipateAvailable(Member member) {
@@ -148,30 +176,6 @@ public class Group {
         }
     }
 
-    public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || isOverDeadline();
-    }
-
-    public boolean isEnd() {
-        return isEarlyClosed || isOverDeadline();
-    }
-
-    private boolean isOverDeadline() {
-        return deadline.isOver();
-    }
-
-    private boolean isFullCapacity() {
-        return capacity.isFull(participants.size());
-    }
-
-    public void closeEarly() {
-        this.isEarlyClosed = true;
-    }
-
-    public boolean isExistParticipants() {
-        return participants.size() > NONE_PARTICIPANT;
-    }
-
     public void validateLeave(Member member) {
         if (isHost(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
@@ -185,10 +189,6 @@ public class Group {
         if (isEarlyClosed) {
             throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
         }
-    }
-
-    private boolean isParticipant(Member member) {
-        return getParticipants().contains(member);
     }
 
     public List<Schedule> getSchedules() {
