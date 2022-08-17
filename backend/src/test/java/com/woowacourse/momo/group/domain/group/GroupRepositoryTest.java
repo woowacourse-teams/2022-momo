@@ -116,12 +116,11 @@ class GroupRepositoryTest {
     void deleteById() {
         List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
         Group group = constructGroup(host, schedules);
-        groupRepository.save(group);
 
+        groupRepository.save(group);
         synchronize();
 
         groupRepository.deleteById(group.getId());
-
         synchronize();
 
         Optional<Group> foundGroup = groupRepository.findById(group.getId());

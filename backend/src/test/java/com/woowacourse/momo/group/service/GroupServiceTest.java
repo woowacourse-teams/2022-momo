@@ -138,6 +138,17 @@ class GroupServiceTest {
                 .isEqualTo(groupRequest);
     }
 
+    @DisplayName("존재하지 않는 모임을 수정하는 경우 예외가 발생한다")
+    @Test
+    void updateNotExistGroup() {
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        assertThatThrownBy(() -> groupService.update(savedHost.getId(), 1000L, groupRequest))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 모임입니다.");
+    }
+
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
     @Test
     void updateExistParticipants() {
