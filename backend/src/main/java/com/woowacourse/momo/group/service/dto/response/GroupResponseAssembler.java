@@ -7,8 +7,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.schedule.Duration;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Duration;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

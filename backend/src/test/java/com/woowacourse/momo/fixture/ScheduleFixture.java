@@ -7,7 +7,7 @@ import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RequiredArgsConstructor

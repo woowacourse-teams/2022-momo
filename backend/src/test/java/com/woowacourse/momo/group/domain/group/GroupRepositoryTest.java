@@ -23,7 +23,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 

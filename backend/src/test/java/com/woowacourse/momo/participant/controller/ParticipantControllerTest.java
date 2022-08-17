@@ -36,7 +36,7 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.schedule.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;

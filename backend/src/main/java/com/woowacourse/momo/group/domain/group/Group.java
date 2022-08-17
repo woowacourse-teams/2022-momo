@@ -28,9 +28,9 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.schedule.Deadline;
-import com.woowacourse.momo.group.domain.schedule.Duration;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Duration;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.participant.domain.Participant;
 
