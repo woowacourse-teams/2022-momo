@@ -20,20 +20,6 @@ const getUserInfo = () => {
     });
 };
 
-const requestConfirmPassword = (password: string) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
-  return axios.put(
-    API_PATH.MEMBERS,
-    { password },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  );
-};
-
 const requestChangeName = (data: string) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
@@ -48,12 +34,12 @@ const requestChangeName = (data: string) => {
   );
 };
 
-const requestChangePassword = (data: string) => {
+const requestChangePassword = (oldPassword: string, newPassword: string) => {
   const accessToken = sessionStorage.getItem('accessToken') ?? '';
 
   return axios.patch(
     API_PATH.PASSWORD,
-    { password: data },
+    { oldPassword, newPassword },
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -74,7 +60,6 @@ const requestWithdrawal = () => {
 
 export {
   getUserInfo,
-  requestConfirmPassword,
   requestChangeName,
   requestChangePassword,
   requestWithdrawal,
