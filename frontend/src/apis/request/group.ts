@@ -38,17 +38,19 @@ const requestCreateGroup = ({
     description,
   };
 
+  const accessToken = sessionStorage.getItem('accessToken') ?? '';
+
   return axios
-    .put<{ groupId: GroupDetailData['id'] }>(`${API_PATH.GROUP}/${id}`, data, {
+    .post<{ groupId: GroupDetailData['id'] }>(API_PATH.GROUP, data, {
       headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
     .then(response => {
       return response.data.groupId;
     })
     .catch(() => {
-      throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
+      throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
     });
 };
 

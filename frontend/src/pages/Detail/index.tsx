@@ -16,6 +16,7 @@ function Detail() {
     groupDetailState,
     QUERY_KEY.GROUP_DETAILS,
     () => getGroupDetail(Number(id)),
+    0,
   );
   const { categories } = useCategory();
 
