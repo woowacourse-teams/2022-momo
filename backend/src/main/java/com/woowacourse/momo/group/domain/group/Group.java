@@ -55,14 +55,13 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(nullable = false)
-    private int capacity;
+    @Embedded
+    private Capacity capacity;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Participant> participants = new ArrayList<>();
 
-    @Column(nullable = false)
     @Embedded
     private Duration duration;
 
@@ -88,13 +87,12 @@ public class Group {
         this.name = name;
         this.host = host;
         this.category = category;
-        this.capacity = capacity;
+        this.capacity = new Capacity(capacity);
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
         this.description = description;
 
-        validateCapacity(capacity);
         validateDeadline(deadline, duration);
         this.participants.add(new Participant(this, host));
         belongTo(schedules);
@@ -104,22 +102,15 @@ public class Group {
                        List<Schedule> schedules, String location, String description) {
         this.name = name;
         this.category = category;
-        this.capacity = capacity;
+        this.capacity = new Capacity(capacity);
         this.duration = duration;
         this.deadline = deadline;
         this.location = location;
         this.description = description;
 
-        validateCapacity(capacity);
         validateDeadline(deadline, duration);
         this.schedules.clear();
         belongTo(schedules);
-    }
-
-    private void validateCapacity(int capacity) {
-        if (GroupCapacityRange.isOutOfRange(capacity)) {
-            throw new MomoException(ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE);
-        }
     }
 
     private void validateDeadline(LocalDateTime deadline, Duration duration) {
@@ -189,7 +180,7 @@ public class Group {
     }
 
     private boolean isFullCapacity() {
-        return this.capacity <= participants.size();
+        return capacity.isFull(participants.size());
     }
 
     public void closeEarly() {
@@ -227,6 +218,10 @@ public class Group {
         return participants.stream()
                 .map(Participant::getMember)
                 .collect(Collectors.toList());
+    }
+
+    public int getCapacity() {
+        return capacity.getValue();
     }
 
     public static class Builder {
