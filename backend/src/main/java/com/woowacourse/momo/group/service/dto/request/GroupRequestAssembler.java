@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.schedule.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.duration;
+package com.woowacourse.momo.group.domain.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -15,7 +15,7 @@ import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.group.GroupRestHandler;
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.schedule.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 

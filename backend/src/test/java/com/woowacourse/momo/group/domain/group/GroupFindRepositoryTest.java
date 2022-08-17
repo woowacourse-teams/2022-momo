@@ -26,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.schedule.Deadline;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 

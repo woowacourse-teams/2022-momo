@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain.schedule;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.duration.Duration;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

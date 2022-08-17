@@ -5,7 +5,7 @@ import static com.woowacourse.momo.fixture.DateFixture.일주일후;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.schedule.Duration;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RequiredArgsConstructor

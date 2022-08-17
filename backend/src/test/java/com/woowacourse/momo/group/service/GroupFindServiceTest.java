@@ -22,9 +22,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.group.Deadline;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.domain.schedule.Deadline;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;

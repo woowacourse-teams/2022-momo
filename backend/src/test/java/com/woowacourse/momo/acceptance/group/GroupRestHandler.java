@@ -9,7 +9,7 @@ import io.restassured.response.ValidatableResponse;
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.schedule.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;

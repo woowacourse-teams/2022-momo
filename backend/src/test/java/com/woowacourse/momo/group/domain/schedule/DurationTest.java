@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.duration;
+package com.woowacourse.momo.group.domain.schedule;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
