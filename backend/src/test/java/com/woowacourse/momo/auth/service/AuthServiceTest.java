@@ -48,6 +48,19 @@ class AuthServiceTest {
         assertThat(id).isNotNull();
     }
 
+    @DisplayName("이미 존재하는 아이디로 회원 가입을 하는 경우 실패한다")
+    @Test
+    void signUpAlreadyExistId() {
+        SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
+        Long id = authService.signUp(request);
+
+        assertThatThrownBy(
+                () -> authService.signUp(request)
+        ).isInstanceOf(MomoException.class)
+                .hasMessageContaining("이미 가입된 아이디입니다.");
+
+    }
+
     @DisplayName("로그인을 성공한다")
     @Test
     void login() {
