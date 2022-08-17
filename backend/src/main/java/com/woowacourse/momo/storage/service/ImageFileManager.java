@@ -27,7 +27,7 @@ public class ImageFileManager {
     protected String save(String path, MultipartFile requestFile) {
         validateContentType(requestFile);
 
-        File savedFile = new File(path + requestFile.getOriginalFilename());
+        File savedFile = getFileName(path, requestFile);
         File directory = new File(path);
 
         fileInit(savedFile, directory);
@@ -39,6 +39,21 @@ public class ImageFileManager {
         }
 
         return savedFile.getName();
+    }
+
+    private File getFileName(String path, MultipartFile requestFile) {
+        String originalFileName = path + requestFile.getOriginalFilename();
+        String alternativeFileName = originalFileName;
+        int number = 0;
+        while (true) {
+            File file = new File(alternativeFileName);
+            if (!file.exists()) {
+                break;
+            }
+            alternativeFileName = originalFileName + (++number);
+        }
+
+        return new File(alternativeFileName);
     }
 
     private void validateContentType(MultipartFile file) {
