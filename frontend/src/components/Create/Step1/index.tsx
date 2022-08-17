@@ -15,7 +15,7 @@ import {
 interface Step1Props {
   useNameState: () => {
     name: CreateGroupData['name'];
-    setName: (name: CreateGroupData['name']) => void;
+    setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -25,9 +25,6 @@ function Step1(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { name, setName } = useNameState();
-  const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
 
   return (
     <Container ref={ref}>
@@ -44,7 +41,7 @@ function Step1(
         <Input
           type="text"
           value={name}
-          onChange={changeName}
+          onChange={setName}
           onKeyPress={pressEnterToNext}
           placeholder="정체를 밝혀라 @_@"
           maxLength={GROUP_RULE.NAME.MAX_LENGTH}
