@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -52,6 +53,9 @@ class MemberServiceTest {
     @Autowired
     private GroupFindService groupFindService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private Member savedHost;
 
     @BeforeEach
@@ -74,32 +78,47 @@ class MemberServiceTest {
         );
     }
 
-    @DisplayName("회원 비밀번호를 수정한다")
-    @Test
-    void updatePassword() {
-        Long memberId = createMember();
-        Member beforeMember = memberRepository.findById(memberId).get();
-        String beforePassword = beforeMember.getPassword();
-
-        ChangePasswordRequest request = new ChangePasswordRequest("wooteco2!");
-        memberService.updatePassword(memberId, request);
-
-        Member member = memberRepository.findById(memberId).get();
-        assertThat(member.getPassword()).isNotEqualTo(beforePassword);
-    }
-
     @DisplayName("회원 이름을 수정한다")
     @Test
     void updateName() {
         Long memberId = createMember();
-        Member beforeMember = memberRepository.findById(memberId).get();
+        Member beforeMember = memberFindService.findMember(memberId);
         String beforeName = beforeMember.getName();
 
         ChangeNameRequest request = new ChangeNameRequest("무무");
         memberService.updateName(memberId, request);
 
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberFindService.findMember(memberId);
         assertThat(member.getName()).isNotEqualTo(beforeName);
+    }
+
+    @DisplayName("비밀번호를 업데이트한다")
+    @Test
+    void updatePassword() {
+        String beforePassword = "wooteco1!";
+        SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
+        Long memberId = authService.signUp(signUpRequest);
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", beforePassword);
+        memberService.updatePassword(memberId, changePasswordRequest);
+
+        Member member = memberFindService.findMember(memberId);
+
+        String encryptedPassword = passwordEncoder.encrypt(beforePassword);
+        assertThat(member.getPassword()).isNotEqualTo(encryptedPassword);
+    }
+
+    @DisplayName("잘못된 현재 비밀번호로 비밀번호를 업데이트시 예외가 발생한다")
+    @Test
+    void updatePasswordWithWrongPassword() {
+        String password = "wooteco1!";
+        SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
+        Long memberId = authService.signUp(signUpRequest);
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", "wrongPassword");
+        assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 
     @DisplayName("회원 정보를 삭제한다")

@@ -68,8 +68,9 @@ public class MemberService {
     public void updatePassword(Long id, ChangePasswordRequest request) {
         Member member = memberFindService.findMember(id);
 
-        String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
-        member.changePassword(encryptedPassword);
+        String encryptedNewPassword = passwordEncoder.encrypt(request.getNewPassword());
+        confirmPassword(member, request.getOldPassword());
+        member.changePassword(encryptedNewPassword);
     }
 
     @Transactional
@@ -77,5 +78,12 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
 
         member.changeName(request.getName());
+    }
+
+    private void confirmPassword(Member member, String password) {
+        String encryptedPassword = passwordEncoder.encrypt(password);
+        if (member.isNotSamePassword(encryptedPassword)) {
+            throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
+        }
     }
 }

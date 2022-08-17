@@ -42,12 +42,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("비밀번호를 수정하다")
     @Test
     void updatePassword() {
-        String expected = MEMBER.getPassword() + "new";
+        String newPassword = "newPassword123!";
 
-        MemberRestHandler.비밀번호를_수정한다(accessToken, expected)
+        MemberRestHandler.비밀번호를_수정한다(accessToken, newPassword, MEMBER.getPassword())
                 .statusCode(HttpStatus.OK.value());
 
-        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), expected)
+        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), newPassword)
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -82,15 +82,15 @@ class MemberAcceptanceTest extends AcceptanceTest {
         ParticipantRestHandler.모임에_참여한다(accessToken, groupId);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
-            .statusCode(HttpStatus.NO_CONTENT.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
 
         List<Long> groups = GroupRestHandler.본인이_참여한_모임을_조회한다(accessToken)
-            .extract()
-            .jsonPath()
-            .getList("groups", Group.class)
-            .stream()
-            .map(Group::getId)
-            .collect(Collectors.toList());
+                .extract()
+                .jsonPath()
+                .getList("groups", Group.class)
+                .stream()
+                .map(Group::getId)
+                .collect(Collectors.toList());
         assertThat(groups).isEmpty();
     }
 
@@ -100,6 +100,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         GroupRestHandler.모임을_생성한다(accessToken, GroupFixture.DUDU_COFFEE_TIME);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
-            .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

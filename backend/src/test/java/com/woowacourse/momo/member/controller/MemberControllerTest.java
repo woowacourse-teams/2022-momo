@@ -76,12 +76,12 @@ class MemberControllerTest {
     @DisplayName("정상적으로 비밀번호를 수정한 경우를 테스트한다")
     @Test
     void updatePassword() throws Exception {
-        ChangePasswordRequest passwordRequest = new ChangePasswordRequest("1q2wW34R!");
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", PASSWORD);
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/members/password")
                         .header("authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(passwordRequest)))
+                        .content(objectMapper.writeValueAsString(changePasswordRequest)))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andDo(
                         document("memberupdatepassword",

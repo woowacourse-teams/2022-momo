@@ -43,6 +43,10 @@ public class Member {
         this.name = name;
     }
 
+    public boolean isNotSamePassword(String password) {
+        return !this.password.equals(password);
+    }
+
     public void changePassword(String password) {
         this.password = password;
     }

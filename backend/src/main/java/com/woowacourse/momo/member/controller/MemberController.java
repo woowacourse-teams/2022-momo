@@ -34,18 +34,18 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/password")
-    public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Long id,
-                                               @RequestBody @Valid ChangePasswordRequest request) {
-        memberService.updatePassword(id, request);
-
-        return ResponseEntity.ok().build();
-    }
-
     @PatchMapping("/name")
     public ResponseEntity<Void> updateName(@AuthenticationPrincipal Long id,
                                            @RequestBody @Valid ChangeNameRequest request) {
         memberService.updateName(id, request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Long id,
+                                               @RequestBody @Valid ChangePasswordRequest request) {
+        memberService.updatePassword(id, request);
 
         return ResponseEntity.ok().build();
     }
