@@ -8,9 +8,10 @@ import * as S from './index.styled';
 interface DateProps {
   date: number;
   schedule: ScheduleType;
+  pickDate: (date: number) => () => void;
 }
 
-function SelectedDate({ date, schedule }: DateProps) {
+function SelectedDate({ date, schedule, pickDate }: DateProps) {
   const [isHover, setIsHover] = useState(false);
 
   const changeHoverState = (isHover: boolean) => () => {
@@ -23,6 +24,7 @@ function SelectedDate({ date, schedule }: DateProps) {
         <S.TimeModal
           onMouseOver={changeHoverState(true)}
           onMouseOut={changeHoverState(false)}
+          onClick={pickDate(date)}
         >
           ⏰ {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}{' '}
           ⏰
@@ -31,6 +33,7 @@ function SelectedDate({ date, schedule }: DateProps) {
       <S.SelectedDate
         onMouseOver={changeHoverState(true)}
         onMouseOut={changeHoverState(false)}
+        onClick={pickDate(date)}
       >
         {date}
       </S.SelectedDate>

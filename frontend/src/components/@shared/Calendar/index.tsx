@@ -129,6 +129,7 @@ function Calendar({
             <SelectedDate
               date={date}
               schedule={schedule}
+              pickDate={pickDate}
               key={`${month}-${date}`}
             />
           ) : (
