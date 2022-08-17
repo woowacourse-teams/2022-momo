@@ -29,7 +29,7 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -76,12 +76,12 @@ class MemberControllerTest {
     @DisplayName("정상적으로 비밀번호를 수정한 경우를 테스트한다")
     @Test
     void updatePassword() throws Exception {
-        PasswordRequest passwordRequest = new PasswordRequest("1q2wW34R!");
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", PASSWORD);
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/members/password")
                         .header("authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(passwordRequest)))
+                        .content(objectMapper.writeValueAsString(changePasswordRequest)))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andDo(
                         document("memberupdatepassword",
@@ -103,24 +103,6 @@ class MemberControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andDo(
                         document("memberupdatename",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint())
-                        )
-                );
-    }
-
-    @DisplayName("비밀번호가 올바른지 테스트한다")
-    @Test
-    void confirmPassword() throws Exception {
-        PasswordRequest request = new PasswordRequest(PASSWORD);
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/members/password/confirm")
-                        .header("authorization", "bearer " + accessToken)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andDo(
-                        document("memberconfirmpassword",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

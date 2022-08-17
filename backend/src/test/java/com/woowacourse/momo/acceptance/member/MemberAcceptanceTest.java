@@ -42,12 +42,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("비밀번호를 수정하다")
     @Test
     void updatePassword() {
-        String expected = MEMBER.getPassword() + "new";
+        String newPassword = "newPassword123!";
 
-        MemberRestHandler.비밀번호를_수정한다(accessToken, expected)
+        MemberRestHandler.비밀번호를_수정한다(accessToken, newPassword, MEMBER.getPassword())
                 .statusCode(HttpStatus.OK.value());
 
-        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), expected)
+        AuthRestHandler.로그인을_한다(MEMBER.getUserId(), newPassword)
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -61,13 +61,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         MemberRestHandler.개인정보를_조회한다(accessToken)
                 .body("name", is(expected));
-    }
-
-    @DisplayName("비밀번호가 같은지 확인한다")
-    @Test
-    void conformPassword() {
-        MemberRestHandler.비밀번호를_확인한다(accessToken, MEMBER.getPassword())
-                .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("회원탈퇴를 하다")

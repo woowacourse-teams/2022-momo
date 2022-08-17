@@ -15,7 +15,7 @@ import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 import com.woowacourse.momo.participant.domain.ParticipantRepository;
@@ -65,11 +65,12 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePassword(Long id, PasswordRequest request) {
+    public void updatePassword(Long id, ChangePasswordRequest request) {
         Member member = memberFindService.findMember(id);
 
-        String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
-        member.changePassword(encryptedPassword);
+        String encryptedNewPassword = passwordEncoder.encrypt(request.getNewPassword());
+        confirmPassword(member, request.getOldPassword());
+        member.changePassword(encryptedNewPassword);
     }
 
     @Transactional
@@ -79,10 +80,9 @@ public class MemberService {
         member.changeName(request.getName());
     }
 
-    public void confirmPassword(Long id, PasswordRequest request) {
-        Member member = memberFindService.findMember(id);
-        String password = passwordEncoder.encrypt(request.getPassword());
-        if (member.confirmWrongPassword(password)) {
+    private void confirmPassword(Member member, String password) {
+        String encryptedPassword = passwordEncoder.encrypt(password);
+        if (member.confirmWrongPassword(encryptedPassword)) {
             throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
         }
     }

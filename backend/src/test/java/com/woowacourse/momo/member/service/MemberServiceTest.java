@@ -3,7 +3,6 @@ package com.woowacourse.momo.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -28,7 +28,7 @@ import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
-import com.woowacourse.momo.member.service.dto.request.PasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional
@@ -53,6 +53,9 @@ class MemberServiceTest {
     @Autowired
     private GroupFindService groupFindService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private Member savedHost;
 
     @BeforeEach
@@ -75,20 +78,6 @@ class MemberServiceTest {
         );
     }
 
-    @DisplayName("회원 비밀번호를 수정한다")
-    @Test
-    void updatePassword() {
-        Long memberId = createMember();
-        Member beforeMember = memberFindService.findMember(memberId);
-        String beforePassword = beforeMember.getPassword();
-
-        PasswordRequest request = new PasswordRequest("wooteco2!");
-        memberService.updatePassword(memberId, request);
-
-        Member member = memberFindService.findMember(memberId);
-        assertThat(member.getPassword()).isNotEqualTo(beforePassword);
-    }
-
     @DisplayName("회원 이름을 수정한다")
     @Test
     void updateName() {
@@ -103,26 +92,31 @@ class MemberServiceTest {
         assertThat(member.getName()).isNotEqualTo(beforeName);
     }
 
-    @DisplayName("올바른 비밀번호인지 확인한다")
+    @DisplayName("비밀번호를 업데이트한다")
     @Test
-    void confirmPassword() {
-        String password = "wooteco1!";
-        SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
+    void updatePassword() {
+        String beforePassword = "wooteco1!";
+        SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        PasswordRequest passwordRequest = new PasswordRequest(password);
-        assertDoesNotThrow(() -> memberService.confirmPassword(memberId, passwordRequest));
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", beforePassword);
+        memberService.updatePassword(memberId, changePasswordRequest);
+
+        Member member = memberFindService.findMember(memberId);
+
+        String encryptedPassword = passwordEncoder.encrypt(beforePassword);
+        assertThat(member.getPassword()).isNotEqualTo(encryptedPassword);
     }
 
-    @DisplayName("비밀번호 확인 시 입력한 값이 잘못된 비밀번호면 예외가 발생한다")
+    @DisplayName("잘못된 현재 비밀번호로 비밀번호를 업데이트시 예외가 발생한다")
     @Test
-    void confirmWrongPassword() {
+    void updatePasswordWithWrongPassword() {
         String password = "wooteco1!";
         SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        PasswordRequest passwordRequest = new PasswordRequest("wrongPassword");
-        assertThatThrownBy(() -> memberService.confirmPassword(memberId, passwordRequest))
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", "wrongPassword");
+        assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");
     }
