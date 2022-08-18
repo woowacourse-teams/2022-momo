@@ -1,5 +1,6 @@
 package com.woowacourse.momo.member.controller;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -73,6 +74,13 @@ class MemberControllerTest {
                 );
     }
 
+    @DisplayName("로그인하지 않고 사용자를 조회하는 경우 예외가 발생한다")
+    @Test
+    void findNotExist() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/members"))
+                .andExpect(status().isUnauthorized());
+    }
+
     @DisplayName("정상적으로 비밀번호를 수정한 경우를 테스트한다")
     @Test
     void updatePassword() throws Exception {
@@ -89,6 +97,19 @@ class MemberControllerTest {
                                 preprocessResponse(prettyPrint())
                         )
                 );
+    }
+
+    @DisplayName("비밀번호를 수정할 때 현재 비밀번호가 잘못된 경우 예외가 발생한다")
+    @Test
+    void updatePasswordInvalidOldPassword() throws Exception {
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "aabbcc");
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/members/password")
+                        .header("authorization", "bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(changePasswordRequest)))
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("정상적으로 이름을 수정한 경우를 테스트한다")
