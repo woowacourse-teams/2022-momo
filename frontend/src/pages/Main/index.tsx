@@ -10,6 +10,7 @@ import Category from 'components/Category';
 import RecommendGroups from 'components/RecommendGroups';
 import SearchSection from 'components/SearchSection';
 import { QUERY_KEY } from 'constants/key';
+import useCategory from 'hooks/useCategory';
 import useInput from 'hooks/useInput';
 import { CategoryType, GroupList } from 'types/data';
 
@@ -18,6 +19,8 @@ import * as S from './index.styled';
 const invalidCategoryId = -1;
 
 function Main() {
+  const { getCategoryDescription } = useCategory();
+
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
   const { value: keyword, setValue: setKeyword } = useInput('');
   const [selectedCategoryId, setSelectedCategoryId] =
@@ -87,6 +90,7 @@ function Main() {
       <S.Content>
         <ErrorBoundary>
           <RecommendGroups
+            description={getCategoryDescription(selectedCategoryId)}
             isFetching={isFetching}
             data={data}
             refetch={refetch}
