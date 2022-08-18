@@ -81,7 +81,6 @@ class MemberServiceTest {
     @DisplayName("존재하지 않는 회원 정보를 조회하는 경우 예외가 발생한다")
     @Test
     void findByIdNotExist() {
-
         assertThatThrownBy(() -> memberService.findById(1000L))
                 .isInstanceOf(MomoException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
