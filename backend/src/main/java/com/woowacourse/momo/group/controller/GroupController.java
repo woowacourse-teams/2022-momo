@@ -51,20 +51,20 @@ public class GroupController {
     @Authenticated
     @GetMapping("/me/participated")
     public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute @Valid GroupFindRequest groupFindRequest) {
+                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findParticipatedGroups(groupFindRequest, memberId));
     }
 
     @Authenticated
     @GetMapping("/me/hosted")
     public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute @Valid GroupFindRequest groupFindRequest) {
+                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findHostedGroups(groupFindRequest, memberId));
     }
 
 
     @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute @Valid GroupFindRequest groupFindRequest) {
+    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findGroups(groupFindRequest));
     }
 
