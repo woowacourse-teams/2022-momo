@@ -52,13 +52,12 @@ class AuthServiceTest {
     @Test
     void signUpAlreadyExistId() {
         SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
-        Long id = authService.signUp(request);
+        authService.signUp(request);
 
         assertThatThrownBy(
                 () -> authService.signUp(request)
         ).isInstanceOf(MomoException.class)
                 .hasMessageContaining("이미 가입된 아이디입니다.");
-
     }
 
     @DisplayName("로그인을 성공한다")
