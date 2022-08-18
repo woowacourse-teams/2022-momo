@@ -165,13 +165,6 @@ class MemberServiceTest {
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 
-    @DisplayName("존재하지 않는 회원 정보를 삭제한다")
-    @Test
-    void deleteNotExistMember() {
-        assertThatThrownBy(() -> memberService.findById(1000L))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("멤버가 존재하지 않습니다.");
-    }
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
