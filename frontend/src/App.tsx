@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import ScrollToTop from 'components/@shared/ScrollToTop';
+import GroupEditModal from 'components/GroupEdit';
 import Loading from 'components/Loading';
 import LoginModal from 'components/Login';
 import SignupModal from 'components/Signup';
@@ -29,6 +30,7 @@ function App() {
             <PageLayout>
               <SignupModal />
               <LoginModal />
+              <GroupEditModal />
               <ErrorBoundary>
                 <Suspense fallback={<Loading />}>
                   <Routes />

@@ -25,7 +25,7 @@ const validateCapacity = (capacity: CreateGroupData['capacity']) => () => {
 
 const validateDurationDate =
   (startDate: Date, endDate: Date, today: Date) => () => {
-    return startDate <= endDate && startDate <= resetDateToStartOfDay(today);
+    return startDate <= endDate && startDate >= resetDateToStartOfDay(today);
   };
 
 const validateDeadlineDate =

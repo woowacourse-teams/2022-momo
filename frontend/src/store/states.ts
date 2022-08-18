@@ -1,7 +1,7 @@
 import { atom, DefaultValue, selector } from 'recoil';
 
 import { ModalStateType, SnackbarState } from 'types/condition';
-import { CategoryType } from 'types/data';
+import { CategoryType, GroupDetailData } from 'types/data';
 import { LoginState } from 'types/user';
 import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
 
@@ -57,6 +57,29 @@ const refreshTokenState = selector<string>({
   },
 });
 
+const groupDetailState = atom<GroupDetailData>({
+  key: 'groupDetailState',
+  default: {
+    id: -1,
+    name: '',
+    host: {
+      id: -1,
+      name: '',
+    },
+    categoryId: 0,
+    capacity: 1,
+    duration: {
+      start: '',
+      end: '',
+    },
+    schedules: [],
+    finished: false,
+    deadline: '',
+    location: '',
+    description: '',
+  },
+});
+
 export {
   categoryState,
   modalState,
@@ -64,4 +87,5 @@ export {
   loginState,
   accessTokenState,
   refreshTokenState,
+  groupDetailState,
 };

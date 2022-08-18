@@ -15,7 +15,7 @@ import {
 interface Step6Props {
   useDeadlineState: () => {
     deadline: CreateGroupData['deadline'];
-    setDeadline: (deadline: CreateGroupData['deadline']) => void;
+    setDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -25,9 +25,6 @@ function Step6(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { deadline, setDeadline } = useDeadlineState();
-  const changeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDeadline(e.target.value);
-  };
 
   const remainTime = convertRemainTime(deadline);
 
@@ -44,7 +41,7 @@ function Step6(
         <Input
           type="datetime-local"
           value={deadline}
-          onChange={changeDeadline}
+          onChange={setDeadline}
           onKeyPress={pressEnterToNext}
           min={getNewDateString('min')}
         />
