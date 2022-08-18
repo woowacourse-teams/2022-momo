@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import { getJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
+import NoResult from 'components/@shared/NoResult';
 import TopButton from 'components/@shared/TopButton';
 import JoinedGroups from 'components/JoinedGroups';
 import SearchForm from 'components/SearchSection/SearchForm';
@@ -37,6 +38,8 @@ function MyGroup() {
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
 
+  const [isPreparing, setIsPreparing] = useState(false);
+
   useEffect(() => {
     if (!data) return;
 
@@ -54,6 +57,14 @@ function MyGroup() {
 
   const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
     await setSelectedGroupType(newType);
+
+    // 찜한 목록은 준비 중 페이지로 대체
+    if (newType === 'liked') {
+      setIsPreparing(true);
+      return;
+    }
+
+    await setIsPreparing(false);
     await setPageNumber(0);
     refetch();
   };
@@ -87,14 +98,18 @@ function MyGroup() {
       </S.GroupTypeBox>
       <S.Content>
         <ErrorBoundary>
-          <JoinedGroups
-            isFetching={isFetching}
-            data={data}
-            refetch={refetch}
-            groups={groups}
-            isExcludeFinished={isExcludeFinished}
-            toggleIsExcludeFinished={toggleIsExcludeFinished}
-          />
+          {isPreparing ? (
+            <NoResult>준비 중이에요 ・゜・(ノД`)</NoResult>
+          ) : (
+            <JoinedGroups
+              isFetching={isFetching}
+              data={data}
+              refetch={refetch}
+              groups={groups}
+              isExcludeFinished={isExcludeFinished}
+              toggleIsExcludeFinished={toggleIsExcludeFinished}
+            />
+          )}
         </ErrorBoundary>
       </S.Content>
       <TopButton />

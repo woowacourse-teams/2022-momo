@@ -7,10 +7,10 @@ import {
   requestChangeName,
   requestChangePassword,
 } from 'apis/request/user';
+import { ReactComponent as BeanSVG } from 'assets/svg/bean.svg';
 import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
 import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
 import ConfirmPasswordModal from 'components/ConfirmPassword';
-import Logo from 'components/svg/Logo';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import useSnackbar from 'hooks/useSnackbar';
@@ -86,9 +86,14 @@ function Info() {
 
   return (
     <S.Container>
-      <div>
-        <Logo color="#000000" width={200} />
-      </div>
+      <S.LiveBeanBox>
+        <S.LiveBean className="reverse">
+          <BeanSVG width={100} height={100} />
+        </S.LiveBean>
+        <S.LiveBean>
+          <BeanSVG width={100} height={100} />
+        </S.LiveBean>
+      </S.LiveBeanBox>
       <S.Right>
         <S.InputBox>
           <S.Label>
