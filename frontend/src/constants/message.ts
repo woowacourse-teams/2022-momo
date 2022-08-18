@@ -25,6 +25,7 @@ const GUIDE_MESSAGE = {
     SUCCESS_JOIN_REQUEST: '참여에 성공했어요.',
     CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
     SUCCESS_EXIT_REQUEST: '참여 취소에 성공했어요.',
+    SUCCESS_EDIT_REQUEST: '모임 정보 수정에 성공했어요.',
   },
 };
 
@@ -50,6 +51,8 @@ const ERROR_MESSAGE = {
     CAPACITY: `최대 인원은 ${GROUP_RULE.CAPACITY.MIN}명 이상 ${GROUP_RULE.CAPACITY.MAX}명 이하여야 해요.`,
     CATEGORY: '카테고리는 꼭 선택해 주세요.',
     DURATION: '날짜가 잘못 입력되었어요.',
+    SCHEDULE_TIME: '시작 시간은 종료 시간 이전이어야 해요.',
+    SCHEDULE_DAY: '잘못된 날짜예요. 다시 선택해주세요 😤',
     DEADLINE: '마감 날짜가 잘못 입력되었어요.',
     LOCATION: `장소는 ${GROUP_RULE.LOCATION.MAX_LENGTH}자 이내여야 해요.`,
     DESCRIPTION: `설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자 이내여야 해요.`,
@@ -80,6 +83,8 @@ const ERROR_MESSAGE = {
       '모임에 참여하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_EXIT_GROUP:
       '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_EDIT_GROUP:
+      '모임 정보를 수정하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
 };
 

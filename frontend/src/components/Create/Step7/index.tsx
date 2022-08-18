@@ -9,7 +9,7 @@ import * as S from './index.styled';
 interface Step7Props {
   useLocationState: () => {
     location: CreateGroupData['location'];
-    setLocation: (location: CreateGroupData['location']) => void;
+    setLocation: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -19,9 +19,6 @@ function Step7(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { location, setLocation } = useLocationState();
-  const changeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
-  };
 
   return (
     <Container ref={ref}>
@@ -38,9 +35,9 @@ function Step7(
         <Input
           type="text"
           value={location}
-          onChange={changeLocation}
+          onChange={setLocation}
           onKeyPress={pressEnterToNext}
-          placeholder="둘둘치킨 선릉공원점"
+          placeholder="이춘복참치 잠실점"
           maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
         />
       </S.LabelContainer>

@@ -13,7 +13,7 @@ import {
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
 
-const requestCreateGroup = async ({
+const requestCreateGroup = ({
   name,
   selectedCategory,
   capacity,
@@ -49,6 +49,48 @@ const requestCreateGroup = async ({
     })
     .catch(() => {
       throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
+    });
+};
+
+const requestEditGroup = (
+  {
+    name,
+    selectedCategory,
+    capacity,
+    startDate,
+    endDate,
+    schedules,
+    deadline,
+    location,
+    description,
+  }: CreateGroupData,
+  id: GroupDetailData['id'],
+) => {
+  const data = {
+    name,
+    categoryId: selectedCategory.id,
+    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
+    duration: {
+      start: startDate,
+      end: endDate,
+    },
+    schedules,
+    deadline,
+    location,
+    description,
+  };
+
+  return axios
+    .put<{ groupId: GroupDetailData['id'] }>(`${API_PATH.GROUP}/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
+      },
+    })
+    .then(response => {
+      return response.data.groupId;
+    })
+    .catch(() => {
+      throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
     });
 };
 
@@ -156,6 +198,7 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 export {
   requestCreateGroup,
+  requestEditGroup,
   getJoinedGroups,
   getGroups,
   getGroupDetail,

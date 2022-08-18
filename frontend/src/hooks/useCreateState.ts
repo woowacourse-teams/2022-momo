@@ -1,31 +1,48 @@
 import { useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import {
-  CategoryType,
-  CreateGroupData,
-  GroupSummary,
-  ScheduleType,
-} from 'types/data';
+import { CategoryType, CreateGroupData, ScheduleType } from 'types/data';
+import { isEqualObject } from 'utils/compare';
 
-// TODO: input이 사용되는 곳에는 useInput으로 바꾸기
+import useInput from './useInput';
+
 const useCreateState = () => {
-  const [name, setName] = useState('');
+  const {
+    value: name,
+    setValue: setName,
+    dangerouslySetValue: dangerouslySetName,
+  } = useInput('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
     id: -1,
     name: '',
   });
   const [capacity, setCapacity] = useState<CreateGroupData['capacity']>(0);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const {
+    value: startDate,
+    setValue: setStartDate,
+    dangerouslySetValue: dangerouslySetStartDate,
+  } = useInput('');
+  const {
+    value: endDate,
+    setValue: setEndDate,
+    dangerouslySetValue: dangerouslySetEndDate,
+  } = useInput('');
   const [schedules, setSchedules] = useState<CreateGroupData['schedules']>([]);
-  const [deadline, setDeadline] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
-
-  const changeName = (newName: GroupSummary['name']) => {
-    setName(newName);
-  };
+  const {
+    value: deadline,
+    setValue: setDeadline,
+    dangerouslySetValue: dangerouslySetDeadline,
+  } = useInput('');
+  const {
+    value: location,
+    setValue: setLocation,
+    dangerouslySetValue: dangerouslySetLocation,
+  } = useInput('');
+  const {
+    value: description,
+    setValue: setDescription,
+    dangerouslySetValue: dangerouslySetDescription,
+  } = useInput('');
 
   const changeSelectedCategory = (newSelectedCategory: CategoryType) => {
     setSelectedCategory(newSelectedCategory);
@@ -46,12 +63,14 @@ const useCreateState = () => {
     setCapacity(newCapacity);
   };
 
-  const changeStartDate = (newStartDate: string) => {
-    setStartDate(newStartDate);
-  };
+  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = e.target.value;
 
-  const changeEndDate = (newEndDate: string) => {
-    setEndDate(newEndDate);
+    setStartDate(e);
+
+    if (newDate > endDate) {
+      setEndDate(e);
+    }
   };
 
   const changeSchedules = (newSchedule: ScheduleType) => {
@@ -62,22 +81,17 @@ const useCreateState = () => {
     });
   };
 
-  const changeDeadline = (newDeadline: string) => {
-    setDeadline(newDeadline);
-  };
-
-  const changeLocation = (newLocation: string) => {
-    setLocation(newLocation);
-  };
-
-  const changeDescription = (newDescription: string) => {
-    setDescription(newDescription);
+  const deleteSchedule = (targetSchedule: ScheduleType) => {
+    setSchedules(
+      schedules.filter(schedule => isEqualObject(schedule, targetSchedule)),
+    );
   };
 
   return {
     useNameState: () => ({
       name,
-      setName: changeName,
+      setName,
+      dangerouslySetName,
     }),
     useSelectedCategoryState: () => ({
       selectedCategory,
@@ -91,23 +105,29 @@ const useCreateState = () => {
       startDate,
       setStartDate: changeStartDate,
       endDate,
-      setEndDate: changeEndDate,
+      setEndDate,
+      dangerouslySetStartDate,
+      dangerouslySetEndDate,
     }),
     useScheduleState: () => ({
       schedules,
       setSchedules: changeSchedules,
+      deleteSchedule,
     }),
     useDeadlineState: () => ({
       deadline,
-      setDeadline: changeDeadline,
+      setDeadline,
+      dangerouslySetDeadline,
     }),
     useLocationState: () => ({
       location,
-      setLocation: changeLocation,
+      setLocation,
+      dangerouslySetLocation,
     }),
     useDescriptionState: () => ({
       description,
-      setDescription: changeDescription,
+      setDescription,
+      dangerouslySetDescription,
     }),
     getGroupState: () => ({
       name,

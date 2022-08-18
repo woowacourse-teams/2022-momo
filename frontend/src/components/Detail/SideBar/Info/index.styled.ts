@@ -22,6 +22,25 @@ const Wrapper = styled.div`
   padding: 0 2rem;
 `;
 
+const EditWrapper = styled(Wrapper)`
+  justify-content: space-between;
+
+  padding-right: 1rem;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  & > svg {
+    cursor: pointer;
+
+    &:hover {
+      fill: ${({ theme: { colors } }) => colors.gray001};
+    }
+  }
+`;
+
 const Text = styled.span`
   color: ${({ theme: { colors } }) => colors.black002};
 
@@ -30,4 +49,4 @@ const Text = styled.span`
   font-weight: 700;
 `;
 
-export { Container, Wrapper, Text };
+export { Container, Wrapper, EditWrapper, Text };

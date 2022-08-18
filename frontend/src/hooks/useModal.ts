@@ -21,11 +21,16 @@ const useModal = () => {
     setModalFlag('confirmPassword');
   };
 
+  const showGroupEditModal = () => {
+    setModalFlag('groupEdit');
+  };
+
   return {
     setOffModal,
     showSignupModal,
     showLoginModal,
     showConfirmPasswordModal,
+    showGroupEditModal,
   };
 };
 

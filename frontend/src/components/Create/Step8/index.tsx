@@ -9,7 +9,7 @@ import * as S from './index.styled';
 interface Step8Props {
   useDescriptionState: () => {
     description: CreateGroupData['description'];
-    setDescription: (description: CreateGroupData['description']) => void;
+    setDescription: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   };
 }
 
@@ -18,9 +18,6 @@ function Step8(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { description, setDescription } = useDescriptionState();
-  const changeDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
-  };
 
   return (
     <Container ref={ref}>
@@ -36,7 +33,7 @@ function Step8(
         </S.Label>
         <S.TextArea
           value={description}
-          onChange={changeDescription}
+          onChange={setDescription}
           maxLength={GROUP_RULE.DESCRIPTION.MAX_LENGTH}
         />
       </S.LabelContainer>

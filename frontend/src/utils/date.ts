@@ -50,13 +50,15 @@ const getNewDateString = (until: 'day' | 'min') => {
 };
 
 const resetDateToStartOfDay = (date: Date) => {
-  date.setHours(0, 0, 0, 0);
-  return date;
+  const resetDate = new Date(date);
+  resetDate.setHours(0, 0, 0, 0);
+  return resetDate;
 };
 
 const resetDateToEndOfDay = (date: Date) => {
-  date.setHours(23, 59, 59, 999);
-  return date;
+  const resetDate = new Date(date);
+  resetDate.setHours(23, 59, 59, 999);
+  return resetDate;
 };
 
 const parsedDurationDate = (duration: GroupDetailData['duration']) => {
