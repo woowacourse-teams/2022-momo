@@ -38,12 +38,10 @@ const requestCreateGroup = ({
     description,
   };
 
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios
     .post<{ groupId: GroupDetailData['id'] }>(API_PATH.GROUP, data, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     })
     .then(response => {
@@ -82,12 +80,10 @@ const requestEditGroup = (
     description,
   };
 
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios
     .put<{ groupId: GroupDetailData['id'] }>(`${API_PATH.GROUP}/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     })
     .then(response => {

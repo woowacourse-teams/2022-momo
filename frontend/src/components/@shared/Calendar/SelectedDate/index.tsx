@@ -26,8 +26,7 @@ function SelectedDate({ date, schedule, pickDate }: DateProps) {
           onMouseOut={changeHoverState(false)}
           onClick={pickDate(date)}
         >
-          ⏰ {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}{' '}
-          ⏰
+          {parsedTime(schedule?.startTime)} ~ {parsedTime(schedule?.endTime)}
         </S.TimeModal>
       )}
       <S.SelectedDate

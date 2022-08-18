@@ -6,7 +6,7 @@ const Content = styled.div`
   display: flex;
   gap: 4rem;
 
-  max-width: 55rem;
+  max-width: 56rem;
   height: 27rem;
 `;
 
@@ -24,6 +24,7 @@ const Right = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
 
   min-width: max-content;
@@ -31,10 +32,21 @@ const Container = styled.div`
   padding-top: 2rem;
 `;
 
+const TimeContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  width: 50%;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
+  width: 100%;
   min-height: 32px;
 `;
 
@@ -122,6 +134,7 @@ export {
   Left,
   Right,
   Container,
+  TimeContainer,
   Wrapper,
   Text,
   DailyButton,

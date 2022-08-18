@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 const showDropdown = keyframes`
   from {
-    top: 11rem;
+    top: 14rem;
 
     opacity: 0;
   }
 
   to {
-    top: 13.3rem;
+    top: 16.3rem;
 
     opacity: 1;
   }
@@ -17,31 +17,33 @@ const showDropdown = keyframes`
 
 const hideDropdown = keyframes`
   from {
-    top: 13.3rem;
+    top: 16.3rem;
 
     opacity: 1;
   }
 
   to {
-    top: 11rem;
+    top: 14rem;
 
     opacity: 0;
   }
 `;
 
 const Container = styled.div`
-  width: 55rem;
-  height: 40rem;
   position: relative;
-
-  padding: 1rem;
 
   overflow-x: hidden;
   overflow-y: scroll;
+
+  width: 55rem;
+  height: 40rem;
+  padding: 1rem;
 `;
 
 const Title = styled.h3`
   text-align: center;
+
+  margin-bottom: 5rem;
 `;
 
 const InputContainer = styled.div`
@@ -121,7 +123,7 @@ const CategoryBox = styled.div`
   flex-direction: column;
 
   position: absolute;
-  top: 13.3rem;
+  top: 16.3rem;
 
   z-index: 99;
 
@@ -135,19 +137,19 @@ const CategoryBox = styled.div`
 `;
 
 const CategoryList = styled(CategoryButton)`
-  :first-of-type {
+  &:first-of-type {
     border-radius: 8px 8px 0 0;
   }
 
-  :last-child {
+  &:last-child {
     border-radius: 0 0 8px 8px;
   }
 
-  :not(:first-of-type, :last-child) {
-    border-radius: 0px;
+  &:not(:first-of-type, :last-child) {
+    border-radius: 0;
   }
 
-  :hover {
+  &:hover {
     background: ${({ theme: { colors } }) => colors.green002};
   }
 `;

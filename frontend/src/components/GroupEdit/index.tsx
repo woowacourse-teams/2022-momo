@@ -73,18 +73,20 @@ function GroupEdit() {
     useDescriptionState();
 
   useEffect(() => {
-    dangerouslySetName(groupData?.name || '');
+    if (!groupData) return;
+
+    dangerouslySetName(groupData.name);
     setSelectedCategory({
-      id: groupData?.categoryId,
-      name: categories[groupData.categoryId - 1 || 0]?.name,
+      id: groupData.categoryId,
+      name: categories[groupData.categoryId - 1 || 0].name,
     });
-    setCapacity(groupData?.capacity || 0);
-    dangerouslySetStartDate(groupData?.duration.start || '');
-    dangerouslySetEndDate(groupData?.duration.end || '');
-    groupData?.schedules.forEach(schedule => setSchedules(schedule));
-    dangerouslySetDeadline(groupData?.deadline || '');
-    dangerouslySetLocation(groupData?.location || '');
-    dangerouslySetDescription(groupData?.description || '');
+    setCapacity(groupData.capacity);
+    dangerouslySetStartDate(groupData.duration.start);
+    dangerouslySetEndDate(groupData.duration.end);
+    groupData.schedules.forEach(schedule => setSchedules(schedule));
+    dangerouslySetDeadline(groupData.deadline);
+    dangerouslySetLocation(groupData.location);
+    dangerouslySetDescription(groupData.description);
   }, [modalFlag]);
 
   if (!groupData) return <></>;

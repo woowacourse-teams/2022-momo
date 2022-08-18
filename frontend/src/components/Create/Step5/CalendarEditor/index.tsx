@@ -2,11 +2,12 @@ import { useState } from 'react';
 
 import { ReactComponent as CalendarSVG } from 'assets/svg/calendar.svg';
 import { ReactComponent as ClockSVG } from 'assets/svg/clock.svg';
+import { ERROR_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
 
-import Calendar from './Calendar';
-import * as S from './index.styled';
+import Calendar from '../Calendar';
+import * as S from '../index.styled';
 
 interface CalendarEditorProps {
   useScheduleState: () => {
@@ -50,12 +51,12 @@ function CalendarEditor({
 
   const addSchedule = () => {
     if (startTime >= endTime) {
-      alert('시작 시간은 종료 시간 이전이어야 해요.');
+      alert(ERROR_MESSAGE.CREATE.SCHEDULE_TIME);
       return;
     }
 
     if (selectedDate < duration.start || selectedDate > duration.end) {
-      alert('잘못된 날짜예요. 다시 선택해주세요 😤');
+      alert(ERROR_MESSAGE.CREATE.SCHEDULE_DAY);
     }
 
     const schedule = {
@@ -99,25 +100,27 @@ function CalendarEditor({
       </S.Left>
       <S.Right>
         <S.Container>
-          <S.Wrapper>
-            {selectedDate && (
-              <>
-                <CalendarSVG width={32} />
-                <S.Text>{selectedDate}</S.Text>
-              </>
-            )}
-          </S.Wrapper>
-          <S.Wrapper>
-            {getSchedule(selectedDate) && (
-              <>
-                <ClockSVG width={32} />
-                <S.Text>
-                  {`${getSchedule(selectedDate)?.startTime} ~ 
-                ${getSchedule(selectedDate)?.endTime}`}
-                </S.Text>
-              </>
-            )}
-          </S.Wrapper>
+          <S.TimeContainer>
+            <S.Wrapper>
+              {selectedDate && (
+                <>
+                  <CalendarSVG width={32} />
+                  <S.Text>{selectedDate}</S.Text>
+                </>
+              )}
+            </S.Wrapper>
+            <S.Wrapper>
+              {getSchedule(selectedDate) && (
+                <>
+                  <ClockSVG width={32} />
+                  <S.Text>
+                    {`${getSchedule(selectedDate)?.startTime.slice(0, 5)} ~ 
+                ${getSchedule(selectedDate)?.endTime.slice(0, 5)}`}
+                  </S.Text>
+                </>
+              )}
+            </S.Wrapper>
+          </S.TimeContainer>
         </S.Container>
         <S.InputWrapper>
           <S.Input
