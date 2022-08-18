@@ -16,9 +16,7 @@ function SearchForm({ keyword, setKeyword, search }: SearchFormProps) {
   return (
     <S.Form onSubmit={searchWithPreventSubmitEvent}>
       <S.Input type="text" value={keyword} onChange={setKeyword} />
-      <S.Button type="submit" onClick={search}>
-        🔎
-      </S.Button>
+      <S.Button type="submit">🔎</S.Button>
     </S.Form>
   );
 }
