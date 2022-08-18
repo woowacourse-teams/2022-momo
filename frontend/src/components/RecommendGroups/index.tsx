@@ -16,6 +16,7 @@ import { GroupList } from 'types/data';
 import * as S from './index.styled';
 
 interface RecommendGroupsProps {
+  description: string;
   isFetching: boolean;
   data: GroupList | undefined;
   refetch: (
@@ -27,6 +28,7 @@ interface RecommendGroupsProps {
 }
 
 function RecommendGroups({
+  description,
   isFetching,
   data,
   refetch,
@@ -40,16 +42,16 @@ function RecommendGroups({
 
   return (
     <S.Container>
+      <S.HeadingContainer>
+        <S.Heading>{groups.length > 0 ? description : ''}</S.Heading>
+        <Checkbox
+          description="마감된 모임 제외"
+          checked={isExcludeFinished}
+          toggleChecked={toggleIsExcludeFinished}
+        />
+      </S.HeadingContainer>
       {groups.length > 0 ? (
         <>
-          <S.HeadingContainer>
-            <S.Heading>이런 모임, 어때요?</S.Heading>
-            <Checkbox
-              description="마감된 모임 제외"
-              checked={isExcludeFinished}
-              toggleChecked={toggleIsExcludeFinished}
-            />
-          </S.HeadingContainer>
           <S.GroupListBox>
             {groups.map(group => (
               <Card group={group} key={group.id} />
