@@ -12,8 +12,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -25,11 +27,13 @@ class TokenRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    private Password password;
     private Member member;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(new Member("aaaa", "1q2w3e4r!", "모모"));
+        password = Password.encrypt("1q2w3e4r!", new SHA256Encoder());
+        member = memberRepository.save(new Member("aaaa", password, "모모"));
 
         String refreshTokenValue = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjAwMjk0OTUsImV4cCI6MTY2MDAzMzA5NX0.qwxal9Fp78G5l6RWbG9SMvOVnb0pnrEkWPHMPBmQw8c";
         Token token = new Token(this.member, refreshTokenValue);

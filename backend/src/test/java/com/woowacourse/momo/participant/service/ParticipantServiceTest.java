@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
@@ -31,6 +32,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
@@ -56,15 +58,17 @@ class ParticipantServiceTest {
     @Autowired
     private EntityManager entityManager;
 
+    private Password password;
     private Member host;
     private Member participant1;
     private Member participant2;
 
     @BeforeEach
     void setUp() {
-        host = memberRepository.save(new Member("주최자", "password", "momo"));
-        participant1 = memberRepository.save(new Member("회원1", "password", "momo2"));
-        participant2 = memberRepository.save(new Member("회원2", "password", "momo2"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        host = memberRepository.save(new Member("주최자", password, "momo"));
+        participant1 = memberRepository.save(new Member("회원1", password, "momo2"));
+        participant2 = memberRepository.save(new Member("회원2", password, "momo2"));
     }
 
     private Group saveGroup() {

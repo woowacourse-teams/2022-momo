@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -38,6 +39,7 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.participant.service.ParticipantService;
 
 @Transactional
@@ -63,15 +65,17 @@ class GroupServiceTest {
     @Autowired
     private ParticipantService participantService;
 
+    private Password password;
     private Member savedHost;
     private Member savedMember1;
     private Member savedMember2;
 
     @BeforeEach
     void setUp() {
-        savedHost = memberRepository.save(new Member("주최자", "password", "momo"));
-        savedMember1 = memberRepository.save(new Member("사용자1", "password", "momo"));
-        savedMember2 = memberRepository.save(new Member("사용자2", "password", "momo"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        savedHost = memberRepository.save(new Member("주최자", password, "momo"));
+        savedMember1 = memberRepository.save(new Member("사용자1", password, "momo"));
+        savedMember2 = memberRepository.save(new Member("사용자2", password, "momo"));
     }
 
     private Group saveGroup(String name, Category category) {

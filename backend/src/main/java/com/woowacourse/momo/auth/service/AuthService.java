@@ -17,6 +17,7 @@ import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest request) {
-        String password = passwordEncoder.encrypt(request.getPassword());
+        Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = memberFindService.findByUserIdAndPassword(request.getUserId(), password);
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
@@ -46,7 +47,7 @@ public class AuthService {
     public Long signUp(SignUpRequest request) {
         validateUserId(request.getUserId());
         validateExistUser(request.getUserId());
-        String password = passwordEncoder.encrypt(request.getPassword());
+        Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = new Member(request.getUserId(), password, request.getName());
         Member savedMember = memberRepository.save(member);
 

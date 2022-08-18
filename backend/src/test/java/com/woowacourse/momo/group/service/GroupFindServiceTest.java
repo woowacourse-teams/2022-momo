@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
@@ -29,6 +30,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 
 @Transactional
 @SpringBootTest
@@ -43,6 +45,7 @@ class GroupFindServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    private Password password;
     private Member momo;
     private Member dudu;
     private Group group1;
@@ -54,8 +57,9 @@ class GroupFindServiceTest {
 
     @BeforeEach
     void setUp() throws IllegalAccessException {
-        momo = memberRepository.save(new Member("momo", "password", "momo"));
-        dudu = memberRepository.save(new Member("dudu", "password", "dudu"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        momo = memberRepository.save(new Member("momo", password, "momo"));
+        dudu = memberRepository.save(new Member("dudu", password, "dudu"));
         group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
         group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));

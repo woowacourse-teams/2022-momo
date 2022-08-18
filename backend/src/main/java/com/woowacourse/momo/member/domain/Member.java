@@ -28,8 +28,8 @@ public class Member {
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
-    @Column(nullable = false)
-    private String password;
+    @Embedded
+    private Password password;
 
     @Embedded
     private Name name;
@@ -38,7 +38,7 @@ public class Member {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    public Member(String userId, String password, String name) {
+    public Member(String userId, Password password, String name) {
         this.userId = userId;
         this.password = password;
         this.name = new Name(name);
@@ -49,7 +49,7 @@ public class Member {
     }
 
     public void changePassword(String password) {
-        this.password = password;
+        this.password.update(password);
     }
 
     public void changeName(String name) {
@@ -57,9 +57,13 @@ public class Member {
     }
 
     public void delete() {
-        password = GHOST_PRIVATE_INFO;
+        password.update(GHOST_PRIVATE_INFO);
         name.update(GHOST_NAME);
         deleted = true;
+    }
+
+    public String getPassword() {
+        return password.getValue();
     }
 
     public String getName() {

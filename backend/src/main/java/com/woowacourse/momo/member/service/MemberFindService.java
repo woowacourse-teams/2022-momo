@@ -9,6 +9,7 @@ import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,7 +25,7 @@ public class MemberFindService {
         return member;
     }
 
-    public Member findByUserIdAndPassword(String userId, String password) {
+    public Member findByUserIdAndPassword(String userId, Password password) {
         Member member = memberRepository.findByUserIdAndPassword(userId, password)
             .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD));
         validateExistMember(member);

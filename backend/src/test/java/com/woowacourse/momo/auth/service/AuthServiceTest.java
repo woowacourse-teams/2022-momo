@@ -110,7 +110,7 @@ class AuthServiceTest {
     @Test
     void loginFail() {
         createMember(USER_ID, PASSWORD, NAME);
-        LoginRequest request = new LoginRequest(USER_ID, "wrongPassword");
+        LoginRequest request = new LoginRequest(USER_ID, "wrong123!");
 
         assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(MomoException.class)
