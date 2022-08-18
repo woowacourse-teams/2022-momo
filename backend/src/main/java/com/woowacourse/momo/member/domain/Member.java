@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,8 +31,8 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 30)
-    private String name;
+    @Embedded
+    private Name name;
 
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -40,7 +41,7 @@ public class Member {
     public Member(String userId, String password, String name) {
         this.userId = userId;
         this.password = password;
-        this.name = name;
+        this.name = new Name(name);
     }
 
     public boolean isNotSamePassword(String password) {
@@ -52,12 +53,16 @@ public class Member {
     }
 
     public void changeName(String name) {
-        this.name = name;
+        this.name.update(name);
     }
 
     public void delete() {
         password = GHOST_PRIVATE_INFO;
-        name = GHOST_NAME;
+        name.update(GHOST_NAME);
         deleted = true;
+    }
+
+    public String getName() {
+        return name.getValue();
     }
 }
