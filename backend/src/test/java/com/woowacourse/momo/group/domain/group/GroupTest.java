@@ -74,9 +74,8 @@ class GroupTest {
     @Test
     void isSameHost() {
         Group group = constructGroup();
-        boolean actual = group.isHost(host);
 
-        assertThat(actual).isTrue();
+        assertThat(group.isHost(host)).isTrue();
     }
 
     @DisplayName("회원이 모임의 주최자가 아닌 경우 False 를 반환한다")
@@ -84,9 +83,8 @@ class GroupTest {
     void isNotSameHost() {
         Group group = constructGroup();
         Member member = new Member("주최자 아님", "password", "momo");
-        boolean actual = group.isHost(member);
 
-        assertThat(actual).isFalse();
+        assertThat(group.isHost(member)).isFalse();
     }
 
     @DisplayName("모임에 참여한다")
@@ -145,6 +143,15 @@ class GroupTest {
         assertThat(participants).contains(host, member);
     }
 
+    @DisplayName("정원이 초과하지도 않았고 조기마감되지도 않았고 마감 시간이 지나지도 않았다면 종료되지 않은 모임이다")
+    @Test
+    void isFinishedRecruitment() {
+        int capacity = 2;
+        Group group = constructGroupWithSetCapacity(capacity);
+
+        assertThat(group.isFinishedRecruitment()).isFalse();
+    }
+
     @DisplayName("현재 참여 인원이 정원을 초과하면 모집이 종료된다")
     @Test
     void isFinishedRecruitmentWithOverCapacity() {
@@ -153,8 +160,7 @@ class GroupTest {
         Member member = new Member("momo@woowa.com", "qwer123!@#", "모모");
         group.participate(member);
 
-        boolean actual = group.isFinishedRecruitment();
-        assertThat(actual).isTrue();
+        assertThat(group.isFinishedRecruitment()).isTrue();
     }
 
     @DisplayName("모임이 조기마감되면 모집이 종료된다")
@@ -163,8 +169,7 @@ class GroupTest {
         Group group = constructGroup();
         group.closeEarly();
 
-        boolean actual = group.isFinishedRecruitment();
-        assertThat(actual).isTrue();
+        assertThat(group.isFinishedRecruitment()).isTrue();
     }
 
     @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
@@ -172,8 +177,7 @@ class GroupTest {
     void isFinishedRecruitmentWithEarlyClosing() throws IllegalAccessException {
         Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
 
-        boolean actual = group.isFinishedRecruitment();
-        assertThat(actual).isTrue();
+        assertThat(group.isFinishedRecruitment()).isTrue();
     }
 
     @DisplayName("모임이 조기마감되면 종료된 모임이다")
@@ -182,8 +186,7 @@ class GroupTest {
         Group group = constructGroup();
         group.closeEarly();
 
-        boolean actual = group.isEnd();
-        assertThat(actual).isTrue();
+        assertThat(group.isEnd()).isTrue();
     }
 
     @DisplayName("모집 마감시간이 지나면 종료된 모임이다")
@@ -191,8 +194,7 @@ class GroupTest {
     void isEndOverDeadline() throws IllegalAccessException {
         Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
 
-        boolean actual = group.isEnd();
-        assertThat(actual).isTrue();
+        assertThat(group.isEnd()).isTrue();
     }
 
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 True 를 반환한다")

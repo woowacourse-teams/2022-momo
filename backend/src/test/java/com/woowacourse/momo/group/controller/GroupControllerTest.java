@@ -222,6 +222,14 @@ class GroupControllerTest {
                 );
     }
 
+    @DisplayName("로그인하지 않은 경우 내가 참여한 그룹 목록을 가져오는 경우 401 응답 코드를 반환한다")
+    @Test
+    void groupGetParticipatedListWithoutLoginTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                                "/api/groups/me/participated?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0"))
+                .andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
+    }
+
     @DisplayName("내가 주최한 그룹 목록을 가져오는 경우를 테스트한다")
     @Test
     void groupGetHostedListTest() throws Exception {
@@ -244,6 +252,13 @@ class GroupControllerTest {
                                 preprocessResponse(prettyPrint())
                         )
                 );
+    }
+
+    @DisplayName("로그인하지 않은 경우 내가 주최한 그룹 목록을 가져오는 경우 401 응답 코드를 반환한다")
+    @Test
+    void groupGetHostedListWithoutLoginTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/me/hosted"))
+                .andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
     }
 
     @DisplayName("카테고리별 그룹 목록을 가져오는 경우를 테스트한다")

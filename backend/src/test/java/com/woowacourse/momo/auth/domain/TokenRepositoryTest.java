@@ -64,6 +64,15 @@ class TokenRepositoryTest {
         assertThat(actual).isTrue();
     }
 
+    @DisplayName("회원 아이디를 통해 해당 회원의 리프레시 토큰이 없는지 확인한다")
+    @Test
+    void nonExistsByMemberId() {
+        Long nonMemberId = 100L;
+        boolean actual = tokenRepository.existsByMemberId(nonMemberId);
+
+        assertThat(actual).isFalse();
+    }
+
     @DisplayName("회원 아이디를 통해 해당 회원의 리프레시 토큰을 삭제한다")
     @Test
     void deleteByMemberId() {

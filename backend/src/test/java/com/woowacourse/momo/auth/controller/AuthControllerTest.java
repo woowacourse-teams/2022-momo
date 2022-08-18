@@ -188,6 +188,13 @@ class AuthControllerTest {
                 );
     }
 
+    @DisplayName("리프레시 토큰 없이 재발급 요청을 하면 에러가 발생한다")
+    @Test
+    void reissueWithoutAccessToken() throws Exception {
+        mockMvc.perform(post("/api/auth/token/refresh"))
+                .andExpect(status().isUnauthorized());
+    }
+
     @DisplayName("로그아웃을 한다")
     @Test
     void logout() throws Exception {
