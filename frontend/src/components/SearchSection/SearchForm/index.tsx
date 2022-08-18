@@ -7,13 +7,19 @@ interface SearchFormProps {
 }
 
 function SearchForm({ keyword, setKeyword, search }: SearchFormProps) {
+  const searchWithPreventSubmitEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    search();
+  };
+
   return (
-    <S.Container>
+    <S.Form onSubmit={searchWithPreventSubmitEvent}>
       <S.Input type="text" value={keyword} onChange={setKeyword} />
-      <S.Button type="button" onClick={search}>
+      <S.Button type="submit" onClick={search}>
         🔎
       </S.Button>
-    </S.Container>
+    </S.Form>
   );
 }
 
