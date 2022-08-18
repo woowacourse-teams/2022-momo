@@ -13,7 +13,7 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
-    static: path.resolve(__dirname, 'public'),
+    static: path.resolve(__dirname, '../public'),
     port: 3000,
     historyApiFallback: true,
     client: {
