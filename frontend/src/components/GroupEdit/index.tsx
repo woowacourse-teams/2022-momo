@@ -73,7 +73,7 @@ function GroupEdit() {
     useDescriptionState();
 
   useEffect(() => {
-    if (!groupData) return;
+    if (groupData.id === -1) return;
 
     dangerouslySetName(groupData.name);
     setSelectedCategory({
