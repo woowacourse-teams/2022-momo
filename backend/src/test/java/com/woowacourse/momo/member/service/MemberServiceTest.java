@@ -107,10 +107,9 @@ class MemberServiceTest {
     @DisplayName("존재하지 않는 회원의 이름을 수정하는 경우 예외가 발생한다")
     @Test
     void updateNameNotExist() {
-        assertThatThrownBy(() -> {
-            ChangeNameRequest request = new ChangeNameRequest("무무");
-            memberService.updateName(1000L, request);
-        }).isInstanceOf(MomoException.class)
+        ChangeNameRequest request = new ChangeNameRequest("무무");
+
+        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MomoException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
