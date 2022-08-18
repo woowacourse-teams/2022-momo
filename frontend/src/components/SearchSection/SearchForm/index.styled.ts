@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
+const Form = styled.form`
   display: flex;
 
   width: 37rem;
@@ -35,4 +35,4 @@ const Button = styled.button`
   font-weight: 700;
 `;
 
-export { Container, Input, Button };
+export { Form, Input, Button };
