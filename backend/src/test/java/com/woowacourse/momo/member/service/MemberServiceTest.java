@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
@@ -55,6 +56,9 @@ class MemberServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     private Member savedHost;
 
@@ -128,9 +132,12 @@ class MemberServiceTest {
 
         memberService.deleteById(memberId);
 
-        assertThatThrownBy(() -> memberService.findById(memberId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("탈퇴한 멤버입니다.");
+        assertAll(
+                () -> assertThat(tokenRepository.findByMemberId(memberId)).isEmpty(),
+                () -> assertThatThrownBy(() -> memberService.findById(memberId))
+                        .isInstanceOf(MomoException.class)
+                        .hasMessage("탈퇴한 멤버입니다.")
+        );
     }
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
