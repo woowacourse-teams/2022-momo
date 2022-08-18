@@ -16,6 +16,7 @@ public class TokenService {
 
     private final TokenRepository tokenRepository;
 
+    @Transactional
     public void synchronizeRefreshToken(Member member, String refreshToken) {
         tokenRepository.findByMemberId(member.getId())
                 .ifPresentOrElse(
@@ -24,7 +25,8 @@ public class TokenService {
                 );
     }
 
+    @Transactional
     public void deleteByMemberId(Long memberId) {
-        tokenRepository.findByMemberId(memberId);
+        tokenRepository.deleteByMemberId(memberId);
     }
 }

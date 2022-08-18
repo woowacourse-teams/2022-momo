@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -29,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final ParticipantRepository participantRepository;
+    private final TokenRepository tokenRepository;
 
     public MyInfoResponse findById(Long id) {
         Member member = memberFindService.findMember(id);
@@ -40,6 +42,7 @@ public class MemberService {
     public void deleteById(Long id) {
         Member member = memberFindService.findMember(id);
         leaveProgressingGroup(member);
+        tokenRepository.deleteByMemberId(member.getId());
         member.delete();
     }
 

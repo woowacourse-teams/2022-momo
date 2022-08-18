@@ -56,7 +56,6 @@ public class Member {
     }
 
     public void delete() {
-        userId = GHOST_PRIVATE_INFO;
         password = GHOST_PRIVATE_INFO;
         name = GHOST_NAME;
         deleted = true;
