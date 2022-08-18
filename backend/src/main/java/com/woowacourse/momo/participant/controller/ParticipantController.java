@@ -36,6 +36,7 @@ public class ParticipantController {
         return ResponseEntity.ok(participantService.findParticipants(groupId));
     }
 
+    @Authenticated
     @DeleteMapping
     public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         participantService.delete(groupId, memberId);
