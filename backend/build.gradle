@@ -1,8 +1,9 @@
 plugins {
+	id 'java'
 	id 'org.springframework.boot' version '2.6.9'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
+	id "org.sonarqube" version "3.4.0.2513"
 }
 
 group = 'com.woowacourse'
@@ -75,5 +76,11 @@ bootJar {
 	copy {
 		from file("src/main/resources/static")
 		into file("build/resources/main/static")
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "woowacourse-teams_2022-momo_AYKR-JWB6L96jeu46QtV"
 	}
 }

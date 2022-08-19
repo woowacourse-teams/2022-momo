@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+    import:
+      - security/application.yml
+      - security/application-local-datasource.yml
+      - application-datasource.yml
+      - application-logging.yml

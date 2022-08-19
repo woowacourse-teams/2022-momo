@@ -7,9 +7,12 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.exception.NotFoundGroupException;
+import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.exception.NotFoundMemberException;
+import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 @Transactional
@@ -36,10 +39,19 @@ class ParticipantServiceTest {
     private ParticipantService participantService;
 
     @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private GroupRepository groupRepository;
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private Member host;
     private Member participant1;
@@ -135,5 +147,97 @@ class ParticipantServiceTest {
         assertThatThrownBy(() -> participantService.findParticipants(0L))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
+    }
+
+    @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")
+    @Test
+    void findParticipantsExistGhost() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        memberService.deleteById(participant1.getId());
+
+        List<String> names = participantService.findParticipants(savedGroup.getId())
+            .stream()
+            .map(MemberResponse::getName)
+            .collect(Collectors.toList());
+        assertThat(names).contains("알 수 없음");
+    }
+
+    @DisplayName("모임에 탈퇴한다")
+    @Test
+    void delete() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        synchronize();
+
+        participantService.delete(savedGroup.getId(), participant1.getId());
+        synchronize();
+
+        List<Long> participantIds = participantService.findParticipants(savedGroup.getId())
+            .stream()
+            .map(MemberResponse::getId)
+            .collect(Collectors.toList());
+        assertThat(participantIds).doesNotContain(participant1.getId());
+    }
+
+    @DisplayName("모임의 주최자일 경우 탈퇴할 수 없다")
+    @Test
+    void deleteHost() {
+        Group savedGroup = saveGroup();
+        synchronize();
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), host.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+    }
+
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void deleteNotParticipant() {
+        Group savedGroup = saveGroup();
+        synchronize();
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모임의 참여자가 아닙니다.");
+    }
+
+    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteDeadline() throws IllegalAccessException {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        setPastDeadline(savedGroup, yesterday);
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("모집이 마감된 모임입니다.");
+    }
+
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteEarlyClosed() {
+        Group savedGroup = saveGroup();
+        participantService.participate(savedGroup.getId(), participant1.getId());
+        groupService.closeEarly(host.getId(), savedGroup.getId());
+
+        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+            .isInstanceOf(MomoException.class)
+            .hasMessage("조기종료된 모임입니다.");
+    }
+
+    private void synchronize() {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
+        int deadlineField = 8;
+        Class<Group> clazz = Group.class;
+        Field[] field = clazz.getDeclaredFields();
+        field[deadlineField].setAccessible(true);
+        field[deadlineField].set(group, deadline);
     }
 }

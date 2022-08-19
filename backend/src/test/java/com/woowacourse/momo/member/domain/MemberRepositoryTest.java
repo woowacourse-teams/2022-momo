@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
-    @DisplayName("회원을 저장한다.")
+    @DisplayName("회원을 저장한다")
     @Test
     void save() {
         Member member = new Member("aaaa", "1q2w3e4r!", "모모");
@@ -37,7 +37,7 @@ class MemberRepositoryTest {
     void findById() {
         Member member = new Member("aaaa", "1q2w3e4r!", "모모");
         Member expected = memberRepository.save(member);
-        entityManager.clear();
+        synchronize();
 
         Optional<Member> actual = memberRepository.findById(expected.getId());
 
@@ -53,7 +53,7 @@ class MemberRepositoryTest {
         String password = "1q2w3e4r!";
         Member member = new Member(userId, password, "모모");
         Member expected = memberRepository.save(member);
-        entityManager.clear();
+        synchronize();
 
         Optional<Member> actual = memberRepository.findByUserIdAndPassword(userId, password);
 
@@ -62,17 +62,8 @@ class MemberRepositoryTest {
                 .isEqualTo(expected);
     }
 
-    @DisplayName("회원을 삭제한다")
-    @Test
-    void deleteById() {
-        String userId = "aaaa";
-        String password = "1q2w3e4r!";
-        Member member = new Member(userId, password, "모모");
-        Member savedMember = memberRepository.save(member);
+    void synchronize() {
+        entityManager.flush();
         entityManager.clear();
-
-        memberRepository.deleteById(savedMember.getId());
-        Optional<Member> foundMember = memberRepository.findById(savedMember.getId());
-        assertThat(foundMember).isEmpty();
     }
 }

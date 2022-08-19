@@ -2,6 +2,7 @@ package com.woowacourse.momo.acceptance.group;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_삭제한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
+import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
     private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;
     private static final MemberFixture HOST = MemberFixture.MOMO;
+    private static final MemberFixture PARTICIPANT = MemberFixture.DUDU;
 
     private String hostAccessToken;
     private Long groupId;
@@ -54,5 +56,15 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     void deleteNonExistentGroup() {
         모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
         모임을_삭제한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
+    }
+
+    @DisplayName("참여자가 있는 모임을 삭제한다")
+    @Test
+    void deleteExistParticipant() {
+        String participantAccessToken = PARTICIPANT.로_로그인한다();
+        모임에_참여한다(participantAccessToken, groupId);
+
+        모임을_삭제한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
     }
 }

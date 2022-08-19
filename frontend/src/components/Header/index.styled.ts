@@ -5,8 +5,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
-  top: 0;
+  position: fixed;
 
   z-index: 999;
 
@@ -34,9 +33,10 @@ const Logo = styled.div`
 
 const Nav = styled.div`
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 
-  color: ${({ theme: { colors } }) => colors.white001};
+  color: ${({ theme: { colors } }) => colors.black002};
 
   font-size: 1.1rem;
   font-weight: 700;

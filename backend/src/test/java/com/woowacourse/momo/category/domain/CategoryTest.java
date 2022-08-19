@@ -2,10 +2,10 @@ package com.woowacourse.momo.category.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.NoSuchElementException;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class CategoryTest {
 
@@ -13,7 +13,7 @@ class CategoryTest {
     @Test
     void from() {
         assertThatThrownBy(() -> Category.from(0))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("카테고리를 찾을 수 없습니다.");
+                .isInstanceOf(MomoException.class)
+                .hasMessage("존재하지 않는 카테고리입니다.");
     }
 }

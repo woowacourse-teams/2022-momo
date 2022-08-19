@@ -2,9 +2,11 @@ import {
   convertRemainTime,
   convertDeadlineToRemainTime,
   getNewDateString,
-  resetDateToMidnight,
+  resetDateToStartOfDay,
+  resetDateToEndOfDay,
   parsedDurationDate,
   parsedTime,
+  getTimeInKorea,
 } from './date';
 
 const fakeTimerSetUp = () => {
@@ -107,21 +109,33 @@ describe('getNewDateString 함수를 사용하면 현재 시간을 ISO 형식으
   });
 
   it('인자로 min를 넣으면 분 단위까지의 ISO 형식 문자열을 반환한다.', () => {
-    expect(getNewDateString('min')).toBe('2022-01-01T00:00');
+    expect(getNewDateString('min')).toBe('2022-01-01T09:00');
   });
 });
 
-describe('resetDateToMidnight 함수를 사용하면 자정으로 초기화 된 Date 객체를 얻을 수 있다.', () => {
+describe('resetDateTo___OfDay 함수를 사용하면 하루의 시작과 끝으로 초기화 된 Date 객체를 얻을 수 있다.', () => {
   beforeAll(() => {
     fakeTimerSetUp();
   });
 
-  it('Date 객체를 넣으면 자정으로 초기화 된 Date 객체를 반환한다.', () => {
+  it('resetDateToStartOfDay에 Date 객체를 넣으면 오늘 자정으로 초기화 된 Date 객체를 반환한다.', () => {
     const noonDate = new Date('2022-01-01T12:00:00.000Z');
-    const timezoneOffset = new Date().getTimezoneOffset();
-    const nowTime = Number(new Date()) + timezoneOffset * 60 * 1000;
+    const midNightDate = noonDate;
+    midNightDate.setHours(0, 0, 0, 0);
 
-    expect(resetDateToMidnight(noonDate)).toStrictEqual(new Date(nowTime));
+    expect(getTimeInKorea(resetDateToStartOfDay(noonDate))).toStrictEqual(
+      getTimeInKorea(new Date(midNightDate)),
+    );
+  });
+
+  it('resetDateToEndOfDay에 Date 객체를 넣으면 내일 자정 직전으로 초기화 된 Date 객체를 반환한다.', () => {
+    const noonDate = new Date('2022-01-01T12:00:00.000Z');
+    const endDate = noonDate;
+    endDate.setHours(23, 59, 59, 999);
+
+    expect(getTimeInKorea(resetDateToEndOfDay(noonDate))).toStrictEqual(
+      getTimeInKorea(new Date(endDate)),
+    );
   });
 });
 
@@ -178,5 +192,3 @@ describe('parsedTime 함수를 사용하면 시간을 가공하여 반환한다.
     expect(parsedTime(rowTimeString)).toBe('18시 30분');
   });
 });
-
-export {};

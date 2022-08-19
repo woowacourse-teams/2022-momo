@@ -13,8 +13,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -48,7 +48,7 @@ public class Schedule {
     }
 
     public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
-        return (date.isAfter(startDate) | date.isEqual(startDate))
-                && (date.isBefore(endDate) | date.isEqual(endDate));
+        return (date.isAfter(startDate) || date.isEqual(startDate))
+                && (date.isBefore(endDate) || date.isEqual(endDate));
     }
 }

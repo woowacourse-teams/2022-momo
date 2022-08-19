@@ -1,60 +1,84 @@
 import { useEffect } from 'react';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
+import { requestReissueAccessToken } from 'apis/request/auth';
 import { getUserInfo } from 'apis/request/user';
-import { ReactComponent as LogoSVG } from 'assets/logo.svg';
 import NavLink from 'components/@shared/NavLink';
-import { GUIDE_MESSAGE } from 'constants/message';
+import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
-import { accessTokenState, loginState, modalState } from 'store/states';
-import { ModalStateType } from 'types/condition';
+import useModal from 'hooks/useModal';
+import { accessTokenState, loginState, refreshTokenState } from 'store/states';
+import { getLoginType } from 'utils/user';
 
 import * as S from './index.styled';
+import User from './User';
 
 function Header() {
-  const setModalState = useSetRecoilState(modalState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [{ isLogin }, setLoginInfo] = useRecoilState(loginState);
+  const resetLoginInfo = useResetRecoilState(loginState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
+
+  const { showSignupModal, showLoginModal } = useModal();
 
   useEffect(() => {
-    if (accessToken) {
-      getUserInfo().then(userInfo => {
-        setLoginInfo({ isLogin: true, user: userInfo });
+    if (!accessToken && !refreshToken) return;
+
+    const reissueAccessToken = () => {
+      requestReissueAccessToken()
+        .then(accessToken => {
+          // 리프레시 토큰이 유효한 경우
+          setAccessToken(accessToken);
+        })
+        .catch(() => {
+          // 리프레시 토큰이 유효하지 않거나 만료인 경우
+          resetLoginInfo();
+
+          setAccessToken('');
+          setRefreshToken('');
+        });
+    };
+
+    getUserInfo()
+      .then(userInfo => {
+        // 액세스 토큰이 유효한 경우
+        setLoginInfo({
+          isLogin: true,
+          loginType: getLoginType(userInfo.userId),
+          user: userInfo,
+        });
+      })
+      .catch(() => {
+        // 액세스 토큰이 유효하지 않은 경우
+        reissueAccessToken();
       });
-    }
-  }, [accessToken, setLoginInfo]);
-
-  const changeModalState = (modalState: ModalStateType) => () => {
-    setModalState(modalState);
-  };
-
-  const logout = () => {
-    if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
-
-    setLoginInfo({ isLogin: false });
-    setAccessToken('');
-  };
+  }, [
+    accessToken,
+    setAccessToken,
+    refreshToken,
+    setRefreshToken,
+    setLoginInfo,
+    resetLoginInfo,
+  ]);
 
   return (
     <S.Container>
       <NavLink to={BROWSER_PATH.BASE}>
         <S.Logo>
-          <LogoSVG />
+          <Logo />
         </S.Logo>
       </NavLink>
       <S.Nav>
         {isLogin ? (
           <>
             <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
-            <NavLink to={'NOT_THING'}>내 모임</NavLink>
-            <NavLink to={BROWSER_PATH.INFO}>내 정보</NavLink>
-            <div onClick={logout}>로그아웃</div>
+            <User />
           </>
         ) : (
           <>
-            <div onClick={changeModalState('signup')}>회원가입</div>
-            <div onClick={changeModalState('login')}>로그인</div>
+            <div onClick={showSignupModal}>회원가입</div>
+            <div onClick={showLoginModal}>로그인</div>
           </>
         )}
       </S.Nav>

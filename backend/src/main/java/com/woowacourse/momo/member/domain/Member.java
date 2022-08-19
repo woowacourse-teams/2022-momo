@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
+
+    private static final String GHOST_NAME = "알 수 없음";
+    private static final String GHOST_PRIVATE_INFO = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +33,18 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean deleted;
+
     public Member(String userId, String password, String name) {
         this.userId = userId;
         this.password = password;
         this.name = name;
+    }
+
+    public boolean isNotSamePassword(String password) {
+        return !this.password.equals(password);
     }
 
     public void changePassword(String password) {
@@ -40,5 +53,11 @@ public class Member {
 
     public void changeName(String name) {
         this.name = name;
+    }
+
+    public void delete() {
+        password = GHOST_PRIVATE_INFO;
+        name = GHOST_NAME;
+        deleted = true;
     }
 }

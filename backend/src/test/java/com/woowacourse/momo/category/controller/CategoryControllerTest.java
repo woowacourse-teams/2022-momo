@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @SpringBootTest
-public class CategoryControllerTest {
+class CategoryControllerTest {
 
     @Autowired
     MockMvc mockMvc;

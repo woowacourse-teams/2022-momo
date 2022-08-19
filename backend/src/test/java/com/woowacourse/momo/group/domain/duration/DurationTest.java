@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.duration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.DateFixture.내일;
 import static com.woowacourse.momo.fixture.DateFixture.어제;
@@ -13,10 +14,17 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.momo.globalException.exception.MomoException;
-import com.woowacourse.momo.group.exception.InvalidDurationException;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class DurationTest {
+
+    @DisplayName("정상적인 기간 생성에 대해서는 에러가 발생하지 않는다")
+    @Test
+    void create() {
+        assertDoesNotThrow(
+                () -> new Duration(이틀후.getInstance(), 일주일후.getInstance())
+        );
+    }
 
     @DisplayName("시작일은 종료일 이후가 될 수 없다")
     @Test

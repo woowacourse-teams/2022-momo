@@ -2,14 +2,9 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.875rem;
-
   width: 100%;
 
-  margin: 0 auto;
-  padding: 2.5rem 0;
+  margin: 2rem auto;
 
   ${({ theme: { breakpoints } }) => css`
     @media only screen and (max-width: ${breakpoints.md}px) {

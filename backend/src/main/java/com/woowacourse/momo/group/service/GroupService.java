@@ -3,20 +3,19 @@ package com.woowacourse.momo.group.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -33,7 +32,6 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @Service
 public class GroupService {
 
-    private static final int DEFAULT_PAGE_SIZE = 12;
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
@@ -46,46 +44,60 @@ public class GroupService {
         return GroupResponseAssembler.groupIdResponse(group);
     }
 
-    public GroupResponse findById(Long id) {
+    public GroupResponse findGroup(Long id) {
         Group group = groupFindService.findGroup(id);
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public List<GroupSummaryResponse> findAll() {
-        List<Group> groups = groupFindService.findGroups();
-
-        return GroupResponseAssembler.groupSummaryResponses(groups);
-    }
-
-    public GroupPageResponse findAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupFindService.findGroups(pageable);
+    public GroupPageResponse findGroups(GroupFindRequest request) {
+        Page<Group> groups = groupFindService.findGroups(request);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), pageNumber);
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findParticipatedGroups(request, member);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupFindService.findHostedGroups(request, member);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        validateInitialState(hostId, group);
 
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         validateSchedulesInDuration(schedules, duration);
 
-        group.update(Category.from(request.getCategoryId()), request.getCapacity(),
+        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
                 duration, request.getDeadline(), schedules,
                 request.getLocation(), request.getDescription());
     }
 
     private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        schedules.stream()
-                .filter(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()))
-                .findAny()
-                .ifPresent(schedule -> { throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION); } );
+        if (existAnyScheduleOutOfDuration(schedules, duration)) {
+            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+        }
+    }
+
+    private boolean existAnyScheduleOutOfDuration(List<Schedule> schedules, Duration duration) {
+        return schedules.stream()
+                .anyMatch(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()));
     }
 
     @Transactional
@@ -100,16 +112,27 @@ public class GroupService {
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        validateInitialState(hostId, group);
 
         groupRepository.deleteById(groupId);
     }
 
+    private void validateInitialState(Long hostId, Group group) {
+        validateHost(group, hostId);
+        validateFinishedRecruitment(group);
+        validateNotExistParticipants(group);
+    }
+
     private void validateHost(Group group, Long hostId) {
         Member host = memberFindService.findMember(hostId);
-        if (!group.isSameHost(host)) {
+        if (!group.isHost(host)) {
             throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
+        }
+    }
+
+    private void validateNotExistParticipants(Group group) {
+        if (group.isExistParticipants()) {
+            throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
         }
     }
 
@@ -117,11 +140,5 @@ public class GroupService {
         if (group.isFinishedRecruitment()) {
             throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
         }
-    }
-
-    public List<GroupSummaryResponse> findGroupOfMember(Long memberId) {
-        List<Group> participatedGroups = groupFindService.findRelatedGroups(memberId);
-
-        return GroupResponseAssembler.groupSummaryResponses(participatedGroups);
     }
 }

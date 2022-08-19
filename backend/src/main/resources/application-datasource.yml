@@ -1,0 +1,4 @@
+spring:
+  jpa:
+    hibernate:
+      naming.physical-strategy: com.woowacourse.momo.global.config.CustomNamingStrategy

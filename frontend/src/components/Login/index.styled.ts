@@ -29,7 +29,16 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1rem;
+`;
+
 const Button = styled.button`
+  width: 20rem;
   height: 3rem;
 
   border-radius: 5px;
@@ -40,4 +49,71 @@ const Button = styled.button`
   font-size: 1.1rem;
 `;
 
-export { Form, Title, InputContainer, Label, Input, Button };
+const SignupButton = styled.div`
+  font-size: 1rem;
+
+  color: ${({ theme: { colors } }) => colors.gray002};
+
+  cursor: default;
+
+  span {
+    color: ${({ theme: { colors } }) => colors.gray001};
+
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme: { colors } }) => colors.blue001};
+    }
+  }
+`;
+
+const Divider = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20rem;
+  height: 1px;
+
+  margin-top: 1rem;
+
+  background: ${({ theme: { colors } }) => colors.gray003};
+
+  span {
+    padding: 0.2rem 1rem 0 1rem;
+
+    background: ${({ theme: { colors } }) => colors.white001};
+  }
+`;
+
+const OAuthButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  padding-top: 1rem;
+`;
+
+const OAuthButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: 50%;
+`;
+
+export {
+  Form,
+  Title,
+  InputContainer,
+  Label,
+  Input,
+  ButtonContainer,
+  Button,
+  SignupButton,
+  Divider,
+  OAuthButtonWrapper,
+  OAuthButton,
+};

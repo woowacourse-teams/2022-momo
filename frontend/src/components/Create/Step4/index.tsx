@@ -13,8 +13,8 @@ import * as S from './index.styled';
 
 interface Step4Props {
   useDateState: () => DurationDate & {
-    setStartDate: (startDate: DurationDate['startDate']) => void;
-    setEndDate: (endDate: DurationDate['endDate']) => void;
+    setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setEndDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -24,18 +24,6 @@ function Step4(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { startDate, setStartDate, endDate, setEndDate } = useDateState();
-
-  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
-
-    if (!endDate) {
-      setEndDate(e.target.value);
-    }
-  };
-
-  const changeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(e.target.value);
-  };
 
   return (
     <Container ref={ref}>
@@ -48,14 +36,14 @@ function Step4(
           <S.Input
             type="date"
             value={startDate}
-            onChange={changeStartDate}
+            onChange={setStartDate}
             min={getNewDateString('day')}
           />
           ~
           <S.Input
             type="date"
             value={endDate}
-            onChange={changeEndDate}
+            onChange={setEndDate}
             min={startDate || getNewDateString('day')}
             onKeyPress={pressEnterToNext}
           />

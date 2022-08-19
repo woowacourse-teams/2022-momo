@@ -1,4 +1,4 @@
-import { ReactComponent as CrownSVG } from 'assets/crown.svg';
+import { ReactComponent as CrownSVG } from 'assets/svg/crown.svg';
 import PersonSVG from 'components/svg/Person';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 

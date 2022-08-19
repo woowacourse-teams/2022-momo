@@ -1,6 +1,6 @@
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import {
   deleteGroup as requestDeleteGroup,
@@ -10,7 +10,10 @@ import {
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
-import { loginState, modalState } from 'store/states';
+import { BROWSER_PATH } from 'constants/path';
+import useModal from 'hooks/useModal';
+import useSnackbar from 'hooks/useSnackbar';
+import { loginState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
@@ -26,7 +29,9 @@ function ControlButton({
   participants,
 }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
-  const setModalState = useSetRecoilState(modalState);
+
+  const { showLoginModal } = useModal();
+  const { setMessage } = useSnackbar();
 
   const navigate = useNavigate();
 
@@ -41,7 +46,7 @@ function ControlButton({
 
     requestCloseGroup(id)
       .then(() => {
-        alert(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
+        setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
         refetch();
       })
       .catch(() => {
@@ -54,8 +59,9 @@ function ControlButton({
 
     requestDeleteGroup(id)
       .then(() => {
-        alert(GUIDE_MESSAGE.DELETE.SUCCESS_REQUEST);
-        navigate('/');
+        setMessage(GUIDE_MESSAGE.DELETE.SUCCESS_REQUEST);
+
+        navigate(BROWSER_PATH.BASE);
       })
       .catch(() => {
         alert(ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
@@ -65,13 +71,14 @@ function ControlButton({
   const joinGroup = () => {
     if (!isLogin) {
       alert(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
-      setModalState('login');
+      showLoginModal();
+
       return;
     }
 
     requestJoinGroup(id)
       .then(() => {
-        alert(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
+        setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
         refetch();
       })
       .catch(() => {
@@ -84,7 +91,7 @@ function ControlButton({
 
     requestExitGroup(id)
       .then(() => {
-        alert(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
+        setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
         refetch();
       })
       .catch(() => {
