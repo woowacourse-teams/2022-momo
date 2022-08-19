@@ -98,14 +98,14 @@ const Date = styled(DayColor)`
 
   cursor: pointer;
 
-  &:hover,
-  &.selected {
-    background: ${({ theme: { colors } }) => colors.yellow002};
-  }
-
   &.today {
     background: ${({ theme: { colors } }) => colors.red003};
     color: ${({ theme: { colors } }) => colors.white001};
+  }
+
+  &:hover,
+  &.selected {
+    background: ${({ theme: { colors } }) => colors.yellow002};
   }
 
   &.disabled {

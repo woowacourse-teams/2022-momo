@@ -116,12 +116,11 @@ class GroupRepositoryTest {
     void deleteById() {
         List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
         Group group = constructGroup(host, schedules);
-        groupRepository.save(group);
 
+        groupRepository.save(group);
         synchronize();
 
         groupRepository.deleteById(group.getId());
-
         synchronize();
 
         Optional<Group> foundGroup = groupRepository.findById(group.getId());
@@ -162,8 +161,11 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(Member host, List<Schedule> schedules) {
+        return constructGroup("momo 회의", host, schedules);
+    }
 
-        return new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+    private Group constructGroup(String name, Member host, List<Schedule> schedules) {
+        return new Group(name, host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(),
                 schedules, "", "");
     }

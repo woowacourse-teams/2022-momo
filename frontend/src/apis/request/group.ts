@@ -7,9 +7,13 @@ import {
   GroupDetailData,
   GroupParticipants,
   GroupList,
+  CategoryType,
+  SelectableGroup,
 } from 'types/data';
+import { accessTokenProvider } from 'utils/token';
+import { makeUrl } from 'utils/url';
 
-const requestCreateGroup = async ({
+const requestCreateGroup = ({
   name,
   selectedCategory,
   capacity,
@@ -34,12 +38,10 @@ const requestCreateGroup = async ({
     description,
   };
 
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios
     .post<{ groupId: GroupDetailData['id'] }>(API_PATH.GROUP, data, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     })
     .then(response => {
@@ -50,11 +52,97 @@ const requestCreateGroup = async ({
     });
 };
 
-const getGroups = (pageNumber: number) => () => {
+const requestEditGroup = (
+  {
+    name,
+    selectedCategory,
+    capacity,
+    startDate,
+    endDate,
+    schedules,
+    deadline,
+    location,
+    description,
+  }: CreateGroupData,
+  id: GroupDetailData['id'],
+) => {
+  const data = {
+    name,
+    categoryId: selectedCategory.id,
+    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
+    duration: {
+      start: startDate,
+      end: endDate,
+    },
+    schedules,
+    deadline,
+    location,
+    description,
+  };
+
   return axios
-    .get<GroupList>(`${API_PATH.GROUP}?page=${pageNumber}`)
-    .then(response => response.data);
+    .put<{ groupId: GroupDetailData['id'] }>(`${API_PATH.GROUP}/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
+      },
+    })
+    .then(response => {
+      return response.data.groupId;
+    })
+    .catch(() => {
+      throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
+    });
 };
+
+const getJoinedGroups =
+  (
+    type: SelectableGroup,
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+  ) =>
+  () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+      keyword,
+    };
+
+    const baseUrl =
+      type === 'participated'
+        ? API_PATH.PARTICIPATED_GROUP
+        : type === 'hosted'
+        ? API_PATH.HOSTED_GROUP
+        : API_PATH.LIKED_GROUP;
+
+    return axios
+      .get<GroupList>(makeUrl(baseUrl, queryParams), {
+        headers: {
+          Authorization: `Bearer ${accessTokenProvider.get()}`,
+        },
+      })
+      .then(response => response.data);
+  };
+
+const getGroups =
+  (
+    pageNumber: number,
+    excludeFinished: boolean,
+    keyword: string,
+    categoryId: CategoryType['id'],
+  ) =>
+  () => {
+    const queryParams = {
+      page: pageNumber,
+      excludeFinished,
+      keyword,
+      category: categoryId,
+    };
+
+    return axios
+      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
+      .then(response => response.data);
+  };
 
 const getGroupDetail = (id: GroupDetailData['id']) => {
   return axios
@@ -63,11 +151,9 @@ const getGroupDetail = (id: GroupDetailData['id']) => {
 };
 
 const deleteGroup = (id: GroupDetailData['id']) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.delete(`${API_PATH.GROUP}/${id}`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
     },
   });
 };
@@ -79,38 +165,32 @@ const getGroupParticipants = (id: GroupDetailData['id']) => {
 };
 
 const joinGroup = (id: GroupDetailData['id']) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
 };
 
 const exitGroup = (id: GroupDetailData['id']) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
     },
   });
 };
 
 const requestCloseGroup = (id: GroupDetailData['id']) => {
-  const accessToken = sessionStorage.getItem('accessToken') ?? '';
-
   return axios.post(
     `${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`,
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
       },
     },
   );
@@ -118,6 +198,8 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 export {
   requestCreateGroup,
+  requestEditGroup,
+  getJoinedGroups,
   getGroups,
   getGroupDetail,
   deleteGroup,

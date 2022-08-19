@@ -26,8 +26,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.globalException.exception.ErrorCode;
-import com.woowacourse.momo.globalException.exception.MomoException;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.duration.Duration;
 import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.member.domain.Member;
@@ -37,6 +37,8 @@ import com.woowacourse.momo.participant.domain.Participant;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Group {
+
+    private static final int NONE_PARTICIPANT = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,8 +100,9 @@ public class Group {
         belongTo(schedules);
     }
 
-    public void update(Category category, int capacity, Duration duration, LocalDateTime deadline,
+    public void update(String name, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
+        this.name = name;
         this.category = category;
         this.capacity = capacity;
         this.duration = duration;
@@ -140,7 +143,7 @@ public class Group {
         this.schedules.addAll(schedules);
     }
 
-    public boolean isSameHost(Member host) {
+    public boolean isHost(Member host) {
         return this.host.equals(host);
     }
 
@@ -156,7 +159,7 @@ public class Group {
     }
 
     private void validateIsHost(Member member) {
-        if (member == host) {
+        if (isHost(member)) {
             throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
         }
     }
@@ -174,7 +177,15 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || isFullCapacity() || deadline.isBefore(LocalDateTime.now());
+        return isEarlyClosed || isFullCapacity() || isOverDeadline();
+    }
+
+    public boolean isEnd() {
+        return isEarlyClosed || isOverDeadline();
+    }
+
+    private boolean isOverDeadline() {
+        return deadline.isBefore(LocalDateTime.now());
     }
 
     private boolean isFullCapacity() {
@@ -183,6 +194,29 @@ public class Group {
 
     public void closeEarly() {
         this.isEarlyClosed = true;
+    }
+
+    public boolean isExistParticipants() {
+        return participants.size() > NONE_PARTICIPANT;
+    }
+
+    public void validateLeave(Member member) {
+        if (isHost(member)) {
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
+        }
+        if (!isParticipant(member)) {
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        }
+        if (isOverDeadline()) {
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
+        }
+        if (isEarlyClosed) {
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
+        }
+    }
+
+    private boolean isParticipant(Member member) {
+        return getParticipants().contains(member);
     }
 
     public List<Schedule> getSchedules() {

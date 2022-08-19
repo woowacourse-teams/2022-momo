@@ -5,6 +5,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,7 +16,11 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -40,12 +47,15 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
-public class ParticipantControllerTest {
+class ParticipantControllerTest {
 
     private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
             이틀후.getInstance());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
             new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+
+    private static final String BASE_URL = "/api/groups/";
+    private static final String RESOURCE = "/participants";
 
     @Autowired
     private MockMvc mockMvc;
@@ -62,6 +72,12 @@ public class ParticipantControllerTest {
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private GroupFindService groupFindService;
+
+    @Autowired
+    private EntityManager entityManager;
+
     @DisplayName("모임에 참여한다")
     @Test
     void participate() throws Exception {
@@ -70,7 +86,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isOk())
@@ -89,7 +105,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + 0 + "/participants")
+        mockMvc.perform(post(BASE_URL + 0 + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -103,20 +119,20 @@ public class ParticipantControllerTest {
                 );
     }
 
-    @DisplayName("존재하지 않는 사용자는 모임에 참여할 수 없다")
+    @DisplayName("탈퇴한 사용자는 모임에 참여할 수 없다")
     @Test
-    void participateNotExistMember() throws Exception {
+    void participateDeletedMember() throws Exception {
         Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
         deleteMember(participantId);
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_002")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),
@@ -135,7 +151,7 @@ public class ParticipantControllerTest {
         String accessToken = accessToken("participant");
         participateMember(groupId, participantId);
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -157,7 +173,7 @@ public class ParticipantControllerTest {
         Long participantId = saveMember("participant");
         String accessToken = accessToken("participant");
 
-        mockMvc.perform(post("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
@@ -177,7 +193,7 @@ public class ParticipantControllerTest {
         Long hostId = saveMember("host");
         Long groupId = saveGroup(hostId);
 
-        mockMvc.perform(get("/api/groups/" + groupId + "/participants")
+        mockMvc.perform(get(BASE_URL + groupId + RESOURCE)
                 )
                 .andExpect(status().isOk())
                 .andDo(
@@ -192,7 +208,7 @@ public class ParticipantControllerTest {
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")
     @Test
     void findParticipantsNotExistGroup() throws Exception {
-        mockMvc.perform(get("/api/groups/" + 0 + "/participants")
+        mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
@@ -202,6 +218,103 @@ public class ParticipantControllerTest {
                                 preprocessResponse(prettyPrint()
                                 )
                         )
+                );
+    }
+
+    @DisplayName("모임에 탈퇴한다")
+    @Test
+    void deleteParticipant() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isNoContent())
+                .andDo(
+                        document("deleteparticipant",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()))
+                );
+    }
+
+    @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
+    @Test
+    void deleteHost() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        String accessToken = accessToken("host");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isBadRequest())
+                .andDo(
+                        document("deletehost",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()))
+                );
+    }
+
+    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
+    @Test
+    void deleteNotParticipant() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long memberId = saveMember("member");
+        String accessToken = accessToken("member");
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isBadRequest())
+                .andDo(
+                        document("deletenotparticipant",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()))
+                );
+    }
+
+    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteDeadline() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        setPastDeadline(groupId, yesterday);
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isBadRequest())
+                .andDo(
+                        document("deletedeadline",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()))
+                );
+    }
+
+    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
+    @Test
+    void deleteEarlyClosed() throws Exception {
+        Long hostId = saveMember("host");
+        Long groupId = saveGroup(hostId);
+        Long participantId = saveMember("participant");
+        participateMember(groupId, participantId);
+        String accessToken = accessToken("participant");
+
+        groupService.closeEarly(hostId, groupId);
+
+        mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
+                        .header("Authorization", "bearer " + accessToken))
+                .andExpect(status().isBadRequest())
+                .andDo(
+                        document("deleteearlyclosed",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()))
                 );
     }
 
@@ -233,5 +346,14 @@ public class ParticipantControllerTest {
 
     void participateMember(Long groupId, Long memberId) {
         participantService.participate(groupId, memberId);
+    }
+
+    private void setPastDeadline(Long groupId, LocalDateTime deadline) throws IllegalAccessException {
+        Group group = groupFindService.findGroup(groupId);
+        int deadlineField = 8;
+        Class<Group> clazz = Group.class;
+        Field[] field = clazz.getDeclaredFields();
+        field[deadlineField].setAccessible(true);
+        field[deadlineField].set(group, deadline);
     }
 }

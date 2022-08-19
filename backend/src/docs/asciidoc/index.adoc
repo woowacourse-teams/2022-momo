@@ -22,6 +22,22 @@ include::{snippets}/groupget/http-request.adoc[]
 Response
 include::{snippets}/groupget/http-response.adoc[]
 
+=== 카테고리별 모임 조회
+
+Request
+include::{snippets}/grouplistbycategory/http-request.adoc[]
+
+Response
+include::{snippets}/grouplistbycategory/http-response.adoc[]
+
+=== 검색을 통한 모임 조회
+
+Request
+include::{snippets}/grouplistbykeyword/http-request.adoc[]
+
+Response
+include::{snippets}/grouplistbykeyword/http-response.adoc[]
+
 === 모임 생성
 
 Request
@@ -29,6 +45,14 @@ include::{snippets}/groupcreate/http-request.adoc[]
 
 Response
 include::{snippets}/groupcreate/http-response.adoc[]
+
+=== 모임 수정
+
+Request
+include::{snippets}/groupupdate/http-request.adoc[]
+
+Response
+include::{snippets}/groupupdate/http-response.adoc[]
 
 === 모임 삭제
 
@@ -46,13 +70,22 @@ include::{snippets}/grouplist/http-request.adoc[]
 Response
 include::{snippets}/grouplist/http-response.adoc[]
 
-=== 본인이 가입하거나 주최한 모임 조회
+=== 본인이 가입한 모임 조회
 
 Request
-include::{snippets}/grouprelated/http-request.adoc[]
+include::{snippets}/participatedgrouplist/http-request.adoc[]
 
 Response
-include::{snippets}/grouprelated/http-response.adoc[]
+include::{snippets}/participatedgrouplist/http-response.adoc[]
+
+=== 본인이 주최한 모임 조회
+
+Request
+include::{snippets}/hostedgrouplist/http-request.adoc[]
+
+Response
+include::{snippets}/hostedgrouplist/http-response.adoc[]
+
 
 == 유저
 
@@ -71,6 +104,38 @@ include::{snippets}/memberlogin/http-request.adoc[]
 
 Response
 include::{snippets}/memberlogin/http-response.adoc[]
+
+=== OAuth 구글 링크
+
+Request
+include::{snippets}/oauthlink/http-request.adoc[]
+
+Response
+include::{snippets}/oauthlink/http-response.adoc[]
+
+=== OAuth 로그인
+
+Request
+include::{snippets}/oauthlogin/http-request.adoc[]
+
+Response
+include::{snippets}/oauthlogin/http-response.adoc[]
+
+=== 리프레시토큰을 통한 엑세스 토큰 재발급
+
+Request
+include::{snippets}/reissuetoken/http-request.adoc[]
+
+Response
+include::{snippets}/reissuetoken/http-response.adoc[]
+
+=== 로그아웃
+
+Request
+include::{snippets}/memberlogout/http-request.adoc[]
+
+Response
+include::{snippets}/memberlogout/http-response.adoc[]
 
 === 회원 조회
 
@@ -121,3 +186,22 @@ include::{snippets}/findparticipants/http-request.adoc[]
 
 Response
 include::{snippets}/findparticipants/http-response.adoc[]
+
+== 이미지
+
+=== 이미지 업로드
+
+Request
+include::{snippets}/imageupload/http-request.adoc[]
+
+Response
+include::{snippets}/imageupload/http-response.adoc[]
+
+=== 이미지 불러오기
+
+Request
+include::{snippets}/imageload/http-request.adoc[]
+
+Response
+include::{snippets}/imageload/http-response.adoc[]
+

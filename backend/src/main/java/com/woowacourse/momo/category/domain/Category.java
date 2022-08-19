@@ -1,10 +1,12 @@
 package com.woowacourse.momo.category.domain;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @RequiredArgsConstructor
@@ -28,6 +30,6 @@ public enum Category {
         return Arrays.stream(values())
                 .filter(category -> category.id == id)
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("카테고리를 찾을 수 없습니다."));
+                .orElseThrow(() -> new MomoException(ErrorCode.CATEGORY_NOT_EXIST));
     }
 }

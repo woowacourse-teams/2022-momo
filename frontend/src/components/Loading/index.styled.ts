@@ -6,9 +6,7 @@ const Wrapper = styled.div`
   align-items: center;
 
   width: 100%;
-  height: calc(100% - 4rem);
-
-  background: ${({ theme: { colors } }) => colors.gray004};
+  height: 100%;
 `;
 
 export { Wrapper };

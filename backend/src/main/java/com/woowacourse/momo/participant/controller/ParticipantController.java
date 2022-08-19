@@ -3,6 +3,7 @@ package com.woowacourse.momo.participant.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,12 @@ public class ParticipantController {
     @GetMapping
     public ResponseEntity<List<MemberResponse>> findParticipants(@PathVariable Long groupId) {
         return ResponseEntity.ok(participantService.findParticipants(groupId));
+    }
+
+    @Authenticated
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
+        participantService.delete(groupId, memberId);
+        return ResponseEntity.noContent().build();
     }
 }

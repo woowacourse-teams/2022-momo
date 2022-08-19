@@ -7,7 +7,7 @@ const Container = styled.div`
   align-items: center;
   gap: 4rem;
 
-  height: calc(100% - 4rem);
+  height: 100%;
 `;
 
 const Title = styled.h1`

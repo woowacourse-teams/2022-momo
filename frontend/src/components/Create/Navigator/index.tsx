@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { ReactComponent as CompleteSVG } from 'assets/complete.svg';
-import Dot from 'components/Dot';
+import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
 import LeftArrow from 'components/svg/LeftArrow';
 import RightArrow from 'components/svg/RightArrow';
 import { PageType } from 'types/data';
 
+import Button from './Button';
 import * as S from './index.styled';
 
 interface NavigatorProps {
@@ -53,14 +53,13 @@ function Navigator({
         />
       </S.SideButton>
       {totalPage.map(({ number, content }) => (
-        <button
-          type="button"
-          title={content}
-          onClick={changePage(number)}
+        <Button
+          content={content}
+          number={number}
+          isFocused={number === page}
+          changePage={changePage}
           key={number}
-        >
-          <Dot isFocused={number === page} />
-        </button>
+        />
       ))}
       {page < totalPage.length ? (
         <S.SideButton type="button" onClick={goToNextPage}>

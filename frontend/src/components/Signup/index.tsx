@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
-import Modal from 'components/Modal';
+import Modal from 'components/@shared/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
+import useModal from 'hooks/useModal';
+import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
@@ -17,7 +19,9 @@ import {
 } from './validate';
 
 function Signup() {
-  const [isModalOpen, setModalState] = useRecoilState(modalState);
+  const modalFlag = useRecoilValue(modalState);
+  const { showLoginModal } = useModal();
+
   const {
     value: userId,
     setValue: setUserId,
@@ -42,13 +46,7 @@ function Signup() {
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
-  const setOffModal = () => {
-    setModalState('off');
-  };
-
-  const showLoginModal = () => {
-    setModalState('login');
-  };
+  const { setMessage } = useSnackbar();
 
   const resetValues = () => {
     dangerouslySetUserId('');
@@ -73,7 +71,7 @@ function Signup() {
 
     requestSignup({ userId, password, name })
       .then(() => {
-        alert(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
+        setMessage(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
         resetValues();
         showLoginModal();
       })
@@ -94,7 +92,7 @@ function Signup() {
   }, [name]);
 
   return (
-    <Modal modalState={isModalOpen === 'signup'} setOffModal={setOffModal}>
+    <Modal modalState={modalFlag === 'signup'}>
       <S.Form onSubmit={signup}>
         <S.Title>회원가입</S.Title>
         <S.InputContainer>

@@ -18,5 +18,10 @@ public class ChangePasswordRequest {
     @Pattern(regexp = PASSWORD_PATTERN,
             message = "패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다.")
     @NotBlank(message = "패스워드는 빈 값일 수 없습니다.")
-    private String password;
+    private String newPassword;
+
+    @Pattern(regexp = PASSWORD_PATTERN,
+            message = "패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다.")
+    @NotBlank(message = "패스워드는 빈 값일 수 없습니다.")
+    private String oldPassword;
 }

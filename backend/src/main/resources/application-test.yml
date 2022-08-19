@@ -1,0 +1,7 @@
+spring:
+  config:
+    import:
+      - security/application.yml
+      - security/application-datasource.yml
+      - application-datasource.yml
+      - application-logging.yml

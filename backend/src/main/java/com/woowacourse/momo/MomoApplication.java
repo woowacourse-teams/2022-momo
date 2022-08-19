@@ -9,5 +9,4 @@ public class MomoApplication {
     public static void main(String[] args) {
         SpringApplication.run(MomoApplication.class, args);
     }
-
 }

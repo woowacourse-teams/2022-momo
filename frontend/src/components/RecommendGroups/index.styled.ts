@@ -1,8 +1,23 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+
+  width: 100%;
+`;
+
+const HeadingContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const Heading = styled.h2`
-  padding-left: 1rem;
+  margin-left: 1rem;
 
   font-size: 1.5rem;
   font-weight: 300;
@@ -34,4 +49,11 @@ const GroupListBox = styled.div`
   `}
 `;
 
-export { Heading, GroupListBox };
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+`;
+
+export { Container, HeadingContainer, Heading, GroupListBox, LoadingWrapper };

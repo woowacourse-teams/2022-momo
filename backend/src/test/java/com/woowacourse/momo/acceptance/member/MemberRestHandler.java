@@ -15,8 +15,8 @@ public class MemberRestHandler extends RestHandler {
         return getRequest(accessToken, BASE_URL);
     }
 
-    public static ValidatableResponse 비밀번호를_수정한다(String accessToken, String newPassword) {
-        ChangePasswordRequest request = new ChangePasswordRequest(newPassword);
+    public static ValidatableResponse 비밀번호를_수정한다(String accessToken, String newPassword, String oldPassword) {
+        ChangePasswordRequest request = new ChangePasswordRequest(newPassword, oldPassword);
         return patchRequest(accessToken, request, BASE_URL + "/password");
     }
 

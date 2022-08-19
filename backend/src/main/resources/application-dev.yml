@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import:
+      - security/application.yml
+      - security/application-dev-datasource.yml
+      - application-datasource.yml
+      - application-logging.yml
