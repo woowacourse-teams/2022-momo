@@ -11,7 +11,7 @@ import Card from 'components/@shared/Card';
 import Checkbox from 'components/@shared/Checkbox';
 import NoResult from 'components/@shared/NoResult';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
-import { GroupList } from 'types/data';
+import { CategoryType, GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
@@ -25,6 +25,8 @@ interface RecommendGroupsProps {
   groups: GroupList['groups'];
   isExcludeFinished: boolean;
   toggleIsExcludeFinished: () => void;
+  // hotfix : 2022-08-19
+  selectedCategoryId: CategoryType['id'];
 }
 
 function RecommendGroups({
@@ -35,6 +37,7 @@ function RecommendGroups({
   groups,
   isExcludeFinished,
   toggleIsExcludeFinished,
+  selectedCategoryId,
 }: RecommendGroupsProps) {
   const target = useRef<HTMLDivElement>(null);
 
@@ -44,11 +47,16 @@ function RecommendGroups({
     <S.Container>
       <S.HeadingContainer>
         <S.Heading>{groups.length > 0 ? description : ''}</S.Heading>
-        <Checkbox
-          description="마감된 모임 제외"
-          checked={isExcludeFinished}
-          toggleChecked={toggleIsExcludeFinished}
-        />
+        {
+          // hotfix : 2022-08-19
+          selectedCategoryId !== -1 && (
+            <Checkbox
+              description="마감된 모임 제외"
+              checked={isExcludeFinished}
+              toggleChecked={toggleIsExcludeFinished}
+            />
+          )
+        }
       </S.HeadingContainer>
       {groups.length > 0 ? (
         <>

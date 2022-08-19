@@ -66,6 +66,8 @@ function Main() {
   const selectCategory = (id: CategoryType['id']) => async () => {
     await setSelectedCategoryId(id);
     await setPageNumber(0);
+    // hotfix : 2022-08-19
+    await setIsExcludeFinished(false);
     refetch();
   };
 
@@ -97,6 +99,7 @@ function Main() {
             groups={groups}
             isExcludeFinished={isExcludeFinished}
             toggleIsExcludeFinished={toggleIsExcludeFinished}
+            selectedCategoryId={selectedCategoryId}
           />
         </ErrorBoundary>
       </S.Content>
