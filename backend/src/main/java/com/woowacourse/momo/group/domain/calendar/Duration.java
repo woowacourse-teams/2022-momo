@@ -1,5 +1,8 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_DURATION_NOT_PAST;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_DURATION_START_AFTER_END;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -10,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -37,13 +39,13 @@ public class Duration {
 
     private void validatePastDate() {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
+            throw new MomoException(GROUP_DURATION_NOT_PAST);
         }
     }
 
     private void validateEndIsNotBeforeStart() {
         if (endDate.isBefore(startDate)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
+            throw new MomoException(GROUP_DURATION_START_AFTER_END);
         }
     }
 }

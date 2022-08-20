@@ -4,6 +4,9 @@ import static org.springframework.http.MediaType.IMAGE_GIF_VALUE;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.FILE_INVALID_EXTENSION;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.FILE_IO_ERROR;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,7 +18,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Service
@@ -35,7 +37,7 @@ public class StorageService {
         try (OutputStream outputStream = new FileOutputStream(savedFile)) {
             outputStream.write(requestFile.getBytes());
         } catch (IOException e) {
-            throw new MomoException(ErrorCode.FILE_IO_ERROR);
+            throw new MomoException(FILE_IO_ERROR);
         }
 
         return savedFile.getName();
@@ -45,7 +47,7 @@ public class StorageService {
         String contentType = file.getContentType();
 
         if (contentType == null || isContentTypeNotImage(contentType)) {
-            throw new MomoException(ErrorCode.FILE_INVALID_EXTENSION);
+            throw new MomoException(FILE_INVALID_EXTENSION);
         }
     }
 
@@ -61,7 +63,7 @@ public class StorageService {
             }
             temporary.createNewFile();
         } catch (IOException e) {
-            throw new MomoException(ErrorCode.FILE_IO_ERROR);
+            throw new MomoException(FILE_IO_ERROR);
         }
     }
 
@@ -70,7 +72,7 @@ public class StorageService {
         try (InputStream inputStream = new FileInputStream(file)) {
             return inputStream.readAllBytes();
         } catch (IOException e) {
-            throw new MomoException(ErrorCode.FILE_IO_ERROR);
+            throw new MomoException(FILE_IO_ERROR);
         }
     }
 }

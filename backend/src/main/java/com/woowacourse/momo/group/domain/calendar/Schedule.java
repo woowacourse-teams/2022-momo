@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_SCHEDULE_START_AFTER_END;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -48,7 +49,7 @@ public class Schedule {
 
     private void validateStartIsBeforeEnd() {
         if (!endTime.isAfter(startTime)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
+            throw new MomoException(GROUP_SCHEDULE_START_AFTER_END);
         }
     }
 }

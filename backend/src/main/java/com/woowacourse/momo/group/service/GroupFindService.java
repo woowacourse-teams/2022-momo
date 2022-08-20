@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.service;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_NOT_EXIST;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
@@ -30,7 +31,7 @@ public class GroupFindService {
 
     public Group findGroup(Long id) {
         return groupRepository.findById(id)
-                .orElseThrow(() -> new MomoException(ErrorCode.GROUP_NOT_EXIST));
+                .orElseThrow(() -> new MomoException(GROUP_NOT_EXIST));
     }
 
     public Page<Group> findGroups(GroupFindRequest request) {

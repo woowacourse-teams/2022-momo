@@ -1,5 +1,16 @@
 package com.woowacourse.momo.group.domain.group;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_DELETE_NO_HOST;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_ALREADY_FINISH;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_EXIST_PARTICIPANTS;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_FINISHED;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_JOIN_BY_HOST;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_HOST;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_RE_PARTICIPATE;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,8 +117,8 @@ public class Group {
     }
 
     public void closeEarly(Member member) {
-        validateMemberIsHost(member, ErrorCode.AUTH_DELETE_NO_HOST);
-        validateRecruitmentDoesNotFinish(ErrorCode.GROUP_ALREADY_FINISH);
+        validateMemberIsHost(member, AUTH_DELETE_NO_HOST);
+        validateRecruitmentDoesNotFinish(GROUP_ALREADY_FINISH);
 
         this.isEarlyClosed = true;
     }
@@ -133,22 +144,22 @@ public class Group {
     }
 
     public void validateMemberCanLeave(Member member) {
-        validateMemberIsNotHost(member, ErrorCode.PARTICIPANT_LEAVE_HOST);
-        validateMemberIsParticipating(member, ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
-        validateDeadlineIsNotOver(ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
-        validateGroupIsNotEarlyClosed(ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
+        validateMemberIsNotHost(member, PARTICIPANT_LEAVE_HOST);
+        validateMemberIsParticipating(member, PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validateDeadlineIsNotOver(PARTICIPANT_LEAVE_DEADLINE);
+        validateGroupIsNotEarlyClosed(PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
 
     public void validateGroupIsInitialState(Member member) {
-        validateMemberIsHost(member, ErrorCode.AUTH_DELETE_NO_HOST);
-        validateRecruitmentDoesNotFinish(ErrorCode.GROUP_ALREADY_FINISH);
-        validateParticipantDoesNotExist(ErrorCode.GROUP_EXIST_PARTICIPANTS);
+        validateMemberIsHost(member, AUTH_DELETE_NO_HOST);
+        validateRecruitmentDoesNotFinish(GROUP_ALREADY_FINISH);
+        validateParticipantDoesNotExist(GROUP_EXIST_PARTICIPANTS);
     }
 
     private void validateMemberCanParticipate(Member member) {
-        validateRecruitmentDoesNotFinish(ErrorCode.PARTICIPANT_FINISHED);
-        validateMemberIsNotParticipating(member, ErrorCode.PARTICIPANT_RE_PARTICIPATE);
-        validateMemberIsNotHost(member, ErrorCode.PARTICIPANT_JOIN_BY_HOST);
+        validateRecruitmentDoesNotFinish(PARTICIPANT_FINISHED);
+        validateMemberIsNotParticipating(member, PARTICIPANT_RE_PARTICIPATE);
+        validateMemberIsNotHost(member, PARTICIPANT_JOIN_BY_HOST);
     }
 
     private void validateMemberIsHost(Member member, ErrorCode errorCode) {

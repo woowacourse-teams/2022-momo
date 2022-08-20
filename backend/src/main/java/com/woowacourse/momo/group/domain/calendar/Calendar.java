@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -55,7 +56,7 @@ public class Calendar {
 
     private void validateIsBeforeStartDuration() {
         if (duration.isAfterStartDate(deadline.getValue())) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
+            throw new MomoException(GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
 }

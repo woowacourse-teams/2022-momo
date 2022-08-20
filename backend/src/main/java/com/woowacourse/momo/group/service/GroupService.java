@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.service;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -9,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
@@ -91,7 +92,7 @@ public class GroupService {
 
     private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
         if (existAnyScheduleOutOfDuration(schedules, duration)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+            throw new MomoException(GROUP_SCHEDULE_NOT_RANGE_DURATION);
         }
     }
 
