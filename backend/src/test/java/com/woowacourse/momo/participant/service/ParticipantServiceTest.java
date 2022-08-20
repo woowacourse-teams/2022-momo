@@ -145,7 +145,7 @@ class ParticipantServiceTest {
                 .map(MemberResponse::getName)
                 .collect(Collectors.toList());
 
-        assertThat(actual).contains(participant1.getName());
+        assertThat(actual).contains(participant1.getUserName());
     }
 
     @DisplayName("존재하지 않는 모임의 참여자 목록을 조회할 수 없다")

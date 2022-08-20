@@ -15,14 +15,14 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class Name {
+public class UserName {
 
     private static final int MAXIMUM = 30;
 
     @Column(name = "name", nullable = false, length = 30)
     private String value;
 
-    public Name(String value) {
+    public UserName(String value) {
         this.value = value;
         validateNameIsNotBlank();
         validateNameLengthIsLessThan30();

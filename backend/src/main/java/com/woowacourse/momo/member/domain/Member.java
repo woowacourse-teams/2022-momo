@@ -32,7 +32,7 @@ public class Member {
     private Password password;
 
     @Embedded
-    private Name name;
+    private UserName userName;
 
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -41,7 +41,7 @@ public class Member {
     public Member(String userId, Password password, String name) {
         this.userId = new UserId(userId);
         this.password = password;
-        this.name = new Name(name);
+        this.userName = new UserName(name);
     }
 
     public boolean isNotSamePassword(String password) {
@@ -53,12 +53,12 @@ public class Member {
     }
 
     public void changeName(String name) {
-        this.name.update(name);
+        this.userName.update(name);
     }
 
     public void delete() {
         password.update(GHOST_PRIVATE_INFO);
-        name.update(GHOST_NAME);
+        userName.update(GHOST_NAME);
         deleted = true;
     }
 
@@ -70,7 +70,7 @@ public class Member {
         return password.getValue();
     }
 
-    public String getName() {
-        return name.getValue();
+    public String getUserName() {
+        return userName.getValue();
     }
 }
