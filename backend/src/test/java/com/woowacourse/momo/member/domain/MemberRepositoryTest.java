@@ -58,7 +58,7 @@ class MemberRepositoryTest {
         Member expected = memberRepository.save(member);
         synchronize();
 
-        Optional<Member> actual = memberRepository.findByUserIdAndPassword(userId, PASSWORD);
+        Optional<Member> actual = memberRepository.findByUserIdAndPassword(new UserId(userId), PASSWORD);
 
         assertThat(actual).isPresent();
         assertThat(actual.get()).usingRecursiveComparison()

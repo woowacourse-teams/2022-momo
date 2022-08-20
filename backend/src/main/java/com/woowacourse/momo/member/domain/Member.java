@@ -25,8 +25,8 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    private String userId;
+    @Embedded
+    private UserId userId;
 
     @Embedded
     private Password password;
@@ -39,7 +39,7 @@ public class Member {
     private boolean deleted;
 
     public Member(String userId, Password password, String name) {
-        this.userId = userId;
+        this.userId = new UserId(userId);
         this.password = password;
         this.name = new Name(name);
     }
@@ -60,6 +60,10 @@ public class Member {
         password.update(GHOST_PRIVATE_INFO);
         name.update(GHOST_NAME);
         deleted = true;
+    }
+
+    public String getUserId() {
+        return userId.getValue();
     }
 
     public String getPassword() {

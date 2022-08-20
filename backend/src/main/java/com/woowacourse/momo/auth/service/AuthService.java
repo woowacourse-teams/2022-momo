@@ -18,6 +18,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
@@ -55,7 +56,7 @@ public class AuthService {
     }
 
     private void validateExistUser(String userId) {
-        Optional<Member> member = memberRepository.findByUserId(userId);
+        Optional<Member> member = memberRepository.findByUserId(new UserId(userId));
         if (member.isPresent()) {
             throw new MomoException(ErrorCode.SIGNUP_ALREADY_REGISTER);
         }

@@ -23,6 +23,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @RequiredArgsConstructor
 @Service
@@ -69,7 +70,7 @@ public class OauthService {
     }
 
     private Member findOrSaveMember(GoogleUserResponse response) {
-        return memberRepository.findByUserId(response.getEmail())
+        return memberRepository.findByUserId(new UserId(response.getEmail()))
                 .orElseGet(() -> saveMember(response));
     }
 
