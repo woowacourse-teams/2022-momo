@@ -1,5 +1,7 @@
 package com.woowacourse.momo.auth.config;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_INVALID_TOKEN;
+
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
