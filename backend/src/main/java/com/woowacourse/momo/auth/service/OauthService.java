@@ -57,13 +57,13 @@ public class OauthService {
     private GoogleUserResponse requestUserInfo(String code, String redirectUrl) {
         ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code, redirectUrl);
 
-        validateResponseStatusOk(responseEntity.getStatusCode());
+        validateResponseStatusIsOk(responseEntity.getStatusCode());
 
         return Optional.ofNullable(responseEntity.getBody())
                 .orElseThrow(() -> new MomoException(OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
     }
 
-    private void validateResponseStatusOk(HttpStatus status) {
+    private void validateResponseStatusIsOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
             throw new MomoException(OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
