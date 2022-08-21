@@ -42,7 +42,7 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            Predicate nameContainKeyword = criteriaBuilder.like(root.get("name"), "%" + keyword + "%");
+            Predicate nameContainKeyword = criteriaBuilder.like(root.get("name").get("value"), "%" + keyword + "%");
             Predicate descriptionContainKeyword = criteriaBuilder.like(root.get("description"), "%" + keyword + "%");
             return criteriaBuilder.or(nameContainKeyword, descriptionContainKeyword);
         };

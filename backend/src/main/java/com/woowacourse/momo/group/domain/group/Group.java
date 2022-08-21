@@ -56,8 +56,8 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Embedded
+    private GroupName name;
 
     @ManyToOne
     @JoinColumn
@@ -88,7 +88,7 @@ public class Group {
 
     public Group(String name, Member host, Category category, int capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
-        this.name = name;
+        this.name = new GroupName(name);
         this.host = host;
         this.category = category;
         this.capacity = new Capacity(capacity);
@@ -101,7 +101,7 @@ public class Group {
 
     public void update(String name, Member host, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
-        this.name = name;
+        this.name = new GroupName(name);
         this.category = category;
         this.capacity = new Capacity(capacity);
         this.location = location;
@@ -169,6 +169,10 @@ public class Group {
         if (exceptionPredicate.run()) {
             throw new MomoException(errorCode);
         }
+    }
+
+    public String getName() {
+        return name.getValue();
     }
 
     public int getCapacity() {

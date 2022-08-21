@@ -50,6 +50,7 @@ public enum ErrorCode {
     GROUP_MEMBERS_NOT_IN_RANGE(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_008", "모임 내 인원은 1명 이상 99명 이하여야 합니다."),
     GROUP_ALREADY_FINISH(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_009", "모집 마감된 모임은 수정 및 삭제할 수 없습니다."),
     GROUP_EXIST_PARTICIPANTS(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_010", "참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다."),
+    GROUP_NAME_SHOULD_NOT_BE_BLANK(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_011", "모임의 이름이 빈 값입니다."),
 
     PARTICIPANT_JOIN_BY_HOST(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_001", "주최자는 자신의 모임에 참여할 수 없습니다."),
     PARTICIPANT_RE_PARTICIPATE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_002", "참여자는 본인이 참여한 모임에 재참여할 수 없습니다."),
