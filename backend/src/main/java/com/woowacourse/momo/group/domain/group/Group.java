@@ -44,6 +44,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.participant.domain.Participant;
+import com.woowacourse.momo.participant.domain.Participants;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -73,9 +74,8 @@ public class Group {
     @Embedded
     private Calendar calendar;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Participant> participants = new ArrayList<>();
+    @Embedded
+    private Participants participants;
 
     @Column(nullable = false)
     private String location;
@@ -96,7 +96,7 @@ public class Group {
         this.location = location;
         this.description = description;
 
-        this.participants.add(new Participant(this, host));
+        this.participants = new Participants(this, host);
     }
 
     public void update(String name, Member host, Category category, int capacity, Duration duration, LocalDateTime deadline,
@@ -112,17 +112,16 @@ public class Group {
     }
 
     public void participate(Member member) {
-        validateMemberCanParticipate(member);
-        this.participants.add(new Participant(this, member));
+        participants.participate(this, member);
     }
 
     public void closeEarly(Member member) {
         validateGroupCanBeCloseEarly(member);
-        this.isEarlyClosed = true;
+        isEarlyClosed = true;
     }
 
     public boolean isExistParticipants() {
-        return participants.size() > NONE_PARTICIPANT;
+        return participants.isExist();
     }
 
     public boolean isHost(Member host) {
@@ -137,13 +136,9 @@ public class Group {
         return isEarlyClosed || capacity.isFull(participants.size()) || calendar.isDeadlineOver();
     }
 
-    private boolean isParticipant(Member member) {
-        return getParticipants().contains(member);
-    }
-
     public void validateMemberCanLeave(Member member) {
         validateTemplate((() -> isHost(member)), PARTICIPANT_LEAVE_HOST);
-        validateTemplate((() -> !isParticipant(member)), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validateTemplate((() -> !participants.isParticipant(member)), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         validateTemplate((() -> calendar.isDeadlineOver()), PARTICIPANT_LEAVE_DEADLINE);
         validateTemplate((() -> isEarlyClosed), PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
@@ -152,12 +147,6 @@ public class Group {
         validateTemplate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
         validateTemplate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
         validateTemplate((this::isExistParticipants), GROUP_EXIST_PARTICIPANTS);
-    }
-
-    private void validateMemberCanParticipate(Member member) {
-        validateTemplate((this::isFinishedRecruitment), PARTICIPANT_FINISHED);
-        validateTemplate((() -> isParticipant(member)), PARTICIPANT_RE_PARTICIPATE);
-        validateTemplate((() -> isHost(member)), PARTICIPANT_JOIN_BY_HOST);
     }
 
     private void validateGroupCanBeCloseEarly(Member member) {
@@ -192,9 +181,7 @@ public class Group {
     }
 
     public List<Member> getParticipants() {
-        return participants.stream()
-                .map(Participant::getMember)
-                .collect(Collectors.toList());
+        return participants.getValue();
     }
 
     public static class Builder {

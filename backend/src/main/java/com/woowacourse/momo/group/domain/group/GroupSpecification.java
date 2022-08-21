@@ -20,7 +20,7 @@ public class GroupSpecification {
 
     public Specification<Group> filterByParticipated(Member member) {
         return (root, query, criteriaBuilder) -> {
-            Join<Participant, Group> groupParticipant = root.join("participants");
+            Join<Participant, Group> groupParticipant = root.join("participants").join("value");
             return criteriaBuilder.equal(groupParticipant.get("member"), member);
         };
     }
@@ -53,7 +53,7 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            root.join("participants");
+            root.join("participants").join("value");
             query.groupBy(root.get("id"));
 
             Expression<Long> count = criteriaBuilder.count(root.get("id"));
