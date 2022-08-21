@@ -39,7 +39,7 @@ public class UserId {
     }
 
     private void validateUserIdIsValidPattern() {
-        if (value.contains(EMAIL_PATTERN)) {
+        if (MemberPattern.isNotValidUserId(value)) {
             throw new MomoException(SIGNUP_INVALID_ID);
         }
     }
