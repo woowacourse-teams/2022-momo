@@ -99,13 +99,13 @@ class MemberServiceTest {
     void updateName() {
         Long memberId = createMember();
         Member beforeMember = memberFindService.findMember(memberId);
-        String beforeName = beforeMember.getName();
+        String beforeName = beforeMember.getUserName();
 
         ChangeNameRequest request = new ChangeNameRequest("무무");
         memberService.updateName(memberId, request);
 
         Member member = memberFindService.findMember(memberId);
-        assertThat(member.getName()).isNotEqualTo(beforeName);
+        assertThat(member.getUserName()).isNotEqualTo(beforeName);
     }
 
     @DisplayName("존재하지 않는 회원의 이름을 수정하는 경우 예외가 발생한다")

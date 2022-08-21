@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.service;
 
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_WRONG_PASSWORD;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,7 +88,7 @@ public class MemberService {
     private void confirmPassword(Member member, String password) {
         String encryptedPassword = passwordEncoder.encrypt(password);
         if (member.isNotSamePassword(encryptedPassword)) {
-            throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
+            throw new MomoException(MEMBER_WRONG_PASSWORD);
         }
     }
 }

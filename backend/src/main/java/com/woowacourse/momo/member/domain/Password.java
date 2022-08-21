@@ -35,6 +35,10 @@ public class Password {
         this.value = value;
     }
 
+    public boolean isSame(String password) {
+        return value.equals(password);
+    }
+
     private static void validatePasswordIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK);
