@@ -3,6 +3,7 @@ package com.woowacourse.momo.member.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -17,5 +18,13 @@ class UserIdTest {
         assertThatThrownBy(() -> new UserId(id))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("사용자의 아이디가 빈 값입니다.");
+    }
+
+    @DisplayName("사용자의 아이디가 이메일 형식일 경우 예외가 발생한다")
+    @Test
+    void idMustNotBeInEmail() {
+        assertThatThrownBy(() -> new UserId("id@woowacourse.com"))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("잘못된 형식의 아이디입니다.");
     }
 }

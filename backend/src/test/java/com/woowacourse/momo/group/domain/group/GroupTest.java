@@ -131,7 +131,7 @@ class GroupTest {
     @Test
     void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
         Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
-        Member member = new Member("momo@woowa.com", password, "모모");
+        Member member = new Member("momo", password, "모모");
 
         assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(MomoException.class)
@@ -163,7 +163,7 @@ class GroupTest {
     void isFinishedRecruitmentWithOverCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
-        Member member = new Member("momo@woowa.com", password, "모모");
+        Member member = new Member("momo", password, "모모");
         group.participate(member);
 
         assertThat(group.isFinishedRecruitment()).isTrue();

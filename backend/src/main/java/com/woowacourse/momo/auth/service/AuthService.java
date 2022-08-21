@@ -2,7 +2,6 @@ package com.woowacourse.momo.auth.service;
 
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_INVALID_TOKEN;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.SIGNUP_ALREADY_REGISTER;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.SIGNUP_INVALID_ID;
 
 import java.util.Optional;
 
@@ -49,8 +48,7 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        validateUserId(request.getUserId());
-        validateExistUser(request.getUserId());
+        validateUserNotExist(request.getUserId());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = new Member(request.getUserId(), password, request.getName());
         Member savedMember = memberRepository.save(member);
@@ -58,16 +56,10 @@ public class AuthService {
         return savedMember.getId();
     }
 
-    private void validateExistUser(String userId) {
+    private void validateUserNotExist(String userId) {
         Optional<Member> member = memberRepository.findByUserId(new UserId(userId));
         if (member.isPresent()) {
             throw new MomoException(SIGNUP_ALREADY_REGISTER);
-        }
-    }
-
-    private void validateUserId(String userId) {
-        if (userId.contains("@")) {
-            throw new MomoException(SIGNUP_INVALID_ID);
         }
     }
 
