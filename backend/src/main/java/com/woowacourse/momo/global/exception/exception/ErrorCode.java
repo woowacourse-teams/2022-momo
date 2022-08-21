@@ -21,6 +21,7 @@ public enum ErrorCode {
     MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_006", "패스워드가 빈 값입니다."),
     MEMBER_PASSWORD_PATTERN_MUST_BE_VALID(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_007", "패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다."),
     MEMBER_ENCRYPTED_PASSWORD_MUST_NOT_UPDATE(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_008", "암호화된 패스워드는 수정할 수 없습니다."),
+    MEMBER_ID_SHOULD_NOT_BE_BLANK(HttpStatus.BAD_REQUEST.value(), "MEMBER_ERROR_009", "사용자의 아이디가 빈 값입니다."),
 
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_001", "토큰의 유효기간이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH_ERROR_002", "토큰이 유효하지 않습니다."),

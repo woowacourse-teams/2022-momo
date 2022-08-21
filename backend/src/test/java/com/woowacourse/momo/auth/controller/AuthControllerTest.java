@@ -86,7 +86,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_009")));
     }
 
     @DisplayName("비어있는 비밀번호 값으로 회원가입시 400코드가 반환된다")
@@ -98,7 +98,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_006")));
     }
 
     @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
@@ -110,7 +110,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_007")));
     }
 
     @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
@@ -122,7 +122,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_004")));
     }
 
     @DisplayName("정상적으로 로그인될 시 토큰이 발급된다")
@@ -154,7 +154,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_009")));
     }
 
     @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
@@ -167,7 +167,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("VALIDATION_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_006")));
     }
 
     @DisplayName("리프레시 토큰을 통해 엑세스 토큰을 재발급받는다")

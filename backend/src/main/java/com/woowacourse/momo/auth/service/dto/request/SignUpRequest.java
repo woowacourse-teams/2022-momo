@@ -1,7 +1,6 @@
 package com.woowacourse.momo.auth.service.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,14 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignUpRequest {
 
-    private static final String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-
-    @NotBlank(message = "아이디는 빈 값일 수 없습니다.")
+    @NotNull
     private String userId;
-    @Pattern(regexp = PASSWORD_PATTERN,
-            message = "패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다.")
-    @NotBlank(message = "패스워드는 빈 값일 수 없습니다.")
+    @NotNull
     private String password;
-    @NotBlank(message = "이름은 빈 값일 수 없습니다.")
+    @NotNull
     private String name;
 }
