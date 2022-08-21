@@ -3,34 +3,26 @@ package com.woowacourse.momo.group.domain.group;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_DELETE_NO_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_ALREADY_FINISH;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_EXIST_PARTICIPANTS;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_FINISHED;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_JOIN_BY_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_RE_PARTICIPATE;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,7 +35,6 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.participant.domain.Participant;
 import com.woowacourse.momo.participant.domain.Participants;
 
 @Getter

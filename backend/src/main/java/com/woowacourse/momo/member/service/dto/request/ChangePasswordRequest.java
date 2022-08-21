@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChangePasswordRequest {
 
-    private static final String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
-
     @NotNull
     private String newPassword;
     @NotNull
-    private String oldPassword; // TODO: 빈값 및 패턴 검증 추가
+    private String oldPassword;
 }

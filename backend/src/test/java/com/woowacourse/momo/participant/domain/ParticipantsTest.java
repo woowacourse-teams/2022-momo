@@ -5,10 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.DurationFixture.일주일후_하루동안;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
