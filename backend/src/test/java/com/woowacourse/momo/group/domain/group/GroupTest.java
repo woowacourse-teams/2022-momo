@@ -254,20 +254,20 @@ class GroupTest {
 
     private Group constructGroupWithSetCapacity(int capacity) {
         List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
-        return new Group("momo 회의", host, Category.STUDY, capacity, 이틀후부터_일주일후까지.getInstance(),
+        return new Group("momo 회의", host, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
         List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
-        return new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+        return new Group("momo 회의", host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
                 deadline, schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
         List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
-        Group group = new Group("momo 회의", host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+        Group group = new Group("momo 회의", host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(), schedules, "", "");
 
         setPastDeadline(group, deadline);

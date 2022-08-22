@@ -169,7 +169,7 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(String name, Member host, List<Schedule> schedules) {
-        return new Group(name, host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
+        return new Group(name, host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
                 내일_23시_59분.getInstance(),
                 schedules, "", "");
     }

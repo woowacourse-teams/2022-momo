@@ -37,9 +37,9 @@ public class Participants {
     @Embedded
     private Capacity capacity;
 
-    public Participants(Group group, int capacity) {
+    public Participants(Group group, Capacity capacity) {
         participants.add(new Participant(group, group.getHost()));
-        this.capacity = new Capacity(capacity);
+        this.capacity = capacity;
     }
 
     public void participate(Group group, Member member) {

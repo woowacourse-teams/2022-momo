@@ -25,6 +25,7 @@ import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
@@ -237,7 +238,7 @@ class GroupFindServiceTest {
     }
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(name, host, category, capacity, 일주일후_하루동안.getInstance(),
+        return new Group(name, host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
                 deadline, List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
     }
 

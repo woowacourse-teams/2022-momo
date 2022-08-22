@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -19,13 +20,17 @@ public class GroupRequestAssembler {
                 .name(request.getName())
                 .host(host)
                 .categoryId(request.getCategoryId())
-                .capacity(request.getCapacity())
+                .capacity(capacity(request))
                 .duration(duration(request.getDuration()))
                 .deadline(request.getDeadline())
                 .schedules(schedules(request.getSchedules()))
                 .location(request.getLocation())
                 .description(request.getDescription())
                 .build();
+    }
+
+    public static Capacity capacity(GroupRequest request) {
+        return new Capacity(request.getCapacity());
     }
 
     public static Duration duration(DurationRequest request) {

@@ -72,7 +72,7 @@ public class Group {
 
     private boolean isEarlyClosed;
 
-    public Group(String name, Member host, Category category, int capacity, Duration duration,
+    public Group(String name, Member host, Category category, Capacity capacity, Duration duration,
                  LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
         this.name = new GroupName(name);
         this.host = host;
@@ -170,7 +170,7 @@ public class Group {
         private String name;
         private Member host;
         private Category category;
-        private int capacity;
+        private Capacity capacity;
         private Duration duration;
         private LocalDateTime deadline;
         private List<Schedule> schedules;
@@ -200,7 +200,7 @@ public class Group {
             return this;
         }
 
-        public Builder capacity(int capacity) {
+        public Builder capacity(Capacity capacity) {
             this.capacity = capacity;
             return this;
         }
