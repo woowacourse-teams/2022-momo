@@ -28,15 +28,15 @@ public class Calendar {
     @Embedded
     private Deadline deadline;
 
-    public Calendar(List<Schedule> schedules, Duration duration, Deadline deadline) {
-        this.schedules = new Schedules(schedules);
+    public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
+        this.schedules = schedules;
         this.duration = duration;
         this.deadline = deadline;
         validateIsBeforeStartDuration();
         validateSchedulesAreInDuration();
     }
 
-    public void update(List<Schedule> schedules, Duration duration, Deadline deadline) {
+    public void update(Schedules schedules, Duration duration, Deadline deadline) {
         this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;

@@ -37,6 +37,7 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
@@ -355,7 +356,7 @@ class ParticipantControllerTest {
         Group group = groupFindService.findGroup(groupId);
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), deadline);
+        Calendar calendar = new Calendar(new Schedules(group.getSchedules()), group.getDuration(), deadline);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;

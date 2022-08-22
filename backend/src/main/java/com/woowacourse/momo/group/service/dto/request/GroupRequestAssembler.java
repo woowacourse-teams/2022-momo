@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupName;
@@ -59,10 +60,12 @@ public class GroupRequestAssembler {
         return new Deadline(request.getDeadline());
     }
 
-    public static List<Schedule> schedules(List<ScheduleRequest> requests) {
-        return requests.stream()
-                .map(GroupRequestAssembler::schedule)
-                .collect(Collectors.toList());
+    public static Schedules schedules(List<ScheduleRequest> requests) {
+        return new Schedules(
+                requests.stream()
+                        .map(GroupRequestAssembler::schedule)
+                        .collect(Collectors.toList())
+        );
     }
 
     private static Schedule schedule(ScheduleRequest request) {

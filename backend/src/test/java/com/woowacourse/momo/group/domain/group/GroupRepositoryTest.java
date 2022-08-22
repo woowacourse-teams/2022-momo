@@ -26,6 +26,7 @@ import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -171,7 +172,7 @@ class GroupRepositoryTest {
 
     private Group constructGroup(String name, Member host, List<Schedule> schedules) {
         return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
-                new Deadline(내일_23시_59분.getInstance()), schedules, "", "");
+                new Deadline(내일_23시_59분.getInstance()), new Schedules(schedules), "", "");
     }
 
     private void synchronize() {

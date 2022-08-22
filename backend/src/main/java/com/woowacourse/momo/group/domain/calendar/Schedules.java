@@ -27,9 +27,9 @@ public class Schedules {
         value.addAll(schedules);
     }
 
-    public void change(List<Schedule> schedules) {
+    public void change(Schedules schedules) {
         value.clear();
-        value.addAll(schedules);
+        value.addAll(schedules.value);
     }
 
     public boolean isExistAnyScheduleOutOfDuration(Duration duration) {

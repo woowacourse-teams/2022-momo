@@ -26,6 +26,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
 
@@ -253,20 +254,20 @@ class GroupTest {
     }
 
     private Group constructGroupWithSetCapacity(int capacity) {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
         return new Group(new GroupName("momo 회의"), host, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getInstance(),
                 new Deadline(내일_23시_59분.getInstance()),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
         return new Group(new GroupName("momo 회의"), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
                 new Deadline(deadline), schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
         Group group = new Group(new GroupName("momo 회의"), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
                 new Deadline(내일_23시_59분.getInstance()), schedules, "", "");
 
@@ -278,7 +279,7 @@ class GroupTest {
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), deadline);
+        Calendar calendar = new Calendar(new Schedules(group.getSchedules()), group.getDuration(), deadline);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;
