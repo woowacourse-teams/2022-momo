@@ -17,8 +17,6 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class UserId {
 
-    private static final String EMAIL_PATTERN = "@";
-
     @Column(name = "user_id", nullable = false, unique = true)
     private String value;
 
@@ -26,10 +24,6 @@ public class UserId {
         this.value = value;
         validateUserIdIsNotBlank();
         validateUserIdIsValidPattern();
-    }
-
-    public void update(String value) {
-        this.value = value;
     }
 
     private void validateUserIdIsNotBlank() {

@@ -42,8 +42,6 @@ import com.woowacourse.momo.participant.domain.Participants;
 @Entity
 public class Group {
 
-    private static final int NONE_PARTICIPANT = 1;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
