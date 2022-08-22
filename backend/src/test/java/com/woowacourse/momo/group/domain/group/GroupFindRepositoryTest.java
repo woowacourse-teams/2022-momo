@@ -198,7 +198,7 @@ class GroupFindRepositoryTest {
     }
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(name, host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
+        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
                 new Deadline(deadline), List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
     }
 

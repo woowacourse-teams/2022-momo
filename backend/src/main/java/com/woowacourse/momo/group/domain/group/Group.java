@@ -73,9 +73,9 @@ public class Group {
 
     private boolean isEarlyClosed;
 
-    public Group(String name, Member host, Category category, Capacity capacity, Duration duration,
+    public Group(GroupName name, Member host, Category category, Capacity capacity, Duration duration,
                  Deadline deadline, List<Schedule> schedules, String location, String description) {
-        this.name = new GroupName(name);
+        this.name = name;
         this.host = host;
         this.category = category;
         this.calendar = new Calendar(schedules, duration, deadline);
@@ -85,9 +85,9 @@ public class Group {
         this.participants = new Participants(this, capacity);
     }
 
-    public void update(String name, Member host, Category category, Capacity capacity, Duration duration, Deadline deadline,
+    public void update(GroupName name, Member host, Category category, Capacity capacity, Duration duration, Deadline deadline,
                        List<Schedule> schedules, String location, String description) {
-        this.name = new GroupName(name);
+        this.name = name;
         this.category = category;
         this.location = location;
         this.description = description;
@@ -168,7 +168,7 @@ public class Group {
 
     public static class Builder {
 
-        private String name;
+        private GroupName name;
         private Member host;
         private Category category;
         private Capacity capacity;
@@ -181,7 +181,7 @@ public class Group {
         public Builder() {
         }
 
-        public Builder name(String name) {
+        public Builder name(GroupName name) {
             this.name = name;
             return this;
         }

@@ -18,6 +18,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
 
@@ -126,7 +127,7 @@ class ParticipantsTest {
     }
 
     private static Group constructGroup() {
-        return new Group("모임", HOST, Category.CAFE, CAPACITY,
+        return new Group(new GroupName("모임"), HOST, Category.CAFE, CAPACITY,
                 이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()),
                 List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
     }

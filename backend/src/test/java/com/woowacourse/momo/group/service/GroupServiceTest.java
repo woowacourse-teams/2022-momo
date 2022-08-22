@@ -29,6 +29,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
@@ -81,7 +82,7 @@ class GroupServiceTest {
     }
 
     private Group saveGroup(String name, Category category) {
-        return groupRepository.save(new Group(name, savedHost, category, new Capacity(3),
+        return groupRepository.save(new Group(new GroupName(name), savedHost, category, new Capacity(3),
                 이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()), List.of(이틀후_10시부터_12시까지.newInstance()),
                 "", ""));
     }

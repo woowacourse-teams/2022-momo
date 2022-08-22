@@ -27,6 +27,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
@@ -202,7 +203,7 @@ class MemberServiceTest {
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", savedHost, Category.STUDY, new Capacity(3),
+        return groupRepository.save(new Group(new GroupName("모모의 스터디"), savedHost, Category.STUDY, new Capacity(3),
                 이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()),
                 List.of(이틀후_10시부터_12시까지.newInstance()), "", ""));
     }

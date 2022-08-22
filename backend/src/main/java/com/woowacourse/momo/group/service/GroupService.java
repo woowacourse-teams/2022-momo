@@ -17,6 +17,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -83,13 +84,14 @@ public class GroupService {
         Group group = groupFindService.findGroup(groupId);
         Member host = memberFindService.findMember(hostId);
 
+        GroupName groupName = GroupRequestAssembler.groupName(request);
         Capacity capacity = GroupRequestAssembler.capacity(request);
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         Deadline deadline = GroupRequestAssembler.deadline(request);
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
         validateSchedulesInDuration(schedules, duration);
 
-        group.update(request.getName(), host, Category.from(request.getCategoryId()), capacity,
+        group.update(groupName, host, Category.from(request.getCategoryId()), capacity,
                 duration, deadline, schedules, request.getLocation(), request.getDescription());
     }
 

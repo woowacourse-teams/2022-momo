@@ -11,6 +11,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -18,7 +19,7 @@ public class GroupRequestAssembler {
 
     public static Group group(Member host, GroupRequest request) {
         return new Group.Builder()
-                .name(request.getName())
+                .name(groupName(request))
                 .host(host)
                 .categoryId(request.getCategoryId())
                 .capacity(capacity(request))
@@ -28,6 +29,14 @@ public class GroupRequestAssembler {
                 .location(request.getLocation())
                 .description(request.getDescription())
                 .build();
+    }
+
+    public static GroupName groupName(GroupRequest request) {
+        return new GroupName(request.getName());
+    }
+
+    public static GroupName groupName(GroupUpdateRequest request) {
+        return new GroupName(request.getName());
     }
 
     public static Capacity capacity(GroupRequest request) {
