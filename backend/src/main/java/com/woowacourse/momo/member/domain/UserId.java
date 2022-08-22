@@ -17,6 +17,8 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class UserId {
 
+    private static final String EMAIL_FORMAT = "@";
+
     @Column(name = "user_id", nullable = false, unique = true)
     private String value;
 
@@ -26,6 +28,10 @@ public class UserId {
         validateUserIdIsValidPattern();
     }
 
+    private boolean isNotValid(String userId) {
+        return userId.contains(EMAIL_FORMAT);
+    }
+
     private void validateUserIdIsNotBlank() {
         if (value.isBlank()) {
             throw new MomoException(MEMBER_ID_SHOULD_NOT_BE_BLANK);
@@ -33,7 +39,7 @@ public class UserId {
     }
 
     private void validateUserIdIsValidPattern() {
-        if (MemberPattern.isNotValidUserId(value)) {
+        if (isNotValid(value)) {
             throw new MomoException(SIGNUP_INVALID_ID);
         }
     }
