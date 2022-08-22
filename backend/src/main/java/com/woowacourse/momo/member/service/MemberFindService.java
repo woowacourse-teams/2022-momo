@@ -29,8 +29,8 @@ public class MemberFindService {
         return member;
     }
 
-    public Member findByUserIdAndPassword(String userId, Password password) {
-        Member member = memberRepository.findByUserIdAndPassword(new UserId(userId), password)
+    public Member findByUserIdAndPassword(UserId userId, Password password) {
+        Member member = memberRepository.findByUserIdAndPassword(userId, password)
             .orElseThrow(() -> new MomoException(LOGIN_INVALID_ID_AND_PASSWORD));
         validateExistMember(member);
         return member;

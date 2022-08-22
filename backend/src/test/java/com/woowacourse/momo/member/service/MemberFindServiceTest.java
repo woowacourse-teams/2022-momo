@@ -14,6 +14,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @Transactional
 @SpringBootTest
@@ -25,6 +26,7 @@ class MemberFindServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    private static final UserId USER_ID = new UserId("momo");
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")
@@ -62,7 +64,7 @@ class MemberFindServiceTest {
     void findMemberByIdAndPassword() {
         Member member = memberRepository.save(new Member("momo", PASSWORD, "모모몽"));
 
-        Member foundMember = memberFindService.findByUserIdAndPassword("momo", PASSWORD);
+        Member foundMember = memberFindService.findByUserIdAndPassword(USER_ID, PASSWORD);
         assertThat(foundMember).usingRecursiveComparison()
                 .isEqualTo(member);
     }
@@ -74,7 +76,7 @@ class MemberFindServiceTest {
 
         Password wrongPassword = Password.encrypt("wrong123!", new SHA256Encoder());
         assertThatThrownBy(
-                () -> memberFindService.findByUserIdAndPassword("momo", wrongPassword)
+                () -> memberFindService.findByUserIdAndPassword(USER_ID, wrongPassword)
         ).isInstanceOf(MomoException.class)
                 .hasMessageContaining("아이디나 비밀번호가 다릅니다.");
     }

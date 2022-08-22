@@ -36,8 +36,9 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest request) {
+        UserId userId = new UserId(request.getUserId());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = memberFindService.findByUserIdAndPassword(request.getUserId(), password);
+        Member member = memberFindService.findByUserIdAndPassword(userId, password);
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 
