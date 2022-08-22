@@ -34,6 +34,10 @@ public class GroupRequestAssembler {
         return new Capacity(request.getCapacity());
     }
 
+    public static Capacity capacity(GroupUpdateRequest request) {
+        return new Capacity(request.getCapacity());
+    }
+
     public static Duration duration(DurationRequest request) {
         return new Duration(request.getStart(), request.getEnd());
     }

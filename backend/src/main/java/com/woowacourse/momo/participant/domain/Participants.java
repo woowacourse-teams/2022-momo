@@ -49,8 +49,9 @@ public class Participants {
         participants.add(new Participant(group, member));
     }
 
-    public void update(int capacity) {
-        this.capacity = new Capacity(capacity);
+    public void update(Capacity capacity) {
+        // TODO: 참여자 수 검증 추가 필요
+        this.capacity = capacity;
     }
 
     public boolean isFull() {
