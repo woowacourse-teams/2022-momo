@@ -1,15 +1,11 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,8 +25,6 @@ public class Capacity {
     }
 
     private void validateRange() {
-        if (GroupCapacityRange.isOutOfRange(value)) {
-            throw new MomoException(GROUP_MEMBERS_NOT_IN_RANGE);
-        }
+        GroupCapacityRange.validateCapacityIsInRange(value);
     }
 }

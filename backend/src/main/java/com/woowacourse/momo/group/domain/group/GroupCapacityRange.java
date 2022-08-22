@@ -1,5 +1,9 @@
 package com.woowacourse.momo.group.domain.group;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE;
+
+import com.woowacourse.momo.global.exception.exception.MomoException;
+
 public enum GroupCapacityRange {
 
     MINIMUM(1),
@@ -12,7 +16,13 @@ public enum GroupCapacityRange {
         this.number = number;
     }
 
-    public static boolean isOutOfRange(int capacity) {
+    public static void validateCapacityIsInRange(int capacity) {
+        if (isOutOfRange(capacity)) {
+            throw new MomoException(GROUP_MEMBERS_NOT_IN_RANGE);
+        }
+    }
+
+    private static boolean isOutOfRange(int capacity) {
         return (MINIMUM.number > capacity) || (capacity > MAXIMUM.number);
     }
 }
