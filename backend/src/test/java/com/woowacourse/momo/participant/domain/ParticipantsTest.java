@@ -30,7 +30,7 @@ class ParticipantsTest {
     @DisplayName("참여자 목록에는 주최자가 포함되어 있다")
     @Test
     void ParticipantsContainHost() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThat(participants.isParticipant(HOST)).isTrue();
     }
@@ -40,7 +40,7 @@ class ParticipantsTest {
     void validateGroupIsProceeding() {
         Group group = constructGroup();
         group.closeEarly(HOST);
-        Participants participants = new Participants(group, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThatThrownBy(() -> participants.participate(group, PARTICIPANT))
                 .isInstanceOf(MomoException.class)
@@ -50,7 +50,7 @@ class ParticipantsTest {
     @DisplayName("주최자가 모임에 참여할 경우 예외가 발생한다")
     @Test
     void validateMemberIsNotHost() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThatThrownBy(() -> participants.participate(GROUP, HOST))
                 .isInstanceOf(MomoException.class)
@@ -60,7 +60,7 @@ class ParticipantsTest {
     @DisplayName("참여자가 다시 참여할 경우 예외가 발생한다")
     @Test
     void validateMemberIsNotParticipant() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
         participants.participate(GROUP, PARTICIPANT);
 
         assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
@@ -71,7 +71,7 @@ class ParticipantsTest {
     @DisplayName("참여자 목록의 수를 반환한다")
     @Test
     void size() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThat(participants.size()).isEqualTo(1);
     }
@@ -79,7 +79,7 @@ class ParticipantsTest {
     @DisplayName("참여자가 있을 경우 True 를 반환한다")
     @Test
     void isExistTrue() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
         participants.participate(GROUP, PARTICIPANT);
 
         assertThat(participants.isExist()).isTrue();
@@ -88,7 +88,7 @@ class ParticipantsTest {
     @DisplayName("참여자가 없을 경우 True 를 반환한다")
     @Test
     void isExistFalse() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThat(participants.isExist()).isFalse();
     }
@@ -96,7 +96,7 @@ class ParticipantsTest {
     @DisplayName("참여자일 경우 True 를 반환한다")
     @Test
     void isParticipantTrue() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
         participants.participate(GROUP, PARTICIPANT);
 
         assertThat(participants.isParticipant(PARTICIPANT)).isTrue();
@@ -105,7 +105,7 @@ class ParticipantsTest {
     @DisplayName("참여자가 아닐 경우 False 를 반환한다")
     @Test
     void isParticipantFalse() {
-        Participants participants = new Participants(GROUP, HOST);
+        Participants participants = new Participants(GROUP);
 
         assertThat(participants.isParticipant(MEMBER)).isFalse();
     }

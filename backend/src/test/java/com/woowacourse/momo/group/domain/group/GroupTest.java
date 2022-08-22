@@ -309,7 +309,7 @@ class GroupTest {
         fieldCalendar[calendarField].setAccessible(true);
         fieldCalendar[calendarField].set(calendar, deadline);
 
-        int deadlineField = 6;
+        int deadlineField = 5;
         Class<Group> clazzGroup = Group.class;
         Field[] fieldGroup = clazzGroup.getDeclaredFields();
         fieldGroup[deadlineField].setAccessible(true);

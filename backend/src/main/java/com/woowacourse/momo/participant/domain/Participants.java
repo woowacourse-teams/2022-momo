@@ -32,8 +32,8 @@ public class Participants {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private final List<Participant> value = new ArrayList<>();
 
-    public Participants(Group group, Member member) {
-        value.add(new Participant(group, member));
+    public Participants(Group group) {
+        value.add(new Participant(group, group.getHost()));
     }
 
     public void participate(Group group, Member member) {

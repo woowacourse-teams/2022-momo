@@ -85,7 +85,7 @@ public class Group {
         this.location = location;
         this.description = description;
 
-        this.participants = new Participants(this, host);
+        this.participants = new Participants(this);
     }
 
     public void update(String name, Member host, Category category, int capacity, Duration duration, LocalDateTime deadline,
