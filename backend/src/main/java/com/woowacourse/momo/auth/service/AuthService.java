@@ -50,8 +50,9 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        validateUserNotExist(request.getUserId());
         UserId userId = new UserId(request.getUserId());
+        validateUserIsNotExist(userId);
+
         UserName userName = new UserName(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = new Member(userId, password, userName);
@@ -60,8 +61,8 @@ public class AuthService {
         return savedMember.getId();
     }
 
-    private void validateUserNotExist(String userId) {
-        Optional<Member> member = memberRepository.findByUserId(new UserId(userId));
+    private void validateUserIsNotExist(UserId userId) {
+        Optional<Member> member = memberRepository.findByUserId(userId);
         if (member.isPresent()) {
             throw new MomoException(SIGNUP_ALREADY_REGISTER);
         }
