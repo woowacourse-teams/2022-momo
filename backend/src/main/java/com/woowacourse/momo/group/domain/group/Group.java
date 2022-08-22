@@ -120,24 +120,24 @@ public class Group {
     }
 
     public void validateMemberCanLeave(Member member) {
-        validateTemplate((() -> isHost(member)), PARTICIPANT_LEAVE_HOST);
-        validateTemplate((() -> !participants.isParticipant(member)), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
-        validateTemplate((() -> calendar.isDeadlineOver()), PARTICIPANT_LEAVE_DEADLINE);
-        validateTemplate((() -> isEarlyClosed), PARTICIPANT_LEAVE_EARLY_CLOSED);
+        validate((() -> isHost(member)), PARTICIPANT_LEAVE_HOST);
+        validate((() -> !participants.isParticipant(member)), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validate((() -> calendar.isDeadlineOver()), PARTICIPANT_LEAVE_DEADLINE);
+        validate((() -> isEarlyClosed), PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
 
     public void validateGroupIsInitialState(Member member) {
-        validateTemplate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
-        validateTemplate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
-        validateTemplate((() -> participants.isExist()), GROUP_EXIST_PARTICIPANTS);
+        validate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
+        validate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
+        validate((() -> participants.isExist()), GROUP_EXIST_PARTICIPANTS);
     }
 
     private void validateGroupCanBeCloseEarly(Member member) {
-        validateTemplate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
-        validateTemplate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
+        validate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
+        validate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
     }
 
-    private void validateTemplate(ExceptionPredicate exceptionPredicate, ErrorCode errorCode) {
+    private void validate(ExceptionPredicate exceptionPredicate, ErrorCode errorCode) {
         if (exceptionPredicate.run()) {
             throw new MomoException(errorCode);
         }

@@ -23,14 +23,14 @@ public class Deadline {
 
     public Deadline(LocalDateTime value) {
         this.value = value;
-        validateFuture();
+        validateDeadlineIsAfterNow();
     }
 
     public boolean isOver() {
         return value.isBefore(LocalDateTime.now());
     }
 
-    private void validateFuture() {
+    private void validateDeadlineIsAfterNow() {
         if (isOver()) {
             throw new MomoException(GROUP_DEADLINE_NOT_PAST);
         }
