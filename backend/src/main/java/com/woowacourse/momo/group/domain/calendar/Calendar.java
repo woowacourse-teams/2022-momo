@@ -3,8 +3,6 @@ package com.woowacourse.momo.group.domain.calendar;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION;
 
-import java.util.List;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 

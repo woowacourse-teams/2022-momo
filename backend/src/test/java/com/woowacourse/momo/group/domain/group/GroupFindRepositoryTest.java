@@ -7,7 +7,6 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.일주일후_하루동안;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.ScheduleFixture.일주일후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
