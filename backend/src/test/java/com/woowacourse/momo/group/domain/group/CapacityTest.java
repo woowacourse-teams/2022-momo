@@ -37,4 +37,20 @@ class CapacityTest {
 
         assertThat(capacity.isFull(0)).isFalse();
     }
+
+    @DisplayName("수용 인원이 참여자의 수보다 작을 경우 True 를 반환한다")
+    @Test
+    void isUnderTrue() {
+        Capacity capacity = new Capacity(1);
+
+        assertThat(capacity.isUnder(2)).isTrue();
+    }
+
+    @DisplayName("수용 인원이 참여자의 수보다 클 경우 False 를 반환한다")
+    @Test
+    void isUnderFalse() {
+        Capacity capacity = new Capacity(1);
+
+        assertThat(capacity.isUnder(0)).isFalse();
+    }
 }

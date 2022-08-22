@@ -76,6 +76,17 @@ class ParticipantsTest {
                 .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
     }
 
+    @DisplayName("수정하려는 최대 인원이 현재 참여자 수보다 적을 경우 예외가 발생한다")
+    @Test
+    void validateCapacityIsOverNumberOfParticipants() {
+        Participants participants = new Participants(GROUP, CAPACITY);
+        participants.participate(GROUP, PARTICIPANT);
+
+        assertThatThrownBy(() -> participants.update(new Capacity(1)))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("수정하려는 최대 인원이 현재 참가자의 수보다 적습니다.");
+    }
+
     @DisplayName("참여자 정원이 찼을 경우 True 를 반환한다")
     @Test
     void isFullTrue() {

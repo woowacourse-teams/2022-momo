@@ -17,14 +17,18 @@ public class Capacity {
 
     public Capacity(int value) {
         this.value = value;
-        validateRange();
+        validateCapacityIsInRange();
     }
 
     public boolean isFull(int numberOfPeople) {
         return value <= numberOfPeople;
     }
 
-    private void validateRange() {
+    public boolean isUnder(int numberOfPeople) {
+        return value < numberOfPeople;
+    }
+
+    private void validateCapacityIsInRange() {
         GroupCapacityRange.validateCapacityIsInRange(value);
     }
 }

@@ -1,5 +1,6 @@
 package com.woowacourse.momo.participant.domain;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_CAPACITY_IS_OVER_SIZE;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_FINISHED;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_JOIN_BY_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_RE_PARTICIPATE;
@@ -50,8 +51,8 @@ public class Participants {
     }
 
     public void update(Capacity capacity) {
-        // TODO: 참여자 수 검증 추가 필요
         this.capacity = capacity;
+        validateCapacityIsOverNumberOfParticipants();
     }
 
     public boolean isFull() {
@@ -81,6 +82,12 @@ public class Participants {
     private void validateMemberIsNotParticipant(Member member) {
         if (isParticipant(member)) {
             throw new MomoException(PARTICIPANT_RE_PARTICIPATE);
+        }
+    }
+
+    private void validateCapacityIsOverNumberOfParticipants() {
+        if (capacity.isUnder(participants.size())) {
+            throw new MomoException(PARTICIPANT_CAPACITY_IS_OVER_SIZE);
         }
     }
 
