@@ -35,6 +35,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -64,8 +65,8 @@ class GroupFindRepositoryTest {
     @BeforeEach
     void setUp() throws IllegalAccessException {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        momo = memberRepository.save(new Member(new UserId("momo"), password, "momo"));
-        dudu = memberRepository.save(new Member(new UserId("dudu"), password, "dudu"));
+        momo = memberRepository.save(new Member(new UserId("momo"), password, new UserName("momo")));
+        dudu = memberRepository.save(new Member(new UserId("dudu"), password, new UserName("dudu")));
         group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
         group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));

@@ -17,6 +17,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -29,6 +30,7 @@ class TokenRepositoryTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = new UserId("momo");
+    private static final UserName USER_NAME = new UserName("모모");
 
     private Password password;
     private Member member;
@@ -36,7 +38,7 @@ class TokenRepositoryTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("1q2w3e4r!", new SHA256Encoder());
-        member = memberRepository.save(new Member(USER_ID, password, "모모"));
+        member = memberRepository.save(new Member(USER_ID, password, USER_NAME));
 
         String refreshTokenValue = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NjAwMjk0OTUsImV4cCI6MTY2MDAzMzA5NX0.qwxal9Fp78G5l6RWbG9SMvOVnb0pnrEkWPHMPBmQw8c";
         Token token = new Token(this.member, refreshTokenValue);

@@ -21,6 +21,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
@@ -51,8 +52,9 @@ public class AuthService {
     public Long signUp(SignUpRequest request) {
         validateUserNotExist(request.getUserId());
         UserId userId = new UserId(request.getUserId());
+        UserName userName = new UserName(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = new Member(userId, password, request.getName());
+        Member member = new Member(userId, password, userName);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();

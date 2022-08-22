@@ -15,6 +15,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @Transactional
 @SpringBootTest
@@ -27,12 +28,13 @@ class MemberFindServiceTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = new UserId("momo");
+    private static final UserName USER_NAME = new UserName("momo");
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")
     @Test
     void findMember() {
-        Member expected = memberRepository.save(new Member(USER_ID, PASSWORD, "momo"));
+        Member expected = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
         Member actual = memberFindService.findMember(expected.getId());
 
@@ -51,7 +53,7 @@ class MemberFindServiceTest {
     @DisplayName("삭제된 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findDeletedMember() {
-        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "momo"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
         member.delete();
 
         assertThatThrownBy(() -> memberFindService.findMember(member.getId()))
@@ -62,7 +64,7 @@ class MemberFindServiceTest {
     @DisplayName("아이디와 비밀번호로 회원을 조회한다")
     @Test
     void findMemberByIdAndPassword() {
-        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
         Member foundMember = memberFindService.findByUserIdAndPassword(USER_ID, PASSWORD);
         assertThat(foundMember).usingRecursiveComparison()
@@ -72,7 +74,7 @@ class MemberFindServiceTest {
     @DisplayName("잘못된 아이디와 비밀번호로 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findMemberByIdAndWrongPassword() {
-        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
         Password wrongPassword = Password.encrypt("wrong123!", new SHA256Encoder());
         assertThatThrownBy(

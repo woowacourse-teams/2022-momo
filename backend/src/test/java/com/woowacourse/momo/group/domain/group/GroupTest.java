@@ -30,14 +30,14 @@ import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 class GroupTest {
 
     private final Password password = Password.encrypt("momo123!", new SHA256Encoder());
-    private final Member host = new Member(new UserId("주최자"), password, "momo");
-    private final Member participant = new Member(new UserId("참여자"), password, "momo");
-    private final Member participant2 = new Member(new UserId("참여자2"), password, "momo");
-    private final Member member = new Member(new UserId("사용자"), password, "momo");
+    private final Member host = new Member(new UserId("주최자"), password, new UserName("momo"));
+    private final Member participant = new Member(new UserId("참여자"), password, new UserName("momo"));
+    private final Member member = new Member(new UserId("사용자"), password, new UserName("momo"));
 
     @DisplayName("유효하지 않은 모임 정원 값으로 인스턴스 생성시 예외가 발생한다")
     @ParameterizedTest

@@ -24,6 +24,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @RequiredArgsConstructor
 @Service
@@ -76,9 +77,9 @@ public class OauthService {
 
     private Member saveMember(GoogleUserResponse response) {
         UserId userId = new UserId(response.getEmail());
-        String name = response.getName();
+        UserName userName = new UserName(response.getName());
         Password password = Password.encrypt(oauthProvider.getTemporaryPassword(), passwordEncoder);
 
-        return memberRepository.save(new Member(userId, password, name));
+        return memberRepository.save(new Member(userId, password, userName));
     }
 }

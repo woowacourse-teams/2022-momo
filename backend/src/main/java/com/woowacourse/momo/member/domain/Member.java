@@ -38,10 +38,10 @@ public class Member {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    public Member(UserId userId, Password password, String name) {
+    public Member(UserId userId, Password password, UserName name) {
         this.userId = userId;
         this.password = password;
-        this.userName = new UserName(name);
+        this.userName = name;
     }
 
     public boolean isNotSamePassword(String password) {
