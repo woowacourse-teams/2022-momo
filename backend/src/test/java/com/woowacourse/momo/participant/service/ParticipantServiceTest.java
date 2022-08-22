@@ -36,6 +36,7 @@ import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
@@ -69,9 +70,9 @@ class ParticipantServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        host = memberRepository.save(new Member("주최자", password, "momo"));
-        participant1 = memberRepository.save(new Member("회원1", password, "momo2"));
-        participant2 = memberRepository.save(new Member("회원2", password, "momo2"));
+        host = memberRepository.save(new Member(new UserId("주최자"), password, "momo"));
+        participant1 = memberRepository.save(new Member(new UserId("회원1"), password, "momo2"));
+        participant2 = memberRepository.save(new Member(new UserId("회원2"), password, "momo2"));
     }
 
     private Group saveGroup() {

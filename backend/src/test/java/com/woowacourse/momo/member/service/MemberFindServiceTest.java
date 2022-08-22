@@ -32,7 +32,7 @@ class MemberFindServiceTest {
     @DisplayName("회원을 조회한다")
     @Test
     void findMember() {
-        Member expected = memberRepository.save(new Member("momo", PASSWORD, "momo"));
+        Member expected = memberRepository.save(new Member(USER_ID, PASSWORD, "momo"));
 
         Member actual = memberFindService.findMember(expected.getId());
 
@@ -51,7 +51,7 @@ class MemberFindServiceTest {
     @DisplayName("삭제된 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findDeletedMember() {
-        Member member = memberRepository.save(new Member("momo", PASSWORD, "momo"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "momo"));
         member.delete();
 
         assertThatThrownBy(() -> memberFindService.findMember(member.getId()))
@@ -62,7 +62,7 @@ class MemberFindServiceTest {
     @DisplayName("아이디와 비밀번호로 회원을 조회한다")
     @Test
     void findMemberByIdAndPassword() {
-        Member member = memberRepository.save(new Member("momo", PASSWORD, "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "모모몽"));
 
         Member foundMember = memberFindService.findByUserIdAndPassword(USER_ID, PASSWORD);
         assertThat(foundMember).usingRecursiveComparison()
@@ -72,7 +72,7 @@ class MemberFindServiceTest {
     @DisplayName("잘못된 아이디와 비밀번호로 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findMemberByIdAndWrongPassword() {
-        Member member = memberRepository.save(new Member("momo", PASSWORD, "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, "모모몽"));
 
         Password wrongPassword = Password.encrypt("wrong123!", new SHA256Encoder());
         assertThatThrownBy(

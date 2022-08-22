@@ -29,12 +29,15 @@ import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 class GroupTest {
 
     private final Password password = Password.encrypt("momo123!", new SHA256Encoder());
-    private final Member host = new Member("주최자", password, "momo");
-    private final Member participant = new Member("참여자", password, "momo");
+    private final Member host = new Member(new UserId("주최자"), password, "momo");
+    private final Member participant = new Member(new UserId("참여자"), password, "momo");
+    private final Member participant2 = new Member(new UserId("참여자2"), password, "momo");
+    private final Member member = new Member(new UserId("사용자"), password, "momo");
 
     @DisplayName("유효하지 않은 모임 정원 값으로 인스턴스 생성시 예외가 발생한다")
     @ParameterizedTest
@@ -89,7 +92,6 @@ class GroupTest {
     @Test
     void isNotSameHost() {
         Group group = constructGroup();
-        Member member = new Member("주최자 아님", password, "momo");
 
         assertThat(group.isHost(member)).isFalse();
     }
@@ -107,9 +109,9 @@ class GroupTest {
     @Test
     void validateReParticipant() {
         Group group = constructGroup();
-        Member member = new Member("momo", password, "모모");
-        group.participate(member);
-        assertThatThrownBy(() -> group.participate(member))
+        group.participate(participant);
+
+        assertThatThrownBy(() -> group.participate(participant))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
     }
@@ -119,11 +121,9 @@ class GroupTest {
     void validateFinishedRecruitmentWithFullCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
-        Member member1 = new Member("momo", password, "모모");
-        group.participate(member1);
+        group.participate(participant);
 
-        Member member2 = new Member("dudu", password, "두두");
-        assertThatThrownBy(() -> group.participate(member2))
+        assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("마감된 모임에는 참여할 수 없습니다.");
     }
@@ -132,7 +132,6 @@ class GroupTest {
     @Test
     void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
         Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
-        Member member = new Member("momo", password, "모모");
 
         assertThatThrownBy(() -> group.participate(member))
                 .isInstanceOf(MomoException.class)
@@ -143,11 +142,10 @@ class GroupTest {
     @Test
     void getParticipants() {
         Group group = constructGroup();
-        Member member = new Member("momo", password, "모모");
-        group.participate(member);
+        group.participate(participant);
 
         List<Member> participants = group.getParticipants();
-        assertThat(participants).contains(host, member);
+        assertThat(participants).contains(host, participant);
     }
 
     @DisplayName("정원이 초과하지도 않았고 조기마감되지도 않았고 마감 시간이 지나지도 않았다면 종료되지 않은 모임이다")
@@ -164,8 +162,7 @@ class GroupTest {
     void isFinishedRecruitmentWithOverCapacity() {
         int capacity = 2;
         Group group = constructGroupWithSetCapacity(capacity);
-        Member member = new Member("momo", password, "모모");
-        group.participate(member);
+        group.participate(participant);
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }

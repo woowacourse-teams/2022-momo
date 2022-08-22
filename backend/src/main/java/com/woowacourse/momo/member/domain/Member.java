@@ -38,8 +38,8 @@ public class Member {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    public Member(String userId, Password password, String name) {
-        this.userId = new UserId(userId);
+    public Member(UserId userId, Password password, String name) {
+        this.userId = userId;
         this.password = password;
         this.userName = new UserName(name);
     }

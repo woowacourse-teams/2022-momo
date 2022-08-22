@@ -75,7 +75,7 @@ public class OauthService {
     }
 
     private Member saveMember(GoogleUserResponse response) {
-        String userId = response.getEmail();
+        UserId userId = new UserId(response.getEmail());
         String name = response.getName();
         Password password = Password.encrypt(oauthProvider.getTemporaryPassword(), passwordEncoder);
 

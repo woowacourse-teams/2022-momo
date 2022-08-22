@@ -50,8 +50,9 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpRequest request) {
         validateUserNotExist(request.getUserId());
+        UserId userId = new UserId(request.getUserId());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = new Member(request.getUserId(), password, request.getName());
+        Member member = new Member(userId, password, request.getName());
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();

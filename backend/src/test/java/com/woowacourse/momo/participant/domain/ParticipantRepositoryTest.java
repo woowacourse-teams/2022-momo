@@ -29,6 +29,7 @@ import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @DataJpaTest
 class ParticipantRepositoryTest {
@@ -46,8 +47,8 @@ class ParticipantRepositoryTest {
 	private EntityManager entityManager;
 
 	private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-	private static final Member HOST = new Member("주최자", PASSWORD, "모모");
-	private static final Member PARTICIPANT = new Member("참여자", PASSWORD, "모모");
+	private static final Member HOST = new Member(new UserId("주최자"), PASSWORD, "모모");
+	private static final Member PARTICIPANT = new Member(new UserId("참여자"), PASSWORD, "모모");
 	private static Group group;
 
 	private Member savedHost;
