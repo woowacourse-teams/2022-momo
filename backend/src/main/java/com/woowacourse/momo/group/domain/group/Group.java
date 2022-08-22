@@ -58,9 +58,6 @@ public class Group {
     private Category category;
 
     @Embedded
-    private Capacity capacity;
-
-    @Embedded
     private Calendar calendar;
 
     @Embedded
@@ -80,22 +77,21 @@ public class Group {
         this.name = new GroupName(name);
         this.host = host;
         this.category = category;
-        this.capacity = new Capacity(capacity);
         this.calendar = new Calendar(schedules, duration, deadline);
         this.location = location;
         this.description = description;
 
-        this.participants = new Participants(this);
+        this.participants = new Participants(this, capacity);
     }
 
     public void update(String name, Member host, Category category, int capacity, Duration duration, LocalDateTime deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = new GroupName(name);
         this.category = category;
-        this.capacity = new Capacity(capacity);
         this.location = location;
         this.description = description;
 
+        participants.update(capacity);
         calendar.update(schedules, duration, deadline);
         validateGroupIsInitialState(host);
     }
@@ -109,10 +105,6 @@ public class Group {
         isEarlyClosed = true;
     }
 
-    public boolean isExistParticipants() {
-        return participants.isExist();
-    }
-
     public boolean isHost(Member host) {
         return this.host.equals(host);
     }
@@ -122,7 +114,7 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return isEarlyClosed || capacity.isFull(participants.size()) || calendar.isDeadlineOver();
+        return isEarlyClosed || participants.isFull() || calendar.isDeadlineOver();
     }
 
     public void validateMemberCanLeave(Member member) {
@@ -135,7 +127,7 @@ public class Group {
     public void validateGroupIsInitialState(Member member) {
         validateTemplate((() -> !isHost(member)), AUTH_DELETE_NO_HOST);
         validateTemplate((this::isFinishedRecruitment), GROUP_ALREADY_FINISH);
-        validateTemplate((this::isExistParticipants), GROUP_EXIST_PARTICIPANTS);
+        validateTemplate((() -> participants.isExist()), GROUP_EXIST_PARTICIPANTS);
     }
 
     private void validateGroupCanBeCloseEarly(Member member) {
@@ -154,7 +146,7 @@ public class Group {
     }
 
     public int getCapacity() {
-        return capacity.getValue();
+        return participants.getCapacity().getValue();
     }
 
     public List<Schedule> getSchedules() {
@@ -170,7 +162,7 @@ public class Group {
     }
 
     public List<Member> getParticipants() {
-        return participants.getValue();
+        return participants.getParticipants();
     }
 
     public static class Builder {

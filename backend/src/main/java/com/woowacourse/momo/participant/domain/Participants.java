@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
@@ -18,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -30,29 +32,37 @@ public class Participants {
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private final List<Participant> value = new ArrayList<>();
+    private final List<Participant> participants = new ArrayList<>();
 
-    public Participants(Group group) {
-        value.add(new Participant(group, group.getHost()));
+    @Embedded
+    private Capacity capacity;
+
+    public Participants(Group group, int capacity) {
+        participants.add(new Participant(group, group.getHost()));
+        this.capacity = new Capacity(capacity);
     }
 
     public void participate(Group group, Member member) {
         validateGroupIsProceeding(group);
         validateMemberIsNotHost(group, member);
         validateMemberIsNotParticipant(member);
-        value.add(new Participant(group, member));
+        participants.add(new Participant(group, member));
     }
 
-    public int size() {
-        return value.size();
+    public void update(int capacity) {
+        this.capacity = new Capacity(capacity);
+    }
+
+    public boolean isFull() {
+        return capacity.isFull(participants.size());
     }
 
     public boolean isExist() {
-        return value.size() > NONE_PARTICIPANT;
+        return participants.size() > NONE_PARTICIPANT;
     }
 
     public boolean isParticipant(Member member) {
-        return getValue().contains(member);
+        return getParticipants().contains(member);
     }
 
     private void validateGroupIsProceeding(Group group) {
@@ -73,8 +83,8 @@ public class Participants {
         }
     }
 
-    public List<Member> getValue() {
-        return value.stream()
+    public List<Member> getParticipants() {
+        return participants.stream()
                 .map(Participant::getMember)
                 .collect(Collectors.toList());
     }

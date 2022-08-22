@@ -20,7 +20,7 @@ public class GroupSpecification {
 
     public Specification<Group> filterByParticipated(Member member) {
         return (root, query, criteriaBuilder) -> {
-            Join<Participant, Group> groupParticipant = root.join("participants").join("value");
+            Join<Participant, Group> groupParticipant = root.join("participants").join("participants");
             return criteriaBuilder.equal(groupParticipant.get("member"), member);
         };
     }
@@ -53,11 +53,11 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            root.join("participants").join("value");
+            root.join("participants").join("participants");
             query.groupBy(root.get("id"));
 
             Expression<Long> count = criteriaBuilder.count(root.get("id"));
-            Predicate isOverCapacity = criteriaBuilder.lessThan(count, root.get("capacity"));
+            Predicate isOverCapacity = criteriaBuilder.lessThan(count, root.get("participants").get("capacity"));
             query.having(isOverCapacity);
 
             Predicate isEarlyClosed = criteriaBuilder.isFalse(root.get("isEarlyClosed"));

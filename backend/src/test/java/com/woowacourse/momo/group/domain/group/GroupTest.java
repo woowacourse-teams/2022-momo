@@ -203,23 +203,6 @@ class GroupTest {
         assertThat(group.isEnd()).isTrue();
     }
 
-    @DisplayName("주최자를 제외하고 참여자가 있을 경우 True 를 반환한다")
-    @Test
-    void isExistParticipantsTrue() {
-        Group group = constructGroup();
-        group.participate(participant);
-
-        assertThat(group.isExistParticipants()).isTrue();
-    }
-
-    @DisplayName("주최자를 제외하고 참여자가 없을 경우 False 를 반환한다")
-    @Test
-    void isExistParticipantsFalse() {
-        Group group = constructGroup();
-
-        assertThat(group.isExistParticipants()).isFalse();
-    }
-
     @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
     @Test
     void validateLeaveHost() {
@@ -309,7 +292,7 @@ class GroupTest {
         fieldCalendar[calendarField].setAccessible(true);
         fieldCalendar[calendarField].set(calendar, deadline);
 
-        int deadlineField = 5;
+        int deadlineField = 4;
         Class<Group> clazzGroup = Group.class;
         Field[] fieldGroup = clazzGroup.getDeclaredFields();
         fieldGroup[deadlineField].setAccessible(true);
