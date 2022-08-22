@@ -78,7 +78,7 @@ class ParticipantServiceTest {
 
     private Group saveGroupWithSetCapacity(int capacity) {
         return groupRepository.save(new Group("모모의 스터디", host, Category.STUDY, new Capacity(capacity),
-                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
+                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()), List.of(이틀후_10시부터_12시까지.newInstance()),
                 "", ""));
     }
 
@@ -244,7 +244,7 @@ class ParticipantServiceTest {
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
+        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), deadline);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;

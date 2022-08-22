@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -58,7 +59,7 @@ class ParticipantRepositoryTest {
 
 		List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
 		group = new Group("모임", savedHost, Category.CAFE, new Capacity(3), 이틀후부터_일주일후까지.getInstance(),
-			내일_23시_59분.getInstance(), schedules, "", "");
+			new Deadline(내일_23시_59분.getInstance()), schedules, "", "");
 		savedGroup = groupRepository.save(group);
 	}
 

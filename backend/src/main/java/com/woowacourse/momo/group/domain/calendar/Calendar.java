@@ -35,10 +35,10 @@ public class Calendar {
     @Embedded
     private Deadline deadline;
 
-    public Calendar(List<Schedule> schedules, Duration duration, LocalDateTime deadline) {
+    public Calendar(List<Schedule> schedules, Duration duration, Deadline deadline) {
         this.schedules.addAll(schedules);
         this.duration = duration;
-        this.deadline = new Deadline(deadline);
+        this.deadline = deadline;
         validateIsBeforeStartDuration();
     }
 

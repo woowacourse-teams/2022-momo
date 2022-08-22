@@ -355,7 +355,7 @@ class ParticipantControllerTest {
         Group group = groupFindService.findGroup(groupId);
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
+        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), deadline);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;

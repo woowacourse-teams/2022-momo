@@ -32,6 +32,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.domain.Member;
@@ -73,7 +74,7 @@ public class Group {
     private boolean isEarlyClosed;
 
     public Group(String name, Member host, Category category, Capacity capacity, Duration duration,
-                 LocalDateTime deadline, List<Schedule> schedules, String location, String description) {
+                 Deadline deadline, List<Schedule> schedules, String location, String description) {
         this.name = new GroupName(name);
         this.host = host;
         this.category = category;
@@ -172,7 +173,7 @@ public class Group {
         private Category category;
         private Capacity capacity;
         private Duration duration;
-        private LocalDateTime deadline;
+        private Deadline deadline;
         private List<Schedule> schedules;
         private String location;
         private String description;
@@ -210,7 +211,7 @@ public class Group {
             return this;
         }
 
-        public Builder deadline(LocalDateTime deadline) {
+        public Builder deadline(Deadline deadline) {
             this.deadline = deadline;
             return this;
         }

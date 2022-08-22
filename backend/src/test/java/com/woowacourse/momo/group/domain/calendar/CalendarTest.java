@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class CalendarTest {
     @Test
     void isOver() {
         Duration duration = new Duration(LocalDate.now().plusDays(10), LocalDate.now().plusDays(11));
-        Calendar calendar = new Calendar(new ArrayList<>(), duration, LocalDateTime.now().plusDays(1));
+        Calendar calendar = new Calendar(new ArrayList<>(), duration, new Deadline(LocalDateTime.now().plusDays(1)));
 
         assertThat(calendar.isDeadlineOver()).isFalse();
     }
@@ -29,7 +30,7 @@ class CalendarTest {
     void deadlineMustBeBeforeStartDuration() {
         Duration duration = new Duration(LocalDate.now().plusDays(10), LocalDate.now().plusDays(11));
 
-        assertThatThrownBy(() -> new Calendar(new ArrayList<>(), duration, LocalDateTime.of(duration.getStartDate().plusDays(1), LocalTime.now())))
+        assertThatThrownBy(() -> new Calendar(new ArrayList<>(), duration, new Deadline(LocalDateTime.of(duration.getStartDate().plusDays(1), LocalTime.now()))))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
     }

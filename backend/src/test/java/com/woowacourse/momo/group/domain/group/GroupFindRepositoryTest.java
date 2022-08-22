@@ -199,13 +199,13 @@ class GroupFindRepositoryTest {
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
         return new Group(name, host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
-                deadline, List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
+                new Deadline(deadline), List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
     }
 
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), original);
+        Calendar calendar = new Calendar(group.getSchedules(), group.getDuration(), deadline);
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;
