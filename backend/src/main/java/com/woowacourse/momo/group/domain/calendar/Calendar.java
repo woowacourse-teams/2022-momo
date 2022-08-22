@@ -1,17 +1,12 @@
 package com.woowacourse.momo.group.domain.calendar;
 
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE;
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,10 +19,8 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class Calendar {
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "group_id")
-    private List<Schedule> schedules = new ArrayList<>();
+    @Embedded
+    private Schedules schedules;
 
     @Embedded
     private Duration duration;
@@ -36,18 +29,19 @@ public class Calendar {
     private Deadline deadline;
 
     public Calendar(List<Schedule> schedules, Duration duration, Deadline deadline) {
-        this.schedules.addAll(schedules);
+        this.schedules = new Schedules(schedules);
         this.duration = duration;
         this.deadline = deadline;
         validateIsBeforeStartDuration();
+        validateSchedulesAreInDuration();
     }
 
     public void update(List<Schedule> schedules, Duration duration, Deadline deadline) {
-        this.schedules.clear();
-        this.schedules.addAll(schedules);
+        this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;
         validateIsBeforeStartDuration();
+        validateSchedulesAreInDuration();
         // TODO: deadline 검증 추가 필요
     }
 
@@ -58,6 +52,12 @@ public class Calendar {
     private void validateIsBeforeStartDuration() {
         if (duration.isAfterStartDate(deadline.getValue())) {
             throw new MomoException(GROUP_DURATION_NOT_AFTER_DEADLINE);
+        }
+    }
+
+    private void validateSchedulesAreInDuration() {
+        if (schedules.isExistAnyScheduleOutOfDuration(duration)) {
+            throw new MomoException(GROUP_SCHEDULE_NOT_RANGE_DURATION);
         }
     }
 }

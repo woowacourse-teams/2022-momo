@@ -89,21 +89,9 @@ public class GroupService {
         Duration duration = GroupRequestAssembler.duration(request.getDuration());
         Deadline deadline = GroupRequestAssembler.deadline(request);
         List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
-        validateSchedulesInDuration(schedules, duration);
 
         group.update(groupName, host, Category.from(request.getCategoryId()), capacity,
                 duration, deadline, schedules, request.getLocation(), request.getDescription());
-    }
-
-    private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        if (existAnyScheduleOutOfDuration(schedules, duration)) {
-            throw new MomoException(GROUP_SCHEDULE_NOT_RANGE_DURATION);
-        }
-    }
-
-    private boolean existAnyScheduleOutOfDuration(List<Schedule> schedules, Duration duration) {
-        return schedules.stream()
-                .anyMatch(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()));
     }
 
     @Transactional

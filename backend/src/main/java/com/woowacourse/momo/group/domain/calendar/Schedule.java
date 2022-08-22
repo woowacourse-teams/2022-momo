@@ -42,7 +42,7 @@ public class Schedule {
         validateStartIsBeforeEnd();
     }
 
-    public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
+    public boolean isInRange(LocalDate startDate, LocalDate endDate) {
         return (date.isAfter(startDate) || date.isEqual(startDate))
                 && (date.isBefore(endDate) || date.isEqual(endDate));
     }

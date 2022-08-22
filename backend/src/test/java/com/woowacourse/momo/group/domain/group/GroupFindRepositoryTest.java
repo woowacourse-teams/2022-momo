@@ -8,6 +8,7 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분
 import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.일주일후_하루동안;
 import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.일주일후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -199,7 +200,7 @@ class GroupFindRepositoryTest {
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
         return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
-                new Deadline(deadline), List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
+                new Deadline(deadline), List.of(일주일후_10시부터_12시까지.newInstance()), "", "");
     }
 
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {

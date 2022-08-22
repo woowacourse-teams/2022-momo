@@ -151,7 +151,7 @@ public class Group {
     }
 
     public List<Schedule> getSchedules() {
-        return calendar.getSchedules();
+        return calendar.getSchedules().getValue();
     }
 
     public Duration getDuration() {
