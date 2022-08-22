@@ -85,7 +85,7 @@ public class Group {
         this.participants = new Participants(this, capacity);
     }
 
-    public void update(String name, Member host, Category category, Capacity capacity, Duration duration, LocalDateTime deadline,
+    public void update(String name, Member host, Category category, Capacity capacity, Duration duration, Deadline deadline,
                        List<Schedule> schedules, String location, String description) {
         this.name = new GroupName(name);
         this.category = category;

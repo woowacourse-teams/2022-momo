@@ -46,6 +46,10 @@ public class GroupRequestAssembler {
         return new Deadline(request.getDeadline());
     }
 
+    public static Deadline deadline(GroupUpdateRequest request) {
+        return new Deadline(request.getDeadline());
+    }
+
     public static List<Schedule> schedules(List<ScheduleRequest> requests) {
         return requests.stream()
                 .map(GroupRequestAssembler::schedule)

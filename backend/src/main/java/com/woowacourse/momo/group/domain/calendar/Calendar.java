@@ -42,12 +42,13 @@ public class Calendar {
         validateIsBeforeStartDuration();
     }
 
-    public void update(List<Schedule> schedules, Duration duration, LocalDateTime deadline) {
+    public void update(List<Schedule> schedules, Duration duration, Deadline deadline) {
         this.schedules.clear();
         this.schedules.addAll(schedules);
         this.duration = duration;
-        this.deadline = new Deadline(deadline);
+        this.deadline = deadline;
         validateIsBeforeStartDuration();
+        // TODO: deadline 검증 추가 필요
     }
 
     public boolean isDeadlineOver() {
