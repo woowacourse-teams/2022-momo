@@ -20,11 +20,11 @@ public class GroupName {
     private String value;
 
     public GroupName(String value) {
+        validateNameIsNotBlank(value);
         this.value = value;
-        validateNameIsNotBlank();
     }
 
-    private void validateNameIsNotBlank() {
+    private void validateNameIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(GROUP_NAME_SHOULD_NOT_BE_BLANK);
         }

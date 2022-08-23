@@ -51,8 +51,8 @@ public class Participants {
     }
 
     public void update(Capacity capacity) {
+        validateCapacityIsOverNumberOfParticipants(capacity);
         this.capacity = capacity;
-        validateCapacityIsOverNumberOfParticipants();
     }
 
     public boolean isFull() {
@@ -85,7 +85,7 @@ public class Participants {
         }
     }
 
-    private void validateCapacityIsOverNumberOfParticipants() {
+    private void validateCapacityIsOverNumberOfParticipants(Capacity capacity) {
         if (capacity.isUnder(participants.size())) {
             throw new MomoException(PARTICIPANT_CAPACITY_IS_OVER_SIZE);
         }

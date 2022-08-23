@@ -23,22 +23,22 @@ public class UserId {
     private String value;
 
     public UserId(String value) {
+        validateUserIdIsNotBlank(value);
+        validateUserIdIsValidPattern(value);
         this.value = value;
-        validateUserIdIsNotBlank();
-        validateUserIdIsValidPattern();
     }
 
     private boolean isNotValid(String userId) {
         return userId.contains(EMAIL_FORMAT);
     }
 
-    private void validateUserIdIsNotBlank() {
+    private void validateUserIdIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(MEMBER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
-    private void validateUserIdIsValidPattern() {
+    private void validateUserIdIsValidPattern(String value) {
         if (isNotValid(value)) {
             throw new MomoException(SIGNUP_INVALID_ID);
         }

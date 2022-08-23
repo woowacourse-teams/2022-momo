@@ -24,9 +24,9 @@ public class UserName {
     private String value;
 
     public UserName(String value) {
+        validateNameIsNotBlank(value);
+        validateNameLengthIsValid(value);
         this.value = value;
-        validateNameIsNotBlank();
-        validateNameLengthIsValid();
     }
 
     public UserName update(String value) {
@@ -37,13 +37,13 @@ public class UserName {
         return new UserName(GHOST_USER_NAME);
     }
 
-    private void validateNameIsNotBlank() {
+    private void validateNameIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(MEMBER_NAME_SHOULD_NOT_BE_BLANK);
         }
     }
 
-    private void validateNameLengthIsValid() {
+    private void validateNameLengthIsValid(String value) {
         if (value.length() > MAXIMUM) {
             throw new MomoException(MEMBER_NAME_MUST_BE_VALID);
         }

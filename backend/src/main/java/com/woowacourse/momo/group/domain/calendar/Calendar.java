@@ -27,19 +27,19 @@ public class Calendar {
     private Deadline deadline;
 
     public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
+        validateIsBeforeStartDuration(duration, deadline);
+        validateSchedulesAreInDuration(schedules, duration);
         this.schedules = schedules;
         this.duration = duration;
         this.deadline = deadline;
-        validateIsBeforeStartDuration();
-        validateSchedulesAreInDuration();
     }
 
     public void update(Schedules schedules, Duration duration, Deadline deadline) {
+        validateIsBeforeStartDuration(duration, deadline);
+        validateSchedulesAreInDuration(schedules, duration);
         this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;
-        validateIsBeforeStartDuration();
-        validateSchedulesAreInDuration();
         // TODO: deadline 검증 추가 필요
     }
 
@@ -47,13 +47,13 @@ public class Calendar {
         return deadline.isOver();
     }
 
-    private void validateIsBeforeStartDuration() {
+    private void validateIsBeforeStartDuration(Duration duration, Deadline deadline) {
         if (duration.isAfterStartDate(deadline.getValue())) {
             throw new MomoException(GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
 
-    private void validateSchedulesAreInDuration() {
+    private void validateSchedulesAreInDuration(Schedules schedules, Duration duration) {
         if (schedules.isExistAnyScheduleOutOfDuration(duration)) {
             throw new MomoException(GROUP_SCHEDULE_NOT_RANGE_DURATION);
         }

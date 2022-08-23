@@ -88,6 +88,7 @@ public class Group {
 
     public void update(GroupName name, Member host, Category category, Capacity capacity, Duration duration, Deadline deadline,
                        Schedules schedules, String location, String description) {
+        validateGroupIsInitialState(host);
         this.name = name;
         this.category = category;
         this.location = location;
@@ -95,7 +96,6 @@ public class Group {
 
         participants.update(capacity);
         calendar.update(schedules, duration, deadline);
-        validateGroupIsInitialState(host);
     }
 
     public void participate(Member member) {

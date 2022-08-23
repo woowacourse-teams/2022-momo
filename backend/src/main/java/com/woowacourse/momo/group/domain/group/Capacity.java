@@ -16,8 +16,8 @@ public class Capacity {
     private int value;
 
     public Capacity(int value) {
+        validateCapacityIsInRange(value);
         this.value = value;
-        validateCapacityIsInRange();
     }
 
     public boolean isFull(int numberOfPeople) {
@@ -28,7 +28,7 @@ public class Capacity {
         return value < numberOfPeople;
     }
 
-    private void validateCapacityIsInRange() {
+    private void validateCapacityIsInRange(int value) {
         GroupCapacityRange.validateCapacityIsInRange(value);
     }
 }

@@ -22,17 +22,21 @@ public class Deadline {
     private LocalDateTime value;
 
     public Deadline(LocalDateTime value) {
+        validateDeadlineIsAfterNow(value);
         this.value = value;
-        validateDeadlineIsAfterNow();
     }
 
     public boolean isOver() {
         return value.isBefore(LocalDateTime.now());
     }
 
-    private void validateDeadlineIsAfterNow() {
-        if (isOver()) {
+    private void validateDeadlineIsAfterNow(LocalDateTime value) {
+        if (isBeforeThanNow(value)) {
             throw new MomoException(GROUP_DEADLINE_NOT_PAST);
         }
+    }
+
+    private boolean isBeforeThanNow(LocalDateTime value) {
+        return value.isBefore(LocalDateTime.now());
     }
 }

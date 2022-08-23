@@ -36,10 +36,10 @@ public class Schedule {
     private LocalTime endTime;
 
     public Schedule(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        validateStartIsBeforeEnd(startTime, endTime);
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        validateStartIsBeforeEnd();
     }
 
     public boolean isInRange(LocalDate startDate, LocalDate endDate) {
@@ -47,7 +47,7 @@ public class Schedule {
                 && (date.isBefore(endDate) || date.isEqual(endDate));
     }
 
-    private void validateStartIsBeforeEnd() {
+    private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         if (!endTime.isAfter(startTime)) {
             throw new MomoException(GROUP_SCHEDULE_START_AFTER_END);
         }
