@@ -15,7 +15,7 @@ class UserIdTest {
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
     void idMustNotBlank(String id) {
-        assertThatThrownBy(() -> new UserId(id))
+        assertThatThrownBy(() -> UserId.momo(id))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("사용자의 아이디가 빈 값입니다.");
     }
@@ -23,8 +23,16 @@ class UserIdTest {
     @DisplayName("사용자의 아이디가 이메일 형식일 경우 예외가 발생한다")
     @Test
     void idMustNotBeInEmail() {
-        assertThatThrownBy(() -> new UserId("id@woowacourse.com"))
+        assertThatThrownBy(() -> UserId.momo("id@woowacourse.com"))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("잘못된 형식의 아이디입니다.");
+    }
+
+    @DisplayName("구글 사용자의 아이디가 이메일 형식이 아닐 경우 예외가 발생한다")
+    @Test
+    void googleIdMustBeInEmail() {
+        assertThatThrownBy(() -> UserId.oauth("id"))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("구글 아이디가 이메일 형식이 아닙니다.");
     }
 }

@@ -5,6 +5,7 @@ import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_US
 
 import java.util.Optional;
 
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -71,12 +72,12 @@ public class OauthService {
     }
 
     private Member findOrSaveMember(GoogleUserResponse response) {
-        return memberRepository.findByUserId(new UserId(response.getEmail()))
+        return memberRepository.findByUserId(UserId.momo(response.getEmail()))
                 .orElseGet(() -> saveMember(response));
     }
 
     private Member saveMember(GoogleUserResponse response) {
-        UserId userId = new UserId(response.getEmail());
+        UserId userId = UserId.oauth(response.getEmail());
         UserName userName = new UserName(response.getName());
         Password password = Password.encrypt(oauthProvider.getTemporaryPassword(), passwordEncoder);
 

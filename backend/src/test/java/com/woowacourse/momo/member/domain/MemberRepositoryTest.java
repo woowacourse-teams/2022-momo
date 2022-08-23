@@ -25,7 +25,7 @@ class MemberRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
-    private static final UserId USER_ID = new UserId("momo");
+    private static final UserId USER_ID = UserId.momo("momo");
     private static final UserName USER_NAME = new UserName("모모");
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 

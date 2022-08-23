@@ -37,7 +37,7 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest request) {
-        UserId userId = new UserId(request.getUserId());
+        UserId userId = UserId.momo(request.getUserId());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = memberFindService.findByUserIdAndPassword(userId, password);
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
@@ -50,7 +50,7 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        UserId userId = new UserId(request.getUserId());
+        UserId userId = UserId.momo(request.getUserId());
         validateUserIsNotExist(userId);
 
         UserName userName = new UserName(request.getName());

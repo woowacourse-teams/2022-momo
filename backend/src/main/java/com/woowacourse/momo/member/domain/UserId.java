@@ -1,5 +1,6 @@
 package com.woowacourse.momo.member.domain;
 
+import static com.woowacourse.momo.global.exception.exception.ErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.SIGNUP_INVALID_ID;
 
@@ -22,25 +23,36 @@ public class UserId {
     @Column(name = "user_id", nullable = false, unique = true)
     private String value;
 
-    public UserId(String value) {
-        validateUserIdIsNotBlank(value);
-        validateUserIdIsValidPattern(value);
+    private UserId(String value) {
         this.value = value;
     }
 
-    private boolean isNotValid(String userId) {
-        return userId.contains(EMAIL_FORMAT);
+    public static UserId momo(String value) {
+        validateUserIdIsNotBlank(value);
+        validateUserIdIsValidPattern(value);
+        return new UserId(value);
     }
 
-    private void validateUserIdIsNotBlank(String value) {
+    public static UserId oauth(String value) {
+        validateUserEmailIsValidPattern(value);
+        return new UserId(value);
+    }
+
+    private static void validateUserIdIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(MEMBER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
-    private void validateUserIdIsValidPattern(String value) {
-        if (isNotValid(value)) {
+    private static void validateUserIdIsValidPattern(String value) {
+        if (value.contains(EMAIL_FORMAT)) {
             throw new MomoException(SIGNUP_INVALID_ID);
+        }
+    }
+
+    private static void validateUserEmailIsValidPattern(String value) {
+        if (!value.contains(EMAIL_FORMAT)) {
+            throw new MomoException(GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
     }
 }

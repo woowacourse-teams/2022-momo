@@ -28,12 +28,12 @@ import com.woowacourse.momo.member.domain.UserName;
 class ParticipantsTest {
 
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-    private static final Member HOST = new Member(new UserId("host"), PASSWORD, new UserName("host"));
+    private static final Member HOST = new Member(UserId.momo("host"), PASSWORD, new UserName("host"));
     private static final Capacity CAPACITY = new Capacity(3);
     private static final Group GROUP = constructGroup();
-    private static final Member PARTICIPANT = new Member(new UserId("participant"), PASSWORD, new UserName("participant"));
-    private static final Member PARTICIPANT2 = new Member(new UserId("participant2"), PASSWORD, new UserName("participant2"));
-    private static final Member MEMBER = new Member(new UserId("member"), PASSWORD, new UserName("member"));
+    private static final Member PARTICIPANT = new Member(UserId.momo("participant"), PASSWORD, new UserName("participant"));
+    private static final Member PARTICIPANT2 = new Member(UserId.momo("participant2"), PASSWORD, new UserName("participant2"));
+    private static final Member MEMBER = new Member(UserId.momo("member"), PASSWORD, new UserName("member"));
 
     @DisplayName("참여자 목록에는 주최자가 포함되어 있다")
     @Test

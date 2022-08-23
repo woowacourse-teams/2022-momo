@@ -47,8 +47,8 @@ class ParticipantRepositoryTest {
 	private EntityManager entityManager;
 
 	private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-	private static final Member HOST = new Member(new UserId("주최자"), PASSWORD, new UserName("모모"));
-	private static final Member PARTICIPANT = new Member(new UserId("참여자"), PASSWORD, new UserName("모모"));
+	private static final Member HOST = new Member(UserId.momo("주최자"), PASSWORD, new UserName("모모"));
+	private static final Member PARTICIPANT = new Member(UserId.momo("참여자"), PASSWORD, new UserName("모모"));
 	private static Group group;
 
 	private Member savedHost;
