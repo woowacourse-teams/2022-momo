@@ -73,9 +73,8 @@ public class MemberService {
     public void updatePassword(Long id, ChangePasswordRequest request) {
         Member member = memberFindService.findMember(id);
 
-        String encryptedNewPassword = passwordEncoder.encrypt(request.getNewPassword());
         confirmPassword(member, request.getOldPassword());
-        member.changePassword(encryptedNewPassword);
+        member.changePassword(request.getNewPassword(), passwordEncoder);
     }
 
     @Transactional

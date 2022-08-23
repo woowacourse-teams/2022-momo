@@ -130,7 +130,7 @@ class MemberServiceTest {
         SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", beforePassword);
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", beforePassword);
         memberService.updatePassword(memberId, changePasswordRequest);
 
         Member member = memberFindService.findMember(memberId);
@@ -146,7 +146,7 @@ class MemberServiceTest {
         SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", "wrongPassword");
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "wrongPassword");
         assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");

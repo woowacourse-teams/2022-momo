@@ -20,6 +20,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class Password {
 
+    private static final String GHOST_PASSWORD = "";
     private static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_FORMAT);
 
@@ -36,8 +37,12 @@ public class Password {
         return new Password(encoder.encrypt(value));
     }
 
-    public void update(String value) {
-        this.value = value;
+    public Password update(String value, PasswordEncoder encoder) {
+        return Password.encrypt(value, encoder);
+    }
+
+    public Password delete() {
+        return new Password(GHOST_PASSWORD);
     }
 
     public boolean isSame(String password) {

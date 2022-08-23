@@ -18,6 +18,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 public class UserName {
 
     private static final int MAXIMUM = 30;
+    private static final String GHOST_USER_NAME = "알 수 없음";
 
     @Column(name = "name", nullable = false, length = MAXIMUM)
     private String value;
@@ -28,8 +29,12 @@ public class UserName {
         validateNameLengthIsValid();
     }
 
-    public void update(String value) {
-        this.value = value;
+    public UserName update(String value) {
+        return new UserName(value);
+    }
+
+    public UserName delete() {
+        return new UserName(GHOST_USER_NAME);
     }
 
     private void validateNameIsNotBlank() {

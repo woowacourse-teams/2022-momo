@@ -13,13 +13,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.auth.support.PasswordEncoder;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
-
-    private static final String GHOST_NAME = "알 수 없음";
-    private static final String GHOST_PRIVATE_INFO = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,17 +47,17 @@ public class Member {
         return !this.password.isSame(password);
     }
 
-    public void changePassword(String password) {
-        this.password.update(password);
+    public void changePassword(String password, PasswordEncoder encoder) {
+        this.password = this.password.update(password, encoder);
     }
 
     public void changeName(String name) {
-        this.userName.update(name);
+        this.userName = this.userName.update(name);
     }
 
     public void delete() {
-        password.update(GHOST_PRIVATE_INFO);
-        userName.update(GHOST_NAME);
+        password = password.delete();
+        userName = userName.delete();
         deleted = true;
     }
 
