@@ -28,7 +28,7 @@ class MemberFindServiceTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = UserId.momo("momo");
-    private static final UserName USER_NAME = new UserName("momo");
+    private static final String USER_NAME = "momo";
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")

@@ -30,7 +30,7 @@ class TokenRepositoryTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = UserId.momo("momo");
-    private static final UserName USER_NAME = new UserName("모모");
+    private static final String USER_NAME = "모모";
 
     private Password password;
     private Member member;

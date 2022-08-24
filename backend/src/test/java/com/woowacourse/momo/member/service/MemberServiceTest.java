@@ -74,7 +74,7 @@ class MemberServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, new UserName("momo")));
+        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
     }
 
     @DisplayName("회원 정보를 조회한다")

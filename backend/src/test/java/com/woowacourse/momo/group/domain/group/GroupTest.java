@@ -37,9 +37,9 @@ import com.woowacourse.momo.member.domain.UserName;
 class GroupTest {
 
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-    private static final Member HOST = new Member(UserId.momo("주최자"), PASSWORD, new UserName("momo"));
-    private static final Member PARTICIPANT = new Member(UserId.momo("참여자"), PASSWORD, new UserName("momo"));
-    private static final Member MEMBER = new Member(UserId.momo("사용자"), PASSWORD, new UserName("momo"));
+    private static final Member HOST = new Member(UserId.momo("주최자"), PASSWORD, "momo");
+    private static final Member PARTICIPANT = new Member(UserId.momo("참여자"), PASSWORD, "momo");
+    private static final Member MEMBER = new Member(UserId.momo("사용자"), PASSWORD, "momo");
 
     @DisplayName("유효하지 않은 모임 정원 값으로 인스턴스 생성시 예외가 발생한다")
     @ParameterizedTest

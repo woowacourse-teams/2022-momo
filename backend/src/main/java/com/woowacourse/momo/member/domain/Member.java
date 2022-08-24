@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.apache.tomcat.jni.User;
 import org.hibernate.annotations.Type;
 
 import lombok.AccessLevel;
@@ -41,6 +42,10 @@ public class Member {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
+    }
+
+    public Member(UserId userId, Password password, String userName) {
+        this(userId, password, new UserName(userName));
     }
 
     public boolean isNotSamePassword(String password) {

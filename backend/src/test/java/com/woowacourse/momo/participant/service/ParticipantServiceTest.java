@@ -71,9 +71,9 @@ class ParticipantServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        host = memberRepository.save(new Member(UserId.momo("주최자"), password, new UserName("momo")));
-        participant1 = memberRepository.save(new Member(UserId.momo("회원1"), password, new UserName("momo2")));
-        participant2 = memberRepository.save(new Member(UserId.momo("회원2"), password, new UserName("momo2")));
+        host = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
+        participant1 = memberRepository.save(new Member(UserId.momo("회원1"), password, "momo1"));
+        participant2 = memberRepository.save(new Member(UserId.momo("회원2"), password, "momo2"));
     }
 
     private Group saveGroup() {

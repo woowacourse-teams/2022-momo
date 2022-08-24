@@ -79,9 +79,9 @@ class GroupServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, new UserName("momo")));
-        savedMember1 = memberRepository.save(new Member(UserId.momo("사용자1"), password, new UserName("momo")));
-        savedMember2 = memberRepository.save(new Member(UserId.momo("사용자2"), password, new UserName("momo")));
+        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
+        savedMember1 = memberRepository.save(new Member(UserId.momo("사용자1"), password, "momo"));
+        savedMember2 = memberRepository.save(new Member(UserId.momo("사용자2"), password, "momo"));
     }
 
     private Group saveGroup(String name, Category category) {
