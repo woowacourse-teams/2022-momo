@@ -35,7 +35,6 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
-import com.woowacourse.momo.member.domain.UserName;
 
 @Transactional
 @SpringBootTest

@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.apache.tomcat.jni.User;
 import org.hibernate.annotations.Type;
 
 import lombok.AccessLevel;

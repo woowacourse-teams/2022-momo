@@ -20,7 +20,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.woowacourse.momo.fixture.DateTimeFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class DurationTest {

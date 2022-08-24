@@ -23,7 +23,6 @@ import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
-import com.woowacourse.momo.member.domain.UserName;
 
 class ParticipantsTest {
 
