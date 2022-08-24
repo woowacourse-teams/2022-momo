@@ -22,9 +22,9 @@ class DeadlineTest {
 
     @DisplayName("마감 기한이 지났는지 확인한다")
     @Test
-    void isOver() {
+    void isPast() {
         Deadline deadline = new Deadline(LocalDateTime.now().plusDays(1));
 
-        assertThat(deadline.isOver()).isFalse();
+        assertThat(deadline.isPast()).isFalse();
     }
 }

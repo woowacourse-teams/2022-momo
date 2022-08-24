@@ -44,7 +44,7 @@ public class Calendar {
     }
 
     public boolean isDeadlineOver() {
-        return deadline.isOver();
+        return deadline.isPast();
     }
 
     private void validateIsBeforeStartDuration(Duration duration, Deadline deadline) {

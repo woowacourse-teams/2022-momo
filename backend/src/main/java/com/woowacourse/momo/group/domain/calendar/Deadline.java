@@ -26,7 +26,7 @@ public class Deadline {
         this.value = value;
     }
 
-    public boolean isOver() {
+    public boolean isPast() {
         return value.isBefore(LocalDateTime.now());
     }
 
