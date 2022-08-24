@@ -22,7 +22,7 @@ class SchedulesTest {
         Schedules schedules = new Schedules(List.of(schedule));
         Duration duration = new Duration(NOW, TOMORROW);
 
-        assertThat(schedules.isExistAnyScheduleOutOfDuration(duration)).isTrue();
+        assertThat(schedules.hasAnyScheduleOutOfDuration(duration)).isTrue();
     }
 
     @DisplayName("일정들이 기간 내에 속해있을 경우 False 를 반환한다")
@@ -32,6 +32,6 @@ class SchedulesTest {
         Schedules schedules = new Schedules(List.of(schedule));
         Duration duration = new Duration(NOW, TOMORROW);
 
-        assertThat(schedules.isExistAnyScheduleOutOfDuration(duration)).isFalse();
+        assertThat(schedules.hasAnyScheduleOutOfDuration(duration)).isFalse();
     }
 }

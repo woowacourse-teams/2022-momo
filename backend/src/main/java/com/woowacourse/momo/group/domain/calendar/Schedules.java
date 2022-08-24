@@ -32,8 +32,8 @@ public class Schedules {
         value.addAll(schedules.value);
     }
 
-    public boolean isExistAnyScheduleOutOfDuration(Duration duration) {
+    public boolean hasAnyScheduleOutOfDuration(Duration duration) {
         return value.stream()
-                .anyMatch(schedule -> !schedule.isInRange(duration.getStartDate(), duration.getEndDate()));
+                .anyMatch(schedule -> schedule.isOutOfRange(duration.getStartDate(), duration.getEndDate()));
     }
 }

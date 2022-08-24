@@ -121,7 +121,7 @@ public class Group {
 
     public void validateMemberCanLeave(Member member) {
         validate(() -> isHost(member), PARTICIPANT_LEAVE_HOST);
-        validate(() -> !participants.isParticipant(member), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validate(() -> !participants.contains(member), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         validate(calendar::isDeadlineOver, PARTICIPANT_LEAVE_DEADLINE);
         validate(() -> isEarlyClosed, PARTICIPANT_LEAVE_EARLY_CLOSED);
     }

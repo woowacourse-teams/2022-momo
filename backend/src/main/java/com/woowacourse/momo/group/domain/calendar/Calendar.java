@@ -54,7 +54,7 @@ public class Calendar {
     }
 
     private void validateSchedulesAreInDuration(Schedules schedules, Duration duration) {
-        if (schedules.isExistAnyScheduleOutOfDuration(duration)) {
+        if (schedules.hasAnyScheduleOutOfDuration(duration)) {
             throw new MomoException(GROUP_SCHEDULE_NOT_RANGE_DURATION);
         }
     }

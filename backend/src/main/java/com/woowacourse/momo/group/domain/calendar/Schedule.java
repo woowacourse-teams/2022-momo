@@ -42,9 +42,9 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    public boolean isInRange(LocalDate startDate, LocalDate endDate) {
-        return (date.isAfter(startDate) || date.isEqual(startDate))
-                && (date.isBefore(endDate) || date.isEqual(endDate));
+    public boolean isOutOfRange(LocalDate startDate, LocalDate endDate) {
+        return !((date.isAfter(startDate) || date.isEqual(startDate))
+                && (date.isBefore(endDate) || date.isEqual(endDate)));
     }
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {

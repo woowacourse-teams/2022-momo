@@ -63,7 +63,7 @@ public class Participants {
         return participants.size() > NONE_PARTICIPANT;
     }
 
-    public boolean isParticipant(Member member) {
+    public boolean contains(Member member) {
         return getParticipants().contains(member);
     }
 
@@ -80,7 +80,7 @@ public class Participants {
     }
 
     private void validateMemberIsNotParticipant(Member member) {
-        if (isParticipant(member)) {
+        if (contains(member)) {
             throw new MomoException(PARTICIPANT_RE_PARTICIPATE);
         }
     }

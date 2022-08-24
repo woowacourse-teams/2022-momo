@@ -40,7 +40,7 @@ class ParticipantsTest {
     void ParticipantsContainHost() {
         Participants participants = new Participants(GROUP, CAPACITY);
 
-        assertThat(participants.isParticipant(HOST)).isTrue();
+        assertThat(participants.contains(HOST)).isTrue();
     }
 
     @DisplayName("모집이 종료된 모임에 참여할 경우 예외가 발생한다")
@@ -129,7 +129,7 @@ class ParticipantsTest {
         Participants participants = new Participants(GROUP, CAPACITY);
         participants.participate(GROUP, PARTICIPANT);
 
-        assertThat(participants.isParticipant(PARTICIPANT)).isTrue();
+        assertThat(participants.contains(PARTICIPANT)).isTrue();
     }
 
     @DisplayName("참여자가 아닐 경우 False 를 반환한다")
@@ -137,7 +137,7 @@ class ParticipantsTest {
     void isParticipantFalse() {
         Participants participants = new Participants(GROUP, CAPACITY);
 
-        assertThat(participants.isParticipant(MEMBER)).isFalse();
+        assertThat(participants.contains(MEMBER)).isFalse();
     }
 
     private static Group constructGroup() {
