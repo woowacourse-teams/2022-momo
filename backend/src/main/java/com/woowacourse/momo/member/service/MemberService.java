@@ -81,7 +81,7 @@ public class MemberService {
     public void updateName(Long id, ChangeNameRequest request) {
         Member member = memberFindService.findMember(id);
 
-        member.changeName(request.getName());
+        member.changeUserName(request.getName());
     }
 
     private void confirmPassword(Member member, String password) {
