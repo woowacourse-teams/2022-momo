@@ -81,14 +81,7 @@ public class GroupService {
         Group group = groupFindService.findGroup(groupId);
         Member host = memberFindService.findMember(hostId);
 
-        GroupName groupName = GroupRequestAssembler.groupName(request);
-        Capacity capacity = GroupRequestAssembler.capacity(request);
-        Duration duration = GroupRequestAssembler.duration(request.getDuration());
-        Deadline deadline = GroupRequestAssembler.deadline(request);
-        Schedules schedules = GroupRequestAssembler.schedules(request.getSchedules());
-
-        group.update(groupName, host, Category.from(request.getCategoryId()), capacity,
-                duration, deadline, schedules, request.getLocation(), request.getDescription());
+        updateGroup(group, host, request);
     }
 
     @Transactional
@@ -106,5 +99,16 @@ public class GroupService {
         group.validateGroupIsInitialState(member);
 
         groupRepository.deleteById(groupId);
+    }
+
+    private void updateGroup(Group group, Member host, GroupUpdateRequest request) {
+        GroupName groupName = GroupRequestAssembler.groupName(request);
+        Capacity capacity = GroupRequestAssembler.capacity(request);
+        Duration duration = GroupRequestAssembler.duration(request.getDuration());
+        Deadline deadline = GroupRequestAssembler.deadline(request);
+        Schedules schedules = GroupRequestAssembler.schedules(request.getSchedules());
+
+        group.update(groupName, host, Category.from(request.getCategoryId()), capacity,
+                duration, deadline, schedules, request.getLocation(), request.getDescription());
     }
 }

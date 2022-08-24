@@ -51,11 +51,11 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpRequest request) {
         UserId userId = UserId.momo(request.getUserId());
-        validateUserIsNotExist(userId);
-
         UserName userName = new UserName(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = new Member(userId, password, userName);
+
+        validateUserIsNotExist(userId);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
