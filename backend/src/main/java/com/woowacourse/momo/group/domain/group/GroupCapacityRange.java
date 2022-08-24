@@ -10,10 +10,10 @@ public enum GroupCapacityRange {
     MAXIMUM(99),
     ;
 
-    private final int number;
+    private final int value;
 
-    GroupCapacityRange(int number) {
-        this.number = number;
+    GroupCapacityRange(int value) {
+        this.value = value;
     }
 
     public static void validateCapacityIsInRange(int capacity) {
@@ -23,6 +23,6 @@ public enum GroupCapacityRange {
     }
 
     private static boolean isOutOfRange(int capacity) {
-        return (MINIMUM.number > capacity) || (capacity > MAXIMUM.number);
+        return (MINIMUM.value > capacity) || (capacity > MAXIMUM.value);
     }
 }
