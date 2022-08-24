@@ -21,7 +21,7 @@ public class Capacity {
     }
 
     public boolean isFull(int numberOfPeople) {
-        return value <= numberOfPeople;
+        return value == numberOfPeople;
     }
 
     public boolean isUnder(int numberOfPeople) {

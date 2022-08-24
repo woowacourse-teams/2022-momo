@@ -22,12 +22,11 @@ class CapacityTest {
     }
 
     @DisplayName("수용 인원이 가득 찼을 경우 True 를 반환한다")
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2})
-    void isFullTrue(int numberOfPeople) {
+    @Test
+    void isFullTrue() {
         Capacity capacity = new Capacity(1);
 
-        assertThat(capacity.isFull(numberOfPeople)).isTrue();
+        assertThat(capacity.isFull(1)).isTrue();
     }
 
     @DisplayName("수용 인원이 남아있을 경우 False 를 반환한다")
