@@ -1,11 +1,9 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_DELETE_NO_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_ALREADY_FINISH;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_EXIST_PARTICIPANTS;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_HOST;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT;
 
 import java.time.LocalDateTime;
@@ -86,9 +84,9 @@ public class Group {
         this.participants = new Participants(this, capacity);
     }
 
-    public void update(GroupName name, Member host, Category category, Capacity capacity, Calendar calendar,
+    public void update(GroupName name, Category category, Capacity capacity, Calendar calendar,
                        String location, String description) {
-        validateGroupIsInitialState(host);
+        validateGroupIsInitialState();
         this.name = name;
         this.category = category;
         this.location = location;
@@ -102,13 +100,17 @@ public class Group {
         participants.participate(this, member);
     }
 
-    public void closeEarly(Member member) {
-        validateGroupCanBeCloseEarly(member);
+    public void closeEarly() {
+        validateGroupCanBeCloseEarly();
         isEarlyClosed = true;
     }
 
-    public boolean isHost(Member host) {
-        return this.host.equals(host);
+    public boolean isHost(Member member) {
+        return host.equals(member);
+    }
+
+    public boolean isNotHost(Member member) {
+        return !host.equals(member);
     }
 
     public boolean isEnd() {
@@ -120,20 +122,17 @@ public class Group {
     }
 
     public void validateMemberCanLeave(Member member) {
-        validate(() -> isHost(member), PARTICIPANT_LEAVE_HOST);
         validate(() -> !participants.contains(member), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
         validate(calendar::isDeadlineOver, PARTICIPANT_LEAVE_DEADLINE);
         validate(() -> isEarlyClosed, PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
 
-    public void validateGroupIsInitialState(Member member) {
-        validate(() -> !isHost(member), AUTH_DELETE_NO_HOST);
+    public void validateGroupIsInitialState() {
         validate(this::isFinishedRecruitment, GROUP_ALREADY_FINISH);
         validate(participants::isExist, GROUP_EXIST_PARTICIPANTS);
     }
 
-    private void validateGroupCanBeCloseEarly(Member member) {
-        validate(() -> !isHost(member), AUTH_DELETE_NO_HOST);
+    private void validateGroupCanBeCloseEarly() {
         validate(this::isFinishedRecruitment, GROUP_ALREADY_FINISH);
     }
 

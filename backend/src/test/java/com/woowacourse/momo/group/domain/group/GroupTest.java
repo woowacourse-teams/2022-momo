@@ -172,7 +172,7 @@ class GroupTest {
     @Test
     void isFinishedRecruitmentWithPassedDeadline() {
         Group group = constructGroup();
-        group.closeEarly(group.getHost());
+        group.closeEarly();
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
@@ -189,7 +189,7 @@ class GroupTest {
     @Test
     void isEndCloseEarly() {
         Group group = constructGroup();
-        group.closeEarly(group.getHost());
+        group.closeEarly();
 
         assertThat(group.isEnd()).isTrue();
     }
@@ -200,16 +200,6 @@ class GroupTest {
         Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
 
         assertThat(group.isEnd()).isTrue();
-    }
-
-    @DisplayName("주최자일 경우 모임에 탈퇴할 수 없다")
-    @Test
-    void validateLeaveHost() {
-        Group group = constructGroup();
-
-        assertThatThrownBy(() -> group.validateMemberCanLeave(HOST))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
@@ -240,7 +230,7 @@ class GroupTest {
     void validateLeaveEarlyClosed() {
         Group group = constructGroup();
         group.participate(PARTICIPANT);
-        group.closeEarly(group.getHost());
+        group.closeEarly();
 
         assertThatThrownBy(() -> group.validateMemberCanLeave(PARTICIPANT))
             .isInstanceOf(MomoException.class)

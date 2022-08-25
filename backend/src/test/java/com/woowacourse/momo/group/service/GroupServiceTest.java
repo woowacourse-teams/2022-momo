@@ -158,6 +158,18 @@ class GroupServiceTest {
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
+    @DisplayName("주최자가 아닌 사용자가 모임ㅇ르 수정할 경우 예외가 발생한다")
+    @Test
+    void updateMemberIsNotHost() {
+        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        assertThatThrownBy(() -> groupService.update(savedMember1.getId(), savedGroup.getId(), groupRequest))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+    }
+
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
     @Test
     void updateExistParticipants() {
@@ -196,6 +208,16 @@ class GroupServiceTest {
 
         boolean actual = groupService.findGroup(savedGroup.getId()).isFinished();
         assertThat(actual).isTrue();
+    }
+
+    @DisplayName("주최자가 아닌 사용자가 모임을 조기마감 할 경우 예외가 발생한다")
+    @Test
+    void closeEarlyMemberIsNotHost() {
+        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+
+        assertThatThrownBy(() -> groupService.closeEarly(savedMember1.getId(), savedGroup.getId()))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
 
     @DisplayName("모임 목록중 두번째 페이지를 조회한다")

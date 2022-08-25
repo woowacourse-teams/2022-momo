@@ -46,7 +46,7 @@ class ParticipantsTest {
     @Test
     void validateGroupIsProceeding() {
         Group group = constructGroup();
-        group.closeEarly(HOST);
+        group.closeEarly();
         Participants participants = new Participants(GROUP, CAPACITY);
 
         assertThatThrownBy(() -> participants.participate(group, PARTICIPANT))

@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
@@ -48,6 +50,13 @@ public class ParticipantService {
     private void validateMemberCanLeave(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
+        validateMemberIsNotHost(group, member);
         group.validateMemberCanLeave(member);
+    }
+
+    private void validateMemberIsNotHost(Group group, Member member) {
+        if (group.isHost(member)) {
+            throw new MomoException(ErrorCode.PARTICIPANT_LEAVE_HOST);
+        }
     }
 }

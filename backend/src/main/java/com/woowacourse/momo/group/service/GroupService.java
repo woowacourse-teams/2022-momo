@@ -9,10 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Duration;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.domain.group.GroupName;
@@ -90,24 +89,34 @@ public class GroupService {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(hostId);
 
-        group.closeEarly(member);
+        validateMemberIsHost(group, member);
+        group.closeEarly();
     }
 
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(hostId);
-        group.validateGroupIsInitialState(member);
+
+        validateMemberIsHost(group, member);
+        group.validateGroupIsInitialState();
 
         groupRepository.deleteById(groupId);
     }
 
-    private void updateGroup(Group group, Member host, GroupUpdateRequest request) {
+    private void updateGroup(Group group, Member member, GroupUpdateRequest request) {
         GroupName groupName = GroupRequestAssembler.groupName(request);
         Capacity capacity = GroupRequestAssembler.capacity(request);
         Calendar calendar = GroupRequestAssembler.calendar(request);
 
-        group.update(groupName, host, Category.from(request.getCategoryId()), capacity, calendar,
+        validateMemberIsHost(group, member);
+        group.update(groupName, Category.from(request.getCategoryId()), capacity, calendar,
                 request.getLocation(), request.getDescription());
+    }
+
+    private void validateMemberIsHost(Group group, Member member) {
+        if (group.isNotHost(member)) {
+            throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
+        }
     }
 }
