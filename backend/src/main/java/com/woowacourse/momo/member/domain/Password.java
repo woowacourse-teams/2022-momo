@@ -18,9 +18,12 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class Password {
 
-    private static final String GHOST_PASSWORD = "";
+    /**
+     * 사용자 비밀번호는 8자에서 16자여야 하며, 대소문자 포함 영문자와 숫자, 특수문자를 하나 이상 포함해야 한다.
+     */
     private static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_FORMAT);
+    private static final String GHOST_PASSWORD = "";
 
     @Column(name = "password", nullable = false)
     private String value;
