@@ -1,7 +1,5 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_NAME_SHOULD_NOT_BE_BLANK;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -9,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -26,7 +25,7 @@ public class GroupName {
 
     private void validateNameIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(GROUP_NAME_SHOULD_NOT_BE_BLANK);
+            throw new MomoException(ErrorCode.GROUP_NAME_SHOULD_NOT_BE_BLANK);
         }
     }
 }

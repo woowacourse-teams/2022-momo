@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE;
-
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 public enum GroupCapacityRange {
@@ -18,7 +17,7 @@ public enum GroupCapacityRange {
 
     public static void validateCapacityIsInRange(int capacity) {
         if (isOutOfRange(capacity)) {
-            throw new MomoException(GROUP_MEMBERS_NOT_IN_RANGE);
+            throw new MomoException(ErrorCode.GROUP_MEMBERS_NOT_IN_RANGE);
         }
     }
 

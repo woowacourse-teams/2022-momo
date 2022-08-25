@@ -1,14 +1,11 @@
 package com.woowacourse.momo.member.service;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_DELETED;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_NOT_EXIST;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -24,21 +21,21 @@ public class MemberFindService {
 
     public Member findMember(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MomoException(MEMBER_NOT_EXIST));
+                .orElseThrow(() -> new MomoException(ErrorCode.MEMBER_NOT_EXIST));
         validateExistMember(member);
         return member;
     }
 
     public Member findByUserIdAndPassword(UserId userId, Password password) {
         Member member = memberRepository.findByUserIdAndPassword(userId, password)
-            .orElseThrow(() -> new MomoException(LOGIN_INVALID_ID_AND_PASSWORD));
+            .orElseThrow(() -> new MomoException(ErrorCode.LOGIN_INVALID_ID_AND_PASSWORD));
         validateExistMember(member);
         return member;
     }
 
     private void validateExistMember(Member member) {
         if (member.isDeleted()) {
-            throw new MomoException(MEMBER_DELETED);
+            throw new MomoException(ErrorCode.MEMBER_DELETED);
         }
     }
 }

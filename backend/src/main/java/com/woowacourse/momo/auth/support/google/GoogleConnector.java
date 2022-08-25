@@ -1,8 +1,5 @@
 package com.woowacourse.momo.auth.support.google;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_2XX_STATUS;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_EXIST_BODY;
-
 import java.util.Collections;
 import java.util.Optional;
 
@@ -22,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.support.google.dto.GoogleTokenResponse;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -74,14 +72,14 @@ public class GoogleConnector {
         validateResponseStatusOk(responseEntity.getStatusCode());
 
         GoogleTokenResponse response = Optional.ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new MomoException(OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_EXIST_BODY));
+                .orElseThrow(() -> new MomoException(ErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_EXIST_BODY));
 
         return response.getAccessToken();
     }
 
     private void validateResponseStatusOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
-            throw new MomoException(OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_2XX_STATUS);
+            throw new MomoException(ErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
     }
 }

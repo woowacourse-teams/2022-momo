@@ -1,8 +1,5 @@
 package com.woowacourse.momo.auth.service;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_INVALID_TOKEN;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.SIGNUP_ALREADY_REGISTER;
-
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +13,7 @@ import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -64,14 +62,14 @@ public class AuthService {
     private void validateUserIsNotExist(UserId userId) {
         Optional<Member> member = memberRepository.findByUserId(userId);
         if (member.isPresent()) {
-            throw new MomoException(SIGNUP_ALREADY_REGISTER);
+            throw new MomoException(ErrorCode.SIGNUP_ALREADY_REGISTER);
         }
     }
 
     public AccessTokenResponse reissueAccessToken(Long memberId) {
         boolean isExistMember = memberRepository.existsById(memberId);
         if (!isExistMember) {
-            throw new MomoException(AUTH_INVALID_TOKEN);
+            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
         String accessToken = jwtTokenProvider.createAccessToken(memberId);
         return new AccessTokenResponse(accessToken);

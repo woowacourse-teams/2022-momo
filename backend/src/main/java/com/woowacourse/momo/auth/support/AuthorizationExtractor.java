@@ -1,7 +1,5 @@
 package com.woowacourse.momo.auth.support;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_REQUIRED_LOGIN;
-
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -33,6 +32,6 @@ public class AuthorizationExtractor {
             }
         }
 
-        throw new MomoException(AUTH_REQUIRED_LOGIN);
+        throw new MomoException(ErrorCode.AUTH_REQUIRED_LOGIN);
     }
 }

@@ -1,12 +1,11 @@
 package com.woowacourse.momo.category.domain;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.CATEGORY_NOT_EXIST;
-
 import java.util.Arrays;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -31,6 +30,6 @@ public enum Category {
         return Arrays.stream(values())
                 .filter(category -> category.id == id)
                 .findFirst()
-                .orElseThrow(() -> new MomoException(CATEGORY_NOT_EXIST));
+                .orElseThrow(() -> new MomoException(ErrorCode.CATEGORY_NOT_EXIST));
     }
 }

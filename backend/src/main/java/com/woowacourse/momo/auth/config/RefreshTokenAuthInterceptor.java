@@ -1,7 +1,5 @@
 package com.woowacourse.momo.auth.config;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.AUTH_INVALID_TOKEN;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +11,7 @@ import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @RequiredArgsConstructor
@@ -25,15 +24,15 @@ public class RefreshTokenAuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String refreshToken = AuthorizationExtractor.extract(request);
         if (jwtTokenProvider.validateTokenNotUsable(refreshToken)) {
-            throw new MomoException(AUTH_INVALID_TOKEN);
+            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
 
         Long memberId = jwtTokenProvider.getPayload(refreshToken);
         Token token = tokenRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new MomoException(AUTH_INVALID_TOKEN));
+                .orElseThrow(() -> new MomoException(ErrorCode.AUTH_INVALID_TOKEN));
 
         if (!token.isSameRefreshToken(refreshToken)) {
-            throw new MomoException(AUTH_INVALID_TOKEN);
+            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
         }
         return true;
     }

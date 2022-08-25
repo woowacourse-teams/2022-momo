@@ -1,10 +1,5 @@
 package com.woowacourse.momo.participant.domain;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_CAPACITY_IS_OVER_SIZE;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_FINISHED;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_JOIN_BY_HOST;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_RE_PARTICIPATE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
@@ -69,25 +65,25 @@ public class Participants {
 
     private void validateGroupIsProceeding(Group group) {
         if (group.isFinishedRecruitment()) {
-            throw new MomoException(PARTICIPANT_FINISHED);
+            throw new MomoException(ErrorCode.PARTICIPANT_FINISHED);
         }
     }
 
     private void validateMemberIsNotHost(Group group, Member member) {
         if (group.isHost(member)) {
-            throw new MomoException(PARTICIPANT_JOIN_BY_HOST);
+            throw new MomoException(ErrorCode.PARTICIPANT_JOIN_BY_HOST);
         }
     }
 
     private void validateMemberIsNotParticipant(Member member) {
         if (contains(member)) {
-            throw new MomoException(PARTICIPANT_RE_PARTICIPATE);
+            throw new MomoException(ErrorCode.PARTICIPANT_RE_PARTICIPATE);
         }
     }
 
     private void validateCapacityIsOverNumberOfParticipants(Capacity capacity) {
         if (capacity.isUnder(participants.size())) {
-            throw new MomoException(PARTICIPANT_CAPACITY_IS_OVER_SIZE);
+            throw new MomoException(ErrorCode.PARTICIPANT_CAPACITY_IS_OVER_SIZE);
         }
     }
 

@@ -1,11 +1,5 @@
 package com.woowacourse.momo.group.domain.group;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_ALREADY_FINISH;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_EXIST_PARTICIPANTS;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -122,18 +116,18 @@ public class Group {
     }
 
     public void validateMemberCanLeave(Member member) {
-        validate(() -> !participants.contains(member), PARTICIPANT_LEAVE_NOT_PARTICIPANT);
-        validate(calendar::isDeadlineOver, PARTICIPANT_LEAVE_DEADLINE);
-        validate(() -> isEarlyClosed, PARTICIPANT_LEAVE_EARLY_CLOSED);
+        validate(() -> !participants.contains(member), ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT);
+        validate(calendar::isDeadlineOver, ErrorCode.PARTICIPANT_LEAVE_DEADLINE);
+        validate(() -> isEarlyClosed, ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED);
     }
 
     public void validateGroupIsInitialState() {
-        validate(this::isFinishedRecruitment, GROUP_ALREADY_FINISH);
-        validate(participants::isExist, GROUP_EXIST_PARTICIPANTS);
+        validate(this::isFinishedRecruitment, ErrorCode.GROUP_ALREADY_FINISH);
+        validate(participants::isExist, ErrorCode.GROUP_EXIST_PARTICIPANTS);
     }
 
     private void validateGroupCanBeCloseEarly() {
-        validate(this::isFinishedRecruitment, GROUP_ALREADY_FINISH);
+        validate(this::isFinishedRecruitment, ErrorCode.GROUP_ALREADY_FINISH);
     }
 
     private void validate(ExceptionPredicate exceptionPredicate, ErrorCode errorCode) {

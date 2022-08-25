@@ -1,8 +1,5 @@
 package com.woowacourse.momo.member.service;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.MEMBER_WRONG_PASSWORD;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -60,7 +58,7 @@ public class MemberService {
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {
         if (isHost(member, groups)) {
-            throw new MomoException(MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
+            throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
     }
 
@@ -87,7 +85,7 @@ public class MemberService {
     private void confirmPassword(Member member, String password) {
         String encryptedPassword = passwordEncoder.encrypt(password);
         if (member.isNotSamePassword(encryptedPassword)) {
-            throw new MomoException(MEMBER_WRONG_PASSWORD);
+            throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
         }
     }
 }

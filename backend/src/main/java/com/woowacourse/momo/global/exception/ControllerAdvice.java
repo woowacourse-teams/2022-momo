@@ -1,14 +1,12 @@
 package com.woowacourse.momo.global.exception;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.VALIDATION_ERROR;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.woowacourse.momo.global.exception.dto.response.ExceptionResponse;
+import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.global.logging.UnhandledErrorLogging;
 
@@ -22,12 +20,12 @@ public class ControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity.badRequest().body(ExceptionResponse.from(VALIDATION_ERROR.getErrorCode()));
+        return ResponseEntity.badRequest().body(ExceptionResponse.from(ErrorCode.VALIDATION_ERROR.getErrorCode()));
     }
 
     @UnhandledErrorLogging
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleAnyException(Exception e) {
-        return ResponseEntity.internalServerError().body(ExceptionResponse.from(INTERNAL_SERVER_ERROR.getErrorCode()));
+        return ResponseEntity.internalServerError().body(ExceptionResponse.from(ErrorCode.INTERNAL_SERVER_ERROR.getErrorCode()));
     }
 }
