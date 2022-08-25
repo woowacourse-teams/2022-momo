@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
@@ -104,11 +105,9 @@ public class GroupService {
     private void updateGroup(Group group, Member host, GroupUpdateRequest request) {
         GroupName groupName = GroupRequestAssembler.groupName(request);
         Capacity capacity = GroupRequestAssembler.capacity(request);
-        Duration duration = GroupRequestAssembler.duration(request.getDuration());
-        Deadline deadline = GroupRequestAssembler.deadline(request);
-        Schedules schedules = GroupRequestAssembler.schedules(request.getSchedules());
+        Calendar calendar = GroupRequestAssembler.calendar(request);
 
-        group.update(groupName, host, Category.from(request.getCategoryId()), capacity,
-                duration, deadline, schedules, request.getLocation(), request.getDescription());
+        group.update(groupName, host, Category.from(request.getCategoryId()), capacity, calendar,
+                request.getLocation(), request.getDescription());
     }
 }

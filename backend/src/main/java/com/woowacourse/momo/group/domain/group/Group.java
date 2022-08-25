@@ -86,8 +86,8 @@ public class Group {
         this.participants = new Participants(this, capacity);
     }
 
-    public void update(GroupName name, Member host, Category category, Capacity capacity, Duration duration, Deadline deadline,
-                       Schedules schedules, String location, String description) {
+    public void update(GroupName name, Member host, Category category, Capacity capacity, Calendar calendar,
+                       String location, String description) {
         validateGroupIsInitialState(host);
         this.name = name;
         this.category = category;
@@ -95,7 +95,7 @@ public class Group {
         this.description = description;
 
         participants.update(capacity);
-        calendar.update(schedules, duration, deadline);
+        this.calendar.update(calendar.getSchedules(), calendar.getDuration(), calendar.getDeadline());
     }
 
     public void participate(Member member) {

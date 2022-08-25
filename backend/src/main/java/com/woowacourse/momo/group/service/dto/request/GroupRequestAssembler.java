@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
@@ -46,6 +47,10 @@ public class GroupRequestAssembler {
 
     public static Capacity capacity(GroupUpdateRequest request) {
         return new Capacity(request.getCapacity());
+    }
+
+    public static Calendar calendar(GroupUpdateRequest request) {
+        return new Calendar(schedules(request.getSchedules()), duration(request.getDuration()), deadline(request));
     }
 
     public static Duration duration(DurationRequest request) {
