@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -27,6 +27,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
+import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;

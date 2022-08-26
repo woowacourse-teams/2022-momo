@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.service;
+package com.woowacourse.momo.group.service;
 
 import java.util.List;
 
@@ -9,13 +9,12 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.service.GroupFindService;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
-import com.woowacourse.momo.participant.domain.ParticipantRepository;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

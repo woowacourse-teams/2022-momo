@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,8 +28,9 @@ import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
+import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.domain.participant.Participants;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.participant.domain.Participants;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

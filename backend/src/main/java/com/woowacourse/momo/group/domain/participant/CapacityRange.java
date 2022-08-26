@@ -1,9 +1,9 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain.participant;
 
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
-public enum GroupCapacityRange {
+public enum CapacityRange {
 
     MINIMUM(1),
     MAXIMUM(99),
@@ -11,7 +11,7 @@ public enum GroupCapacityRange {
 
     private final int value;
 
-    GroupCapacityRange(int value) {
+    CapacityRange(int value) {
         this.value = value;
     }
 

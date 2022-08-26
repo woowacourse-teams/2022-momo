@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain;
 
 @FunctionalInterface
 public interface ExceptionPredicate {

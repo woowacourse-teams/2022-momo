@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.domain;
+package com.woowacourse.momo.group.domain.participant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.member.domain.Member;
 
 @Getter

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.controller;
+package com.woowacourse.momo.group.controller;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
+import com.woowacourse.momo.group.service.ParticipantService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
-import com.woowacourse.momo.participant.service.ParticipantService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/participants")

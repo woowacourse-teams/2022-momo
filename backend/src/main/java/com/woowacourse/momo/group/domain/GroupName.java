@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

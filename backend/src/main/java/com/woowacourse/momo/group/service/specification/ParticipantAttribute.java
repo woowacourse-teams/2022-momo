@@ -7,8 +7,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.participant.domain.Participant;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.participant.Participant;
 
 public enum ParticipantAttribute {
 

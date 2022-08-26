@@ -41,11 +41,11 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.ParticipantService;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
-import com.woowacourse.momo.participant.service.ParticipantService;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs

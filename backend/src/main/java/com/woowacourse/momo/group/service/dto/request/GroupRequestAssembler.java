@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.group.Capacity;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.group.GroupName;
+import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

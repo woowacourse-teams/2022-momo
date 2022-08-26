@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.domain;
+package com.woowacourse.momo.group.domain.participant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,7 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.group.Capacity;
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.member.domain.Member;
 
 @Getter

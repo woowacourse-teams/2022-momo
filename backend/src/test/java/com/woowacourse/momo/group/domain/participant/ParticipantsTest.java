@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.domain;
+package com.woowacourse.momo.group.domain.participant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -15,11 +15,10 @@ import org.junit.jupiter.api.Test;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.group.Capacity;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;

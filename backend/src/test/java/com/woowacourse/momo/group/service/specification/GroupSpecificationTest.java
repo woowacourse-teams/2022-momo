@@ -27,13 +27,13 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupName;
+import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.group.Capacity;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.group.GroupName;
-import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;

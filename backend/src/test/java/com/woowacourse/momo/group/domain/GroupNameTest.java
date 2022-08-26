@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.domain.participant;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -29,6 +29,6 @@ public class Capacity {
     }
 
     private void validateCapacityIsInRange(int value) {
-        GroupCapacityRange.validateCapacityIsInRange(value);
+        CapacityRange.validateCapacityIsInRange(value);
     }
 }

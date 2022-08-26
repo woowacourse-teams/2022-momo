@@ -1,4 +1,4 @@
-package com.woowacourse.momo.participant.domain;
+package com.woowacourse.momo.group.domain.participant;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
