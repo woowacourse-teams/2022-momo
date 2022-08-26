@@ -17,6 +17,9 @@ import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
@@ -32,8 +35,9 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest request) {
-        String password = passwordEncoder.encrypt(request.getPassword());
-        Member member = memberFindService.findByUserIdAndPassword(request.getUserId(), password);
+        UserId userId = UserId.momo(request.getUserId());
+        Password password = Password.encrypt(request.getPassword(), passwordEncoder);
+        Member member = memberFindService.findByUserIdAndPassword(userId, password);
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
 
@@ -44,25 +48,21 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        validateUserId(request.getUserId());
-        validateExistUser(request.getUserId());
-        String password = passwordEncoder.encrypt(request.getPassword());
-        Member member = new Member(request.getUserId(), password, request.getName());
+        UserId userId = UserId.momo(request.getUserId());
+        UserName userName = new UserName(request.getName());
+        Password password = Password.encrypt(request.getPassword(), passwordEncoder);
+        Member member = new Member(userId, password, userName);
+
+        validateUserIsNotExist(userId);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
     }
 
-    private void validateExistUser(String userId) {
+    private void validateUserIsNotExist(UserId userId) {
         Optional<Member> member = memberRepository.findByUserId(userId);
         if (member.isPresent()) {
             throw new MomoException(ErrorCode.SIGNUP_ALREADY_REGISTER);
-        }
-    }
-
-    private void validateUserId(String userId) {
-        if (userId.contains("@")) {
-            throw new MomoException(ErrorCode.SIGNUP_INVALID_ID);
         }
     }
 

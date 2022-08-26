@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @Transactional
 @SpringBootTest
@@ -24,13 +26,14 @@ class MemberFindServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private static final UserId USER_ID = UserId.momo("momo");
+    private static final String USER_NAME = "momo";
+    private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")
     @Test
     void findMember() {
-        Member expected = memberRepository.save(new Member("momo", "qwe123!@#", "momo"));
+        Member expected = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
         Member actual = memberFindService.findMember(expected.getId());
 
@@ -49,7 +52,7 @@ class MemberFindServiceTest {
     @DisplayName("삭제된 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findDeletedMember() {
-        Member member = memberRepository.save(new Member("momo", "qwe123!@#", "momo"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
         member.delete();
 
         assertThatThrownBy(() -> memberFindService.findMember(member.getId()))
@@ -60,9 +63,9 @@ class MemberFindServiceTest {
     @DisplayName("아이디와 비밀번호로 회원을 조회한다")
     @Test
     void findMemberByIdAndPassword() {
-        Member member = memberRepository.save(new Member("momo", "qwe123!@#", "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
-        Member foundMember = memberFindService.findByUserIdAndPassword("momo", "qwe123!@#");
+        Member foundMember = memberFindService.findByUserIdAndPassword(USER_ID, PASSWORD);
         assertThat(foundMember).usingRecursiveComparison()
                 .isEqualTo(member);
     }
@@ -70,10 +73,11 @@ class MemberFindServiceTest {
     @DisplayName("잘못된 아이디와 비밀번호로 회원을 조회하는 경우 예외가 발생한다")
     @Test
     void findMemberByIdAndWrongPassword() {
-        Member member = memberRepository.save(new Member("momo", "qwe123!@#", "모모몽"));
+        Member member = memberRepository.save(new Member(USER_ID, PASSWORD, USER_NAME));
 
+        Password wrongPassword = Password.encrypt("wrong123!", new SHA256Encoder());
         assertThatThrownBy(
-                () -> memberFindService.findByUserIdAndPassword("momo", "wrongpassword")
+                () -> memberFindService.findByUserIdAndPassword(USER_ID, wrongPassword)
         ).isInstanceOf(MomoException.class)
                 .hasMessageContaining("아이디나 비밀번호가 다릅니다.");
     }

@@ -23,9 +23,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
@@ -38,6 +43,8 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.participant.service.ParticipantService;
 
 @Transactional
@@ -63,21 +70,23 @@ class GroupServiceTest {
     @Autowired
     private ParticipantService participantService;
 
+    private Password password;
     private Member savedHost;
     private Member savedMember1;
     private Member savedMember2;
 
     @BeforeEach
     void setUp() {
-        savedHost = memberRepository.save(new Member("주최자", "password", "momo"));
-        savedMember1 = memberRepository.save(new Member("사용자1", "password", "momo"));
-        savedMember2 = memberRepository.save(new Member("사용자2", "password", "momo"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
+        savedMember1 = memberRepository.save(new Member(UserId.momo("사용자1"), password, "momo"));
+        savedMember2 = memberRepository.save(new Member(UserId.momo("사용자2"), password, "momo"));
     }
 
     private Group saveGroup(String name, Category category) {
-        return groupRepository.save(new Group(name, savedHost, category, 3,
-                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
-                "", ""));
+        return groupRepository.save(new Group(new GroupName(name), savedHost, category, new Capacity(3),
+                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()),
+                new Schedules(List.of(이틀후_10시부터_12시까지.newInstance())), "", ""));
     }
 
     @DisplayName("모임을 생성한다")
@@ -149,12 +158,24 @@ class GroupServiceTest {
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
+    @DisplayName("주최자가 아닌 사용자가 모임ㅇ르 수정할 경우 예외가 발생한다")
+    @Test
+    void updateMemberIsNotHost() {
+        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+
+        assertThatThrownBy(() -> groupService.update(savedMember1.getId(), savedGroup.getId(), groupRequest))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+    }
+
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
     @Test
     void updateExistParticipants() {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         savedGroup.participate(savedMember1);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 3,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))
@@ -170,7 +191,7 @@ class GroupServiceTest {
         savedGroup.participate(savedMember2);
         long groupId = savedGroup.getId();
 
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
+        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 3,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), groupId, groupRequest))
@@ -187,6 +208,16 @@ class GroupServiceTest {
 
         boolean actual = groupService.findGroup(savedGroup.getId()).isFinished();
         assertThat(actual).isTrue();
+    }
+
+    @DisplayName("주최자가 아닌 사용자가 모임을 조기마감 할 경우 예외가 발생한다")
+    @Test
+    void closeEarlyMemberIsNotHost() {
+        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+
+        assertThatThrownBy(() -> groupService.closeEarly(savedMember1.getId(), savedGroup.getId()))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
 
     @DisplayName("모임 목록중 두번째 페이지를 조회한다")

@@ -7,10 +7,11 @@ import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
 import static com.woowacourse.momo.fixture.DurationFixture.일주일후_하루동안;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.ScheduleFixture.일주일후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,9 +25,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -45,6 +52,7 @@ class GroupFindRepositoryTest {
 
     private Member momo;
     private Member dudu;
+    private Password password;
     private Group group1;
     private Group group2;
     private Group group3;
@@ -54,8 +62,9 @@ class GroupFindRepositoryTest {
 
     @BeforeEach
     void setUp() throws IllegalAccessException {
-        momo = memberRepository.save(new Member("momo", "password", "momo"));
-        dudu = memberRepository.save(new Member("dudu", "password", "dudu"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        momo = memberRepository.save(new Member(UserId.momo("momo"), password, "momo"));
+        dudu = memberRepository.save(new Member(UserId.momo("dudu"), password, "dudu"));
         group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
         group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));
@@ -191,16 +200,33 @@ class GroupFindRepositoryTest {
     }
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(name, host, category, capacity, 일주일후_하루동안.getInstance(),
-                deadline, List.of(이틀후_10시부터_12시까지.newInstance()), "", "");
+        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
+                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.newInstance())),
+                "", "");
     }
 
-    private static void setPastDeadline(Group group, LocalDateTime deadline) throws IllegalAccessException {
-        int deadlineField = 8;
-        Class<Group> clazz = Group.class;
-        Field[] field = clazz.getDeclaredFields();
-        field[deadlineField].setAccessible(true);
-        field[deadlineField].set(group, deadline);
+    private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
+        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
+        Deadline deadline = new Deadline(original);
+        Calendar calendar = new Calendar(new Schedules(group.getSchedules()), group.getDuration(), deadline);
+
+        int index = 0;
+        Class<Deadline> clazzDeadline = Deadline.class;
+        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
+        fieldDeadline[index].setAccessible(true);
+        fieldDeadline[index].set(deadline, date);
+
+        int calendarField = 2;
+        Class<Calendar> clazzCalendar = Calendar.class;
+        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
+        fieldCalendar[calendarField].setAccessible(true);
+        fieldCalendar[calendarField].set(calendar, deadline);
+
+        int deadlineField = 4;
+        Class<Group> clazzGroup = Group.class;
+        Field[] fieldGroup = clazzGroup.getDeclaredFields();
+        fieldGroup[deadlineField].setAccessible(true);
+        fieldGroup[deadlineField].set(group, calendar);
     }
 
     private void synchronize() {

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.duration;
+package com.woowacourse.momo.group.domain.calendar;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -11,8 +11,14 @@ import static com.woowacourse.momo.fixture.DateFixture.일주일후;
 import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분;
 
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
@@ -42,21 +48,19 @@ class DurationTest {
                 .hasMessage("시작일과 종료일은 과거일 수 없습니다.");
     }
 
-    @DisplayName("시작일 이후의 일자일 경우 True를 반환한다.")
-    @Test
-    void isAfterStartDate() {
+    @DisplayName("시작일 이후의 일자인지 확인한다")
+    @ParameterizedTest
+    @MethodSource("provideIsAfterStartDateArguments")
+    void isAfterStartDate(LocalDateTime localDateTime, boolean expected) {
         Duration duration = new Duration(내일.getInstance(), 내일.getInstance());
-        boolean actual = duration.isAfterStartDate(이틀후_23시_59분.getInstance());
 
-        assertThat(actual).isTrue();
+        assertThat(duration.isAfterStartDate(localDateTime)).isEqualTo(expected);
     }
 
-    @DisplayName("시작일 이후의 일자가 아닐 경우 False를 반환한다.")
-    @Test
-    void isNotAfterStartDate() {
-        Duration duration = new Duration(내일.getInstance(), 내일.getInstance());
-        boolean actual = duration.isAfterStartDate(내일_23시_59분.getInstance());
-
-        assertThat(actual).isFalse();
+    private static Stream<Arguments> provideIsAfterStartDateArguments() {
+        return Stream.of(
+                Arguments.of(이틀후_23시_59분.getInstance(), Boolean.TRUE),
+                Arguments.of(내일_23시_59분.getInstance(), Boolean.FALSE)
+        );
     }
 }

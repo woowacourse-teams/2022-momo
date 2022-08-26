@@ -51,18 +51,18 @@ public class MemberService {
                 .stream()
                 .filter(group -> !group.isEnd())
                 .collect(Collectors.toList());
-        validateMemberNotHost(member, progressingGroups);
+        validateMemberIsNotHost(member, progressingGroups);
         progressingGroups.forEach(
                 group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
     }
 
-    private void validateMemberNotHost(Member member, List<Group> groups) {
-        if (isMemberHost(member, groups)) {
+    private void validateMemberIsNotHost(Member member, List<Group> groups) {
+        if (isHost(member, groups)) {
             throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
     }
 
-    private boolean isMemberHost(Member member, List<Group> groups) {
+    private boolean isHost(Member member, List<Group> groups) {
         return groups.stream()
                 .anyMatch(group -> group.isHost(member));
     }
@@ -71,16 +71,15 @@ public class MemberService {
     public void updatePassword(Long id, ChangePasswordRequest request) {
         Member member = memberFindService.findMember(id);
 
-        String encryptedNewPassword = passwordEncoder.encrypt(request.getNewPassword());
         confirmPassword(member, request.getOldPassword());
-        member.changePassword(encryptedNewPassword);
+        member.changePassword(request.getNewPassword(), passwordEncoder);
     }
 
     @Transactional
     public void updateName(Long id, ChangeNameRequest request) {
         Member member = memberFindService.findMember(id);
 
-        member.changeName(request.getName());
+        member.changeUserName(request.getName());
     }
 
     private void confirmPassword(Member member, String password) {

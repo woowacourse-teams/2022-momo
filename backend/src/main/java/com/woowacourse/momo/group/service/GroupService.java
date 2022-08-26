@@ -11,10 +11,11 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.group.domain.group.GroupRepository;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
@@ -78,67 +79,44 @@ public class GroupService {
     @Transactional
     public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
         Group group = groupFindService.findGroup(groupId);
-        validateInitialState(hostId, group);
+        Member host = memberFindService.findMember(hostId);
 
-        List<Schedule> schedules = GroupRequestAssembler.schedules(request.getSchedules());
-        Duration duration = GroupRequestAssembler.duration(request.getDuration());
-        validateSchedulesInDuration(schedules, duration);
-
-        group.update(request.getName(), Category.from(request.getCategoryId()), request.getCapacity(),
-                duration, request.getDeadline(), schedules,
-                request.getLocation(), request.getDescription());
-    }
-
-    private void validateSchedulesInDuration(List<Schedule> schedules, Duration duration) {
-        if (existAnyScheduleOutOfDuration(schedules, duration)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
-        }
-    }
-
-    private boolean existAnyScheduleOutOfDuration(List<Schedule> schedules, Duration duration) {
-        return schedules.stream()
-                .anyMatch(schedule -> !schedule.checkInRange(duration.getStartDate(), duration.getEndDate()));
+        updateGroup(group, host, request);
     }
 
     @Transactional
     public void closeEarly(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
+        Member member = memberFindService.findMember(hostId);
 
+        validateMemberIsHost(group, member);
         group.closeEarly();
     }
 
     @Transactional
     public void delete(Long hostId, Long groupId) {
         Group group = groupFindService.findGroup(groupId);
-        validateInitialState(hostId, group);
+        Member member = memberFindService.findMember(hostId);
+
+        validateMemberIsHost(group, member);
+        group.validateGroupIsInitialState();
 
         groupRepository.deleteById(groupId);
     }
 
-    private void validateInitialState(Long hostId, Group group) {
-        validateHost(group, hostId);
-        validateFinishedRecruitment(group);
-        validateNotExistParticipants(group);
+    private void updateGroup(Group group, Member member, GroupUpdateRequest request) {
+        GroupName groupName = GroupRequestAssembler.groupName(request);
+        Capacity capacity = GroupRequestAssembler.capacity(request);
+        Calendar calendar = GroupRequestAssembler.calendar(request);
+
+        validateMemberIsHost(group, member);
+        group.update(groupName, Category.from(request.getCategoryId()), capacity, calendar,
+                request.getLocation(), request.getDescription());
     }
 
-    private void validateHost(Group group, Long hostId) {
-        Member host = memberFindService.findMember(hostId);
-        if (!group.isHost(host)) {
+    private void validateMemberIsHost(Group group, Member member) {
+        if (group.isNotHost(member)) {
             throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
-        }
-    }
-
-    private void validateNotExistParticipants(Group group) {
-        if (group.isExistParticipants()) {
-            throw new MomoException(ErrorCode.GROUP_EXIST_PARTICIPANTS);
-        }
-    }
-
-    private void validateFinishedRecruitment(Group group) {
-        if (group.isFinishedRecruitment()) {
-            throw new MomoException(ErrorCode.GROUP_ALREADY_FINISH);
         }
     }
 }

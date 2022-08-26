@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.schedule;
+package com.woowacourse.momo.group.domain.calendar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,14 +41,14 @@ public class Schedule {
         this.endTime = endTime;
     }
 
+    public boolean isOutOfRange(LocalDate startDate, LocalDate endDate) {
+        return !((date.isAfter(startDate) || date.isEqual(startDate))
+                && (date.isBefore(endDate) || date.isEqual(endDate)));
+    }
+
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         if (!endTime.isAfter(startTime)) {
             throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
         }
-    }
-
-    public boolean checkInRange(LocalDate startDate, LocalDate endDate) {
-        return (date.isAfter(startDate) || date.isEqual(startDate))
-                && (date.isBefore(endDate) || date.isEqual(endDate));
     }
 }

@@ -6,9 +6,14 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.duration.Duration;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Duration;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
+import com.woowacourse.momo.group.domain.group.Capacity;
 import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.group.GroupName;
 import com.woowacourse.momo.member.domain.Member;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,26 +21,56 @@ public class GroupRequestAssembler {
 
     public static Group group(Member host, GroupRequest request) {
         return new Group.Builder()
-                .name(request.getName())
+                .name(groupName(request))
                 .host(host)
                 .categoryId(request.getCategoryId())
-                .capacity(request.getCapacity())
+                .capacity(capacity(request))
                 .duration(duration(request.getDuration()))
-                .deadline(request.getDeadline())
+                .deadline(deadline(request))
                 .schedules(schedules(request.getSchedules()))
                 .location(request.getLocation())
                 .description(request.getDescription())
                 .build();
     }
 
+    public static GroupName groupName(GroupRequest request) {
+        return new GroupName(request.getName());
+    }
+
+    public static GroupName groupName(GroupUpdateRequest request) {
+        return new GroupName(request.getName());
+    }
+
+    public static Capacity capacity(GroupRequest request) {
+        return new Capacity(request.getCapacity());
+    }
+
+    public static Capacity capacity(GroupUpdateRequest request) {
+        return new Capacity(request.getCapacity());
+    }
+
+    public static Calendar calendar(GroupUpdateRequest request) {
+        return new Calendar(schedules(request.getSchedules()), duration(request.getDuration()), deadline(request));
+    }
+
     public static Duration duration(DurationRequest request) {
         return new Duration(request.getStart(), request.getEnd());
     }
 
-    public static List<Schedule> schedules(List<ScheduleRequest> requests) {
-        return requests.stream()
-                .map(GroupRequestAssembler::schedule)
-                .collect(Collectors.toList());
+    public static Deadline deadline(GroupRequest request) {
+        return new Deadline(request.getDeadline());
+    }
+
+    public static Deadline deadline(GroupUpdateRequest request) {
+        return new Deadline(request.getDeadline());
+    }
+
+    public static Schedules schedules(List<ScheduleRequest> requests) {
+        return new Schedules(
+                requests.stream()
+                        .map(GroupRequestAssembler::schedule)
+                        .collect(Collectors.toList())
+        );
     }
 
     private static Schedule schedule(ScheduleRequest request) {

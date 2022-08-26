@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.duration;
+package com.woowacourse.momo.group.domain.calendar;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +31,10 @@ public class Duration {
         this.endDate = endDate;
     }
 
+    public boolean isAfterStartDate(LocalDateTime date) {
+        return startDate.isBefore(LocalDate.from(date));
+    }
+
     private void validatePastDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
             throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
@@ -41,9 +45,5 @@ public class Duration {
         if (endDate.isBefore(startDate)) {
             throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
         }
-    }
-
-    public boolean isAfterStartDate(LocalDateTime localDateTime) {
-        return startDate.isBefore(LocalDate.from(localDateTime));
     }
 }

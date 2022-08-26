@@ -19,7 +19,7 @@ public class ExceptionLogging {
     public void allMethod() {
     }
 
-    @Pointcut("execution(* com.woowacourse.momo.global.exception.ControllerAdvice.handleAnyException(..))")
+    @Pointcut("@annotation(UnhandledErrorLogging)")
     public void exceptionMethod() {
     }
 

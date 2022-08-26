@@ -22,10 +22,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.schedule.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -40,11 +45,13 @@ class GroupRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    private Password password;
     private Member host;
 
     @BeforeEach
     void setUp() {
-        host = memberRepository.save(new Member("주최자", "password", "momo"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        host = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
     }
 
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
@@ -131,7 +138,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 참여자가 있는 모임을 삭제한다")
     @Test
     void deleteIncludedParticipants() {
-        Member participant = memberRepository.save(new Member("momo", "1234asdf!", "모모1"));
+        Member participant = memberRepository.save(new Member(UserId.momo("momo"), password, "모모1"));
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
@@ -147,7 +154,7 @@ class GroupRepositoryTest {
     @DisplayName("모임에 참여자를 추가한다")
     @Test
     void saveParticipant() {
-        Member participant = memberRepository.save(new Member("momo", "1234asdf!", "모모1"));
+        Member participant = memberRepository.save(new Member(UserId.momo("momo"), password, "모모1"));
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
@@ -165,9 +172,8 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(String name, Member host, List<Schedule> schedules) {
-        return new Group(name, host, Category.STUDY, 10, 이틀후부터_일주일후까지.getInstance(),
-                내일_23시_59분.getInstance(),
-                schedules, "", "");
+        return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
+                new Deadline(내일_23시_59분.getInstance()), new Schedules(schedules), "", "");
     }
 
     private void synchronize() {
