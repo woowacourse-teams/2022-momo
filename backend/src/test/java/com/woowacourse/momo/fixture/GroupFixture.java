@@ -49,11 +49,11 @@ public enum GroupFixture {
         this.name = name;
         this.categoryId = category.getId();
         this.capacity = capacity;
-        this.duration = duration.getDuration();
+        this.duration = duration.toDuration();
         this.schedules = schedules.stream()
-                .map(ScheduleFixture::getSchedule)
+                .map(ScheduleFixture::toSchedule)
                 .collect(Collectors.toList());
-        this.deadline = deadline.getDateTime();
+        this.deadline = deadline.toDateTime();
         this.location = location;
         this.description = description;
     }

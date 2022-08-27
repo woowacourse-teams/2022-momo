@@ -19,10 +19,10 @@ public enum DurationFixture {
     private final Duration instance;
 
     DurationFixture(DateFixture start, DateFixture end) {
-        this.instance = new Duration(start.getDate(), end.getDate());
+        this.instance = new Duration(start.toDate(), end.toDate());
     }
 
-    public Duration getDuration() {
+    public Duration toDuration() {
         return instance;
     }
 }

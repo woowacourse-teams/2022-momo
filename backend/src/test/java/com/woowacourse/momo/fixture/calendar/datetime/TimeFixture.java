@@ -16,7 +16,7 @@ public enum TimeFixture {
         this.instance = LocalTime.of(hour, minute);
     }
 
-    public LocalTime getTime() {
+    public LocalTime toTime() {
         return instance;
     }
 }

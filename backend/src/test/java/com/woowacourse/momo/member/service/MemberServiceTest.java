@@ -206,7 +206,7 @@ class MemberServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group(new GroupName("모모의 스터디"), savedHost, Category.STUDY, new Capacity(3),
-                이틀후부터_5일동안.getDuration(), new Deadline(내일_23시_59분.getDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule())), "", ""));
+                이틀후부터_5일동안.toDuration(), new Deadline(내일_23시_59분.toDateTime()),
+                new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule())), "", ""));
     }
 }

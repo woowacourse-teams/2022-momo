@@ -33,13 +33,13 @@ public enum ScheduleFixture {
         this.endTime = endTime;
     }
 
-    public Schedule getSchedule() {
-        return new Schedule(date.getDate(), startTime.getTime(), endTime.getTime());
+    public Schedule toSchedule() {
+        return new Schedule(date.toDate(), startTime.toTime(), endTime.toTime());
     }
 
     public static Schedules toSchedules(List<ScheduleFixture> schedules) {
         return new Schedules(schedules.stream()
-                .map(ScheduleFixture::getSchedule)
+                .map(ScheduleFixture::toSchedule)
                 .collect(Collectors.toUnmodifiableList()));
     }
 

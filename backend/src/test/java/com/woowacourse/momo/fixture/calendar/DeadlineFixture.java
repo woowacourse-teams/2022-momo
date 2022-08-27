@@ -21,10 +21,10 @@ public enum DeadlineFixture {
     private final Deadline instance;
 
     DeadlineFixture(DateTimeFixture dateTime) {
-        this.instance = new Deadline(dateTime.getDateTime());
+        this.instance = new Deadline(dateTime.toDateTime());
     }
 
-    public Deadline getDeadline() {
+    public Deadline toDeadline() {
         return instance;
     }
 

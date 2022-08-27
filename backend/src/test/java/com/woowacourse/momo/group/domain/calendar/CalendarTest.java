@@ -34,8 +34,8 @@ class CalendarTest {
     @DisplayName("Calendar를 정상적으로 생성한다")
     @Test
     void construct() {
-        Deadline deadline = 내일_23시_59분까지.getDeadline();
-        Duration duration = 이틀후부터_5일동안.getDuration();
+        Deadline deadline = 내일_23시_59분까지.toDeadline();
+        Duration duration = 이틀후부터_5일동안.toDuration();
         Schedules schedules = ScheduleFixture.toSchedules(이틀후_10시부터_12시까지);
         Calendar calendar = new Calendar(deadline, duration, schedules);
 
@@ -48,7 +48,7 @@ class CalendarTest {
     }
 
     private Calendar createCalendar(DeadlineFixture deadline, DurationFixture duration, ScheduleFixture... schedules) {
-        return new Calendar(deadline.getDeadline(), duration.getDuration(), ScheduleFixture.toSchedules(schedules));
+        return new Calendar(deadline.toDeadline(), duration.toDuration(), ScheduleFixture.toSchedules(schedules));
     }
 
     @DisplayName("생성 시, 마감 기한이 기간의 시작 일자보다 이후일 수 없다")
@@ -84,9 +84,9 @@ class CalendarTest {
 
     private static Stream<Arguments> provideForUpdate() {
         return Stream.of(
-                Arguments.of(이틀후_23시_59분까지.getDeadline(), 일주일후_하루동안.getDuration(),
+                Arguments.of(이틀후_23시_59분까지.toDeadline(), 일주일후_하루동안.toDuration(),
                         ScheduleFixture.toSchedules(일주일후_10시부터_12시까지)),
-                Arguments.of(일주일후_23시_59분까지.getDeadline(), 일주일후_하루동안.getDuration(),
+                Arguments.of(일주일후_23시_59분까지.toDeadline(), 일주일후_하루동안.toDuration(),
                         ScheduleFixture.toSchedules(일주일후_10시부터_12시까지))
         );
     }
@@ -97,8 +97,8 @@ class CalendarTest {
     void validateDeadlineIsNotAfterDurationStartWhenUpdate() {
         Calendar calendar = createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 이틀후_10시부터_12시까지);
 
-        Deadline deadline = 일주일후_23시_59분까지.getDeadline();
-        Duration duration = 내일_하루동안.getDuration();
+        Deadline deadline = 일주일후_23시_59분까지.toDeadline();
+        Duration duration = 내일_하루동안.toDuration();
         Schedules schedules = ScheduleFixture.toSchedules(일주일후_10시부터_12시까지);
 
         assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
@@ -111,8 +111,8 @@ class CalendarTest {
     void validateSchedulesAreInDurationWhenUpdate() {
         Calendar calendar = createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 이틀후_10시부터_12시까지);
 
-        Deadline deadline = 이틀후_23시_59분까지.getDeadline();
-        Duration duration = 일주일후_하루동안.getDuration();
+        Deadline deadline = 이틀후_23시_59분까지.toDeadline();
+        Duration duration = 일주일후_하루동안.toDuration();
         Schedules schedules = ScheduleFixture.toSchedules(내일_10시부터_12시까지);
 
         assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
@@ -124,8 +124,8 @@ class CalendarTest {
     @ParameterizedTest
     @CsvSource(value = {"-1,true", "1,false"})
     void isDeadlineOver(int pastDays, boolean expected) throws IllegalAccessException {
-        Deadline deadline = 내일_23시_59분까지.getDeadline();
-        Duration duration = 일주일후_하루동안.getDuration();
+        Deadline deadline = 내일_23시_59분까지.toDeadline();
+        Duration duration = 일주일후_하루동안.toDuration();
         Schedules schedules = ScheduleFixture.emptySchedules();
 
         Calendar calendar = new Calendar(deadline, duration, schedules);

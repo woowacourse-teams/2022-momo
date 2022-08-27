@@ -30,9 +30,9 @@ class ScheduleTest {
     @DisplayName("정상적으로 생성한다")
     @Test
     void construct() {
-        LocalDate date = 내일.getDate();
-        LocalTime startTime = _10시_00분.getTime();
-        LocalTime endTime = _12시_00분.getTime();
+        LocalDate date = 내일.toDate();
+        LocalTime startTime = _10시_00분.toTime();
+        LocalTime endTime = _12시_00분.toTime();
 
         Schedule schedule = new Schedule(date, startTime, endTime);
 
@@ -53,10 +53,10 @@ class ScheduleTest {
     }
 
     private static Stream<Arguments> provideForScheduleValidator() {
-        LocalDate yesterday = 이틀후.getDate();
+        LocalDate yesterday = 이틀후.toDate();
         return Stream.of(
-                Arguments.of(yesterday, _10시_00분.getTime(), _10시_00분.getTime()),
-                Arguments.of(yesterday, _12시_00분.getTime(), _10시_00분.getTime())
+                Arguments.of(yesterday, _10시_00분.toTime(), _10시_00분.toTime()),
+                Arguments.of(yesterday, _12시_00분.toTime(), _10시_00분.toTime())
         );
     }
 
@@ -69,9 +69,9 @@ class ScheduleTest {
 
     private static Stream<Arguments> provideForIsOutOfDuration() {
         return Stream.of(
-                Arguments.of(내일_하루동안.getDuration(), 내일_10시부터_12시까지.getSchedule(), false),
-                Arguments.of(내일_하루동안.getDuration(), 이틀후_10시부터_12시까지.getSchedule(), true),
-                Arguments.of(일주일후_하루동안.getDuration(), 이틀후_10시부터_12시까지.getSchedule(), true)
+                Arguments.of(내일_하루동안.toDuration(), 내일_10시부터_12시까지.toSchedule(), false),
+                Arguments.of(내일_하루동안.toDuration(), 이틀후_10시부터_12시까지.toSchedule(), true),
+                Arguments.of(일주일후_하루동안.toDuration(), 이틀후_10시부터_12시까지.toSchedule(), true)
         );
     }
 }

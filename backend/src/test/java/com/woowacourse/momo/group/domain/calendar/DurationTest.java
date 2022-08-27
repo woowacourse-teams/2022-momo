@@ -43,18 +43,18 @@ class DurationTest {
     private static Stream<Arguments> provideForConstruct() {
         return Stream.of(
                 Arguments.of(
-                        Named.of("오늘로부터 이틀 후", 이틀후.getDate()),
-                        Named.of("오늘로부터 이틀 후", 이틀후.getDate())),
+                        Named.of("오늘로부터 이틀 후", 이틀후.toDate()),
+                        Named.of("오늘로부터 이틀 후", 이틀후.toDate())),
                 Arguments.of(
-                        Named.of("오늘로부터 이틀 후", 이틀후.getDate()),
-                        Named.of("오늘로부터 일주일 후", 일주일후.getDate()))
+                        Named.of("오늘로부터 이틀 후", 이틀후.toDate()),
+                        Named.of("오늘로부터 일주일 후", 일주일후.toDate()))
         );
     }
 
     @DisplayName("시작일은 종료일 이후가 될 수 없다")
     @Test
     void validateStartIsBeforeEnd() {
-        assertThatThrownBy(() -> new Duration(일주일후.getDate(), 이틀후.getDate()))
+        assertThatThrownBy(() -> new Duration(일주일후.toDate(), 이틀후.toDate()))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("기간의 시작일은 종료일 이전이어야 합니다.");
     }
@@ -69,8 +69,8 @@ class DurationTest {
     }
 
     private static Stream<Arguments> provideForValidateDatesAreNotPast() {
-        Named<LocalDate> yesterday = Named.of("어제", 어제.getDate());
-        Named<LocalDate> tomorrow = Named.of("내일", 내일.getDate());
+        Named<LocalDate> yesterday = Named.of("어제", 어제.toDate());
+        Named<LocalDate> tomorrow = Named.of("내일", 내일.toDate());
         return Stream.of(
                 Arguments.of(yesterday, yesterday),
                 Arguments.of(yesterday, tomorrow)
@@ -88,11 +88,11 @@ class DurationTest {
         return Stream.of(
                 Arguments.of(
                         Named.of("어제까지", DeadlineFixture.newPastDeadline(LocalDateTime.now().minusDays(1))),
-                        Named.of("이틀후 하루동안", 이틀후_하루동안.getDuration()),
+                        Named.of("이틀후 하루동안", 이틀후_하루동안.toDuration()),
                         false),
                 Arguments.of(
-                        Named.of("내일까지", 내일_23시_59분까지.getDeadline()),
-                        Named.of("오늘부터 일주일동안", new Duration(오늘.getDate(), 일주일후.getDate())),
+                        Named.of("내일까지", 내일_23시_59분까지.toDeadline()),
+                        Named.of("오늘부터 일주일동안", new Duration(오늘.toDate(), 일주일후.toDate())),
                         true)
         );
     }

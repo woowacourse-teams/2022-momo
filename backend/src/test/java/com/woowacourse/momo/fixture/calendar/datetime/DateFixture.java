@@ -18,7 +18,7 @@ public enum DateFixture {
         this.instance = newDate(days);
     }
 
-    public LocalDate getDate() {
+    public LocalDate toDate() {
         return instance;
     }
 

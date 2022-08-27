@@ -53,11 +53,11 @@ class SchedulesTest {
     private static Stream<Arguments> provideHasAnyScheduleOutOfDurationArguments() {
         return Stream.of(
                 Arguments.of(ScheduleFixture.toSchedules(일주일후_10시부터_12시까지),
-                        일주일후_하루동안.getDuration(), false),
+                        일주일후_하루동안.toDuration(), false),
                 Arguments.of(ScheduleFixture.toSchedules(이틀후_10시부터_12시까지, 일주일후_10시부터_12시까지),
-                        이틀후부터_5일동안.getDuration(), false),
+                        이틀후부터_5일동안.toDuration(), false),
                 Arguments.of(ScheduleFixture.toSchedules(이틀후_10시부터_12시까지, 일주일후_10시부터_12시까지),
-                        이틀후_하루동안.getDuration(), true)
+                        이틀후_하루동안.toDuration(), true)
         );
     }
 }
