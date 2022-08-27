@@ -24,28 +24,39 @@ public class Calendar {
     @Embedded
     private Deadline deadline;
 
-    public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
-        validateDeadlineIsBeforeStartDuration(duration, deadline);
-        validateSchedulesAreInDuration(schedules, duration);
+    public Calendar(Deadline deadline, Duration duration, Schedules schedules) {
+        validateCalendarIsValid(schedules, duration, deadline);
         this.schedules = schedules;
         this.duration = duration;
         this.deadline = deadline;
     }
 
-    public void update(Schedules schedules, Duration duration, Deadline deadline) {
-        validateDeadlineIsBeforeStartDuration(duration, deadline);
-        validateSchedulesAreInDuration(schedules, duration);
+    public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
+        this(deadline, duration, schedules);
+    }
+
+    public void update(Deadline deadline, Duration duration, Schedules schedules) {
+        validateCalendarIsValid(schedules, duration, deadline);
         this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;
+    }
+
+    public void update(Schedules schedules, Duration duration, Deadline deadline) {
+        update(deadline, duration, schedules);
     }
 
     public boolean isDeadlineOver() {
         return deadline.isPast();
     }
 
-    private void validateDeadlineIsBeforeStartDuration(Duration duration, Deadline deadline) {
-        if (duration.isAfterStartDate(deadline.getValue())) {
+    private void validateCalendarIsValid(Schedules schedules, Duration duration, Deadline deadline) {
+        validateDeadlineIsNotAfterDurationStart(duration, deadline);
+        validateSchedulesAreInDuration(schedules, duration);
+    }
+
+    private void validateDeadlineIsNotAfterDurationStart(Duration duration, Deadline deadline) {
+        if (duration.isStartBeforeDeadline(deadline)) {
             throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
         }
     }
@@ -54,5 +65,14 @@ public class Calendar {
         if (schedules.hasAnyScheduleOutOfDuration(duration)) {
             throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Calendar{" +
+                "schedules=" + schedules +
+                ", duration=" + duration +
+                ", deadline=" + deadline +
+                '}';
     }
 }

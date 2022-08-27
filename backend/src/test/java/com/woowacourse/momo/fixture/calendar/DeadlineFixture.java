@@ -27,4 +27,32 @@ public enum DeadlineFixture {
     public Deadline getDeadline() {
         return instance;
     }
+
+    public static Deadline newDeadline(int days) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = now.plusDays(days);
+
+        if (dateTime.isBefore(now)) {
+            return newPastDeadline(days);
+        }
+        return new Deadline(dateTime);
+    }
+
+    private static Deadline newPastDeadline(int days) {
+        return newPastDeadline(LocalDateTime.now().plusDays(days));
+    }
+
+    public static Deadline newPastDeadline(LocalDateTime past) {
+        try {
+            LocalDateTime future = LocalDateTime.now().plusDays(1);
+            Deadline deadline = new Deadline(future);
+
+            Field[] fields = Deadline.class.getDeclaredFields();
+            fields[0].setAccessible(true);
+            fields[0].set(deadline, past);
+            return deadline;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException();
+        }
+    }
 }

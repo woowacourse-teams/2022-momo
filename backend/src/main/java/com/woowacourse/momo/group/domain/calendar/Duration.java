@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -25,25 +25,43 @@ public class Duration {
     private LocalDate endDate;
 
     public Duration(LocalDate startDate, LocalDate endDate) {
-        validatePastDate(startDate, endDate);
-        validateEndIsNotBeforeStart(startDate, endDate);
+        validateStartIsBeforeEnd(startDate, endDate);
+        validateDatesAreNotPast(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public boolean isAfterStartDate(LocalDateTime date) {
-        return startDate.isBefore(LocalDate.from(date));
+    public boolean isNotContainable(LocalDate date) {
+        return date.isBefore(startDate) || date.isAfter(endDate);
     }
 
-    private void validatePastDate(LocalDate startDate, LocalDate endDate) {
-        if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
+    public boolean isStartBeforeDeadline(Deadline deadline) {
+        return deadline.isAfterThan(startDate);
+    }
+
+    private void validateStartIsBeforeEnd(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
+        }
+    }
+
+    private void validateDatesAreNotPast(LocalDate startDate, LocalDate endDate) {
+        if (isAnyDatesBeforeThanNow(startDate, endDate)) {
             throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
         }
     }
 
-    private void validateEndIsNotBeforeStart(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
-        }
+    private boolean isAnyDatesBeforeThanNow(LocalDate... dates) {
+        return Stream.of(dates)
+                .anyMatch(this::isBeforeThanNow);
+    }
+
+    private boolean isBeforeThanNow(LocalDate date) {
+        return date.isBefore(LocalDate.now());
+    }
+
+    @Override
+    public String toString() {
+        return "Duration{" + startDate + "~" + endDate + '}';
     }
 }
