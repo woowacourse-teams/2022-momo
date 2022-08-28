@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +30,10 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
+import com.woowacourse.momo.group.domain.group.Capacity;
+import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.group.GroupName;
+import com.woowacourse.momo.group.domain.group.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -37,7 +41,7 @@ import com.woowacourse.momo.member.domain.UserId;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class GroupFindRepositoryTest {
+class GroupSpecificationTest {
 
     private static final GroupSpecification groupSpecification = new GroupSpecification();
 

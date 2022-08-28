@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain.group;
+package com.woowacourse.momo.group.service;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.participant.domain.Participant;
 
