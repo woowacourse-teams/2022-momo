@@ -66,16 +66,21 @@ public class Group {
 
     private boolean isEarlyClosed;
 
-    public Group(GroupName name, Member host, Category category, Capacity capacity, Duration duration,
-                 Deadline deadline, Schedules schedules, String location, String description) {
+
+    public Group(GroupName name, Member host, Category category, Capacity capacity, Calendar calendar,
+            String location, String description) {
         this.name = name;
         this.host = host;
         this.category = category;
-        this.calendar = new Calendar(deadline, duration, schedules);
+        this.calendar = calendar;
         this.location = location;
         this.description = description;
-
         this.participants = new Participants(this, capacity);
+    }
+
+    public Group(GroupName name, Member host, Category category, Capacity capacity, Duration duration,
+                 Deadline deadline, Schedules schedules, String location, String description) {
+        this(name, host, category, capacity, new Calendar(deadline, duration, schedules), location, description);
     }
 
     public void update(GroupName name, Category category, Capacity capacity, Calendar calendar,

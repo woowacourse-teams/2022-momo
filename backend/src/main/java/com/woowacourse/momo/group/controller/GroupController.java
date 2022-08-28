@@ -19,26 +19,27 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
+import com.woowacourse.momo.group.controller.param.GroupParam;
+import com.woowacourse.momo.group.controller.param.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.GroupService;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.response.GroupPageResponse;
+import com.woowacourse.momo.group.service.response.GroupResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
 @RestController
 public class GroupController {
 
+    private final GroupRequestAssembler assembler;
     private final GroupService groupService;
 
     @Authenticated
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
-                                                  @RequestBody @Valid GroupRequest groupRequest) {
-        GroupIdResponse groupIdResponse = groupService.create(memberId, groupRequest);
+                                                  @RequestBody @Valid GroupParam param) {
+        GroupIdResponse groupIdResponse = groupService.create(memberId, assembler.groupRequest(param));
         return ResponseEntity.created(URI.create("/api/groups/" + groupIdResponse.getGroupId()))
                 .body(groupIdResponse);
     }
@@ -62,7 +63,6 @@ public class GroupController {
         return ResponseEntity.ok(groupService.findHostedGroups(groupFindRequest, memberId));
     }
 
-
     @GetMapping
     public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
         return ResponseEntity.ok(groupService.findGroups(groupFindRequest));
@@ -71,8 +71,8 @@ public class GroupController {
     @Authenticated
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
-                                       @RequestBody @Valid GroupUpdateRequest groupUpdateRequest) {
-        groupService.update(memberId, groupId, groupUpdateRequest);
+                                       @RequestBody @Valid GroupParam param) {
+        groupService.update(memberId, groupId, assembler.groupRequest(param));
         return ResponseEntity.ok().build();
     }
 

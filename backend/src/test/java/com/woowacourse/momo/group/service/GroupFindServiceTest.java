@@ -30,7 +30,7 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.participant.Capacity;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;

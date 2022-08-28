@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
 import java.util.List;
 
@@ -40,12 +40,13 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.group.controller.param.GroupParam;
+import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
+import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.ParticipantService;
-import com.woowacourse.momo.group.service.dto.request.DurationRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
+import com.woowacourse.momo.group.service.request.GroupRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -53,10 +54,8 @@ import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
 @SpringBootTest
 class GroupControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST =
-            new DurationRequest(이틀후.toDate(), 이틀후.toDate());
-    private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.toDate(), _10시_00분.toTime(), _12시_00분.toTime()));
+    private static final DurationParam DURATION_REQUEST = 이틀후_하루동안.toParam();
+    private static final List<ScheduleParam> SCHEDULE_REQUESTS = ScheduleFixture.toParams(이틀후_10시부터_12시까지);
     private static final int TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE = 20;
 
     @Autowired
@@ -79,13 +78,13 @@ class GroupControllerTest {
     void groupCreateTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
+        GroupParam param = new GroupParam("모모의 스터디", 1L, 10,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(groupRequest))
+                        .content(objectMapper.writeValueAsString(param))
                 )
                 .andExpect(header().string("location", startsWith("/api/groups")))
                 .andDo(
@@ -102,13 +101,13 @@ class GroupControllerTest {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
-        GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 15,
+        GroupParam param = new GroupParam("두두의 스터디", 1L, 15,
                 DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
                         .header("Authorization", "bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(groupRequest))
+                        .content(objectMapper.writeValueAsString(param))
                 )
                 .andExpect(status().isOk())
                 .andDo(
@@ -226,7 +225,7 @@ class GroupControllerTest {
     @Test
     void groupGetParticipatedListWithoutLoginTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(
-                                "/api/groups/me/participated?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0"))
+                        "/api/groups/me/participated?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0"))
                 .andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
     }
 
@@ -322,7 +321,8 @@ class GroupControllerTest {
 
     Long saveGroup(String name, Long hostId, Category category) {
         GroupRequest groupRequest = new GroupRequest(name, category.getId(), 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
+                이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
+                "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

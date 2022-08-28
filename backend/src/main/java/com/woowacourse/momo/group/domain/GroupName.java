@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -27,5 +29,22 @@ public class GroupName {
         if (value.isBlank()) {
             throw new MomoException(ErrorCode.GROUP_NAME_SHOULD_NOT_BE_BLANK);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GroupName groupName = (GroupName) o;
+        return Objects.equals(value, groupName.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

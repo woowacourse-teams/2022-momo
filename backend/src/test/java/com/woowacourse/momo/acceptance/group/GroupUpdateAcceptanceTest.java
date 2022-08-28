@@ -23,7 +23,8 @@ import io.restassured.response.ValidatableResponse;
 import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
-import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.group.service.response.ScheduleResponse;
 
 class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
@@ -53,13 +54,13 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                 () -> {
                     String startDuration = updatedGroup.getDuration().getStartDate().format(DateTimeFormatter.ISO_DATE);
                     String endDuration = updatedGroup.getDuration().getEndDate().format(DateTimeFormatter.ISO_DATE);
-                    String deadline = updatedGroup.getDeadline()
+                    String deadline = updatedGroup.getDeadline().getValue()
                             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                     response
                             .body("host.id", is(1))
                             .body("host.name", is(HOST.getName()))
-                            .body("categoryId", is(updatedGroup.getCategoryId().intValue()))
-                            .body("capacity", is(updatedGroup.getCapacity()))
+                            .body("categoryId", is((int) updatedGroup.getCategoryId()))
+                            .body("capacity", is(updatedGroup.getCapacity().getValue()))
                             .body("duration.start", is(startDuration))
                             .body("duration.end", is(endDuration))
                             .body("deadline", is(deadline))
@@ -71,8 +72,17 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                             .jsonPath()
                             .getList("schedules", ScheduleResponse.class);
 
-                    assertThat(schedules).usingRecursiveComparison()
-                            .isEqualTo(updatedGroup.getSchedules());
+                    assertThat(schedules).hasSize(updatedGroup.getSchedules().size());
+
+                    for (int i = 0; i < schedules.size(); i++) {
+                        ScheduleResponse actual = schedules.get(i);
+                        ScheduleFixture expected = updatedGroup.getSchedules().get(i);
+                        assertAll(
+                                () -> assertThat(actual.getDate()).isEqualTo(expected.getDate()),
+                                () -> assertThat(actual.getStartTime()).isEqualTo(expected.getStartTime()),
+                                () -> assertThat(actual.getEndTime()).isEqualTo(expected.getEndTime())
+                        );
+                    }
                 }
         );
     }

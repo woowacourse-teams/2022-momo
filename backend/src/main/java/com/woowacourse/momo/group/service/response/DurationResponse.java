@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.dto.response;
+package com.woowacourse.momo.group.service.response;
 
 import java.time.LocalDate;
 
@@ -13,6 +13,7 @@ public class DurationResponse {
 
     @DateTimeFormat
     private LocalDate start;
+
     @DateTimeFormat
     private LocalDate end;
 }

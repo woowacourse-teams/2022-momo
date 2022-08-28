@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.dto.request;
+package com.woowacourse.momo.group.controller.param.calendar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,14 +15,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class ScheduleRequest {
+public class ScheduleParam {
 
     @NotNull
     @DateTimeFormat
     private LocalDate date;
+
     @NotNull
     @DateTimeFormat
     private LocalTime startTime;
+
     @NotNull
     @DateTimeFormat
     private LocalTime endTime;

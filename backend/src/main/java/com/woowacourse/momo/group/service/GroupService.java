@@ -16,15 +16,13 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequestAssembler;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupResponse;
-import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
+import com.woowacourse.momo.group.service.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.request.GroupRequest;
+import com.woowacourse.momo.group.service.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.response.GroupPageResponse;
+import com.woowacourse.momo.group.service.response.GroupResponse;
+import com.woowacourse.momo.group.service.response.GroupResponseAssembler;
+import com.woowacourse.momo.group.service.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 
@@ -38,11 +36,13 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public GroupIdResponse create(Long memberId, GroupRequest groupRequest) {
+    public GroupIdResponse create(Long memberId, GroupRequest request) {
         Member host = memberFindService.findMember(memberId);
-        Group group = groupRepository.save(GroupRequestAssembler.group(host, groupRequest));
+        Group group = new Group(request.getName(), host, request.getCategory(), request.getCapacity(),
+                request.getCalendar(), request.getLocation(), request.getDescription());
+        Group savedGroup = groupRepository.save(group);
 
-        return GroupResponseAssembler.groupIdResponse(group);
+        return GroupResponseAssembler.groupIdResponse(savedGroup);
     }
 
     public GroupResponse findGroup(Long id) {
@@ -77,7 +77,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
+    public void update(Long hostId, Long groupId, GroupRequest request) {
         Group group = groupFindService.findGroup(groupId);
         Member host = memberFindService.findMember(hostId);
 
@@ -104,14 +104,14 @@ public class GroupService {
         groupRepository.deleteById(groupId);
     }
 
-    private void updateGroup(Group group, Member member, GroupUpdateRequest request) {
-        GroupName groupName = GroupRequestAssembler.groupName(request);
-        Capacity capacity = GroupRequestAssembler.capacity(request);
-        Calendar calendar = GroupRequestAssembler.calendar(request);
+    private void updateGroup(Group group, Member member, GroupRequest request) {
+        GroupName groupName = request.getName();
+        Category category = request.getCategory();
+        Capacity capacity = request.getCapacity();
+        Calendar calendar = request.getCalendar();
 
         validateMemberIsHost(group, member);
-        group.update(groupName, Category.from(request.getCategoryId()), capacity, calendar,
-                request.getLocation(), request.getDescription());
+        group.update(groupName, category, capacity, calendar, request.getLocation(), request.getDescription());
     }
 
     private void validateMemberIsHost(Group group, Member member) {

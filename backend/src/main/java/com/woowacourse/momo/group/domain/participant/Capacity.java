@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.participant;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -30,5 +32,22 @@ public class Capacity {
 
     private void validateCapacityIsInRange(int value) {
         CapacityRange.validateCapacityIsInRange(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Capacity capacity = (Capacity) o;
+        return value == capacity.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

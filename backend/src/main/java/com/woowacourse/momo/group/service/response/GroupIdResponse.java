@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.dto.response;
+package com.woowacourse.momo.group.service.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

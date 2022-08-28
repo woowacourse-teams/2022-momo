@@ -1,8 +1,7 @@
-package com.woowacourse.momo.group.service.dto.request;
+package com.woowacourse.momo.group.service.response;
 
 import java.time.LocalDate;
-
-import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,12 +13,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class DurationRequest {
+public class ScheduleResponse {
 
-    @NotNull
     @DateTimeFormat
-    private LocalDate start;
-    @NotNull
+    private LocalDate date;
+
     @DateTimeFormat
-    private LocalDate end;
+    private LocalTime startTime;
+
+    @DateTimeFormat
+    private LocalTime endTime;
 }

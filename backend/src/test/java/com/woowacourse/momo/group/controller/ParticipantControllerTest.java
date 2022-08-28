@@ -11,8 +11,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
 import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
@@ -35,15 +37,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
+import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupService;
 import com.woowacourse.momo.group.service.ParticipantService;
-import com.woowacourse.momo.group.service.dto.request.DurationRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.ScheduleRequest;
+import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 
 @AutoConfigureMockMvc
@@ -51,11 +54,6 @@ import com.woowacourse.momo.member.service.MemberService;
 @Transactional
 @SpringBootTest
 class ParticipantControllerTest {
-
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.toDate(),
-            이틀후.toDate());
-    private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.toDate(), _10시_00분.toTime(), _12시_00분.toTime()));
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/participants";
@@ -340,11 +338,17 @@ class ParticipantControllerTest {
         return saveGroupWithSetCapacity(hostId, 10);
     }
 
-    Long saveGroupWithSetCapacity(Long hostId, int capacity) {
-        GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
+    private static final DurationParam DURATION_REQUEST = new DurationParam(이틀후.toDate(),
+            이틀후.toDate());
+    private static final List<ScheduleParam> SCHEDULE_REQUESTS = List.of(
+            new ScheduleParam(이틀후.toDate(), _10시_00분.toTime(), _12시_00분.toTime()));
 
-        return groupService.create(hostId, groupRequest).getGroupId();
+    Long saveGroupWithSetCapacity(Long hostId, int capacity) {
+        GroupRequest request = new GroupRequest("모모의 스터디", 1L, capacity,
+                이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지),
+                내일_23시_59분까지.toRequest(), "", "");
+
+        return groupService.create(hostId, request).getGroupId();
     }
 
     void participateMember(Long groupId, Long memberId) {

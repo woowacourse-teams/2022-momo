@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.calendar;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -43,6 +44,23 @@ public class Deadline {
 
     private boolean isBeforeThanNow(LocalDateTime value) {
         return value.isBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Deadline deadline = (Deadline) o;
+        return Objects.equals(value, deadline.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     @Override

@@ -36,7 +36,8 @@ import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
-import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.group.service.response.ScheduleResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 class GroupFindAcceptanceTest extends AcceptanceTest {
@@ -82,13 +83,13 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                 () -> {
                     String startDuration = group.getDuration().getStartDate().format(DateTimeFormatter.ISO_DATE);
                     String endDuration = group.getDuration().getEndDate().format(DateTimeFormatter.ISO_DATE);
-                    String deadline = group.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                    String deadline = group.getDeadline().getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                     response
-                            .body("name", is(group.getName()))
+                            .body("name", is(group.getName().getValue()))
                             .body("host.id", is(1))
                             .body("host.name", is(HOST.getName()))
-                            .body("categoryId", is(group.getCategoryId().intValue()))
-                            .body("capacity", is(group.getCapacity()))
+                            .body("categoryId", is((int) group.getCategoryId()))
+                            .body("capacity", is(group.getCapacity().getValue()))
                             .body("duration.start", is(startDuration))
                             .body("duration.end", is(endDuration))
                             .body("finished", is(false))
@@ -101,8 +102,17 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                             .jsonPath()
                             .getList("schedules", ScheduleResponse.class);
 
-                    assertThat(schedules).usingRecursiveComparison()
-                            .isEqualTo(group.getSchedules());
+                    assertThat(schedules).hasSize(group.getSchedules().size());
+
+                    for (int i = 0; i < schedules.size(); i++) {
+                        ScheduleResponse actual = schedules.get(i);
+                        ScheduleFixture expected = group.getSchedules().get(i);
+                        assertAll(
+                                () -> assertThat(actual.getDate()).isEqualTo(expected.getDate()),
+                                () -> assertThat(actual.getStartTime()).isEqualTo(expected.getStartTime()),
+                                () -> assertThat(actual.getEndTime()).isEqualTo(expected.getEndTime())
+                        );
+                    }
                 }
         );
     }
@@ -184,7 +194,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
-                .filter(g -> g.getCategoryId().equals(category.getId()))
+                .filter(g -> g.getCategoryId() == category.getId())
                 .collect(Collectors.toList());
 
         checkGroupSummaryResponses(response, groups);
@@ -195,7 +205,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .map(Entry::getKey)
-                .filter(g -> g.getName().contains(keyword))
+                .filter(g -> g.getName().getValue().contains(keyword))
                 .collect(Collectors.toList());
 
         checkGroupSummaryResponses(response, groups);
@@ -206,7 +216,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
         for (int i = 0; i < groups.size(); i++) {
             GroupFixture group = groups.get(i);
-            String deadline = group.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+            String deadline = group.getDeadline().getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 
             int numOfParticipant = ParticipantRestHandler.참여목록을_조회한다(groupIds.get(group))
                     .extract()
@@ -215,9 +225,9 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
             String index = String.format("groups[%d]", i);
             response.body(index + ".id", is(groupIds.get(group).intValue()))
-                    .body(index + ".name", is(group.getName()))
-                    .body(index + ".categoryId", is(group.getCategoryId().intValue()))
-                    .body(index + ".capacity", is(group.getCapacity()))
+                    .body(index + ".name", is(group.getName().getValue()))
+                    .body(index + ".categoryId", is((int) group.getCategoryId()))
+                    .body(index + ".capacity", is(group.getCapacity().getValue()))
                     .body(index + ".numOfParticipant", is(numOfParticipant))
                     .body(index + ".finished", is(false))
                     .body(index + ".deadline", is(deadline))

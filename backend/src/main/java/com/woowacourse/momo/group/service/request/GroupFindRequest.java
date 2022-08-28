@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.dto.request;
+package com.woowacourse.momo.group.service.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
