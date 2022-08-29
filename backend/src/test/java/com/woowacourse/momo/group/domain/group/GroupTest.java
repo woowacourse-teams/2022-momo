@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.어제_23시_59분;
@@ -243,20 +243,20 @@ class GroupTest {
 
     private Group constructGroupWithSetCapacity(int capacity) {
         Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getDuration(),
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_5일동안.getDuration(),
                 new Deadline(내일_23시_59분.getDateTime()),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
         Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getDuration(),
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.getDuration(),
                 new Deadline(deadline), schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
         Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
-        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getDuration(),
+        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.getDuration(),
                 new Deadline(내일_23시_59분.getDateTime()), schedules, "", "");
 
         setPastDeadline(group, deadline);

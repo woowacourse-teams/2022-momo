@@ -10,7 +10,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 public enum DurationFixture {
 
     이틀후_하루동안(이틀후, 이틀후),
-    이틀후부터_일주일후까지(이틀후, 일주일후),
+    이틀후부터_5일동안(이틀후, 일주일후),
     일주일후_하루동안(일주일후, 일주일후),
     ;
 

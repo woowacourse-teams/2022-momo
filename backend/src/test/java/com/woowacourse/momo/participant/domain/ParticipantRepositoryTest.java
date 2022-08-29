@@ -2,7 +2,7 @@ package com.woowacourse.momo.participant.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
@@ -60,7 +60,7 @@ class ParticipantRepositoryTest {
 		savedParticipant = memberRepository.save(PARTICIPANT);
 
 		Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
-		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_일주일후까지.getDuration(),
+		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_5일동안.getDuration(),
 			new Deadline(내일_23시_59분.getDateTime()), schedules, "", "");
 		savedGroup = groupRepository.save(group);
 	}

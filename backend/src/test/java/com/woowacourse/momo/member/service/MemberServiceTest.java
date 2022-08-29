@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
@@ -206,7 +206,7 @@ class MemberServiceTest {
 
     private Group saveGroup() {
         return groupRepository.save(new Group(new GroupName("모모의 스터디"), savedHost, Category.STUDY, new Capacity(3),
-                이틀후부터_일주일후까지.getDuration(), new Deadline(내일_23시_59분.getDateTime()),
+                이틀후부터_5일동안.getDuration(), new Deadline(내일_23시_59분.getDateTime()),
                 new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule())), "", ""));
     }
 }
