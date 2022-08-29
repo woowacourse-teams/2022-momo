@@ -173,7 +173,7 @@ class GroupRepositoryTest {
 
     private Group constructGroup(String name, Member host, List<Schedule> schedules) {
         return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
-                new Deadline(내일_23시_59분.getInstance()), new Schedules(schedules), "", "");
+                new Deadline(내일_23시_59분.getDateTime()), new Schedules(schedules), "", "");
     }
 
     private void synchronize() {

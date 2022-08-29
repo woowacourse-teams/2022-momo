@@ -20,10 +20,10 @@ public enum DateTimeFixture {
     private final LocalDateTime instance;
 
     DateTimeFixture(DateFixture date, TimeFixture time) {
-        this.instance = LocalDateTime.of(date.getInstance(), time.getInstance());
+        this.instance = LocalDateTime.of(date.getDate(), time.getTime());
     }
 
-    public LocalDateTime getInstance() {
+    public LocalDateTime getDateTime() {
         return instance;
     }
 }

@@ -54,9 +54,9 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 class GroupControllerTest {
 
     private static final DurationRequest DURATION_REQUEST =
-            new DurationRequest(이틀후.getInstance(), 이틀후.getInstance());
+            new DurationRequest(이틀후.getDate(), 이틀후.getDate());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getDate(), _10시_00분.getTime(), _12시_00분.getTime()));
     private static final int TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE = 20;
 
     @Autowired
@@ -80,7 +80,7 @@ class GroupControllerTest {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
@@ -103,7 +103,7 @@ class GroupControllerTest {
         String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 15,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
                         .header("Authorization", "bearer " + accessToken)
@@ -322,7 +322,7 @@ class GroupControllerTest {
 
     Long saveGroup(String name, Long hostId, Category category) {
         GroupRequest groupRequest = new GroupRequest(name, category.getId(), 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

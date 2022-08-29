@@ -53,7 +53,7 @@ public enum GroupFixture {
         this.schedules = schedules.stream()
                 .map(ScheduleFixture::newInstance)
                 .collect(Collectors.toList());
-        this.deadline = deadline.getInstance();
+        this.deadline = deadline.getDateTime();
         this.location = location;
         this.description = description;
     }

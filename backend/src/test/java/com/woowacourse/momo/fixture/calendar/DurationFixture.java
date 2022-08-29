@@ -23,7 +23,7 @@ public enum DurationFixture {
 
     public Duration getInstance() {
         if (instance == null) {
-            instance = new Duration(start.getInstance(), end.getInstance());
+            instance = new Duration(start.getDate(), end.getDate());
         }
         return instance;
     }

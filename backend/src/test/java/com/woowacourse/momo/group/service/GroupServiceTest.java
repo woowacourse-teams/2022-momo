@@ -51,10 +51,10 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 class GroupServiceTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
-            이틀후.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getDate(),
+            이틀후.getDate());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getDate(), _10시_00분.getTime(), _12시_00분.getTime()));
     private static final int PAGE_SIZE = 12;
     private static final int TWO_PAGE_GROUPS = 8;
 
@@ -85,7 +85,7 @@ class GroupServiceTest {
 
     private Group saveGroup(String name, Category category) {
         return groupRepository.save(new Group(new GroupName(name), savedHost, category, new Capacity(3),
-                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getInstance()),
+                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getDateTime()),
                 new Schedules(List.of(이틀후_10시부터_12시까지.newInstance())), "", ""));
     }
 
@@ -93,7 +93,7 @@ class GroupServiceTest {
     @Test
     void create() {
         GroupRequest request = new GroupRequest("모모의 스터디", Category.STUDY.getId(), 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         groupService.create(savedHost.getId(), request);
 
@@ -105,7 +105,7 @@ class GroupServiceTest {
     void createWithInvalidCategoryId() {
         Long categoryId = 0L;
         GroupRequest request = new GroupRequest("모모의 스터디", categoryId, 10, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         assertThatThrownBy(() -> groupService.create(savedHost.getId(), request))
                 .isInstanceOf(MomoException.class)
@@ -137,7 +137,7 @@ class GroupServiceTest {
     void update() {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest);
 
@@ -151,7 +151,7 @@ class GroupServiceTest {
     @Test
     void updateNotExistGroup() {
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), 1000L, groupRequest))
                 .isInstanceOf(MomoException.class)
@@ -163,7 +163,7 @@ class GroupServiceTest {
     void updateMemberIsNotHost() {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 2,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedMember1.getId(), savedGroup.getId(), groupRequest))
                 .isInstanceOf(MomoException.class)
@@ -176,7 +176,7 @@ class GroupServiceTest {
         Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
         savedGroup.participate(savedMember1);
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 3,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), savedGroup.getId(), groupRequest))
                 .isInstanceOf(MomoException.class)
@@ -192,7 +192,7 @@ class GroupServiceTest {
         long groupId = savedGroup.getId();
 
         GroupUpdateRequest groupRequest = new GroupUpdateRequest("두두의 스터디", 1L, 3,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         assertThatThrownBy(() -> groupService.update(savedHost.getId(), groupId, groupRequest))
                 .isInstanceOf(MomoException.class)

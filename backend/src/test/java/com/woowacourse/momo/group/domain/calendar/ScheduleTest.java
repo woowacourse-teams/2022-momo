@@ -20,8 +20,8 @@ class ScheduleTest {
 
     private static Stream<Arguments> provideForScheduleValidator() {
         return Stream.of(
-                Arguments.of(_10시_00분.getInstance(), _10시_00분.getInstance()),
-                Arguments.of(_12시_00분.getInstance(), _10시_00분.getInstance())
+                Arguments.of(_10시_00분.getTime(), _10시_00분.getTime()),
+                Arguments.of(_12시_00분.getTime(), _10시_00분.getTime())
         );
     }
 
@@ -29,7 +29,7 @@ class ScheduleTest {
     @ParameterizedTest(name = "시작 시간: {0}, 종료 시간: {1}")
     @MethodSource("provideForScheduleValidator")
     void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        assertThatThrownBy(() -> new Schedule(이틀후.getInstance(), startTime, endTime))
+        assertThatThrownBy(() -> new Schedule(이틀후.getDate(), startTime, endTime))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("일정의 시작 시간은 종료 시간 이전이어야 합니다.");
     }

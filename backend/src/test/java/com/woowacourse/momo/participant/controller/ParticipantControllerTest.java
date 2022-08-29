@@ -53,10 +53,10 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
-            이틀후.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getDate(),
+            이틀후.getDate());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.getDate(), _10시_00분.getTime(), _12시_00분.getTime()));
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/participants";
@@ -343,7 +343,7 @@ class ParticipantControllerTest {
 
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                SCHEDULE_REQUESTS, 내일_23시_59분.getDateTime(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

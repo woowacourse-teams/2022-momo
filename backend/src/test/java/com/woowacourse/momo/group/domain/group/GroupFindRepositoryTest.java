@@ -65,15 +65,15 @@ class GroupFindRepositoryTest {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         momo = memberRepository.save(new Member(UserId.momo("momo"), password, "momo"));
         dudu = memberRepository.save(new Member(UserId.momo("dudu"), password, "dudu"));
-        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
-        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
-        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));
-        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.getInstance()));
-        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.getInstance()));
+        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getDateTime()));
+        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getDateTime()));
+        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getDateTime()));
+        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.getDateTime()));
+        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.getDateTime()));
         group5.participate(momo);
 
         Group group = constructGroup("두두의 스터디", dudu, Category.STUDY, 10, LocalDateTime.now().plusMinutes(1));
-        setPastDeadline(group, 어제_23시_59분.getInstance());
+        setPastDeadline(group, 어제_23시_59분.getDateTime());
         group6 = groupRepository.save(group);
 
         synchronize();

@@ -2,8 +2,6 @@ package com.woowacourse.momo.fixture.calendar.datetime;
 
 import java.time.LocalTime;
 
-import lombok.RequiredArgsConstructor;
-
 @SuppressWarnings("NonAsciiCharacters")
 public enum TimeFixture {
 
@@ -18,7 +16,7 @@ public enum TimeFixture {
         this.instance = LocalTime.of(hour, minute);
     }
 
-    public LocalTime getInstance() {
+    public LocalTime getTime() {
         return instance;
     }
 }

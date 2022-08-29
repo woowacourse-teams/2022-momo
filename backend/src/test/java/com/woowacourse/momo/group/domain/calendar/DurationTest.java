@@ -28,14 +28,14 @@ class DurationTest {
     @Test
     void create() {
         assertDoesNotThrow(
-                () -> new Duration(이틀후.getInstance(), 일주일후.getInstance())
+                () -> new Duration(이틀후.getDate(), 일주일후.getDate())
         );
     }
 
     @DisplayName("시작일은 종료일 이후가 될 수 없다")
     @Test
     void validateEndIsNotBeforeStart() {
-        assertThatThrownBy(() -> new Duration(일주일후.getInstance(), 이틀후.getInstance()))
+        assertThatThrownBy(() -> new Duration(일주일후.getDate(), 이틀후.getDate()))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("기간의 시작일은 종료일 이전이어야 합니다.");
     }
@@ -43,7 +43,7 @@ class DurationTest {
     @DisplayName("시작일과 종료일은 과거의 날짜가 될 수 없다")
     @Test
     void validatePastDate() {
-        assertThatThrownBy(() -> new Duration(어제.getInstance(), 어제.getInstance()))
+        assertThatThrownBy(() -> new Duration(어제.getDate(), 어제.getDate()))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("시작일과 종료일은 과거일 수 없습니다.");
     }
@@ -52,15 +52,15 @@ class DurationTest {
     @ParameterizedTest
     @MethodSource("provideIsAfterStartDateArguments")
     void isAfterStartDate(LocalDateTime localDateTime, boolean expected) {
-        Duration duration = new Duration(내일.getInstance(), 내일.getInstance());
+        Duration duration = new Duration(내일.getDate(), 내일.getDate());
 
         assertThat(duration.isAfterStartDate(localDateTime)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideIsAfterStartDateArguments() {
         return Stream.of(
-                Arguments.of(이틀후_23시_59분.getInstance(), Boolean.TRUE),
-                Arguments.of(내일_23시_59분.getInstance(), Boolean.FALSE)
+                Arguments.of(이틀후_23시_59분.getDateTime(), Boolean.TRUE),
+                Arguments.of(내일_23시_59분.getDateTime(), Boolean.FALSE)
         );
     }
 }

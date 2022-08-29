@@ -23,6 +23,6 @@ public enum ScheduleFixture {
     private final TimeFixture endTime;
 
     public Schedule newInstance() {
-        return new Schedule(date.getInstance(), startTime.getInstance(), endTime.getInstance());
+        return new Schedule(date.getDate(), startTime.getTime(), endTime.getTime());
     }
 }
