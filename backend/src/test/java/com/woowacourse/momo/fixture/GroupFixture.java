@@ -49,9 +49,9 @@ public enum GroupFixture {
         this.name = name;
         this.categoryId = category.getId();
         this.capacity = capacity;
-        this.duration = duration.getInstance();
+        this.duration = duration.getDuration();
         this.schedules = schedules.stream()
-                .map(ScheduleFixture::newInstance)
+                .map(ScheduleFixture::getSchedule)
                 .collect(Collectors.toList());
         this.deadline = deadline.getDateTime();
         this.location = location;

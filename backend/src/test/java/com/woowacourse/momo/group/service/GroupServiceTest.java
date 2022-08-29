@@ -85,8 +85,8 @@ class GroupServiceTest {
 
     private Group saveGroup(String name, Category category) {
         return groupRepository.save(new Group(new GroupName(name), savedHost, category, new Capacity(3),
-                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.newInstance())), "", ""));
+                이틀후부터_일주일후까지.getDuration(), new Deadline(내일_23시_59분.getDateTime()),
+                new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule())), "", ""));
     }
 
     @DisplayName("모임을 생성한다")

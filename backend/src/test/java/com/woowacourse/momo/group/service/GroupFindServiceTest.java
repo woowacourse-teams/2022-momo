@@ -241,8 +241,8 @@ class GroupFindServiceTest {
     }
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
-                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.newInstance())),
+        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getDuration(),
+                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.getSchedule())),
                 "", "");
     }
 

@@ -141,7 +141,7 @@ class ParticipantsTest {
 
     private static Group constructGroup() {
         return new Group(new GroupName("모임"), HOST, Category.CAFE, CAPACITY,
-                이틀후부터_일주일후까지.getInstance(), new Deadline(내일_23시_59분.getDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.newInstance())), "", "");
+                이틀후부터_일주일후까지.getDuration(), new Deadline(내일_23시_59분.getDateTime()),
+                new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule())), "", "");
     }
 }

@@ -26,7 +26,7 @@ public enum ScheduleFixture {
         this.endTime = endTime;
     }
 
-    public Schedule newInstance() {
+    public Schedule getSchedule() {
         return new Schedule(date.getDate(), startTime.getTime(), endTime.getTime());
     }
 }

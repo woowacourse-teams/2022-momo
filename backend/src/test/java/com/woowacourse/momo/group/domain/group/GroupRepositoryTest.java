@@ -57,7 +57,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.getSchedule());
         Group group = constructGroup(host, schedules);
 
         Group savedGroup = groupRepository.save(group);
@@ -89,7 +89,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance(), 일주일후_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.getSchedule(), 일주일후_10시부터_12시까지.getSchedule());
         Group group = constructGroup(host, schedules);
         Group savedGroup = groupRepository.save(group);
 
@@ -105,8 +105,8 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        Group group1 = constructGroup(host, List.of(이틀후_10시부터_12시까지.newInstance()));
-        Group group2 = constructGroup(host, List.of(일주일후_10시부터_12시까지.newInstance()));
+        Group group1 = constructGroup(host, List.of(이틀후_10시부터_12시까지.getSchedule()));
+        Group group2 = constructGroup(host, List.of(일주일후_10시부터_12시까지.getSchedule()));
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
@@ -121,7 +121,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.newInstance());
+        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.getSchedule());
         Group group = constructGroup(host, schedules);
 
         groupRepository.save(group);
@@ -172,7 +172,7 @@ class GroupRepositoryTest {
     }
 
     private Group constructGroup(String name, Member host, List<Schedule> schedules) {
-        return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
+        return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getDuration(),
                 new Deadline(내일_23시_59분.getDateTime()), new Schedules(schedules), "", "");
     }
 

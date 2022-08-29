@@ -59,8 +59,8 @@ class ParticipantRepositoryTest {
 		savedHost = memberRepository.save(HOST);
 		savedParticipant = memberRepository.save(PARTICIPANT);
 
-		Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_일주일후까지.getInstance(),
+		Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
+		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_일주일후까지.getDuration(),
 			new Deadline(내일_23시_59분.getDateTime()), schedules, "", "");
 		savedGroup = groupRepository.save(group);
 	}

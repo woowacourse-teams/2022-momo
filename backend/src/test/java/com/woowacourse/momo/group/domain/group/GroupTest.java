@@ -242,21 +242,21 @@ class GroupTest {
     }
 
     private Group constructGroupWithSetCapacity(int capacity) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getInstance(),
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getDuration(),
                 new Deadline(내일_23시_59분.getDateTime()),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getDuration(),
                 new Deadline(deadline), schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.getSchedule()));
+        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getDuration(),
                 new Deadline(내일_23시_59분.getDateTime()), schedules, "", "");
 
         setPastDeadline(group, deadline);

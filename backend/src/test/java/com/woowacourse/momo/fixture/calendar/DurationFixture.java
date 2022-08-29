@@ -20,7 +20,7 @@ public enum DurationFixture {
         this.instance = new Duration(start.getDate(), end.getDate());
     }
 
-    public Duration getInstance() {
+    public Duration getDuration() {
         return instance;
     }
 }
