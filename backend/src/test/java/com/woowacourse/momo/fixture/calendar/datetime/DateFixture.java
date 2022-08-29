@@ -2,18 +2,20 @@ package com.woowacourse.momo.fixture.calendar.datetime;
 
 import java.time.LocalDate;
 
-import lombok.RequiredArgsConstructor;
-
 @SuppressWarnings("NonAsciiCharacters")
-@RequiredArgsConstructor
 public enum DateFixture {
 
-    어제(LocalDate.now().minusDays(1)),
-    내일(LocalDate.now().plusDays(1)),
-    이틀후(LocalDate.now().plusDays(2)),
-    일주일후(LocalDate.now().plusDays(7));
+    어제(-1),
+    내일(1),
+    이틀후(2),
+    일주일후(7),
+    ;
 
     private final LocalDate instance;
+
+    DateFixture(int days) {
+        this.instance = LocalDate.now().plusDays(days);
+    }
 
     public LocalDate getInstance() {
         return instance;
