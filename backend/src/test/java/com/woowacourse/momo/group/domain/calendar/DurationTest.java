@@ -4,12 +4,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import static com.woowacourse.momo.fixture.DateFixture.내일;
-import static com.woowacourse.momo.fixture.DateFixture.어제;
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.DateFixture.일주일후;
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.내일;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.어제;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.일주일후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.이틀후_23시_59분;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;

@@ -1,9 +1,9 @@
 package com.woowacourse.momo.fixture;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후_하루동안;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_일주일후까지;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +15,9 @@ import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.group.GroupRestHandler;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.fixture.calendar.DurationFixture;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;

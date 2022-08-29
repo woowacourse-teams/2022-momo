@@ -1,12 +1,14 @@
-package com.woowacourse.momo.fixture;
+package com.woowacourse.momo.fixture.calendar;
 
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.DateFixture.일주일후;
-import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.일주일후;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.fixture.calendar.datetime.DateFixture;
+import com.woowacourse.momo.fixture.calendar.datetime.TimeFixture;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 
 @SuppressWarnings("NonAsciiCharacters")

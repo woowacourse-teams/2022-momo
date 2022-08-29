@@ -1,10 +1,10 @@
-package com.woowacourse.momo.fixture;
+package com.woowacourse.momo.fixture.calendar.datetime;
 
-import static com.woowacourse.momo.fixture.DateFixture.내일;
-import static com.woowacourse.momo.fixture.DateFixture.어제;
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.DateFixture.일주일후;
-import static com.woowacourse.momo.fixture.TimeFixture._23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.내일;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.어제;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.일주일후;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._23시_59분;
 
 import java.time.LocalDateTime;
 

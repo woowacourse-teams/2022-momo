@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
 import java.util.List;
 

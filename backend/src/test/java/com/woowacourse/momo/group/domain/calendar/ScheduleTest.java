@@ -2,9 +2,9 @@ package com.woowacourse.momo.group.domain.calendar;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
 import java.time.LocalTime;
 import java.util.stream.Stream;

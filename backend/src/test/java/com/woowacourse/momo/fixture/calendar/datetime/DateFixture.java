@@ -1,4 +1,4 @@
-package com.woowacourse.momo.fixture;
+package com.woowacourse.momo.fixture.calendar.datetime;
 
 import java.time.LocalDate;
 
