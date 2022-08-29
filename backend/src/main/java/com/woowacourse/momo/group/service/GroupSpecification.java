@@ -54,10 +54,9 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            root.join("participants").join("participants");
             query.groupBy(root.get("id"));
 
-            Expression<Long> count = criteriaBuilder.count(root.get("id"));
+            Expression<Long> count = criteriaBuilder.count(root.join("participants").join("participants").get("id"));
             Predicate isOverCapacity = criteriaBuilder.lessThan(count, root.get("participants").get("capacity"));
             query.having(isOverCapacity);
 
