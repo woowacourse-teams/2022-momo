@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.service;
 
 import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.group.Group;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.participant.domain.Participant;
 
 @Component
 public class GroupSpecification {
@@ -20,14 +18,12 @@ public class GroupSpecification {
     }
 
     public Specification<Group> filterByParticipated(Member member) {
-        return (root, query, criteriaBuilder) -> {
-            Join<Participant, Group> groupParticipant = root.join("participants").join("participants");
-            return criteriaBuilder.equal(groupParticipant.get("member"), member);
-        };
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(ParticipantAttribute.MEMBER.from(root), member);
     }
 
     public Specification<Group> filterByHosted(Member member) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("host"), member);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(GroupAttribute.HOST.from(root), member);
     }
 
     public Specification<Group> filterByCategory(Long categoryId) {
@@ -35,7 +31,7 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         Category category = Category.from(categoryId);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(GroupAttribute.CATEGORY.from(root), category);
     }
 
     public Specification<Group> containKeyword(String keyword) {
@@ -43,8 +39,9 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            Predicate nameContainKeyword = criteriaBuilder.like(root.get("name").get("value"), "%" + keyword + "%");
-            Predicate descriptionContainKeyword = criteriaBuilder.like(root.get("description"), "%" + keyword + "%");
+            Predicate nameContainKeyword = criteriaBuilder.like(GroupAttribute.NAME.from(root), "%" + keyword + "%");
+            Predicate descriptionContainKeyword = criteriaBuilder.like(
+                    GroupAttribute.DESCRIPTION.from(root), "%" + keyword + "%");
             return criteriaBuilder.or(nameContainKeyword, descriptionContainKeyword);
         };
     }
@@ -54,14 +51,15 @@ public class GroupSpecification {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
-            query.groupBy(root.get("id"));
+            query.groupBy(GroupAttribute.ID.from(root));
 
-            Expression<Long> count = criteriaBuilder.count(root.join("participants").join("participants").get("id"));
-            Predicate isOverCapacity = criteriaBuilder.lessThan(count, root.get("participants").get("capacity"));
+            Expression<Long> count = criteriaBuilder.count(ParticipantAttribute.ID.from(root));
+            Predicate isOverCapacity = criteriaBuilder.lessThan(count, GroupAttribute.CAPACITY.from(root));
             query.having(isOverCapacity);
 
-            Predicate isEarlyClosed = criteriaBuilder.isFalse(root.get("isEarlyClosed"));
-            Predicate isOverDeadline = criteriaBuilder.greaterThan(root.get("calendar").get("deadline"),
+
+            Predicate isEarlyClosed = criteriaBuilder.isFalse(GroupAttribute.IS_EARLY_CLOSED.from(root));
+            Predicate isOverDeadline = criteriaBuilder.greaterThan(GroupAttribute.DEADLINE.from(root),
                     criteriaBuilder.currentTimestamp());
             return criteriaBuilder.and(isEarlyClosed, isOverDeadline);
         };
@@ -72,14 +70,14 @@ public class GroupSpecification {
             return orderByIdDesc();
         }
         return (root, query, criteriaBuilder) -> {
-            query.orderBy(criteriaBuilder.asc(root.get("calendar").get("deadline")), criteriaBuilder.desc(root.get("id")));
-            return criteriaBuilder.greaterThan(root.get("calendar").get("deadline"), criteriaBuilder.currentTimestamp());
+            query.orderBy(criteriaBuilder.asc(GroupAttribute.DEADLINE.from(root)), criteriaBuilder.desc(GroupAttribute.ID.from(root)));
+            return criteriaBuilder.greaterThan(GroupAttribute.DEADLINE.from(root), criteriaBuilder.currentTimestamp());
         };
     }
 
     private Specification<Group> orderByIdDesc() {
         return (root, query, criteriaBuilder) -> {
-            query.orderBy(criteriaBuilder.desc(root.get("id")));
+            query.orderBy(criteriaBuilder.desc(GroupAttribute.ID.from(root)));
             return criteriaBuilder.conjunction();
         };
     }
