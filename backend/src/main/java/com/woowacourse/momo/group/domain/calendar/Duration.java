@@ -46,12 +46,12 @@ public class Duration {
     }
 
     private void validateDatesAreNotPast(LocalDate startDate, LocalDate endDate) {
-        if (isAnyDatesBeforeThanNow(startDate, endDate)) {
+        if (hasAnyDatesBeforeThanNow(startDate, endDate)) {
             throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
         }
     }
 
-    private boolean isAnyDatesBeforeThanNow(LocalDate... dates) {
+    private boolean hasAnyDatesBeforeThanNow(LocalDate... dates) {
         return Stream.of(dates)
                 .anyMatch(this::isBeforeThanNow);
     }
