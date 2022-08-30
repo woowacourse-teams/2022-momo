@@ -1,9 +1,9 @@
 package com.woowacourse.momo.fixture;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후_하루동안;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +15,9 @@ import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.group.GroupRestHandler;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.fixture.calendar.DurationFixture;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
@@ -23,11 +26,11 @@ import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_일주일후까지, List.of(이틀후_10시부터_12시까지),
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분, "루터회관 13층", "같이 공부해요!!"),
     MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분, "선릉", "점심 먹고 선릉 나들이~!!"),
-    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 이틀후부터_일주일후까지, List.of(이틀후_10시부터_12시까지),
+    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분, "루터회관 13층", "두두랑 함께 공부해요!!"),
     DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분, "잠실역 스타벅스", "두두가 쏘는 커피~ 선착순 1명!!");
@@ -46,11 +49,11 @@ public enum GroupFixture {
         this.name = name;
         this.categoryId = category.getId();
         this.capacity = capacity;
-        this.duration = duration.getInstance();
+        this.duration = duration.toDuration();
         this.schedules = schedules.stream()
-                .map(ScheduleFixture::newInstance)
+                .map(ScheduleFixture::toSchedule)
                 .collect(Collectors.toList());
-        this.deadline = deadline.getInstance();
+        this.deadline = deadline.toDateTime();
         this.location = location;
         this.description = description;
     }

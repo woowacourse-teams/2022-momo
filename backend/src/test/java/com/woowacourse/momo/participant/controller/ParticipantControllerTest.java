@@ -11,10 +11,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static com.woowacourse.momo.fixture.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.TimeFixture._12시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
+import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -53,10 +53,10 @@ import com.woowacourse.momo.participant.service.ParticipantService;
 @SpringBootTest
 class ParticipantControllerTest {
 
-    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.getInstance(),
-            이틀후.getInstance());
+    private static final DurationRequest DURATION_REQUEST = new DurationRequest(이틀후.toDate(),
+            이틀후.toDate());
     private static final List<ScheduleRequest> SCHEDULE_REQUESTS = List.of(
-            new ScheduleRequest(이틀후.getInstance(), _10시_00분.getInstance(), _12시_00분.getInstance()));
+            new ScheduleRequest(이틀후.toDate(), _10시_00분.toTime(), _12시_00분.toTime()));
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/participants";
@@ -343,7 +343,7 @@ class ParticipantControllerTest {
 
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest groupRequest = new GroupRequest("모모의 스터디", 1L, capacity, DURATION_REQUEST,
-                SCHEDULE_REQUESTS, 내일_23시_59분.getInstance(), "", "");
+                SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
 
         return groupService.create(hostId, groupRequest).getGroupId();
     }

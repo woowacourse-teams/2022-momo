@@ -34,6 +34,11 @@ public class Schedules {
 
     public boolean hasAnyScheduleOutOfDuration(Duration duration) {
         return value.stream()
-                .anyMatch(schedule -> schedule.isOutOfRange(duration.getStartDate(), duration.getEndDate()));
+                .anyMatch(schedule -> schedule.isOutOfDuration(duration));
+    }
+
+    @Override
+    public String toString() {
+        return "Schedules{" + value + '}';
     }
 }

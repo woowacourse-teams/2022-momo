@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -29,6 +30,11 @@ public class Deadline {
         return value.isBefore(LocalDateTime.now());
     }
 
+    public boolean isAfterThan(LocalDate date) {
+        return value.toLocalDate()
+                .isAfter(date);
+    }
+
     private void validateDeadlineIsAfterNow(LocalDateTime value) {
         if (isBeforeThanNow(value)) {
             throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
@@ -37,5 +43,10 @@ public class Deadline {
 
     private boolean isBeforeThanNow(LocalDateTime value) {
         return value.isBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public String toString() {
+        return "Deadline{" + value + '}';
     }
 }

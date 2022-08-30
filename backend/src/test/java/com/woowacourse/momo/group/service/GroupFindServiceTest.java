@@ -2,12 +2,12 @@ package com.woowacourse.momo.group.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.이틀후_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.일주일후_하루동안;
-import static com.woowacourse.momo.fixture.ScheduleFixture.일주일후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.일주일후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.어제_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.이틀후_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.일주일후_23시_59분;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -64,15 +64,15 @@ class GroupFindServiceTest {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         momo = memberRepository.save(new Member(UserId.momo("momo"), password, "momo"));
         dudu = memberRepository.save(new Member(UserId.momo("dudu"), password, "dudu"));
-        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.getInstance()));
-        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.getInstance()));
-        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.getInstance()));
-        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.getInstance()));
-        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.getInstance()));
+        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.toDateTime()));
+        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.toDateTime()));
+        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.toDateTime()));
+        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.toDateTime()));
+        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.toDateTime()));
         group5.participate(momo);
 
         Group group = constructGroup("두두의 스터디", dudu, Category.STUDY, 10, LocalDateTime.now().plusMinutes(1));
-        setPastDeadline(group, 어제_23시_59분.getInstance());
+        setPastDeadline(group, 어제_23시_59분.toDateTime());
         group6 = groupRepository.save(group);
     }
 
@@ -241,8 +241,8 @@ class GroupFindServiceTest {
     }
 
     private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.getInstance(),
-                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.newInstance())),
+        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.toDuration(),
+                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.toSchedule())),
                 "", "");
     }
 

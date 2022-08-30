@@ -2,54 +2,141 @@ package com.woowacourse.momo.group.domain.calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.이틀후_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.일주일후_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.내일_하루동안;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.일주일후_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.내일_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
+
+import java.lang.reflect.Field;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
+import com.woowacourse.momo.fixture.calendar.DurationFixture;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class CalendarTest {
 
-    private static final Schedules EMPTY_SCHEDULES = new Schedules(new ArrayList<>());
-    private static final LocalDate YESTERDAY_DATE = LocalDate.now().minusDays(1);
-    private static final LocalDate AFTER_TWO_DATE = LocalDate.now().plusDays(2);
-    private static final LocalDate AFTER_THREE_DATE = LocalDate.now().plusDays(3);
-    private static final LocalDateTime TOMORROW_DATETIME = LocalDateTime.now().plusDays(1);
-
-    @DisplayName("마감 기한이 지났는지 확인한다")
+    @DisplayName("Calendar를 정상적으로 생성한다")
     @Test
-    void isOver() {
-        Duration duration = new Duration(LocalDate.now().plusDays(10), LocalDate.now().plusDays(11));
-        Calendar calendar = new Calendar(EMPTY_SCHEDULES, duration, new Deadline(TOMORROW_DATETIME));
+    void construct() {
+        Deadline deadline = 내일_23시_59분까지.toDeadline();
+        Duration duration = 이틀후부터_5일동안.toDuration();
+        Schedules schedules = ScheduleFixture.toSchedules(이틀후_10시부터_12시까지);
+        Calendar calendar = new Calendar(deadline, duration, schedules);
 
-        assertThat(calendar.isDeadlineOver()).isFalse();
+        assertAll(
+                () -> assertThat(calendar.getDeadline()).isEqualTo(deadline),
+                () -> assertThat(calendar.getDuration()).isEqualTo(duration),
+                () -> assertThat(calendar.getSchedules()).usingRecursiveComparison()
+                        .isEqualTo(schedules)
+        );
     }
 
-    @DisplayName("마감 기한이 기간의 시작 일자보다 이전일 경우 예외가 발생한다")
-    @Test
-    void deadlineMustBeBeforeStartDuration() {
-        Duration duration = new Duration(LocalDate.now().plusDays(10), LocalDate.now().plusDays(11));
+    private Calendar createCalendar(DeadlineFixture deadline, DurationFixture duration, ScheduleFixture... schedules) {
+        return new Calendar(deadline.toDeadline(), duration.toDuration(), ScheduleFixture.toSchedules(schedules));
+    }
 
-        assertThatThrownBy(() -> new Calendar(EMPTY_SCHEDULES, duration, new Deadline(LocalDateTime.of(duration.getStartDate().plusDays(1), LocalTime.now()))))
+    @DisplayName("생성 시, 마감 기한이 기간의 시작 일자보다 이후일 수 없다")
+    @Test
+    void validateDeadlineIsNotAfterDurationStartWhenCreate() {
+        assertThatThrownBy(() -> createCalendar(이틀후_23시_59분까지, 내일_하루동안))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
     }
 
-    @DisplayName("일정들이 기간 내에 속해있지 않을 경우 예외가 발생한다")
+    @DisplayName("생성 시, 일정들이 기간 내에 속해있지 않을 경우 예외가 발생한다")
     @Test
-    void validateSchedulesAreInDuration() {
-        Schedule schedule = new Schedule(YESTERDAY_DATE, LocalTime.now(), LocalTime.now().plusHours(1));
-        Schedules schedules = new Schedules(List.of(schedule));
-        Duration duration = new Duration(AFTER_TWO_DATE, AFTER_THREE_DATE);
-
-        assertThatThrownBy(() -> new Calendar(schedules, duration, new Deadline(TOMORROW_DATETIME)))
+    void validateSchedulesAreInDurationWhenCreate() {
+        assertThatThrownBy(() -> createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 내일_10시부터_12시까지))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("일정이 모임 기간에 포함되어야 합니다.");
+    }
+
+    @DisplayName("Calendar를 수정한다")
+    @ParameterizedTest
+    @MethodSource("provideForUpdate")
+    void update(Deadline deadline, Duration duration, Schedules schedules) {
+        Calendar calendar = createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 이틀후_10시부터_12시까지);
+        calendar.update(deadline, duration, schedules);
+
+        assertAll(
+                () -> assertThat(calendar.getDeadline()).isEqualTo(deadline),
+                () -> assertThat(calendar.getDuration()).isEqualTo(duration),
+                () -> assertThat(calendar.getSchedules()).usingRecursiveComparison()
+                        .isEqualTo(schedules)
+        );
+    }
+
+    private static Stream<Arguments> provideForUpdate() {
+        return Stream.of(
+                Arguments.of(이틀후_23시_59분까지.toDeadline(), 일주일후_하루동안.toDuration(),
+                        ScheduleFixture.toSchedules(일주일후_10시부터_12시까지)),
+                Arguments.of(일주일후_23시_59분까지.toDeadline(), 일주일후_하루동안.toDuration(),
+                        ScheduleFixture.toSchedules(일주일후_10시부터_12시까지))
+        );
+    }
+
+
+    @DisplayName("수정 시, 마감 기한이 기간의 시작 일자보다 이후일 수 없다")
+    @Test
+    void validateDeadlineIsNotAfterDurationStartWhenUpdate() {
+        Calendar calendar = createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 이틀후_10시부터_12시까지);
+
+        Deadline deadline = 일주일후_23시_59분까지.toDeadline();
+        Duration duration = 내일_하루동안.toDuration();
+        Schedules schedules = ScheduleFixture.toSchedules(일주일후_10시부터_12시까지);
+
+        assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
+    }
+
+    @DisplayName("수정 시, 일정들이 기간 내에 속해있지 않을 경우 예외가 발생한다")
+    @Test
+    void validateSchedulesAreInDurationWhenUpdate() {
+        Calendar calendar = createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 이틀후_10시부터_12시까지);
+
+        Deadline deadline = 이틀후_23시_59분까지.toDeadline();
+        Duration duration = 일주일후_하루동안.toDuration();
+        Schedules schedules = ScheduleFixture.toSchedules(내일_10시부터_12시까지);
+
+        assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("일정이 모임 기간에 포함되어야 합니다.");
+    }
+
+    @DisplayName("마감 기한이 지났는지 확인한다")
+    @ParameterizedTest
+    @CsvSource(value = {"-1,true", "1,false"})
+    void isDeadlineOver(int pastDays, boolean expected) throws IllegalAccessException {
+        Deadline deadline = 내일_23시_59분까지.toDeadline();
+        Duration duration = 일주일후_하루동안.toDuration();
+        Schedules schedules = ScheduleFixture.emptySchedules();
+
+        Calendar calendar = new Calendar(deadline, duration, schedules);
+        setDeadlinePast(calendar, pastDays);
+
+        assertThat(calendar.isDeadlineOver()).isEqualTo(expected);
+    }
+
+    private void setDeadlinePast(Calendar calendar, int pastDays) throws IllegalAccessException {
+        Field[] fields = Calendar.class.getDeclaredFields();
+        fields[2].setAccessible(true);
+        fields[2].set(calendar, DeadlineFixture.newDeadline(pastDays));
     }
 }

@@ -2,9 +2,9 @@ package com.woowacourse.momo.participant.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,9 +59,9 @@ class ParticipantRepositoryTest {
 		savedHost = memberRepository.save(HOST);
 		savedParticipant = memberRepository.save(PARTICIPANT);
 
-		Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_일주일후까지.getInstance(),
-			new Deadline(내일_23시_59분.getInstance()), schedules, "", "");
+		Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
+		group = new Group(new GroupName("모임"), savedHost, Category.CAFE, new Capacity(3), 이틀후부터_5일동안.toDuration(),
+			new Deadline(내일_23시_59분.toDateTime()), schedules, "", "");
 		savedGroup = groupRepository.save(group);
 	}
 

@@ -41,14 +41,22 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    public boolean isOutOfRange(LocalDate startDate, LocalDate endDate) {
-        return !((date.isAfter(startDate) || date.isEqual(startDate))
-                && (date.isBefore(endDate) || date.isEqual(endDate)));
+    public boolean isOutOfDuration(Duration duration) {
+        return duration.isNotContainable(date);
     }
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        if (!endTime.isAfter(startTime)) {
+        if (!startTime.isBefore(endTime)) {
             throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", " + date +
+                " " + startTime + "~" + endTime +
+                '}';
     }
 }

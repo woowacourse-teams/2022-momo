@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.어제_23시_59분;
-import static com.woowacourse.momo.fixture.DateTimeFixture.일주일후_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.어제_23시_59분;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.일주일후_23시_59분;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -75,7 +75,7 @@ class GroupTest {
     @DisplayName("모임 기간 시작일 이후의 마감기한으로 인스턴스 생성시 예외가 발생한다")
     @Test
     void validateDeadlineIsBeforeStartDuration() {
-        LocalDateTime deadline = 일주일후_23시_59분.getInstance();
+        LocalDateTime deadline = 일주일후_23시_59분.toDateTime();
         assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
@@ -132,7 +132,7 @@ class GroupTest {
     @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
     @Test
     void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
 
         assertThatThrownBy(() -> group.participate(MEMBER))
                 .isInstanceOf(MomoException.class)
@@ -180,7 +180,7 @@ class GroupTest {
     @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
     @Test
     void isFinishedRecruitmentWithEarlyClosing() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
@@ -197,7 +197,7 @@ class GroupTest {
     @DisplayName("모집 마감시간이 지나면 종료된 모임이다")
     @Test
     void isEndOverDeadline() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.getInstance());
+        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
 
         assertThat(group.isEnd()).isTrue();
     }
@@ -242,22 +242,22 @@ class GroupTest {
     }
 
     private Group constructGroupWithSetCapacity(int capacity) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_일주일후까지.getInstance(),
-                new Deadline(내일_23시_59분.getInstance()),
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_5일동안.toDuration(),
+                new Deadline(내일_23시_59분.toDateTime()),
                 schedules, "", "");
     }
 
     private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
+        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.toDuration(),
                 new Deadline(deadline), schedules, "", "");
     }
 
     private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.newInstance()));
-        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_일주일후까지.getInstance(),
-                new Deadline(내일_23시_59분.getInstance()), schedules, "", "");
+        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
+        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.toDuration(),
+                new Deadline(내일_23시_59분.toDateTime()), schedules, "", "");
 
         setPastDeadline(group, deadline);
 
