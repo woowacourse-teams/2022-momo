@@ -46,13 +46,9 @@ public class Schedule {
     }
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        if (isStartNotBeforeEnd(startTime, endTime)) {
+        if (!startTime.isBefore(endTime)) {
             throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
         }
-    }
-
-    private boolean isStartNotBeforeEnd(LocalTime startTime, LocalTime endTime) {
-        return !startTime.isBefore(endTime);
     }
 
     @Override
