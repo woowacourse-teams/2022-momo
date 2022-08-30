@@ -17,7 +17,8 @@ public enum GroupAttribute {
     CAPACITY("participants", "capacity"),
     DEADLINE("calendar", "deadline"),
     DESCRIPTION("description"),
-    IS_EARLY_CLOSED("isEarlyClosed");
+    IS_EARLY_CLOSED("isEarlyClosed"),
+    ;
 
     private final String startAttribute;
     private final List<String> attributes;
