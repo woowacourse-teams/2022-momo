@@ -57,7 +57,6 @@ public class GroupSpecification {
             Predicate isOverCapacity = criteriaBuilder.lessThan(count, GroupAttribute.CAPACITY.from(root));
             query.having(isOverCapacity);
 
-
             Predicate isEarlyClosed = criteriaBuilder.isFalse(GroupAttribute.IS_EARLY_CLOSED.from(root));
             Predicate isOverDeadline = criteriaBuilder.greaterThan(GroupAttribute.DEADLINE.from(root),
                     criteriaBuilder.currentTimestamp());
