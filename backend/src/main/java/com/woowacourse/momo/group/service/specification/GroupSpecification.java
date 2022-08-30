@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service;
+package com.woowacourse.momo.group.service.specification;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;

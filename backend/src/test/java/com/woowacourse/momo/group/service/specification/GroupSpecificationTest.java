@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service;
+package com.woowacourse.momo.group.service.specification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
