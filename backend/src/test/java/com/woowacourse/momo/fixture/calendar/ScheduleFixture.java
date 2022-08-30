@@ -37,14 +37,14 @@ public enum ScheduleFixture {
         return new Schedule(date.toDate(), startTime.toTime(), endTime.toTime());
     }
 
-    public static Schedules toSchedules(List<ScheduleFixture> schedules) {
+    public static Schedules toSchedules(ScheduleFixture... schedules) {
+        return toSchedules(List.of(schedules));
+    }
+
+    private static Schedules toSchedules(List<ScheduleFixture> schedules) {
         return new Schedules(schedules.stream()
                 .map(ScheduleFixture::toSchedule)
                 .collect(Collectors.toUnmodifiableList()));
-    }
-
-    public static Schedules toSchedules(ScheduleFixture... schedules) {
-        return toSchedules(List.of(schedules));
     }
 
     public static Schedules emptySchedules() {
