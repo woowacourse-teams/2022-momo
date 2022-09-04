@@ -50,4 +50,9 @@ public class Capacity {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public String toString() {
+        return "Capacity{" + value + '}';
+    }
 }
