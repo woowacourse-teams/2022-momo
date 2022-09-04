@@ -83,6 +83,11 @@ public class Group {
         this.description = description;
     }
 
+    public void closeEarly() {
+        validateGroupCanBeCloseEarly();
+        closedEarly = true;
+    }
+
     private void validateGroupIsUpdatable() {
         if (closedEarly) {
             throw new MomoException(GROUP_ALREADY_FINISH);
@@ -105,11 +110,6 @@ public class Group {
         if (participants.isNotEmpty()) {
             throw new MomoException(GROUP_EXIST_PARTICIPANTS);
         }
-    }
-
-    public void closeEarly() {
-        validateGroupCanBeCloseEarly();
-        closedEarly = true;
     }
 
     private void validateGroupCanBeCloseEarly() {
