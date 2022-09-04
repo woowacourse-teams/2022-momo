@@ -72,11 +72,6 @@ public class Group {
         this.description = description;
     }
 
-    public Group(GroupName name, Member host, Category category, Capacity capacity, Calendar calendar,
-                 String location, String description) {
-        this(host, capacity, calendar, name, category, location, description);
-    }
-
     public void update(Capacity capacity, Calendar calendar, GroupName name, Category category,
                        String location, String description) {
         validateGroupIsUpdatable();
@@ -86,11 +81,6 @@ public class Group {
         this.category = category;
         this.location = location;
         this.description = description;
-    }
-
-    public void update(GroupName name, Category category, Capacity capacity, Calendar calendar,
-                String location, String description) {
-        update(capacity, calendar, name, category, location, description);
     }
 
     private void validateGroupIsUpdatable() {

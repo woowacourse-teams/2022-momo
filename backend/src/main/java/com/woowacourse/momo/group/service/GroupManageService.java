@@ -31,8 +31,8 @@ public class GroupManageService {
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest request) {
         Member host = memberFindService.findMember(memberId);
-        Group group = new Group(request.getName(), host, request.getCategory(), request.getCapacity(),
-                request.getCalendar(), request.getLocation(), request.getDescription());
+        Group group = new Group(host, request.getCapacity(), request.getCalendar(), request.getName(),
+                request.getCategory(), request.getLocation(), request.getDescription());
         Group savedGroup = groupRepository.save(group);
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);

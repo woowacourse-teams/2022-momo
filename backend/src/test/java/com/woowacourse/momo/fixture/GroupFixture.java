@@ -178,7 +178,7 @@ public enum GroupFixture {
 
         public Group toGroup(Member host) {
             Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
-            return new Group(new GroupName(name), host, Category.from(category), new Capacity(capacity), calendar,
+            return new Group(host, new Capacity(capacity), calendar, new GroupName(name), Category.from(category),
                     location, description);
         }
 
