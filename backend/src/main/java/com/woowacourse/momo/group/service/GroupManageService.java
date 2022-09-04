@@ -61,7 +61,7 @@ public class GroupManageService {
         Member member = memberFindService.findMember(hostId);
 
         validateMemberIsHost(group, member);
-        group.validateGroupIsInitialState();
+        group.validateGroupIsDeletable();
 
         groupRepository.deleteById(groupId);
     }

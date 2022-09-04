@@ -2,290 +2,367 @@ package com.woowacourse.momo.group.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.어제_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.일주일후_23시_59분;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
+import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.domain.Password;
-import com.woowacourse.momo.member.domain.UserId;
 
 class GroupTest {
 
-    private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-    private static final Member HOST = new Member(UserId.momo("주최자"), PASSWORD, "momo");
-    private static final Member PARTICIPANT = new Member(UserId.momo("참여자"), PASSWORD, "momo");
-    private static final Member MEMBER = new Member(UserId.momo("사용자"), PASSWORD, "momo");
+    private static final Member HOST = MOMO.toMember();
 
-    @DisplayName("유효하지 않은 모임 정원 값으로 인스턴스 생성시 예외가 발생한다")
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 0, 100})
-    void validateOutOfCapacityRange(int capacity) {
-        assertThatThrownBy(() -> constructGroupWithSetCapacity(capacity))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("모임 내 인원은 1명 이상 99명 이하여야 합니다.");
+
+    @DisplayName("조기마감된 모임에 대한 검증 테스트")
+    @Nested
+    class EarlyClosedGroupTest {
+
+        private Group group;
+
+        @BeforeEach
+        void setUp() {
+            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group.closeEarly();
+        }
+
+        @DisplayName("조기마감된 모임은 더이상 수정할 수 없습니다")
+        @Test
+        void cannotUpdateGroupByClosedEarly() {
+            assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("조기마감된 모임은 더이상 삭제할 수 없습니다")
+        @Test
+        void cannotDeleteGroupByClosedEarly() {
+            assertThatThrownBy(group::validateGroupIsDeletable)
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("이미 조기마감된 모임은 다시 조기마감할 수 없습니다")
+        @Test
+        void cannotCloseGroupByAlreadyClosed() {
+            assertThatThrownBy(group::closeEarly)
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("이미 조기마감된 모임에는 참여할 수 없다")
+        @Test
+        void cannotParticipateByAlreadyClosed() {
+            Member participant = DUDU.toMember();
+
+            assertThatThrownBy(() -> group.participate(participant))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("조기종료된 모임입니다.");
+        }
+
+        @DisplayName("이미 조기마감된 모임을 탈퇴한다")
+        @Test
+        void cannotLeaveByAlreadyClosed() {
+            Member participant = DUDU.toMember();
+
+            Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group.participate(participant);
+            group.closeEarly();
+
+            assertThatThrownBy(() -> group.leave(participant))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("조기종료된 모임입니다.");
+        }
     }
 
-    @DisplayName("유효한 모임 정원 값으로 인스턴스 생성시 예외가 발생하지 않는다")
-    @ParameterizedTest
-    @ValueSource(ints = {1, 99})
-    void validateInRangeOfCapacity(int capacity) {
-        assertDoesNotThrow(() -> constructGroupWithSetCapacity(capacity));
+    @DisplayName("마감기한이 지나버린 모임에 대한 검증 테스트")
+    @Nested
+    class DeadlinePassedGroupTest {
+
+        private Group group;
+
+        @BeforeEach
+        void setUp() {
+            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            setDeadlinePast(group);
+        }
+
+        @DisplayName("마감기한이 지나버린 모임은 더이상 수정할 수 없습니다")
+        @Test
+        void cannotUpdateGroupByDeadlinePassed() {
+            assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("마감기한이 지나버린 모임은 더이상 삭제할 수 없습니다")
+        @Test
+        void cannotDeleteGroupByDeadlinePassed() {
+            assertThatThrownBy(group::validateGroupIsDeletable)
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("마감기한이 지나버린 모임은 조기마감한다")
+        @Test
+        void cannotCloseGroupByDeadlinePassed() {
+            assertThatThrownBy(group::closeEarly)
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집 마감된 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("마감기한이 지나버린 모임에는 참여할 수 없다")
+        @Test
+        void cannotParticipateByDeadlinePassed() {
+            Member participant = DUDU.toMember();
+
+            assertThatThrownBy(() -> group.participate(participant))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집이 마감된 모임입니다.");
+        }
+
+        @DisplayName("마감기한이 지나버린 모임을 탈퇴한다")
+        @Test
+        void cannotLeaveByDeadlinePassed() {
+            Member participant = DUDU.toMember();
+
+            Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group.participate(participant);
+            setDeadlinePast(group);
+
+            assertThatThrownBy(() -> group.leave(participant))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("모집이 마감된 모임입니다.");
+        }
     }
 
-    @DisplayName("과거의 마감기한 날짜로 인스턴스 생성시 예외가 발생한다")
+    @DisplayName("참여자가 존재하는 모임에 대한 검증 테스트")
+    @Nested
+    class ParticipantsExistGroupTest {
+
+        private Group group;
+
+        @BeforeEach
+        void setUp() {
+            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group.participate(DUDU.toMember());
+        }
+
+        @DisplayName("참여자가 존재하는 모임은 수정할 수 없습니다")
+        @Test
+        void cannotUpdateGroupByExistParticipants() {
+            assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+        }
+
+        @DisplayName("참여자가 존재하는 모임은 삭제할 수 없습니다")
+        @Test
+        void cannotDeleteGroupByExistParticipants() {
+            assertThatThrownBy(group::validateGroupIsDeletable)
+                    .isInstanceOf(MomoException.class)
+                    .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+        }
+    }
+
+
+    @DisplayName("모임을 생성한다")
     @Test
-    void validatePastDeadline() {
-        LocalDateTime deadline = LocalDateTime.now().minusMinutes(1);
-        assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("마감시간이 과거일 수 없습니다.");
+    void construct() {
+        GroupFixture fixture = MOMO_STUDY;
+
+        Member host = MOMO.toMember();
+        Capacity capacity = fixture.getCapacity();
+        Calendar calendar = fixture.getCalendar();
+        GroupName name = fixture.getName();
+        Category category = fixture.getCategory();
+        String location = fixture.getLocation();
+        String description = fixture.getDescription();
+
+        Group group = fixture.builder().toGroup(host);
+
+        assertAll(
+                () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
+                () -> assertThat(group.getCapacity()).isEqualTo(capacity.getValue()),
+                () -> assertThat(group.getCalendar()).usingRecursiveComparison()
+                        .isEqualTo(calendar),
+                () -> assertThat(group.getName()).isEqualTo(name.getValue()),
+                () -> assertThat(group.getCategory()).isEqualTo(category),
+                () -> assertThat(group.getLocation()).isEqualTo(location),
+                () -> assertThat(group.getDescription()).isEqualTo(description)
+        );
     }
 
-    @DisplayName("유효한 마감기한 날짜로 인스턴스 생성시 예외가 발생하지 않는다")
+    @DisplayName("모임을 수정한다")
     @Test
-    void validateFutureDeadline() {
-        LocalDateTime deadline = LocalDateTime.now().plusMinutes(1);
-        assertDoesNotThrow(() -> constructGroupWithSetDeadline(deadline));
+    void update() {
+        Member host = MOMO.toMember();
+        Group group = MOMO_STUDY.builder().toGroup(host);
+
+        GroupFixture fixture = MOMO_TRAVEL;
+        Capacity capacity = fixture.getCapacity();
+        Calendar calendar = fixture.getCalendar();
+        GroupName name = fixture.getName();
+        Category category = fixture.getCategory();
+        String location = fixture.getLocation();
+        String description = fixture.getDescription();
+
+        group.update(capacity, calendar, name, category, location, description);
+
+        assertAll(
+                () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
+                () -> assertThat(group.getCapacity()).isEqualTo(capacity.getValue()),
+                () -> assertThat(group.getCalendar()).usingRecursiveComparison()
+                        .isEqualTo(calendar),
+                () -> assertThat(group.getName()).isEqualTo(name.getValue()),
+                () -> assertThat(group.getCategory()).isEqualTo(category),
+                () -> assertThat(group.getLocation()).isEqualTo(location),
+                () -> assertThat(group.getDescription()).isEqualTo(description)
+        );
     }
 
-    @DisplayName("모임 기간 시작일 이후의 마감기한으로 인스턴스 생성시 예외가 발생한다")
+    private void update(Group group, GroupFixture fixture) {
+        Capacity capacity = fixture.getCapacity();
+        Calendar calendar = fixture.getCalendar();
+        GroupName name = fixture.getName();
+        Category category = fixture.getCategory();
+        String location = fixture.getLocation();
+        String description = fixture.getDescription();
+
+        group.update(capacity, calendar, name, category, location, description);
+    }
+
+    @DisplayName("모임 모집을 조기마감한다")
     @Test
-    void validateDeadlineIsBeforeStartDuration() {
-        LocalDateTime deadline = 일주일후_23시_59분.toDateTime();
-        assertThatThrownBy(() -> constructGroupWithSetDeadline(deadline))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
+    void closeEarly() {
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        group.closeEarly();
+
+        assertThat(group.isClosedEarly()).isTrue();
     }
 
-    @DisplayName("회원이 모임의 주최자인지 확인한다")
+    @DisplayName("모임에 참여한다")
+    @Test
+    void participate() {
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+
+        Member participant = DUDU.toMember();
+        group.participate(participant);
+
+        assertThat(group.getParticipants()).usingRecursiveComparison()
+                .isEqualTo(List.of(HOST, participant));
+    }
+
+    @DisplayName("모임을 탈퇴한다")
+    @Test
+    void leave() {
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+
+        Member participant = DUDU.toMember();
+        group.participate(participant);
+        group.leave(participant);
+
+        assertThat(group.getParticipants()).usingRecursiveComparison()
+                .isEqualTo(List.of(HOST));
+    }
+
+    @DisplayName("모임의 주최자와 일치하는지 확인한다")
     @ParameterizedTest
     @MethodSource("provideIsHostArguments")
     void isHost(Member member, boolean expected) {
-        Group group = constructGroup();
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
 
         assertThat(group.isHost(member)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideIsHostArguments() {
         return Stream.of(
-                Arguments.of(HOST, Boolean.TRUE),
-                Arguments.of(MEMBER, Boolean.FALSE)
+                Arguments.of(HOST, true),
+                Arguments.of(DUDU.toMember(), false)
         );
     }
 
-    @DisplayName("모임에 참여한다")
-    @Test
-    void participate() {
-        Group group = constructGroup();
-        group.participate(PARTICIPANT);
-
-        assertThat(group.getParticipants()).hasSize(2);
-    }
-
-    @DisplayName("이미 참여한 모임에 참가할 경우 예외가 발생한다")
-    @Test
-    void validateReParticipant() {
-        Group group = constructGroup();
-        group.participate(PARTICIPANT);
-
-        assertThatThrownBy(() -> group.participate(PARTICIPANT))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
-    }
-
-    @DisplayName("정원이 가득찬 모임에 참가할 경우 예외가 발생한다")
-    @Test
-    void validateFinishedRecruitmentWithFullCapacity() {
-        int capacity = 2;
-        Group group = constructGroupWithSetCapacity(capacity);
-        group.participate(PARTICIPANT);
-
-        assertThatThrownBy(() -> group.participate(MEMBER))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
-    }
-
-    @DisplayName("마감기한이 지난 모임에 참가할 경우 예외가 발생한다")
-    @Test
-    void validateFinishedRecruitmentWithDeadlinePassed() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
-
-        assertThatThrownBy(() -> group.participate(MEMBER))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
-    }
-
-    @DisplayName("모임에 참여한 회원을 반환한다")
-    @Test
-    void getParticipants() {
-        Group group = constructGroup();
-        group.participate(PARTICIPANT);
-
-        List<Member> participants = group.getParticipants();
-        assertThat(participants).contains(HOST, PARTICIPANT);
-    }
-
-    @DisplayName("정원이 초과하지도 않았고 조기마감되지도 않았고 마감 시간이 지나지도 않았다면 종료되지 않은 모임이다")
+    @DisplayName("마감되지 않은 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
     void isFinishedRecruitment() {
-        int capacity = 2;
-        Group group = constructGroupWithSetCapacity(capacity);
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
 
         assertThat(group.isFinishedRecruitment()).isFalse();
     }
 
-    @DisplayName("현재 참여 인원이 정원을 초과하면 모집이 종료된다")
+    @DisplayName("조기마감된 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
-    void isFinishedRecruitmentWithOverCapacity() {
-        int capacity = 2;
-        Group group = constructGroupWithSetCapacity(capacity);
-        group.participate(PARTICIPANT);
-
-        assertThat(group.isFinishedRecruitment()).isTrue();
-    }
-
-    @DisplayName("모임이 조기마감되면 모집이 종료된다")
-    @Test
-    void isFinishedRecruitmentWithPassedDeadline() {
-        Group group = constructGroup();
+    void isFinishedRecruitmentWhenClosedEarly() {
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
         group.closeEarly();
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
 
-    @DisplayName("모집 마감시간이 지나면 모집이 종료된다")
+    @DisplayName("마감기한이 지나버린 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
-    void isFinishedRecruitmentWithEarlyClosing() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
+    void isFinishedRecruitmentWhenDeadlinePassed() {
+        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        setDeadlinePast(group);
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
 
-    @DisplayName("모임이 조기마감되면 종료된 모임이다")
-    @Test
-    void isEndCloseEarly() {
-        Group group = constructGroup();
-        group.closeEarly();
+    @DisplayName("참여자가 가득한 모임에 대해, 모집이 마감되었는지 확인한다")
+    @ParameterizedTest
+    @CsvSource(value = {"2,true", "3,false"})
+    void isFinishedRecruitmentWhenParticipantsFull(int capacity, boolean expected) {
+        Group group = MOMO_STUDY.builder()
+                .capacity(capacity)
+                .toGroup(MOMO.toMember());
 
-        assertThat(group.isEnd()).isTrue();
+        group.participate(DUDU.toMember());
+
+        assertThat(group.isFinishedRecruitment()).isEqualTo(expected);
     }
 
-    @DisplayName("모집 마감시간이 지나면 종료된 모임이다")
-    @Test
-    void isEndOverDeadline() throws IllegalAccessException {
-        Group group = constructGroupWithSetPastDeadline(어제_23시_59분.toDateTime());
+    private void setDeadlinePast(Group group) {
+        try {
+            Calendar calendar = newCalendarWithPastDeadline(group, -1);
 
-        assertThat(group.isEnd()).isTrue();
+            Field[] fields = Group.class.getDeclaredFields();
+            fields[2].setAccessible(true);
+            fields[2].set(group, calendar);
+
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException();
+        }
     }
 
-    @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
-    @Test
-    void validateLeaveNotParticipant() {
-        Group group = constructGroup();
+    private Calendar newCalendarWithPastDeadline(Group group, int pastDays) throws IllegalAccessException {
+        Calendar calendar = new Calendar(new Deadline(group.getDeadline()), group.getDuration(), group.getSchedules());
 
-        assertThatThrownBy(() -> group.validateMemberCanLeave(PARTICIPANT))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("모임의 참여자가 아닙니다.");
-    }
+        Field[] fields = Calendar.class.getDeclaredFields();
+        fields[2].setAccessible(true);
+        fields[2].set(calendar, DeadlineFixture.newDeadline(pastDays));
 
-    @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
-    @Test
-    void validateLeaveDeadline() throws IllegalAccessException {
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        Group group = constructGroup();
-        group.participate(PARTICIPANT);
-        setPastDeadline(group, yesterday);
-
-        assertThatThrownBy(() -> group.validateMemberCanLeave(PARTICIPANT))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("모집이 마감된 모임입니다.");
-    }
-
-    @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
-    @Test
-    void validateLeaveEarlyClosed() {
-        Group group = constructGroup();
-        group.participate(PARTICIPANT);
-        group.closeEarly();
-
-        assertThatThrownBy(() -> group.validateMemberCanLeave(PARTICIPANT))
-            .isInstanceOf(MomoException.class)
-            .hasMessage("조기종료된 모임입니다.");
-    }
-
-    private Group constructGroup() {
-        return constructGroupWithSetCapacity(10);
-    }
-
-    private Group constructGroupWithSetCapacity(int capacity) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(capacity), 이틀후부터_5일동안.toDuration(),
-                new Deadline(내일_23시_59분.toDateTime()),
-                schedules, "", "");
-    }
-
-    private Group constructGroupWithSetDeadline(LocalDateTime deadline) {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
-        return new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.toDuration(),
-                new Deadline(deadline), schedules, "", "");
-    }
-
-    private Group constructGroupWithSetPastDeadline(LocalDateTime deadline) throws IllegalAccessException {
-        Schedules schedules = new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule()));
-        Group group = new Group(new GroupName("momo 회의"), HOST, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.toDuration(),
-                new Deadline(내일_23시_59분.toDateTime()), schedules, "", "");
-
-        setPastDeadline(group, deadline);
-
-        return group;
-    }
-
-    private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
-        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
-        Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(deadline, group.getDuration(), group.getSchedules());
-
-        int index = 0;
-        Class<Deadline> clazzDeadline = Deadline.class;
-        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
-        fieldDeadline[index].setAccessible(true);
-        fieldDeadline[index].set(deadline, date);
-
-        int calendarField = 2;
-        Class<Calendar> clazzCalendar = Calendar.class;
-        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
-        fieldCalendar[calendarField].setAccessible(true);
-        fieldCalendar[calendarField].set(calendar, deadline);
-
-        int deadlineField = 4;
-        Class<Group> clazzGroup = Group.class;
-        Field[] fieldGroup = clazzGroup.getDeclaredFields();
-        fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, calendar);
+        return calendar;
     }
 }

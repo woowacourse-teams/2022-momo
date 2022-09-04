@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
-import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
+import com.woowacourse.momo.auth.support.SHA256Encoder;
+import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Getter
@@ -38,18 +40,7 @@ public enum MemberFixture {
                 .getAccessToken();
     }
 
-    public SignUpRequest toSignUpRequest() {
-        return new SignUpRequest(userId, password, name);
-    }
-
-    public long signUp(AuthService service) {
-        SignUpRequest request = new SignUpRequest(userId, password, name);
-        return service.signUp(request);
-    }
-
-    public String login(AuthService service) {
-        LoginRequest request = new LoginRequest(userId, password);
-        return service.login(request)
-                .getAccessToken();
+    public Member toMember() {
+        return new Member(UserId.momo(userId), Password.encrypt(password, new SHA256Encoder()), new UserName(name));
     }
 }

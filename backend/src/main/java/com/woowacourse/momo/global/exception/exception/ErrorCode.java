@@ -62,6 +62,7 @@ public enum ErrorCode {
     PARTICIPANT_LEAVE_DEADLINE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_006", "모집이 마감된 모임입니다."),
     PARTICIPANT_LEAVE_EARLY_CLOSED(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_007", "조기종료된 모임입니다."),
     PARTICIPANT_CAPACITY_IS_OVER_SIZE(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_008", "수정하려는 최대 인원이 현재 참가자의 수보다 적습니다."),
+    PARTICIPANT_PARTICIPANTS_FULL(HttpStatus.BAD_REQUEST.value(), "PARTICIPANT_ERROR_003", "참여인원이 가득 찼습니다."),
 
     FILE_INVALID_EXTENSION(HttpStatus.BAD_REQUEST.value(), "FILE_ERROR_001", "저장할 수 없는 확장자입니다."),
     FILE_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "FILE_ERROR_002", "파일 입출력 에러입니다."),

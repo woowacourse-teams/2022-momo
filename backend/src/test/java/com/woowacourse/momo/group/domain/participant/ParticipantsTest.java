@@ -2,71 +2,64 @@ package com.woowacourse.momo.group.domain.participant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
-
-import java.util.List;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
+import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.GroupName;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.domain.Password;
-import com.woowacourse.momo.member.domain.UserId;
 
 class ParticipantsTest {
 
-    private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
-    private static final Member HOST = new Member(UserId.momo("host"), PASSWORD, "host");
-    private static final Capacity CAPACITY = new Capacity(3);
-    private static final Group GROUP = constructGroup();
-    private static final Member PARTICIPANT = new Member(UserId.momo("participant"), PASSWORD, "participant");
-    private static final Member PARTICIPANT2 = new Member(UserId.momo("participant2"), PASSWORD, "participant");
-    private static final Member MEMBER = new Member(UserId.momo("member"), PASSWORD, "member");
+    private static final Member HOST = MOMO.toMember();
+    private static final Member PARTICIPANT = DUDU.toMember();
+    private static final Group GROUP = MOMO_STUDY.builder().toGroup(HOST);
+    private static final Capacity CAPACITY = new Capacity(10);
 
-    @DisplayName("참여자 목록에는 주최자가 포함되어 있다")
+    @DisplayName("정상적으로 생성한다")
     @Test
-    void ParticipantsContainHost() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void construct() {
+        Participants participants = new Participants(HOST, CAPACITY);
 
-        assertThat(participants.contains(HOST)).isTrue();
+        assertAll(
+                () -> assertThat(participants.getHost()).isEqualTo(HOST),
+                () -> assertThat(participants.getParticipants()).containsExactly(HOST),
+                () -> assertThat(participants.getCapacity()).isEqualTo(CAPACITY)
+        );
     }
 
-    @DisplayName("모집이 종료된 모임에 참여할 경우 예외가 발생한다")
+    @DisplayName("참여한다")
     @Test
-    void validateGroupIsProceeding() {
-        Group group = constructGroup();
-        group.closeEarly();
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void participate() {
+        Participants participants = new Participants(HOST, CAPACITY);
+        participants.participate(GROUP, PARTICIPANT);
 
-        assertThatThrownBy(() -> participants.participate(group, PARTICIPANT))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
+        assertThat(participants.getParticipants()).containsExactly(HOST, PARTICIPANT);
     }
 
     @DisplayName("주최자가 모임에 참여할 경우 예외가 발생한다")
     @Test
-    void validateMemberIsNotHost() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void validateMemberIsNotHostWhenParticipate() {
+        Participants participants = new Participants(HOST, CAPACITY);
 
         assertThatThrownBy(() -> participants.participate(GROUP, HOST))
                 .isInstanceOf(MomoException.class)
-                .hasMessage("주최자는 자신의 모임에 참여할 수 없습니다.");
+                .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("참여자가 다시 참여할 경우 예외가 발생한다")
     @Test
-    void validateMemberIsNotParticipant() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void validateMemberIsNotParticipatedWhenParticipate() {
+        Participants participants = new Participants(HOST, CAPACITY);
         participants.participate(GROUP, PARTICIPANT);
 
         assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
@@ -74,73 +67,104 @@ class ParticipantsTest {
                 .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
     }
 
-    @DisplayName("수정하려는 최대 인원이 현재 참여자 수보다 적을 경우 예외가 발생한다")
+    @DisplayName("참여인원이 가득찬 상태에서 회원이 참여할 경우 예외가 발생한다")
+    @Test
+    void validateParticipantsNotYetFullWhenParticipate() {
+        Participants participants = new Participants(HOST, new Capacity(1));
+
+        assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("참여인원이 가득 찼습니다.");
+    }
+
+    @DisplayName("탈퇴한다")
+    @Test
+    void leave() {
+        Participants participants = new Participants(HOST, CAPACITY);
+        participants.participate(GROUP, PARTICIPANT);
+        participants.leave(PARTICIPANT);
+
+        assertThat(participants.getParticipants()).containsExactly(HOST);
+    }
+
+    @DisplayName("주최자가 모임을 탈퇴할 경우 예외가 발생한다")
+    @Test
+    void validateMemberIsNotHostWhenLeave() {
+        Participants participants = new Participants(HOST, CAPACITY);
+
+        assertThatThrownBy(() -> participants.leave(HOST))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+    }
+
+    @DisplayName("참여자가 아닌 회원이 탈퇴할 경우 예외가 발생한다")
+    @Test
+    void validateMemberParticipatedWhenLeave() {
+        Participants participants = new Participants(HOST, CAPACITY);
+
+        assertThatThrownBy(() -> participants.leave(PARTICIPANT))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모임의 참여자가 아닙니다.");
+    }
+
+    @DisplayName("참여 가능 인원수를 수정한다")
+    @ParameterizedTest
+    @ValueSource(ints = {5,6,7})
+    void updateCapacity(int capacity) {
+        Participants participants = new Participants(HOST, new Capacity(10));
+
+        Capacity expected = new Capacity(capacity);
+        participants.updateCapacity(expected);
+
+        assertThat(participants.getCapacity()).isEqualTo(expected);
+    }
+
+    @DisplayName("수정하려는 참여 가능 인원수가 현재 참여자 수보다 적을 경우 예외가 발생한다")
     @Test
     void validateCapacityIsOverNumberOfParticipants() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+        Participants participants = new Participants(HOST, CAPACITY);
         participants.participate(GROUP, PARTICIPANT);
 
-        assertThatThrownBy(() -> participants.update(new Capacity(1)))
+        int participantsSize = participants.getParticipants().size();
+        Capacity lessCapacity = new Capacity(participantsSize - 1);
+
+        assertThatThrownBy(() -> participants.updateCapacity(lessCapacity))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("수정하려는 최대 인원이 현재 참가자의 수보다 적습니다.");
     }
 
-    @DisplayName("참여자 정원이 찼을 경우 True 를 반환한다")
+    @DisplayName("참여자가 한명이라도 존재하는지 확인한다")
     @Test
-    void isFullTrue() {
-        Participants participants = new Participants(GROUP, CAPACITY);
-        participants.participate(GROUP, PARTICIPANT);
-        participants.participate(GROUP, PARTICIPANT2);
-
-        assertThat(participants.isFull()).isTrue();
-    }
-
-    @DisplayName("참여자 정원이 차지 않았을 경우 False 를 반환한다")
-    @Test
-    void isFullFalse() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void isNotEmpty() {
+        Participants participants = new Participants(HOST, CAPACITY);
         participants.participate(GROUP, PARTICIPANT);
 
-        assertThat(participants.isFull()).isFalse();
+        assertThat(participants.isNotEmpty()).isTrue();
     }
 
-    @DisplayName("참여자가 있을 경우 True 를 반환한다")
+    @DisplayName("참여자가 한명이라도 존재하는지 확인한다")
     @Test
-    void isExistTrue() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void isEmpty() {
+        Participants participants = new Participants(HOST, CAPACITY);
+
+        assertThat(participants.isNotEmpty()).isFalse();
+    }
+
+    @DisplayName("참여인원이 가득찼는지 확인한다")
+    @ParameterizedTest
+    @CsvSource(value = {"2,true", "3,false"})
+    void isFull(int capacity, boolean expected) {
+        Participants participants = new Participants(HOST, new Capacity(capacity));
         participants.participate(GROUP, PARTICIPANT);
 
-        assertThat(participants.isExist()).isTrue();
+        assertThat(participants.isFull()).isEqualTo(expected);
     }
 
-    @DisplayName("참여자가 없을 경우 True 를 반환한다")
+    @DisplayName("주최자와 일치하는지 확인한다")
     @Test
-    void isExistFalse() {
-        Participants participants = new Participants(GROUP, CAPACITY);
+    void isHost() {
+        Participants participants = new Participants(HOST, CAPACITY);
 
-        assertThat(participants.isExist()).isFalse();
-    }
-
-    @DisplayName("참여자일 경우 True 를 반환한다")
-    @Test
-    void isParticipantTrue() {
-        Participants participants = new Participants(GROUP, CAPACITY);
-        participants.participate(GROUP, PARTICIPANT);
-
-        assertThat(participants.contains(PARTICIPANT)).isTrue();
-    }
-
-    @DisplayName("참여자가 아닐 경우 False 를 반환한다")
-    @Test
-    void isParticipantFalse() {
-        Participants participants = new Participants(GROUP, CAPACITY);
-
-        assertThat(participants.contains(MEMBER)).isFalse();
-    }
-
-    private static Group constructGroup() {
-        return new Group(new GroupName("모임"), HOST, Category.CAFE, CAPACITY,
-                이틀후부터_5일동안.toDuration(), new Deadline(내일_23시_59분.toDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule())), "", "");
+        assertThat(participants.isHost(HOST)).isTrue();
     }
 }

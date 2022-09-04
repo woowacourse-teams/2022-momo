@@ -3,13 +3,8 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
-import com.woowacourse.momo.group.domain.calendar.Calendar;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -79,9 +69,11 @@ class ParticipantServiceTest {
     }
 
     private Group saveGroupWithSetCapacity(int capacity) {
-        return groupRepository.save(new Group(new GroupName("모모의 스터디"), host, Category.STUDY, new Capacity(capacity),
-                이틀후부터_5일동안.toDuration(), new Deadline(내일_23시_59분.toDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule())), "", ""));
+        Group group = MOMO_STUDY.builder()
+                .capacity(capacity)
+                .toGroup(host);
+
+        return groupRepository.save(group);
     }
 
     @DisplayName("모임에 참여한다")
@@ -134,7 +126,7 @@ class ParticipantServiceTest {
 
         assertThatThrownBy(() -> participantService.participate(savedGroup.getId(), participant2.getId()))
                 .isInstanceOf(MomoException.class)
-                .hasMessage("마감된 모임에는 참여할 수 없습니다.");
+                .hasMessage("참여인원이 가득 찼습니다.");
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
@@ -164,6 +156,8 @@ class ParticipantServiceTest {
     void findParticipantsExistGhost() {
         Group savedGroup = saveGroup();
         participantService.participate(savedGroup.getId(), participant1.getId());
+        savedGroup.closeEarly();
+
         memberService.deleteById(participant1.getId());
 
         List<String> names = participantService.findParticipants(savedGroup.getId())
@@ -175,13 +169,12 @@ class ParticipantServiceTest {
 
     @DisplayName("모임에 탈퇴한다")
     @Test
-    void delete() {
+    void leave() {
         Group savedGroup = saveGroup();
         participantService.participate(savedGroup.getId(), participant1.getId());
         synchronize();
 
-        participantService.delete(savedGroup.getId(), participant1.getId());
-        synchronize();
+        participantService.leave(savedGroup.getId(), participant1.getId());
 
         List<Long> participantIds = participantService.findParticipants(savedGroup.getId())
             .stream()
@@ -192,11 +185,11 @@ class ParticipantServiceTest {
 
     @DisplayName("모임의 주최자일 경우 탈퇴할 수 없다")
     @Test
-    void deleteHost() {
+    void leaveHost() {
         Group savedGroup = saveGroup();
         synchronize();
 
-        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), host.getId()))
+        assertThatThrownBy(() -> participantService.leave(savedGroup.getId(), host.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
     }
@@ -207,21 +200,20 @@ class ParticipantServiceTest {
         Group savedGroup = saveGroup();
         synchronize();
 
-        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+        assertThatThrownBy(() -> participantService.leave(savedGroup.getId(), participant1.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("모임의 참여자가 아닙니다.");
     }
 
     @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
     @Test
-    void deleteDeadline() throws IllegalAccessException {
+    void leaveDeadline() throws IllegalAccessException {
         Group savedGroup = saveGroup();
         participantService.participate(savedGroup.getId(), participant1.getId());
 
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        setPastDeadline(savedGroup, yesterday);
+        GroupFixture.setDeadlinePast(savedGroup, 1);
 
-        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+        assertThatThrownBy(() -> participantService.leave(savedGroup.getId(), participant1.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("모집이 마감된 모임입니다.");
     }
@@ -233,7 +225,7 @@ class ParticipantServiceTest {
         participantService.participate(savedGroup.getId(), participant1.getId());
         groupManageService.closeEarly(host.getId(), savedGroup.getId());
 
-        assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
+        assertThatThrownBy(() -> participantService.leave(savedGroup.getId(), participant1.getId()))
             .isInstanceOf(MomoException.class)
             .hasMessage("조기종료된 모임입니다.");
     }
@@ -241,29 +233,5 @@ class ParticipantServiceTest {
     private void synchronize() {
         entityManager.flush();
         entityManager.clear();
-    }
-
-    private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
-        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
-        Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(deadline, group.getDuration(), group.getSchedules());
-
-        int index = 0;
-        Class<Deadline> clazzDeadline = Deadline.class;
-        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
-        fieldDeadline[index].setAccessible(true);
-        fieldDeadline[index].set(deadline, date);
-
-        int calendarField = 2;
-        Class<Calendar> clazzCalendar = Calendar.class;
-        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
-        fieldCalendar[calendarField].setAccessible(true);
-        fieldCalendar[calendarField].set(calendar, deadline);
-
-        int deadlineField = 4;
-        Class<Group> clazzGroup = Group.class;
-        Field[] fieldGroup = clazzGroup.getDeclaredFields();
-        fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, calendar);
     }
 }

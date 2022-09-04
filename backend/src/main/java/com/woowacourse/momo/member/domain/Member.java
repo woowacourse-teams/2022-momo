@@ -65,6 +65,10 @@ public class Member {
         deleted = true;
     }
 
+    public boolean isSameUserId(Member member) {
+        return userId.equals(member.userId);
+    }
+
     public String getUserId() {
         return userId.getValue();
     }
@@ -75,5 +79,15 @@ public class Member {
 
     public String getUserName() {
         return userName.getValue();
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", " + userId +
+                ", " + userName +
+                ", deleted=" + deleted +
+                '}';
     }
 }

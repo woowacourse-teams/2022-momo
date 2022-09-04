@@ -1,5 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -45,5 +47,22 @@ public class UserName {
         if (value.length() > MAXIMUM) {
             throw new MomoException(ErrorCode.MEMBER_NAME_MUST_BE_VALID);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserName userName = (UserName) o;
+        return Objects.equals(value, userName.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

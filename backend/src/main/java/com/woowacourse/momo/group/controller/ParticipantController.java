@@ -38,8 +38,8 @@ public class ParticipantController {
 
     @Authenticated
     @DeleteMapping
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        participantService.delete(groupId, memberId);
+    public ResponseEntity<Void> leave(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
+        participantService.leave(groupId, memberId);
         return ResponseEntity.noContent().build();
     }
 }

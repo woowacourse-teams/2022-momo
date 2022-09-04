@@ -1,5 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -51,5 +53,22 @@ public class UserId {
         if (!value.contains(EMAIL_FORMAT)) {
             throw new MomoException(ErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserId userId = (UserId) o;
+        return Objects.equals(value, userId.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

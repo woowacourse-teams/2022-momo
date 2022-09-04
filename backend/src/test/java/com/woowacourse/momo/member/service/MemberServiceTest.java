@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,14 +22,9 @@ import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -66,6 +61,9 @@ class MemberServiceTest {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private Password password;
     private Member savedHost;
@@ -205,8 +203,9 @@ class MemberServiceTest {
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group(new GroupName("모모의 스터디"), savedHost, Category.STUDY, new Capacity(3),
-                이틀후부터_5일동안.toDuration(), new Deadline(내일_23시_59분.toDateTime()),
-                new Schedules(List.of(이틀후_10시부터_12시까지.toSchedule())), "", ""));
+        Group group = MOMO_STUDY.builder()
+                .capacity(3)
+                .toGroup(savedHost);
+        return groupRepository.save(group);
     }
 }

@@ -14,14 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
-import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
-import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_00분;
-
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -37,12 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
-import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
-import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.calendar.Calendar;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupManageService;
 import com.woowacourse.momo.group.service.ParticipantService;
@@ -285,8 +273,7 @@ class ParticipantControllerTest {
         participateMember(groupId, participantId);
         String accessToken = accessToken("participant");
 
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        setPastDeadline(groupId, yesterday);
+        GroupFixture.setDeadlinePast(groupFindService.findGroup(groupId), 1);
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
@@ -338,11 +325,6 @@ class ParticipantControllerTest {
         return saveGroupWithSetCapacity(hostId, 10);
     }
 
-    private static final DurationParam DURATION_REQUEST = new DurationParam(이틀후.toDate(),
-            이틀후.toDate());
-    private static final List<ScheduleParam> SCHEDULE_REQUESTS = List.of(
-            new ScheduleParam(이틀후.toDate(), _10시_00분.toTime(), _12시_00분.toTime()));
-
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest request = new GroupRequest("모모의 스터디", 1L, capacity,
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지),
@@ -353,30 +335,5 @@ class ParticipantControllerTest {
 
     void participateMember(Long groupId, Long memberId) {
         participantService.participate(groupId, memberId);
-    }
-
-    private void setPastDeadline(Long groupId, LocalDateTime date) throws IllegalAccessException {
-        Group group = groupFindService.findGroup(groupId);
-        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
-        Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(deadline, group.getDuration(), group.getSchedules());
-
-        int index = 0;
-        Class<Deadline> clazzDeadline = Deadline.class;
-        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
-        fieldDeadline[index].setAccessible(true);
-        fieldDeadline[index].set(deadline, date);
-
-        int calendarField = 2;
-        Class<Calendar> clazzCalendar = Calendar.class;
-        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
-        fieldCalendar[calendarField].setAccessible(true);
-        fieldCalendar[calendarField].set(calendar, deadline);
-
-        int deadlineField = 4;
-        Class<Group> clazzGroup = Group.class;
-        Field[] fieldGroup = clazzGroup.getDeclaredFields();
-        fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, calendar);
     }
 }

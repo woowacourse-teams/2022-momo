@@ -22,7 +22,7 @@ public class Capacity {
         this.value = value;
     }
 
-    public boolean isFull(int numberOfPeople) {
+    public boolean isSame(int numberOfPeople) {
         return value == numberOfPeople;
     }
 

@@ -7,7 +7,10 @@ import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toParams;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 
@@ -22,6 +25,7 @@ import com.woowacourse.momo.group.controller.param.GroupParam;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.group.service.response.GroupIdResponse;
@@ -71,6 +75,29 @@ public enum GroupFixture {
 
     public long getCategoryId() {
         return category.getId();
+    }
+
+    public Calendar getCalendar() {
+        return new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
+    }
+
+    public static void setDeadlinePast(Group group, int pastDays) throws IllegalAccessException {
+        LocalDateTime now = LocalDateTime.now();
+        Calendar calendar = new Calendar(new Deadline(now.plusHours(1)), group.getDuration(), group.getSchedules());
+
+        Field fieldDeadline = Stream.of(Calendar.class.getDeclaredFields())
+                .filter(field -> "deadline".equals(field.getName()))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Deadline 필드를 찾을 수 없습니다."));
+        fieldDeadline.setAccessible(true);
+        fieldDeadline.set(calendar, DeadlineFixture.newDeadline(-pastDays));
+
+        Field fieldCalendar = Stream.of(Group.class.getDeclaredFields())
+                .filter(field -> "calendar".equals(field.getName()))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Calendar 필드를 찾을 수 없습니다."));
+        fieldCalendar.setAccessible(true);
+        fieldCalendar.set(group, calendar);
     }
 
     public Builder builder() {
@@ -130,14 +157,13 @@ public enum GroupFixture {
             return this;
         }
 
-        public Builder duration(DurationFixture duration) {
-            this.duration = duration;
+        public Builder schedules(List<ScheduleFixture> schedules) {
+            this.schedules = schedules;
             return this;
         }
 
-        public Builder schedules(ScheduleFixture... schedules) {
-            this.schedules = List.of(schedules);
-            return this;
+        public Builder schedules(ScheduleFixture schedules) {
+            return schedules(List.of(schedules));
         }
 
         public Builder deadline(DeadlineFixture deadline) {
@@ -145,13 +171,8 @@ public enum GroupFixture {
             return this;
         }
 
-        public Builder location(String location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.description = description;
+        public Builder duration(DurationFixture duration) {
+            this.duration = duration;
             return this;
         }
 

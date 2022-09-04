@@ -35,4 +35,8 @@ public class Participant {
         this.group = group;
         this.member = member;
     }
+
+    public boolean isSameMember(Member other) {
+        return member.isSameUserId(other);
+    }
 }

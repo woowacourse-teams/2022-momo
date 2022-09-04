@@ -13,7 +13,7 @@ create table momo_group
     description   clob         not null,
     endDate       date         not null,
     startDate     date         not null,
-    isEarlyClosed boolean      not null,
+    closedEarly   boolean      not null,
     location      varchar(255) not null,
     name          varchar(255) not null,
     host_id       bigint,

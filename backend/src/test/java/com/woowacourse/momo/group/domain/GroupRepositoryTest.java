@@ -3,10 +3,9 @@ package com.woowacourse.momo.group.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +22,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -58,8 +53,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
     @Test
     void saveGroupWithSchedules() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.toSchedule());
-        Group group = constructGroup(host, schedules);
+        Group group = constructGroup(host, List.of(이틀후_10시부터_12시까지));
 
         Group savedGroup = groupRepository.save(group);
 
@@ -74,8 +68,7 @@ class GroupRepositoryTest {
     @DisplayName("스케쥴이 지정되지 않은 모임을 저장한다")
     @Test
     void saveGroupWithoutSchedules() {
-        List<Schedule> schedules = Collections.emptyList();
-        Group group = constructGroup(host, schedules);
+        Group group = constructGroup(host, Collections.emptyList());
 
         Group savedGroup = groupRepository.save(group);
 
@@ -90,8 +83,8 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.toSchedule(), 일주일후_10시부터_12시까지.toSchedule());
-        Group group = constructGroup(host, schedules);
+
+        Group group = constructGroup(host, List.of(이틀후_10시부터_12시까지, 일주일후_10시부터_12시까지));
         Group savedGroup = groupRepository.save(group);
 
         synchronize();
@@ -106,8 +99,8 @@ class GroupRepositoryTest {
     @DisplayName("모임 리스트를 조회한다")
     @Test
     void findAll() {
-        Group group1 = constructGroup(host, List.of(이틀후_10시부터_12시까지.toSchedule()));
-        Group group2 = constructGroup(host, List.of(일주일후_10시부터_12시까지.toSchedule()));
+        Group group1 = constructGroup(host, List.of(이틀후_10시부터_12시까지));
+        Group group2 = constructGroup(host, List.of(일주일후_10시부터_12시까지));
         Group savedGroup1 = groupRepository.save(group1);
         Group savedGroup2 = groupRepository.save(group2);
 
@@ -122,8 +115,7 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
-        List<Schedule> schedules = List.of(이틀후_10시부터_12시까지.toSchedule());
-        Group group = constructGroup(host, schedules);
+        Group group = constructGroup(host, List.of(이틀후_10시부터_12시까지));
 
         groupRepository.save(group);
         synchronize();
@@ -168,13 +160,10 @@ class GroupRepositoryTest {
                 .isEqualTo(List.of(host, participant));
     }
 
-    private Group constructGroup(Member host, List<Schedule> schedules) {
-        return constructGroup("momo 회의", host, schedules);
-    }
-
-    private Group constructGroup(String name, Member host, List<Schedule> schedules) {
-        return new Group(new GroupName(name), host, Category.STUDY, new Capacity(10), 이틀후부터_5일동안.toDuration(),
-                new Deadline(내일_23시_59분.toDateTime()), new Schedules(schedules), "", "");
+    private Group constructGroup(Member host, List<ScheduleFixture> schedules) {
+        return MOMO_STUDY.builder()
+                .schedules(schedules)
+                .toGroup(host);
     }
 
     private void synchronize() {

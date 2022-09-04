@@ -13,7 +13,6 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
@@ -29,7 +28,6 @@ public class MemberService {
     private final MemberFindService memberFindService;
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
-    private final ParticipantRepository participantRepository;
     private final TokenRepository tokenRepository;
 
     public MyInfoResponse findById(Long id) {
@@ -49,11 +47,10 @@ public class MemberService {
     private void leaveProgressingGroup(Member member) {
         List<Group> progressingGroups = groupFindService.findParticipatedGroups(member)
                 .stream()
-                .filter(group -> !group.isEnd())
+                .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
-        progressingGroups.forEach(
-                group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
+        progressingGroups.forEach(group -> group.leave(member));
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {
