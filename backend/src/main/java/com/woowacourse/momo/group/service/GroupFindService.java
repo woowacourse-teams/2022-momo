@@ -57,9 +57,9 @@ public class GroupFindService {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
 
         specification = specification.and(groupSpecification.filterByCategory(request.getCategory()))
-                .and(groupSpecification.excludeFinished(request.getExcludeFinished()))
+                .and(groupSpecification.excludeFinished(request.excludeFinished()))
                 .and(groupSpecification.containKeyword(request.getKeyword()))
-                .and(groupSpecification.orderByDeadline(request.getOrderByDeadline()));
+                .and(groupSpecification.orderByDeadline(request.orderByDeadline()));
 
         return groupRepository.findAll(specification, pageable);
     }

@@ -142,7 +142,7 @@ class GroupSpecificationTest {
     @DisplayName("생성된 역순으로 목록을 조회한다")
     @Test
     void findGroupThatOrderByIdDesc() {
-        Specification<Group> specification = groupSpecification.orderByDeadline(null);
+        Specification<Group> specification = groupSpecification.orderByDeadline(false);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()

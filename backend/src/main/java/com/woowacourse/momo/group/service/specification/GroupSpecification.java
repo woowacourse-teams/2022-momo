@@ -73,8 +73,8 @@ public class GroupSpecification {
         };
     }
 
-    public Specification<Group> excludeFinished(Boolean excludeFinished) {
-        if (excludeFinished == null) {
+    public Specification<Group> excludeFinished(boolean excludeFinished) {
+        if (!excludeFinished) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
         }
         return (root, query, criteriaBuilder) -> {
@@ -119,8 +119,8 @@ public class GroupSpecification {
         return builder.in(memberId).value(subQuery);
     }
 
-    public Specification<Group> orderByDeadline(Boolean orderByDeadline) {
-        if (orderByDeadline == null) {
+    public Specification<Group> orderByDeadline(boolean orderByDeadline) {
+        if (!orderByDeadline) {
             return orderByIdDesc();
         }
         return (root, query, criteriaBuilder) -> {

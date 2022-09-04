@@ -9,9 +9,18 @@ import lombok.Setter;
 @Setter
 public class GroupFindRequest {
 
-    private Integer page = 0;
+    private int page = 0;
     private Long category;
     private String keyword;
-    private Boolean excludeFinished;
-    private Boolean orderByDeadline;
+    private boolean excludeFinished;
+    private boolean orderByDeadline;
+
+
+    public boolean excludeFinished() {
+        return excludeFinished;
+    }
+
+    public boolean orderByDeadline() {
+        return orderByDeadline;
+    }
 }
