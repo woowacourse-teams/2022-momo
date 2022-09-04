@@ -6,8 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,20 +20,17 @@ import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.controller.param.GroupParam;
 import com.woowacourse.momo.group.controller.param.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.GroupService;
-import com.woowacourse.momo.group.service.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.response.GroupResponse;
 
+@Authenticated
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
 @RestController
-public class GroupController {
+public class GroupHostController {
 
     private final GroupRequestAssembler assembler;
     private final GroupService groupService;
 
-    @Authenticated
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
                                                   @RequestBody @Valid GroupParam param) {
@@ -44,31 +39,6 @@ public class GroupController {
                 .body(groupIdResponse);
     }
 
-    @GetMapping("/{groupId}")
-    public ResponseEntity<GroupResponse> findGroup(@PathVariable Long groupId) {
-        return ResponseEntity.ok(groupService.findGroup(groupId));
-    }
-
-    @Authenticated
-    @GetMapping("/me/participated")
-    public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findParticipatedGroups(groupFindRequest, memberId));
-    }
-
-    @Authenticated
-    @GetMapping("/me/hosted")
-    public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
-                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findHostedGroups(groupFindRequest, memberId));
-    }
-
-    @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findGroups(groupFindRequest));
-    }
-
-    @Authenticated
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
                                        @RequestBody @Valid GroupParam param) {
@@ -76,14 +46,12 @@ public class GroupController {
         return ResponseEntity.ok().build();
     }
 
-    @Authenticated
     @PostMapping("/{groupId}/close")
     public ResponseEntity<Void> closeEarly(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         groupService.closeEarly(memberId, groupId);
         return ResponseEntity.ok().build();
     }
 
-    @Authenticated
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         groupService.delete(memberId, groupId);
