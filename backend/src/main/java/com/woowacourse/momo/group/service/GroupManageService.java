@@ -43,7 +43,8 @@ public class GroupManageService {
         Group group = groupFindService.findGroup(groupId);
         Member host = memberFindService.findMember(hostId);
 
-        updateGroup(group, host, request);
+        validateMemberIsHost(group, host);
+        updateGroup(group, request);
     }
 
     @Transactional
@@ -66,14 +67,13 @@ public class GroupManageService {
         groupRepository.deleteById(groupId);
     }
 
-    private void updateGroup(Group group, Member member, GroupRequest request) {
+    private void updateGroup(Group group, GroupRequest request) {
         GroupName groupName = request.getName();
         Category category = request.getCategory();
         Capacity capacity = request.getCapacity();
         Calendar calendar = request.getCalendar();
 
-        validateMemberIsHost(group, member);
-        group.update(groupName, category, capacity, calendar, request.getLocation(), request.getDescription());
+        group.update(capacity, calendar, groupName, category, request.getLocation(), request.getDescription());
     }
 
     private void validateMemberIsHost(Group group, Member member) {
