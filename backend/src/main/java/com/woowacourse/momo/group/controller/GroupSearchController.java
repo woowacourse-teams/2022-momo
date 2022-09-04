@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.GroupSearchService;
 import com.woowacourse.momo.group.service.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.response.GroupResponse;
@@ -21,7 +21,7 @@ import com.woowacourse.momo.group.service.response.GroupResponse;
 @RestController
 public class GroupSearchController {
 
-    private final GroupService groupService;
+    private final GroupSearchService groupService;
 
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupResponse> findGroup(@PathVariable Long groupId) {

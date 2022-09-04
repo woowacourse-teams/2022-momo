@@ -1,8 +1,5 @@
 package com.woowacourse.momo.group.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,20 +13,16 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
-import com.woowacourse.momo.group.service.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.group.service.response.GroupIdResponse;
-import com.woowacourse.momo.group.service.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.response.GroupResponse;
 import com.woowacourse.momo.group.service.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class GroupService {
+public class GroupManageService {
 
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
@@ -43,37 +36,6 @@ public class GroupService {
         Group savedGroup = groupRepository.save(group);
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);
-    }
-
-    public GroupResponse findGroup(Long id) {
-        Group group = groupFindService.findGroup(id);
-        return GroupResponseAssembler.groupResponse(group);
-    }
-
-    public GroupPageResponse findGroups(GroupFindRequest request) {
-        Page<Group> groups = groupFindService.findGroups(request);
-        List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
-    }
-
-    public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
-        Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindService.findParticipatedGroups(request, member);
-        List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
-    }
-
-    public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
-        Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindService.findHostedGroups(request, member);
-        List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
     @Transactional

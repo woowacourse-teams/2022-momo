@@ -47,7 +47,7 @@ class ParticipantServiceTest {
     private ParticipantService participantService;
 
     @Autowired
-    private GroupService groupService;
+    private GroupManageService groupManageService;
 
     @Autowired
     private MemberService memberService;
@@ -231,7 +231,7 @@ class ParticipantServiceTest {
     void deleteEarlyClosed() {
         Group savedGroup = saveGroup();
         participantService.participate(savedGroup.getId(), participant1.getId());
-        groupService.closeEarly(host.getId(), savedGroup.getId());
+        groupManageService.closeEarly(host.getId(), savedGroup.getId());
 
         assertThatThrownBy(() -> participantService.delete(savedGroup.getId(), participant1.getId()))
             .isInstanceOf(MomoException.class)

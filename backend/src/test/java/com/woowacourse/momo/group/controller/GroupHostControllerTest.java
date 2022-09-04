@@ -40,7 +40,7 @@ import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.param.GroupParam;
 import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
 import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
-import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.GroupManageService;
 import com.woowacourse.momo.group.service.ParticipantService;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 
@@ -60,7 +60,7 @@ class GroupHostControllerTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    GroupService groupService;
+    GroupManageService groupManageService;
 
     @Autowired
     AuthService authService;
@@ -156,7 +156,7 @@ class GroupHostControllerTest {
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
                 "", "");
 
-        return groupService.create(hostId, groupRequest).getGroupId();
+        return groupManageService.create(hostId, groupRequest).getGroupId();
     }
 
     String accessToken(String id, String password) {

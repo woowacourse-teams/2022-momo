@@ -19,7 +19,7 @@ import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.controller.param.GroupParam;
 import com.woowacourse.momo.group.controller.param.GroupRequestAssembler;
-import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.GroupManageService;
 import com.woowacourse.momo.group.service.response.GroupIdResponse;
 
 @Authenticated
@@ -29,12 +29,12 @@ import com.woowacourse.momo.group.service.response.GroupIdResponse;
 public class GroupHostController {
 
     private final GroupRequestAssembler assembler;
-    private final GroupService groupService;
+    private final GroupManageService groupManageService;
 
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
                                                   @RequestBody @Valid GroupParam param) {
-        GroupIdResponse groupIdResponse = groupService.create(memberId, assembler.groupRequest(param));
+        GroupIdResponse groupIdResponse = groupManageService.create(memberId, assembler.groupRequest(param));
         return ResponseEntity.created(URI.create("/api/groups/" + groupIdResponse.getGroupId()))
                 .body(groupIdResponse);
     }
@@ -42,19 +42,19 @@ public class GroupHostController {
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
                                        @RequestBody @Valid GroupParam param) {
-        groupService.update(memberId, groupId, assembler.groupRequest(param));
+        groupManageService.update(memberId, groupId, assembler.groupRequest(param));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{groupId}/close")
     public ResponseEntity<Void> closeEarly(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        groupService.closeEarly(memberId, groupId);
+        groupManageService.closeEarly(memberId, groupId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        groupService.delete(memberId, groupId);
+        groupManageService.delete(memberId, groupId);
         return ResponseEntity.noContent().build();
     }
 }

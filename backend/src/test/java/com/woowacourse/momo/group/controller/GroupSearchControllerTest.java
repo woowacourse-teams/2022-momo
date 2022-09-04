@@ -32,7 +32,7 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.service.GroupService;
+import com.woowacourse.momo.group.service.GroupManageService;
 import com.woowacourse.momo.group.service.ParticipantService;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 
@@ -51,7 +51,7 @@ class GroupSearchControllerTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    GroupService groupService;
+    GroupManageService groupManageService;
 
     @Autowired
     AuthService authService;
@@ -227,7 +227,7 @@ class GroupSearchControllerTest {
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
                 "", "");
 
-        return groupService.create(hostId, groupRequest).getGroupId();
+        return groupManageService.create(hostId, groupRequest).getGroupId();
     }
 
     String accessToken(String id, String password) {
