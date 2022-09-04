@@ -72,7 +72,7 @@ public class Group {
         this.name = name;
         this.host = host;
         this.category = category;
-        this.calendar = new Calendar(schedules, duration, deadline);
+        this.calendar = new Calendar(deadline, duration, schedules);
         this.location = location;
         this.description = description;
 
@@ -88,7 +88,7 @@ public class Group {
         this.description = description;
 
         participants.update(capacity);
-        this.calendar.update(calendar.getSchedules(), calendar.getDuration(), calendar.getDeadline());
+        this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
     }
 
     public void participate(Member member) {

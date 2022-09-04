@@ -50,7 +50,7 @@ public class GroupRequestAssembler {
     }
 
     public static Calendar calendar(GroupUpdateRequest request) {
-        return new Calendar(schedules(request.getSchedules()), duration(request.getDuration()), deadline(request));
+        return new Calendar(deadline(request), duration(request.getDuration()), schedules(request.getSchedules()));
     }
 
     public static Duration duration(DurationRequest request) {

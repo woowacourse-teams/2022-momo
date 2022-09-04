@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import java.util.List;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
@@ -31,8 +33,8 @@ public class Calendar {
         this.deadline = deadline;
     }
 
-    public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
-        this(deadline, duration, schedules);
+    public Calendar(Deadline deadline, Duration duration, List<Schedule> schedules) {
+        this(deadline, duration, new Schedules(schedules));
     }
 
     public void update(Deadline deadline, Duration duration, Schedules schedules) {
@@ -40,10 +42,6 @@ public class Calendar {
         this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;
-    }
-
-    public void update(Schedules schedules, Duration duration, Deadline deadline) {
-        update(deadline, duration, schedules);
     }
 
     public boolean isDeadlineOver() {

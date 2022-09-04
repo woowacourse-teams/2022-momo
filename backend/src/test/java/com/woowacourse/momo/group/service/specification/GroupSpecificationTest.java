@@ -212,7 +212,7 @@ class GroupSpecificationTest {
     private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
         LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
         Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(new Schedules(group.getSchedules()), group.getDuration(), deadline);
+        Calendar calendar = new Calendar(deadline, group.getDuration(), group.getSchedules());
 
         int index = 0;
         Class<Deadline> clazzDeadline = Deadline.class;
