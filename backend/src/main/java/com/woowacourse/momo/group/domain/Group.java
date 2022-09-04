@@ -2,7 +2,6 @@ package com.woowacourse.momo.group.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -159,88 +158,5 @@ public class Group {
 
     public List<Member> getParticipants() {
         return participants.getParticipants();
-    }
-
-    public static class Builder {
-
-        private GroupName name;
-        private Member host;
-        private Category category;
-        private Capacity capacity;
-        private Duration duration;
-        private Deadline deadline;
-        private Schedules schedules;
-        private String location;
-        private String description;
-
-        public Builder() {
-        }
-
-        public Builder name(GroupName name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder host(Member host) {
-            this.host = host;
-            return this;
-        }
-
-        public Builder category(Category category) {
-            this.category = category;
-            return this;
-        }
-
-        public Builder categoryId(long categoryId) {
-            this.category = Category.from(categoryId);
-            return this;
-        }
-
-        public Builder capacity(Capacity capacity) {
-            this.capacity = capacity;
-            return this;
-        }
-
-        public Builder duration(Duration duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        public Builder deadline(Deadline deadline) {
-            this.deadline = deadline;
-            return this;
-        }
-
-        public Builder schedules(Schedules schedules) {
-            this.schedules = schedules;
-            return this;
-        }
-
-        public Builder location(String location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Group build() {
-            validateNonNull();
-            return new Group(name, host, category, capacity, duration, deadline, schedules, location,
-                    description);
-        }
-
-        private void validateNonNull() {
-            Objects.requireNonNull(name);
-            Objects.requireNonNull(host);
-            Objects.requireNonNull(category);
-            Objects.requireNonNull(duration);
-            Objects.requireNonNull(deadline);
-            Objects.requireNonNull(schedules);
-            Objects.requireNonNull(location);
-            Objects.requireNonNull(description);
-        }
     }
 }

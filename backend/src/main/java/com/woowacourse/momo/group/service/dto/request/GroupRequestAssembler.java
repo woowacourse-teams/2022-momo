@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
@@ -20,17 +21,9 @@ import com.woowacourse.momo.member.domain.Member;
 public class GroupRequestAssembler {
 
     public static Group group(Member host, GroupRequest request) {
-        return new Group.Builder()
-                .name(groupName(request))
-                .host(host)
-                .categoryId(request.getCategoryId())
-                .capacity(capacity(request))
-                .duration(duration(request.getDuration()))
-                .deadline(deadline(request))
-                .schedules(schedules(request.getSchedules()))
-                .location(request.getLocation())
-                .description(request.getDescription())
-                .build();
+        return new Group(groupName(request), host, Category.from(request.getCategoryId()), capacity(request),
+                duration(request.getDuration()), deadline(request), schedules(request.getSchedules()),
+                request.getLocation(), request.getDescription());
     }
 
     public static GroupName groupName(GroupRequest request) {
