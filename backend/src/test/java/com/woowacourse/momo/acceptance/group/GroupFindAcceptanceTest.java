@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -120,7 +121,9 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않은 모임을 조회한다")
     @Test
     void findNonExistentGroup() {
-        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TOD: NOT_FOUND
+        모임을_조회한다(hostAccessToken, 0L)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message", Matchers.is("GROUP_ERROR_001"));
     }
 
     @DisplayName("모임목록중 첫번째 페이지를 조회한다")

@@ -5,6 +5,7 @@ import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_�
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,39 +33,62 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     @DisplayName("주최자가 모임을 삭제한다")
     @Test
     void deleteGroupByHost() {
-        모임을_삭제한다(hostAccessToken, groupId).statusCode(HttpStatus.NO_CONTENT.value());
-        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());// TODO: NOT_FOUND
+        모임을_삭제한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        모임을_조회한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message", Matchers.is("GROUP_ERROR_001"));
     }
 
     @DisplayName("주최자가 아닌 회원이 모임을 삭제한다")
     @Test
     void deleteGroupByAnotherMember() {
         String anotherAccessToken = DUDU.로_로그인한다();
-        모임을_삭제한다(anotherAccessToken, groupId).statusCode(HttpStatus.FORBIDDEN.value());
-        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
+
+        모임을_삭제한다(anotherAccessToken, groupId)
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .body("message", Matchers.is("AUTH_ERROR_004"));
+
+        모임을_조회한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("비회원이 모임을 삭제한다")
     @Test
     void deleteGroupByNonMember() {
-        모임을_삭제한다(groupId).statusCode(HttpStatus.UNAUTHORIZED.value());
-        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임을_삭제한다(groupId)
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .body("message", Matchers.is("AUTH_ERROR_003"));
+
+        모임을_조회한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("존재하지 않은 모임을 삭제한다")
     @Test
     void deleteNonExistentGroup() {
-        모임을_조회한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
-        모임을_삭제한다(hostAccessToken, 0L).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
+        모임을_조회한다(hostAccessToken, 0L)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message", Matchers.is("GROUP_ERROR_001"));
+
+        모임을_삭제한다(hostAccessToken, 0L)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message", Matchers.is("GROUP_ERROR_001"));
     }
 
     @DisplayName("참여자가 있는 모임을 삭제한다")
     @Test
     void deleteExistParticipant() {
         String participantAccessToken = PARTICIPANT.로_로그인한다();
+
         모임에_참여한다(participantAccessToken, groupId);
 
-        모임을_삭제한다(hostAccessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
-        모임을_조회한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임을_삭제한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("GROUP_ERROR_010"));
+
+        모임을_조회한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.OK.value());
     }
 }

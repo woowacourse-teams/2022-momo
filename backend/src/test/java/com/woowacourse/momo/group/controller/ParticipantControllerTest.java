@@ -97,7 +97,7 @@ class ParticipantControllerTest {
         mockMvc.perform(post(BASE_URL + 0 + RESOURCE)
                         .header("Authorization", "bearer " + accessToken)
                 )
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
                 .andDo(
                         document("participatenotexistgroup",
@@ -199,7 +199,7 @@ class ParticipantControllerTest {
     void findParticipantsNotExistGroup() throws Exception {
         mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
                 .andDo(
                         document("findparticipantsnotexistgroup",

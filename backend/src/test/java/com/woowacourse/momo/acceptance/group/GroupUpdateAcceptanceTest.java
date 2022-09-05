@@ -13,6 +13,7 @@ import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,8 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     @Test
     void updateGroupByHost() {
         GroupFixture updatedGroup = DUDU_STUDY;
-        모임을_수정한다(hostAccessToken, groupId, updatedGroup).statusCode(HttpStatus.OK.value()); // TODO: NO_CONTENT
+        모임을_수정한다(hostAccessToken, groupId, updatedGroup)
+                .statusCode(HttpStatus.OK.value());
 
         ValidatableResponse response = GroupRestHandler.모임을_조회한다(groupId)
                 .statusCode(HttpStatus.OK.value());
@@ -91,28 +93,35 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     @Test
     void updateGroupByAnotherMember() {
         String anotherAccessToken = DUDU.로_로그인한다();
-        모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY).statusCode(
-                HttpStatus.FORBIDDEN.value());
+
+        모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY)
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .body("message", Matchers.is("AUTH_ERROR_004"));
     }
 
     @DisplayName("비회원이 모임을 수정한다")
     @Test
     void updateGroupByNonMember() {
-        모임을_수정한다(groupId, DUDU_STUDY).statusCode(HttpStatus.UNAUTHORIZED.value());
+        모임을_수정한다(groupId, DUDU_STUDY)
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .body("message", Matchers.is("AUTH_ERROR_003"));
     }
 
     @DisplayName("존재하지 않은 모임을 삭제한다")
     @Test
     void updateNonExistentGroup() {
-        모임을_수정한다(hostAccessToken, 0L, DUDU_STUDY).statusCode(HttpStatus.BAD_REQUEST.value()); // TODO: NOT_FOUND
+        모임을_수정한다(hostAccessToken, 0L, DUDU_STUDY)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message", Matchers.is("GROUP_ERROR_001"));
     }
 
     @DisplayName("모임을 조기 마감한다")
     @Test
     void closeEarly() {
-        모임을_조기마감한다(hostAccessToken, groupId).statusCode(HttpStatus.OK.value());
+        모임을_조기마감한다(hostAccessToken, groupId)
+                .statusCode(HttpStatus.OK.value());
 
-        ValidatableResponse response = GroupRestHandler.모임을_조회한다(groupId)
+        GroupRestHandler.모임을_조회한다(groupId)
                 .statusCode(HttpStatus.OK.value())
                 .body("finished", is(true));
     }
@@ -121,8 +130,11 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     @Test
     void updateExistParticipant() {
         String participantAccessToken = PARTICIPANT.로_로그인한다();
+
         모임에_참여한다(participantAccessToken, groupId);
 
-        모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY).statusCode(HttpStatus.BAD_REQUEST.value());
+        모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("GROUP_ERROR_010"));
     }
 }

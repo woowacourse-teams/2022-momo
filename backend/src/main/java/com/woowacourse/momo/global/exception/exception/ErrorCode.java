@@ -40,9 +40,9 @@ public enum ErrorCode {
 
     LOGIN_INVALID_ID_AND_PASSWORD(HttpStatus.BAD_REQUEST.value(), "LOGIN_ERROR_001", "아이디나 비밀번호가 다릅니다."),
 
-    CATEGORY_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "CATEGORY_ERROR_001", "존재하지 않는 카테고리입니다."),
+    CATEGORY_NOT_EXIST(HttpStatus.NOT_FOUND.value(), "CATEGORY_ERROR_001", "존재하지 않는 카테고리입니다."),
 
-    GROUP_NOT_EXIST(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_001", "존재하지 않는 모임입니다."),
+    GROUP_NOT_EXIST(HttpStatus.NOT_FOUND.value(), "GROUP_ERROR_001", "존재하지 않는 모임입니다."),
     GROUP_DURATION_START_AFTER_END(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_002", "기간의 시작일은 종료일 이전이어야 합니다."),
     GROUP_SCHEDULE_START_AFTER_END(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_003", "일정의 시작 시간은 종료 시간 이전이어야 합니다."),
     GROUP_SCHEDULE_NOT_RANGE_DURATION(HttpStatus.BAD_REQUEST.value(), "GROUP_ERROR_004", "일정이 모임 기간에 포함되어야 합니다."),
