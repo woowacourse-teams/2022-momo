@@ -6,80 +6,66 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
+import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.category.domain.Category;
+import lombok.RequiredArgsConstructor;
+
+import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.domain.Password;
-import com.woowacourse.momo.member.domain.UserId;
 
 @Transactional
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @SpringBootTest
 class GroupManageServiceTest {
 
-    @Autowired
-    private GroupManageService groupManageService;
+    private final GroupManageService groupManageService;
+    private final GroupSearchService groupSearchService;
+    private final GroupRepository groupRepository;
+    private final MemberRepository memberRepository;
+    private final ParticipantService participantService;
 
-    @Autowired
-    private GroupSearchService groupSearchService;
-
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private ParticipantService participantService;
-
-    private Password password;
-    private Member savedHost;
-    private Member savedMember1;
-    private Member savedMember2;
+    private Group group;
+    private Member host;
+    private Member participant;
 
     @BeforeEach
     void setUp() {
-        password = Password.encrypt("momo123!", new SHA256Encoder());
-        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
-        savedMember1 = memberRepository.save(new Member(UserId.momo("사용자1"), password, "momo"));
-        savedMember2 = memberRepository.save(new Member(UserId.momo("사용자2"), password, "momo"));
-    }
+        host = memberRepository.save(MOMO.toMember());
+        group = groupRepository.save(MOMO_STUDY.toGroup(host));
 
-    private Group saveGroup(String name, Category category) {
-        return groupRepository.save(MOMO_STUDY.builder()
-                .name(name)
-                .category(category)
-                .toGroup(savedHost));
+        participant = memberRepository.save(DUDU.toMember());
     }
 
     @DisplayName("모임을 생성한다")
     @Test
     void create() {
         GroupRequest request = MOMO_STUDY.toRequest();
-        long savedGroupId = groupManageService.create(savedHost.getId(), request)
+        long groupId = groupManageService.create(host.getId(), request)
                 .getGroupId();
 
-        Optional<Group> group = groupRepository.findById(savedGroupId);
+        Optional<Group> group = groupRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
-        Group expected = MOMO_STUDY.toGroup(savedHost);
+        Group expected = MOMO_STUDY.toGroup(host);
         assertAll(
-                () -> assertThat(actual.getId()).isEqualTo(savedGroupId),
+                () -> assertThat(actual.getId()).isEqualTo(groupId),
                 () -> assertThat(actual.getName()).isEqualTo(expected.getName()),
                 () -> assertThat(actual.getCategory()).isEqualTo(expected.getCategory()),
                 () -> assertThat(actual.getCapacity()).isEqualTo(expected.getCapacity()),
@@ -102,12 +88,13 @@ class GroupManageServiceTest {
     @DisplayName("유효하지 않은 카테고리로 모임을 생성하면 예외가 발생한다")
     @Test
     void createWithInvalidCategoryId() {
-        Long categoryId = 0L;
+        long hostId = host.getId();
+
         GroupRequest request = MOMO_STUDY.builder()
-                .category(categoryId)
+                .category(0)
                 .toRequest();
 
-        assertThatThrownBy(() -> groupManageService.create(savedHost.getId(), request))
+        assertThatThrownBy(() -> groupManageService.create(hostId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
@@ -115,18 +102,19 @@ class GroupManageServiceTest {
     @DisplayName("모임을 수정한다")
     @Test
     void update() {
-        Group savedGroup = groupRepository.save(MOMO_STUDY.toGroup(savedHost));
-        GroupRequest request = DUDU_STUDY.toRequest();
+        GroupFixture target = DUDU_STUDY;
 
-        groupManageService.update(savedHost.getId(), savedGroup.getId(), request);
+        long groupId = this.group.getId();
+        GroupRequest request = target.toRequest();
+        groupManageService.update(host.getId(), groupId, request);
 
-        Optional<Group> group = groupRepository.findById(savedGroup.getId());
+        Optional<Group> group = groupRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
-        Group expected = DUDU_STUDY.toGroup(savedHost);
+        Group expected = target.toGroup(host);
         assertAll(
-                () -> assertThat(actual.getId()).isEqualTo(savedGroup.getId()),
+                () -> assertThat(actual.getId()).isEqualTo(groupId),
                 () -> assertThat(actual.getName()).isEqualTo(expected.getName()),
                 () -> assertThat(actual.getCategory()).isEqualTo(expected.getCategory()),
                 () -> assertThat(actual.getCapacity()).isEqualTo(expected.getCapacity()),
@@ -149,9 +137,11 @@ class GroupManageServiceTest {
     @DisplayName("존재하지 않는 모임을 수정하는 경우 예외가 발생한다")
     @Test
     void updateNotExistGroup() {
-        GroupRequest request = MOMO_STUDY.toRequest();
+        long groupId = 1000;
+        long hostId = host.getId();
 
-        assertThatThrownBy(() -> groupManageService.update(savedHost.getId(), 1000L, request))
+        GroupRequest request = MOMO_STUDY.toRequest();
+        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -159,10 +149,11 @@ class GroupManageServiceTest {
     @DisplayName("주최자가 아닌 사용자가 모임ㅇ르 수정할 경우 예외가 발생한다")
     @Test
     void updateMemberIsNotHost() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        GroupRequest request = DUDU_STUDY.toRequest();
+        long groupId = group.getId();
+        long participantId = participant.getId();
 
-        assertThatThrownBy(() -> groupManageService.update(savedMember1.getId(), savedGroup.getId(), request))
+        GroupRequest request = DUDU_STUDY.toRequest();
+        assertThatThrownBy(() -> groupManageService.update(participantId, groupId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
@@ -170,11 +161,13 @@ class GroupManageServiceTest {
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
     @Test
     void updateExistParticipants() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        savedGroup.participate(savedMember1);
-        GroupRequest request = DUDU_STUDY.toRequest();
+        long groupId = group.getId();
+        long hostId = host.getId();
 
-        assertThatThrownBy(() -> groupManageService.update(savedHost.getId(), savedGroup.getId(), request))
+        group.participate(participant);
+
+        GroupRequest request = DUDU_STUDY.toRequest();
+        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
@@ -182,14 +175,13 @@ class GroupManageServiceTest {
     @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
     @Test
     void updateFinishedRecruitmentGroup() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        savedGroup.participate(savedMember1);
-        savedGroup.participate(savedMember2);
-        long groupId = savedGroup.getId();
+        long groupId = group.getId();
+        long hostId = host.getId();
+
+        group.participate(participant);
 
         GroupRequest request = DUDU_STUDY.toRequest();
-
-        assertThatThrownBy(() -> groupManageService.update(savedHost.getId(), groupId, request))
+        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
@@ -197,20 +189,22 @@ class GroupManageServiceTest {
     @DisplayName("모임을 조기 마감한다")
     @Test
     void closeEarly() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+        long groupId = group.getId();
+        long hostId = host.getId();
 
-        groupManageService.closeEarly(savedHost.getId(), savedGroup.getId());
+        groupManageService.closeEarly(hostId, groupId);
 
-        boolean actual = groupSearchService.findGroup(savedGroup.getId()).isFinished();
+        boolean actual = groupSearchService.findGroup(groupId).isFinished();
         assertThat(actual).isTrue();
     }
 
     @DisplayName("주최자가 아닌 사용자가 모임을 조기마감 할 경우 예외가 발생한다")
     @Test
     void closeEarlyMemberIsNotHost() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+        long groupId = group.getId();
+        long participantId = participant.getId();
 
-        assertThatThrownBy(() -> groupManageService.closeEarly(savedMember1.getId(), savedGroup.getId()))
+        assertThatThrownBy(() -> groupManageService.closeEarly(participantId, groupId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
@@ -218,10 +212,12 @@ class GroupManageServiceTest {
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void delete() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        groupManageService.delete(savedHost.getId(), savedGroup.getId());
+        long groupId = group.getId();
+        long hostId = host.getId();
 
-        assertThatThrownBy(() -> groupSearchService.findGroup(savedGroup.getId()))
+        groupManageService.delete(hostId, groupId);
+
+        assertThatThrownBy(() -> groupSearchService.findGroup(groupId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -229,9 +225,10 @@ class GroupManageServiceTest {
     @DisplayName("주최자가 아닌 사용자가 모임을 삭제할 경우 예외가 발생한다")
     @Test
     void deleteNotHost() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
+        long groupId = group.getId();
+        long participantId = participant.getId();
 
-        assertThatThrownBy(() -> groupManageService.delete(savedMember1.getId(), savedGroup.getId()))
+        assertThatThrownBy(() -> groupManageService.delete(participantId, groupId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
     }
@@ -239,10 +236,12 @@ class GroupManageServiceTest {
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
     @Test
     void deleteExistParticipants() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        participantService.participate(savedGroup.getId(), savedMember1.getId());
+        long groupId = group.getId();
+        long hostId = host.getId();
 
-        assertThatThrownBy(() -> groupManageService.delete(savedHost.getId(), savedGroup.getId()))
+        participantService.participate(group.getId(), participant.getId());
+
+        assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
@@ -250,13 +249,12 @@ class GroupManageServiceTest {
     @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다")
     @Test
     void deleteFinishedRecruitmentGroup() {
-        Group savedGroup = saveGroup("모모의 스터디", Category.STUDY);
-        savedGroup.participate(savedMember1);
-        savedGroup.participate(savedMember2);
+        long groupId = group.getId();
+        long hostId = host.getId();
 
-        long groupId = savedGroup.getId();
+        group.participate(participant);
 
-        assertThatThrownBy(() -> groupManageService.delete(savedHost.getId(), groupId))
+        assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
     }
