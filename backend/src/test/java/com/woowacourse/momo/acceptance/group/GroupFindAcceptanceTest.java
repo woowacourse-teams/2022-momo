@@ -153,7 +153,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("본인이 참여하고 있는 모임들을 조회한다.")
     @Test
-    void findParticipatedGroupss() {
+    void findParticipatedGroups() {
         String anotherHostAccessToken = MemberFixture.DUDU.로_로그인한다();
         DUDU_STUDY.을_생성한다(anotherHostAccessToken);
 
@@ -164,7 +164,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("본인이 주최하고 있는 모임들을 조회한다.")
     @Test
-    void findHostedGroupss() {
+    void findHostedGroups() {
         hostAccessToken = HOST.로_로그인한다();
 
         ValidatableResponse response = 본인이_주최한_모임을_조회한다(hostAccessToken);
