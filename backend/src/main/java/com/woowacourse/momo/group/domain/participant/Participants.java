@@ -37,7 +37,7 @@ public class Participants {
     @JoinColumn
     private Member host;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private final List<Participant> participants = new ArrayList<>();
 

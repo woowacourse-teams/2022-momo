@@ -8,8 +8,6 @@ import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,9 +59,6 @@ class MemberServiceTest {
 
     @Autowired
     private TokenRepository tokenRepository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     private Password password;
     private Member savedHost;
@@ -171,7 +166,6 @@ class MemberServiceTest {
                 .isInstanceOf(MomoException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
-
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
