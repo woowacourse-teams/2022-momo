@@ -1,9 +1,15 @@
 package com.woowacourse.momo.group.domain;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_ALREADY_FINISH;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.GROUP_EXIST_PARTICIPANTS;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
 import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_CLOSED_EARLY;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_DEADLINE_OVER;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_CLOSED_EARLY;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_DEADLINE_OVER;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_PARTICIPANT_EXIST;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_CLOSED_EARLY;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_DEADLINE_OVER;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_PARTICIPANT_EXIST;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +35,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.domain.participant.Participants;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 
 @Getter
@@ -90,34 +97,34 @@ public class Group {
 
     private void validateGroupIsUpdatable() {
         if (closedEarly) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_UPDATE_FAILED_BY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_UPDATE_FAILED_BY_DEADLINE_OVER);
         }
         if (participants.isNotEmpty()) {
-            throw new MomoException(GROUP_EXIST_PARTICIPANTS);
+            throw new GroupException(GROUP_UPDATE_FAILED_BY_PARTICIPANT_EXIST);
         }
     }
 
     public void validateGroupIsDeletable() {
         if (closedEarly) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_DELETE_FAILED_BY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_DELETE_FAILED_BY_DEADLINE_OVER);
         }
         if (participants.isNotEmpty()) {
-            throw new MomoException(GROUP_EXIST_PARTICIPANTS);
+            throw new GroupException(GROUP_DELETE_FAILED_BY_PARTICIPANT_EXIST);
         }
     }
 
     private void validateGroupCanBeCloseEarly() {
         if (closedEarly) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new MomoException(GROUP_ALREADY_FINISH);
+            throw new GroupException(GROUP_ALREADY_DEADLINE_OVER);
         }
     }
 

@@ -1,5 +1,8 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DURATION_MUST_BE_SET_BEFORE_DEADLINE;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
+
 import java.util.List;
 
 import javax.persistence.Embeddable;
@@ -9,8 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,13 +57,13 @@ public class Calendar {
 
     private void validateDeadlineIsNotAfterDurationStart(Duration duration, Deadline deadline) {
         if (duration.isStartBeforeDeadline(deadline)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
+            throw new GroupException(DURATION_MUST_BE_SET_BEFORE_DEADLINE);
         }
     }
 
     private void validateSchedulesAreInDuration(Schedules schedules, Duration duration) {
         if (schedules.hasAnyScheduleOutOfDuration(duration)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+            throw new GroupException(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION);
         }
     }
 

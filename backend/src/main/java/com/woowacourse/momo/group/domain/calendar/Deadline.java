@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DEADLINE_MUST_BE_SET_FROM_NOW_ON;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,8 +13,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,7 +39,7 @@ public class Deadline {
 
     private void validateDeadlineIsAfterNow(LocalDateTime value) {
         if (isBeforeThanNow(value)) {
-            throw new MomoException(ErrorCode.GROUP_DEADLINE_NOT_PAST);
+            throw new GroupException(DEADLINE_MUST_BE_SET_FROM_NOW_ON);
         }
     }
 

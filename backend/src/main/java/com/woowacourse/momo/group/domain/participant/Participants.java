@@ -1,9 +1,10 @@
 package com.woowacourse.momo.group.domain.participant;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_HOST;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_NOT_PARTICIPANT;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_PARTICIPANTS_FULL;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_RE_PARTICIPATE;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.CAPACITY_ALREADY_FULL;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.HOST_CANNOT_PARTICIPATE_OR_LEAVE_OWN_GROUP;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_ALREADY_PARTICIPANT;
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_NOT_PARTICIPANT;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,9 +24,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 
 @Getter
@@ -49,14 +49,9 @@ public class Participants {
         this.capacity = capacity;
     }
 
-    public void updateCapacity(Capacity capacity) {
-        validateCapacityIsOverNumberOfParticipants(capacity);
-        this.capacity = capacity;
-    }
-
     public void participate(Group group, Member member) {
         validateMemberIsNotHost(member);
-        validateMemberIsNotParticipated(member);
+        validateMemberIsNotParticipant(member);
         validateParticipantsNotYetFull();
         participants.add(new Participant(group, member));
     }
@@ -70,7 +65,40 @@ public class Participants {
         return participants.stream()
                 .filter(participant -> participant.isSameMember(member))
                 .findAny()
-                .orElseThrow(() -> new MomoException(PARTICIPANT_LEAVE_NOT_PARTICIPANT));
+                .orElseThrow(() -> new GroupException(MEMBER_IS_NOT_PARTICIPANT));
+    }
+
+    private void validateMemberIsNotHost(Member member) {
+        if (host.equals(member)) {
+            throw new GroupException(HOST_CANNOT_PARTICIPATE_OR_LEAVE_OWN_GROUP);
+        }
+    }
+
+    private void validateMemberIsNotParticipant(Member member) {
+        if (contains(member)) {
+            throw new GroupException(MEMBER_IS_ALREADY_PARTICIPANT);
+        }
+    }
+
+    private boolean contains(Member member) {
+        return getParticipants().contains(member);
+    }
+
+    private void validateParticipantsNotYetFull() {
+        if (isFull()) {
+            throw new GroupException(CAPACITY_ALREADY_FULL);
+        }
+    }
+
+    public void updateCapacity(Capacity capacity) {
+        validateCapacityIsOverParticipantsSize(capacity);
+        this.capacity = capacity;
+    }
+
+    private void validateCapacityIsOverParticipantsSize(Capacity capacity) {
+        if (capacity.isUnder(getSize())) {
+            throw new GroupException(CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE);
+        }
     }
 
     public boolean isNotEmpty() {
@@ -81,36 +109,8 @@ public class Participants {
         return capacity.isSame(getSize());
     }
 
-    private boolean contains(Member member) {
-        return getParticipants().contains(member);
-    }
-
     public boolean isHost(Member member) {
         return host.isSameUserId(member);
-    }
-
-    private void validateMemberIsNotHost(Member member) {
-        if (host.equals(member)) {
-            throw new MomoException(PARTICIPANT_LEAVE_HOST);
-        }
-    }
-
-    private void validateMemberIsNotParticipated(Member member) {
-        if (contains(member)) {
-            throw new MomoException(PARTICIPANT_RE_PARTICIPATE);
-        }
-    }
-
-    private void validateParticipantsNotYetFull() {
-        if (isFull()) {
-            throw new MomoException(PARTICIPANT_PARTICIPANTS_FULL);
-        }
-    }
-
-    private void validateCapacityIsOverNumberOfParticipants(Capacity capacity) {
-        if (capacity.isUnder(getSize())) {
-            throw new MomoException(ErrorCode.PARTICIPANT_CAPACITY_IS_OVER_SIZE);
-        }
     }
 
     private int getSize() {
