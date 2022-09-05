@@ -157,6 +157,10 @@ public enum GroupFixture {
             return this;
         }
 
+        public Builder capacity(Capacity capacity) {
+            return capacity(capacity.getValue());
+        }
+
         public Builder schedules(List<ScheduleFixture> schedules) {
             this.schedules = schedules;
             return this;
