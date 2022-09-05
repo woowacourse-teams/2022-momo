@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class GroupNameTest {
 
@@ -26,7 +26,7 @@ class GroupNameTest {
     @ValueSource(strings = {"", " "})
     void nameMustNotBlank(String name) {
         assertThatThrownBy(() -> new GroupName(name))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("모임의 이름이 빈 값입니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("모임의 이름은 빈 값이 될 수 없습니다.");
     }
 }

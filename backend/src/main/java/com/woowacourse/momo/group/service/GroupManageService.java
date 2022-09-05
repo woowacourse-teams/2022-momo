@@ -1,18 +1,19 @@
 package com.woowacourse.momo.group.service;
 
+import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_NOT_HOST;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.group.service.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.response.GroupResponseAssembler;
@@ -78,7 +79,7 @@ public class GroupManageService {
 
     private void validateMemberIsHost(Group group, Member member) {
         if (group.isNotHost(member)) {
-            throw new MomoException(ErrorCode.AUTH_DELETE_NO_HOST);
+            throw new GroupException(MEMBER_IS_NOT_HOST);
         }
     }
 }

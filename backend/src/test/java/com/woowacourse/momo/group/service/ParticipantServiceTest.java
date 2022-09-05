@@ -28,6 +28,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.MemberService;
@@ -77,7 +78,7 @@ class ParticipantServiceTest {
         long participantId = participant.getId();
 
         assertThatThrownBy(() -> participantService.participate(groupId, participantId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
@@ -105,7 +106,7 @@ class ParticipantServiceTest {
         long participantId = participant.getId();
 
         assertThatThrownBy(() -> participantService.participate(groupId, participantId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("참여인원이 가득 찼습니다.");
     }
 
@@ -115,7 +116,7 @@ class ParticipantServiceTest {
         long groupId = 0;
 
         assertThatThrownBy(() -> participantService.findParticipants(groupId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
@@ -126,8 +127,8 @@ class ParticipantServiceTest {
         long hostId = host.getId();
 
         assertThatThrownBy(() -> participantService.leave(groupId, hostId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
@@ -137,7 +138,7 @@ class ParticipantServiceTest {
         long participantId = participant.getId();
 
         assertThatThrownBy(() -> participantService.leave(groupId, participantId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("모임의 참여자가 아닙니다.");
     }
 
@@ -163,8 +164,8 @@ class ParticipantServiceTest {
         @Test
         void reParticipate() {
             assertThatThrownBy(() -> participantService.participate(groupId, participantId))
-                    .isInstanceOf(MomoException.class)
-                    .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
+                    .isInstanceOf(GroupException.class)
+                    .hasMessage("회원은 이미 해당 모임의 참여자입니다.");
         }
 
         @DisplayName("모임의 참여자 목록을 조회한다")
@@ -198,8 +199,8 @@ class ParticipantServiceTest {
             synchronize();
 
             assertThatThrownBy(() -> participantService.leave(groupId, participantId))
-                    .isInstanceOf(MomoException.class)
-                    .hasMessage("모집이 마감된 모임입니다.");
+                    .isInstanceOf(GroupException.class)
+                    .hasMessage("해당 모임은 이미 마감기한이 지났습니다.");
         }
 
         @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
@@ -209,8 +210,8 @@ class ParticipantServiceTest {
             synchronize();
 
             assertThatThrownBy(() -> participantService.leave(groupId, participantId))
-                    .isInstanceOf(MomoException.class)
-                    .hasMessage("조기종료된 모임입니다.");
+                    .isInstanceOf(GroupException.class)
+                    .hasMessage("해당 모임은 이미 조기 마감되었습니다.");
         }
 
         @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")

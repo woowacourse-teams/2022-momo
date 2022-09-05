@@ -24,6 +24,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -142,11 +143,11 @@ class GroupManageServiceTest {
 
         GroupRequest request = MOMO_STUDY.toRequest();
         assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
-    @DisplayName("주최자가 아닌 사용자가 모임ㅇ르 수정할 경우 예외가 발생한다")
+    @DisplayName("주최자가 아닌 사용자가 모임을 수정할 경우 예외가 발생한다")
     @Test
     void updateMemberIsNotHost() {
         long groupId = group.getId();
@@ -154,8 +155,8 @@ class GroupManageServiceTest {
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupManageService.update(participantId, groupId, request))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("모임의 주최자가 아닙니다.");
     }
 
     @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
@@ -168,8 +169,8 @@ class GroupManageServiceTest {
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("참여자가 존재하는 모임은 수정할 수 없습니다.");
     }
 
     @DisplayName("모집 마김된 모임을 수정할 경우 예외가 발생한다")
@@ -182,8 +183,8 @@ class GroupManageServiceTest {
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("참여자가 존재하는 모임은 수정할 수 없습니다.");
     }
 
     @DisplayName("모임을 조기 마감한다")
@@ -205,8 +206,8 @@ class GroupManageServiceTest {
         long participantId = participant.getId();
 
         assertThatThrownBy(() -> groupManageService.closeEarly(participantId, groupId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("모임의 주최자가 아닙니다.");
     }
 
     @DisplayName("식별자를 통해 모임을 삭제한다")
@@ -218,7 +219,7 @@ class GroupManageServiceTest {
         groupManageService.delete(hostId, groupId);
 
         assertThatThrownBy(() -> groupSearchService.findGroup(groupId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
 
@@ -229,8 +230,8 @@ class GroupManageServiceTest {
         long participantId = participant.getId();
 
         assertThatThrownBy(() -> groupManageService.delete(participantId, groupId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자가 아닌 사람은 모임을 수정하거나 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("모임의 주최자가 아닙니다.");
     }
 
     @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
@@ -242,8 +243,8 @@ class GroupManageServiceTest {
         participantService.participate(group.getId(), participant.getId());
 
         assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("참여자가 존재하는 모임은 삭제할 수 없습니다.");
     }
 
     @DisplayName("모집 마김된 모임을 삭제할 경우 예외가 발생한다")
@@ -255,7 +256,7 @@ class GroupManageServiceTest {
         group.participate(participant);
 
         assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("참여자가 존재하는 모임은 삭제할 수 없습니다.");
     }
 }

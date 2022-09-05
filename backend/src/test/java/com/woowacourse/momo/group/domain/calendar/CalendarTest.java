@@ -27,7 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.fixture.calendar.DurationFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class CalendarTest {
 
@@ -55,7 +55,7 @@ class CalendarTest {
     @Test
     void validateDeadlineIsNotAfterDurationStartWhenCreate() {
         assertThatThrownBy(() -> createCalendar(이틀후_23시_59분까지, 내일_하루동안))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
     }
 
@@ -63,8 +63,8 @@ class CalendarTest {
     @Test
     void validateSchedulesAreInDurationWhenCreate() {
         assertThatThrownBy(() -> createCalendar(내일_23시_59분까지, 이틀후부터_5일동안, 내일_10시부터_12시까지))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("일정이 모임 기간에 포함되어야 합니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("일정은 모임 기간에 포함되어야 합니다.");
     }
 
     @DisplayName("Calendar를 수정한다")
@@ -101,7 +101,7 @@ class CalendarTest {
         Schedules schedules = ScheduleFixture.toSchedules(일주일후_10시부터_12시까지);
 
         assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("마감시간이 시작 일자 이후일 수 없습니다.");
     }
 
@@ -115,8 +115,8 @@ class CalendarTest {
         Schedules schedules = ScheduleFixture.toSchedules(내일_10시부터_12시까지);
 
         assertThatThrownBy(() -> calendar.update(deadline, duration, schedules))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("일정이 모임 기간에 포함되어야 합니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("일정은 모임 기간에 포함되어야 합니다.");
     }
 
     @DisplayName("마감 기한이 지났는지 확인한다")

@@ -14,8 +14,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 
 class ParticipantsTest {
@@ -52,8 +52,8 @@ class ParticipantsTest {
         Participants participants = new Participants(HOST, CAPACITY);
 
         assertThatThrownBy(() -> participants.participate(GROUP, HOST))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("참여자가 다시 참여할 경우 예외가 발생한다")
@@ -63,8 +63,8 @@ class ParticipantsTest {
         participants.participate(GROUP, PARTICIPANT);
 
         assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("참여자는 본인이 참여한 모임에 재참여할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("회원은 이미 해당 모임의 참여자입니다.");
     }
 
     @DisplayName("참여인원이 가득찬 상태에서 회원이 참여할 경우 예외가 발생한다")
@@ -73,7 +73,7 @@ class ParticipantsTest {
         Participants participants = new Participants(HOST, new Capacity(1));
 
         assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("참여인원이 가득 찼습니다.");
     }
 
@@ -93,8 +93,8 @@ class ParticipantsTest {
         Participants participants = new Participants(HOST, CAPACITY);
 
         assertThatThrownBy(() -> participants.leave(HOST))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("주최자는 모임에 탈퇴할 수 없습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
     }
 
     @DisplayName("참여자가 아닌 회원이 탈퇴할 경우 예외가 발생한다")
@@ -103,7 +103,7 @@ class ParticipantsTest {
         Participants participants = new Participants(HOST, CAPACITY);
 
         assertThatThrownBy(() -> participants.leave(PARTICIPANT))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("모임의 참여자가 아닙니다.");
     }
 
@@ -129,8 +129,8 @@ class ParticipantsTest {
         Capacity lessCapacity = new Capacity(participantsSize - 1);
 
         assertThatThrownBy(() -> participants.updateCapacity(lessCapacity))
-                .isInstanceOf(MomoException.class)
-                .hasMessage("수정하려는 최대 인원이 현재 참가자의 수보다 적습니다.");
+                .isInstanceOf(GroupException.class)
+                .hasMessage("참가인원제한은 현재 참가자의 인원수보다 적을 수 없습니다.");
     }
 
     @DisplayName("참여자가 한명이라도 존재하는지 확인한다")

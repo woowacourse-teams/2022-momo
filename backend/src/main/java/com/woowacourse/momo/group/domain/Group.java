@@ -1,7 +1,5 @@
 package com.woowacourse.momo.group.domain;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_DEADLINE;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.PARTICIPANT_LEAVE_EARLY_CLOSED;
 import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_CLOSED_EARLY;
 import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_DEADLINE_OVER;
 import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_CLOSED_EARLY;
@@ -29,7 +27,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
@@ -140,10 +137,10 @@ public class Group {
 
     private void validateGroupIsProceeding() {
         if (closedEarly) {
-            throw new MomoException(PARTICIPANT_LEAVE_EARLY_CLOSED);
+            throw new GroupException(GROUP_ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new MomoException(PARTICIPANT_LEAVE_DEADLINE);
+            throw new GroupException(GROUP_ALREADY_DEADLINE_OVER);
         }
     }
 

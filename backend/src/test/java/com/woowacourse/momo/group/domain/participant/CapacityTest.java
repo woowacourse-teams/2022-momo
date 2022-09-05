@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class CapacityTest {
 
@@ -30,7 +30,7 @@ class CapacityTest {
     @ValueSource(ints = {0, 100})
     void validateCapacityIsInRange(int capacity) {
         assertThatThrownBy(() -> new Capacity(capacity))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("모임 내 인원은 1명 이상 99명 이하여야 합니다.");
     }
 

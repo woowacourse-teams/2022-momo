@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class DurationTest {
 
@@ -55,7 +55,7 @@ class DurationTest {
     @Test
     void validateStartIsBeforeEnd() {
         assertThatThrownBy(() -> new Duration(일주일후.toDate(), 이틀후.toDate()))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("기간의 시작일은 종료일 이전이어야 합니다.");
     }
 
@@ -64,7 +64,7 @@ class DurationTest {
     @MethodSource("provideForValidateDatesAreNotPast")
     void validateDatesAreNotPast(LocalDate start, LocalDate end) {
         assertThatThrownBy(() -> new Duration(start, end))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("시작일과 종료일은 과거일 수 없습니다.");
     }
 

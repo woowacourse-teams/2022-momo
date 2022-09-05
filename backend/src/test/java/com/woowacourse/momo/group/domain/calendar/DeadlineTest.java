@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.fixture.calendar.datetime.DateFixture;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class DeadlineTest {
 
@@ -43,7 +43,7 @@ class DeadlineTest {
     @MethodSource("provideForDeadlineValidation")
     void deadlineMustBeBeforeNow(LocalDateTime past) {
         assertThatThrownBy(() -> new Deadline(past))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("마감시간이 과거일 수 없습니다.");
     }
 
