@@ -17,6 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -35,8 +37,8 @@ class GroupTest {
 
     private static final Member HOST = MOMO.toMember();
 
-
     @DisplayName("조기마감된 모임에 대한 검증 테스트")
+    @TestInstance(Lifecycle.PER_CLASS)
     @Nested
     class EarlyClosedGroupTest {
 
@@ -186,7 +188,6 @@ class GroupTest {
                     .hasMessage("참여자가 존재하는 모임은 수정 및 삭제할 수 없습니다.");
         }
     }
-
 
     @DisplayName("모임을 생성한다")
     @Test

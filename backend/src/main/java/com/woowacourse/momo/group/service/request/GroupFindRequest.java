@@ -15,7 +15,6 @@ public class GroupFindRequest {
     private boolean excludeFinished;
     private boolean orderByDeadline;
 
-
     public boolean excludeFinished() {
         return excludeFinished;
     }

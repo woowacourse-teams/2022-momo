@@ -91,7 +91,6 @@ class CalendarTest {
         );
     }
 
-
     @DisplayName("수정 시, 마감 기한이 기간의 시작 일자보다 이후일 수 없다")
     @Test
     void validateDeadlineIsNotAfterDurationStartWhenUpdate() {
