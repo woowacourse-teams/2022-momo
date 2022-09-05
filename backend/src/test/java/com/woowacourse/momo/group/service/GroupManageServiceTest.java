@@ -115,7 +115,7 @@ class GroupManageServiceTest {
     @DisplayName("모임을 수정한다")
     @Test
     void update() {
-        Group savedGroup = groupRepository.save(MOMO_STUDY.builder().toGroup(savedHost));
+        Group savedGroup = groupRepository.save(MOMO_STUDY.toGroup(savedHost));
         GroupRequest request = DUDU_STUDY.toRequest();
 
         groupManageService.update(savedHost.getId(), savedGroup.getId(), request);

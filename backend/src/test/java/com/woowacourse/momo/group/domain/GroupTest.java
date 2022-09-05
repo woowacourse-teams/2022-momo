@@ -44,7 +44,7 @@ class GroupTest {
 
         @BeforeEach
         void setUp() {
-            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group = MOMO_STUDY.toGroup(MOMO.toMember());
             group.closeEarly();
         }
 
@@ -87,7 +87,7 @@ class GroupTest {
         void cannotLeaveByAlreadyClosed() {
             Member participant = DUDU.toMember();
 
-            Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            Group group = MOMO_STUDY.toGroup(MOMO.toMember());
             group.participate(participant);
             group.closeEarly();
 
@@ -105,7 +105,7 @@ class GroupTest {
 
         @BeforeEach
         void setUp() {
-            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group = MOMO_STUDY.toGroup(MOMO.toMember());
             setDeadlinePast(group);
         }
 
@@ -148,7 +148,7 @@ class GroupTest {
         void cannotLeaveByDeadlinePassed() {
             Member participant = DUDU.toMember();
 
-            Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            Group group = MOMO_STUDY.toGroup(MOMO.toMember());
             group.participate(participant);
             setDeadlinePast(group);
 
@@ -166,7 +166,7 @@ class GroupTest {
 
         @BeforeEach
         void setUp() {
-            group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+            group = MOMO_STUDY.toGroup(MOMO.toMember());
             group.participate(DUDU.toMember());
         }
 
@@ -201,7 +201,7 @@ class GroupTest {
         String location = fixture.getLocation();
         String description = fixture.getDescription();
 
-        Group group = fixture.builder().toGroup(host);
+        Group group = fixture.toGroup(host);
 
         assertAll(
                 () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
@@ -219,7 +219,7 @@ class GroupTest {
     @Test
     void update() {
         Member host = MOMO.toMember();
-        Group group = MOMO_STUDY.builder().toGroup(host);
+        Group group = MOMO_STUDY.toGroup(host);
 
         GroupFixture fixture = MOMO_TRAVEL;
         Capacity capacity = fixture.getCapacity();
@@ -257,7 +257,7 @@ class GroupTest {
     @DisplayName("모임 모집을 조기마감한다")
     @Test
     void closeEarly() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
         group.closeEarly();
 
         assertThat(group.isClosedEarly()).isTrue();
@@ -266,7 +266,7 @@ class GroupTest {
     @DisplayName("모임에 참여한다")
     @Test
     void participate() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
 
         Member participant = DUDU.toMember();
         group.participate(participant);
@@ -278,7 +278,7 @@ class GroupTest {
     @DisplayName("모임을 탈퇴한다")
     @Test
     void leave() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
 
         Member participant = DUDU.toMember();
         group.participate(participant);
@@ -292,7 +292,7 @@ class GroupTest {
     @ParameterizedTest
     @MethodSource("provideIsHostArguments")
     void isHost(Member member, boolean expected) {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
 
         assertThat(group.isHost(member)).isEqualTo(expected);
     }
@@ -307,7 +307,7 @@ class GroupTest {
     @DisplayName("마감되지 않은 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
     void isFinishedRecruitment() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
 
         assertThat(group.isFinishedRecruitment()).isFalse();
     }
@@ -315,7 +315,7 @@ class GroupTest {
     @DisplayName("조기마감된 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
     void isFinishedRecruitmentWhenClosedEarly() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
         group.closeEarly();
 
         assertThat(group.isFinishedRecruitment()).isTrue();
@@ -324,7 +324,7 @@ class GroupTest {
     @DisplayName("마감기한이 지나버린 모임에 대해, 모집이 마감되었는지 확인한다")
     @Test
     void isFinishedRecruitmentWhenDeadlinePassed() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
         setDeadlinePast(group);
 
         assertThat(group.isFinishedRecruitment()).isTrue();

@@ -24,7 +24,7 @@ class ParticipantTest {
     @DisplayName("정상적으로 생성한다")
     @Test
     void construct() {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
         Member member = DUDU.toMember();
         Participant participant = new Participant(group, member);
 
@@ -38,7 +38,7 @@ class ParticipantTest {
     @ParameterizedTest
     @MethodSource("provideForIsSameMember")
     void isSameMember(Member member, Member target, boolean expected) {
-        Group group = MOMO_STUDY.builder().toGroup(MOMO.toMember());
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
         Participant participant = new Participant(group, member);
 
         assertThat(participant.isSameMember(target)).isEqualTo(expected);

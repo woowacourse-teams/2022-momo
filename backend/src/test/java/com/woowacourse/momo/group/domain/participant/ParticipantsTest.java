@@ -22,7 +22,7 @@ class ParticipantsTest {
 
     private static final Member HOST = MOMO.toMember();
     private static final Member PARTICIPANT = DUDU.toMember();
-    private static final Group GROUP = MOMO_STUDY.builder().toGroup(HOST);
+    private static final Group GROUP = MOMO_STUDY.toGroup(HOST);
     private static final Capacity CAPACITY = new Capacity(10);
 
     @DisplayName("정상적으로 생성한다")
