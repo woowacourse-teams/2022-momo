@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_수정한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조기마감한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
@@ -49,7 +50,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
         모임을_수정한다(hostAccessToken, groupId, updatedGroup)
                 .statusCode(HttpStatus.OK.value());
 
-        ValidatableResponse response = GroupRestHandler.모임을_조회한다(groupId)
+        ValidatableResponse response = 모임을_조회한다(groupId)
                 .statusCode(HttpStatus.OK.value());
 
         assertAll(
@@ -121,7 +122,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
         모임을_조기마감한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.OK.value());
 
-        GroupRestHandler.모임을_조회한다(groupId)
+        모임을_조회한다(groupId)
                 .statusCode(HttpStatus.OK.value())
                 .body("finished", is(true));
     }
