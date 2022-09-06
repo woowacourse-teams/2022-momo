@@ -2,6 +2,8 @@ package com.woowacourse.momo.group.service;
 
 import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_NOT_HOST;
 
+import java.util.function.BiConsumer;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,31 +43,9 @@ public class GroupManageService {
 
     @Transactional
     public void update(Long hostId, Long groupId, GroupRequest request) {
-        Group group = groupFindService.findGroup(groupId);
-        Member host = memberFindService.findMember(hostId);
-
-        validateMemberIsHost(group, host);
-        updateGroup(group, request);
-    }
-
-    @Transactional
-    public void closeEarly(Long hostId, Long groupId) {
-        Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findMember(hostId);
-
-        validateMemberIsHost(group, member);
-        group.closeEarly();
-    }
-
-    @Transactional
-    public void delete(Long hostId, Long groupId) {
-        Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findMember(hostId);
-
-        validateMemberIsHost(group, member);
-        group.validateGroupIsDeletable();
-
-        groupRepository.deleteById(groupId);
+        ifMemberIsHost(hostId, groupId, (host, group) -> {
+            updateGroup(group, request);
+        });
     }
 
     private void updateGroup(Group group, GroupRequest request) {
@@ -75,6 +55,29 @@ public class GroupManageService {
         Calendar calendar = request.getCalendar();
 
         group.update(capacity, calendar, groupName, category, request.getLocation(), request.getDescription());
+    }
+
+    @Transactional
+    public void closeEarly(Long hostId, Long groupId) {
+        ifMemberIsHost(hostId, groupId, (host, group) -> {
+            group.closeEarly();
+        });
+    }
+
+    @Transactional
+    public void delete(Long hostId, Long groupId) {
+        ifMemberIsHost(hostId, groupId, (host, group) -> {
+            group.validateGroupIsDeletable();
+            groupRepository.deleteById(groupId);
+        });
+    }
+
+    private void ifMemberIsHost(Long hostId, Long groupId, BiConsumer<Member, Group> consumer) {
+        Group group = groupFindService.findGroup(groupId);
+        Member host = memberFindService.findMember(hostId);
+        validateMemberIsHost(group, host);
+
+        consumer.accept(host, group);
     }
 
     private void validateMemberIsHost(Group group, Member member) {
