@@ -3,6 +3,12 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { requestCreateGroup } from 'apis/request/group';
+import { BROWSER_PATH } from 'constants/path';
+import useCreateState from 'hooks/useCreateState';
+import Navigator from 'pages/Create/Navigator';
+import PageError from 'utils/PageError';
+
+import * as S from './index.styled';
 import {
   Step1,
   Step2,
@@ -12,13 +18,7 @@ import {
   Step6,
   Step7,
   Step8,
-} from 'components/Create';
-import Navigator from 'components/Create/Navigator';
-import { BROWSER_PATH } from 'constants/path';
-import useCreateState from 'hooks/useCreateState';
-import PageError from 'utils/PageError';
-
-import * as S from './index.styled';
+} from './Steps';
 import validateGroupData from './validate';
 
 const totalPage = [

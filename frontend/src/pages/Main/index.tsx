@@ -6,15 +6,15 @@ import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import { CategoryFallback } from 'components/@shared/ErrorBoundary/CategoryFallback';
 import TopButton from 'components/@shared/TopButton';
-import Category from 'components/Category';
-import RecommendGroups from 'components/RecommendGroups';
-import SearchSection from 'components/SearchSection';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import useInput from 'hooks/useInput';
 import { CategoryType, GroupList } from 'types/data';
 
+import Category from './Category';
 import * as S from './index.styled';
+import RecommendGroups from './RecommendGroups';
+import SearchSection from './SearchSection';
 
 const invalidCategoryId = -1;
 

@@ -1,5 +1,6 @@
+import SearchForm from 'components/SearchForm';
+
 import * as S from './index.styled';
-import SearchForm from './SearchForm';
 
 interface SearchSectionProps {
   keyword: string;

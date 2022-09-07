@@ -6,13 +6,13 @@ import { requestJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import NoResult from 'components/@shared/NoResult';
 import TopButton from 'components/@shared/TopButton';
-import JoinedGroups from 'components/JoinedGroups';
-import SearchForm from 'components/SearchSection/SearchForm';
+import SearchForm from 'components/SearchForm';
 import { QUERY_KEY } from 'constants/key';
 import useInput from 'hooks/useInput';
 import { GroupList, SelectableGroup } from 'types/data';
 
 import * as S from './index.styled';
+import JoinedGroups from './JoinedGroups';
 
 const groupTypes: { type: SelectableGroup; name: string }[] = [
   { type: 'participated', name: '내가 참여한 모임' },
