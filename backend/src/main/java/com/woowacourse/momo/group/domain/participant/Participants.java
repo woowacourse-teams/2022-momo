@@ -50,27 +50,47 @@ public class Participants {
     }
 
     public void participate(Group group, Member member) {
+        validateMemberCanParticipate(member);
+        participants.add(new Participant(group, member));
+    }
+    
+    public void leave(Member member) {
+        validateMemberCanLeave(member);
+        remove(member);
+    }
+
+    private void remove(Member member) {
+        participants.stream()
+                .filter(participant -> participant.isSameMember(member))
+                .findAny()
+                .ifPresent(participants::remove);
+    }
+
+    public void updateCapacity(Capacity capacity) {
+        validateCapacityIsOverParticipantsSize(capacity);
+        this.capacity = capacity;
+    }
+
+    private void validateMemberCanLeave(Member member) {
+        validateMemberIsNotHost(member);
+        validateMemberIsParticipant(member);
+    }
+
+    private void validateMemberCanParticipate(Member member) {
         validateMemberIsNotHost(member);
         validateMemberIsNotParticipant(member);
         validateParticipantsNotYetFull();
-        participants.add(new Participant(group, member));
-    }
-
-    public void leave(Member member) {
-        validateMemberIsNotHost(member);
-        participants.remove(getParticipant(member));
-    }
-
-    private Participant getParticipant(Member member) {
-        return participants.stream()
-                .filter(participant -> participant.isSameMember(member))
-                .findAny()
-                .orElseThrow(() -> new GroupException(MEMBER_IS_NOT_PARTICIPANT));
     }
 
     private void validateMemberIsNotHost(Member member) {
         if (host.equals(member)) {
             throw new GroupException(MEMBER_IS_HOST);
+        }
+    }
+
+    private void validateMemberIsParticipant(Member member) {
+        if (!contains(member)) {
+            throw new GroupException(MEMBER_IS_NOT_PARTICIPANT);
         }
     }
 
@@ -80,25 +100,20 @@ public class Participants {
         }
     }
 
-    private boolean contains(Member member) {
-        return getParticipants().contains(member);
-    }
-
     private void validateParticipantsNotYetFull() {
         if (isFull()) {
             throw new GroupException(ALREADY_PARTICIPANTS_SIZE_FULL);
         }
     }
 
-    public void updateCapacity(Capacity capacity) {
-        validateCapacityIsOverParticipantsSize(capacity);
-        this.capacity = capacity;
-    }
-
     private void validateCapacityIsOverParticipantsSize(Capacity capacity) {
         if (capacity.isUnder(getSize())) {
             throw new GroupException(CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE);
         }
+    }
+
+    private boolean contains(Member member) {
+        return getParticipants().contains(member);
     }
 
     public boolean isNotEmpty() {
