@@ -1,17 +1,19 @@
 package com.woowacourse.momo.member.domain;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -53,27 +55,5 @@ public class UserId {
         if (!value.contains(EMAIL_FORMAT)) {
             throw new MomoException(GlobalErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        UserId userId = (UserId) o;
-        return Objects.equals(value, userId.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return "UserId{'" + value + "'}";
     }
 }

@@ -4,18 +4,21 @@ import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_
 import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_START_DATE_MUST_BE_BEFORE_END_DATE;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -61,28 +64,5 @@ public class Duration {
 
     private boolean isBeforeThanNow(LocalDate date) {
         return date.isBefore(LocalDate.now());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Duration duration = (Duration) o;
-        return Objects.equals(startDate, duration.startDate) && Objects.equals(endDate,
-                duration.endDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(startDate, endDate);
-    }
-
-    @Override
-    public String toString() {
-        return "Duration{" + startDate + "~" + endDate + '}';
     }
 }

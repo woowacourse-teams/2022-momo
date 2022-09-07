@@ -11,9 +11,11 @@ import javax.persistence.Embedded;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -65,14 +67,5 @@ public class Calendar {
         if (schedules.hasAnyScheduleOutOfDuration(duration)) {
             throw new GroupException(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Calendar{" +
-                "schedules=" + schedules +
-                ", duration=" + duration +
-                ", deadline=" + deadline +
-                '}';
     }
 }

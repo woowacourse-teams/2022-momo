@@ -4,17 +4,20 @@ import static com.woowacourse.momo.group.exception.GroupErrorCode.DEADLINE_MUST_
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -45,27 +48,5 @@ public class Deadline {
 
     private boolean isBeforeThanNow(LocalDateTime value) {
         return value.isBefore(LocalDateTime.now());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Deadline deadline = (Deadline) o;
-        return Objects.equals(value, deadline.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return "Deadline{" + value + '}';
     }
 }

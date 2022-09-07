@@ -12,9 +12,11 @@ import org.hibernate.annotations.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -79,15 +81,5 @@ public class Member {
 
     public String getUserName() {
         return userName.getValue();
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", " + userId +
-                ", " + userName +
-                ", deleted=" + deleted +
-                '}';
     }
 }

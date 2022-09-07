@@ -11,7 +11,9 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString(includeFieldNames = false)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -33,10 +35,5 @@ public class Schedules {
     public boolean hasAnyScheduleOutOfDuration(Duration duration) {
         return value.stream()
                 .anyMatch(schedule -> schedule.isOutOfDuration(duration));
-    }
-
-    @Override
-    public String toString() {
-        return "Schedules{" + value + '}';
     }
 }

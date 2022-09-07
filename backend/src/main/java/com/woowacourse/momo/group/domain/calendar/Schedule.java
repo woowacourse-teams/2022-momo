@@ -14,9 +14,11 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -50,14 +52,5 @@ public class Schedule {
         if (!startTime.isBefore(endTime)) {
             throw new GroupException(SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "id=" + id +
-                ", " + date +
-                " " + startTime + "~" + endTime +
-                '}';
     }
 }
