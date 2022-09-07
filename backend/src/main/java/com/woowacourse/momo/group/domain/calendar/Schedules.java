@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
@@ -18,8 +17,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Schedules {
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "group_id")
     private final List<Schedule> value = new ArrayList<>();
 

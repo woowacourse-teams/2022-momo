@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,8 +36,7 @@ public class Participants {
     @JoinColumn
     private Member host;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private final List<Participant> participants = new ArrayList<>();
 
     @Embedded
