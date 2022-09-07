@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.service;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_NOT_HOST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_HOST;
 
 import java.util.function.BiConsumer;
 

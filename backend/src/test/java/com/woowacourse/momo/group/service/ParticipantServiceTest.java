@@ -128,7 +128,7 @@ class ParticipantServiceTest {
 
         assertThatThrownBy(() -> participantService.leave(groupId, hostId))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
+                .hasMessage("해당 모임의 주최자입니다.");
     }
 
     @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
@@ -139,7 +139,7 @@ class ParticipantServiceTest {
 
         assertThatThrownBy(() -> participantService.leave(groupId, participantId))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("모임의 참여자가 아닙니다.");
+                .hasMessage("해당 모임의 참여자가 아닙니다.");
     }
 
     @DisplayName("참여 이후에 대한 테스트")
@@ -165,7 +165,7 @@ class ParticipantServiceTest {
         void reParticipate() {
             assertThatThrownBy(() -> participantService.participate(groupId, participantId))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("회원은 이미 해당 모임의 참여자입니다.");
+                    .hasMessage("해당 모임의 참여자입니다.");
         }
 
         @DisplayName("모임의 참여자 목록을 조회한다")
@@ -200,7 +200,7 @@ class ParticipantServiceTest {
 
             assertThatThrownBy(() -> participantService.leave(groupId, participantId))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 마감기한이 지났습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
 
         @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
@@ -211,7 +211,7 @@ class ParticipantServiceTest {
 
             assertThatThrownBy(() -> participantService.leave(groupId, participantId))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 조기 마감되었습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
         @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")

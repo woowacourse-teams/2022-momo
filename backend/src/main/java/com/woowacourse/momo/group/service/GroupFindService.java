@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.service;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DOES_NOT_EXIST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.NOT_EXIST;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class GroupFindService {
 
     public Group findGroup(Long id) {
         return groupRepository.findById(id)
-                .orElseThrow(() -> new GroupException(GROUP_DOES_NOT_EXIST));
+                .orElseThrow(() -> new GroupException(NOT_EXIST));
     }
 
     public Page<Group> findGroups(GroupFindRequest request) {

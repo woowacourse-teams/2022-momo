@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -39,13 +39,13 @@ public class UserName {
 
     private void validateNameIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(ErrorCode.MEMBER_NAME_SHOULD_NOT_BE_BLANK);
+            throw new MomoException(GlobalErrorCode.MEMBER_NAME_SHOULD_NOT_BE_BLANK);
         }
     }
 
     private void validateNameLengthIsValid(String value) {
         if (value.length() > MAXIMUM) {
-            throw new MomoException(ErrorCode.MEMBER_NAME_MUST_BE_VALID);
+            throw new MomoException(GlobalErrorCode.MEMBER_NAME_MUST_BE_VALID);
         }
     }
 

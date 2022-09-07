@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -39,19 +39,19 @@ public class UserId {
 
     private static void validateUserIdIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(ErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
+            throw new MomoException(GlobalErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
     private static void validateUserIdIsValidPattern(String value) {
         if (value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(ErrorCode.SIGNUP_INVALID_ID);
+            throw new MomoException(GlobalErrorCode.SIGNUP_INVALID_ID);
         }
     }
 
     private static void validateUserEmailIsValidPattern(String value) {
         if (!value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(ErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
+            throw new MomoException(GlobalErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
     }
 

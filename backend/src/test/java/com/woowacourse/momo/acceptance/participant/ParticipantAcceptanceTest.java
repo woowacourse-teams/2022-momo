@@ -60,7 +60,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
 
         모임에_참여한다(accessToken, groupId)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("PARTICIPANT_ERROR_002"));
+                .body("message", Matchers.is("GROUP_ERROR_016"));
     }
 
     @DisplayName("존재하지 않은 모임에 참여한다")
@@ -122,7 +122,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     void deleteNotParticipant() {
         String accessToken = MOMO.로_로그인한다();
 
-        모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.BAD_REQUEST.value());
+        모임을_탈퇴한다(accessToken, groupId).statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")

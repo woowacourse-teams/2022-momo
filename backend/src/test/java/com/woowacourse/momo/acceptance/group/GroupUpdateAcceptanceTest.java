@@ -97,7 +97,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
         모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.FORBIDDEN.value())
-                .body("message", Matchers.is("AUTH_ERROR_004"));
+                .body("message", Matchers.is("GROUP_ERROR_017"));
     }
 
     @DisplayName("비회원이 모임을 수정한다")
@@ -136,6 +136,6 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
         모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_010"));
+                .body("message", Matchers.is("GROUP_ERROR_014"));
     }
 }

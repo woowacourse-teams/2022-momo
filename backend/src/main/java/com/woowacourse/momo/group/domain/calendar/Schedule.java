@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain.calendar;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

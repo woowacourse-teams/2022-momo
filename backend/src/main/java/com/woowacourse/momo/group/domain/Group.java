@@ -1,13 +1,8 @@
 package com.woowacourse.momo.group.domain;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_CLOSED_EARLY;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_ALREADY_DEADLINE_OVER;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_CLOSED_EARLY;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_DEADLINE_OVER;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_DELETE_FAILED_BY_PARTICIPANT_EXIST;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_CLOSED_EARLY;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_DEADLINE_OVER;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.GROUP_UPDATE_FAILED_BY_PARTICIPANT_EXIST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_CLOSED_EARLY;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_DEADLINE_OVER;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.PARTICIPANT_EXIST;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -94,34 +89,34 @@ public class Group {
 
     private void validateGroupIsUpdatable() {
         if (closedEarly) {
-            throw new GroupException(GROUP_UPDATE_FAILED_BY_CLOSED_EARLY);
+            throw new GroupException(ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new GroupException(GROUP_UPDATE_FAILED_BY_DEADLINE_OVER);
+            throw new GroupException(ALREADY_DEADLINE_OVER);
         }
         if (participants.isNotEmpty()) {
-            throw new GroupException(GROUP_UPDATE_FAILED_BY_PARTICIPANT_EXIST);
+            throw new GroupException(PARTICIPANT_EXIST);
         }
     }
 
     public void validateGroupIsDeletable() {
         if (closedEarly) {
-            throw new GroupException(GROUP_DELETE_FAILED_BY_CLOSED_EARLY);
+            throw new GroupException(ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new GroupException(GROUP_DELETE_FAILED_BY_DEADLINE_OVER);
+            throw new GroupException(ALREADY_DEADLINE_OVER);
         }
         if (participants.isNotEmpty()) {
-            throw new GroupException(GROUP_DELETE_FAILED_BY_PARTICIPANT_EXIST);
+            throw new GroupException(PARTICIPANT_EXIST);
         }
     }
 
     private void validateGroupCanBeCloseEarly() {
         if (closedEarly) {
-            throw new GroupException(GROUP_ALREADY_CLOSED_EARLY);
+            throw new GroupException(ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new GroupException(GROUP_ALREADY_DEADLINE_OVER);
+            throw new GroupException(ALREADY_DEADLINE_OVER);
         }
     }
 
@@ -137,10 +132,10 @@ public class Group {
 
     private void validateGroupIsProceeding() {
         if (closedEarly) {
-            throw new GroupException(GROUP_ALREADY_CLOSED_EARLY);
+            throw new GroupException(ALREADY_CLOSED_EARLY);
         }
         if (calendar.isDeadlineOver()) {
-            throw new GroupException(GROUP_ALREADY_DEADLINE_OVER);
+            throw new GroupException(ALREADY_DEADLINE_OVER);
         }
     }
 

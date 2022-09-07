@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DURATION_MUST_BE_SET_FROM_NOW_ON;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DURATION_START_DATE_MUST_BE_BEFORE_END_DATE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_FROM_NOW_ON;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_START_DATE_MUST_BE_BEFORE_END_DATE;
 
 import java.time.LocalDate;
 import java.util.Objects;

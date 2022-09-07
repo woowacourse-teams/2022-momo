@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DURATION_MUST_BE_SET_BEFORE_DEADLINE;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_BEFORE_DEADLINE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
 import java.util.List;
 

@@ -53,7 +53,7 @@ class ParticipantsTest {
 
         assertThatThrownBy(() -> participants.participate(GROUP, HOST))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
+                .hasMessage("해당 모임의 주최자입니다.");
     }
 
     @DisplayName("참여자가 다시 참여할 경우 예외가 발생한다")
@@ -64,7 +64,7 @@ class ParticipantsTest {
 
         assertThatThrownBy(() -> participants.participate(GROUP, PARTICIPANT))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("회원은 이미 해당 모임의 참여자입니다.");
+                .hasMessage("해당 모임의 참여자입니다.");
     }
 
     @DisplayName("참여인원이 가득찬 상태에서 회원이 참여할 경우 예외가 발생한다")
@@ -94,7 +94,7 @@ class ParticipantsTest {
 
         assertThatThrownBy(() -> participants.leave(HOST))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("주최자는 자신의 모임에 참여 또는 탈퇴할 수 없습니다.");
+                .hasMessage("해당 모임의 주최자입니다.");
     }
 
     @DisplayName("참여자가 아닌 회원이 탈퇴할 경우 예외가 발생한다")
@@ -104,7 +104,7 @@ class ParticipantsTest {
 
         assertThatThrownBy(() -> participants.leave(PARTICIPANT))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("모임의 참여자가 아닙니다.");
+                .hasMessage("해당 모임의 참여자가 아닙니다.");
     }
 
     @DisplayName("참여 가능 인원수를 수정한다")

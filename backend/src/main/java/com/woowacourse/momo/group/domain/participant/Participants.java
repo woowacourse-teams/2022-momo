@@ -1,10 +1,10 @@
 package com.woowacourse.momo.group.domain.participant;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.CAPACITY_ALREADY_FULL;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.HOST_CANNOT_PARTICIPATE_OR_LEAVE_OWN_GROUP;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_ALREADY_PARTICIPANT;
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_IS_NOT_PARTICIPANT;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_PARTICIPANTS_SIZE_FULL;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_HOST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_PARTICIPANT;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_PARTICIPANT;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,13 +70,13 @@ public class Participants {
 
     private void validateMemberIsNotHost(Member member) {
         if (host.equals(member)) {
-            throw new GroupException(HOST_CANNOT_PARTICIPATE_OR_LEAVE_OWN_GROUP);
+            throw new GroupException(MEMBER_IS_HOST);
         }
     }
 
     private void validateMemberIsNotParticipant(Member member) {
         if (contains(member)) {
-            throw new GroupException(MEMBER_IS_ALREADY_PARTICIPANT);
+            throw new GroupException(MEMBER_IS_PARTICIPANT);
         }
     }
 
@@ -86,7 +86,7 @@ public class Participants {
 
     private void validateParticipantsNotYetFull() {
         if (isFull()) {
-            throw new GroupException(CAPACITY_ALREADY_FULL);
+            throw new GroupException(ALREADY_PARTICIPANTS_SIZE_FULL);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.NAME_CANNOT_BE_BLANK;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.NAME_CANNOT_BE_BLANK;
 
 import java.util.Objects;
 

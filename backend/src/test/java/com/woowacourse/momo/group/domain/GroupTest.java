@@ -55,7 +55,7 @@ class GroupTest {
         void cannotUpdateGroupByClosedEarly() {
             assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("조기 마감된 모임은 수정할 수 없습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
         @DisplayName("조기마감된 모임은 더이상 삭제할 수 없습니다")
@@ -63,7 +63,7 @@ class GroupTest {
         void cannotDeleteGroupByClosedEarly() {
             assertThatThrownBy(group::validateGroupIsDeletable)
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("조기 마감된 모임은 삭제할 수 없습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
         @DisplayName("이미 조기마감된 모임은 다시 조기마감할 수 없습니다")
@@ -71,7 +71,7 @@ class GroupTest {
         void cannotCloseGroupByAlreadyClosed() {
             assertThatThrownBy(group::closeEarly)
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 조기 마감되었습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
         @DisplayName("이미 조기마감된 모임에는 참여할 수 없다")
@@ -81,7 +81,7 @@ class GroupTest {
 
             assertThatThrownBy(() -> group.participate(participant))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 조기 마감되었습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
         @DisplayName("이미 조기마감된 모임을 탈퇴한다")
@@ -95,7 +95,7 @@ class GroupTest {
 
             assertThatThrownBy(() -> group.leave(participant))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 조기 마감되었습니다.");
+                    .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
     }
 
@@ -116,7 +116,7 @@ class GroupTest {
         void cannotUpdateGroupByDeadlinePassed() {
             assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("마감기한이 지난 모임은 수정할 수 없습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
 
         @DisplayName("마감기한이 지나버린 모임은 더이상 삭제할 수 없습니다")
@@ -124,7 +124,7 @@ class GroupTest {
         void cannotDeleteGroupByDeadlinePassed() {
             assertThatThrownBy(group::validateGroupIsDeletable)
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("마감기한이 지난 모임은 삭제할 수 없습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
 
         @DisplayName("마감기한이 지나버린 모임은 조기마감한다")
@@ -132,7 +132,7 @@ class GroupTest {
         void cannotCloseGroupByDeadlinePassed() {
             assertThatThrownBy(group::closeEarly)
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 마감기한이 지났습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
 
         @DisplayName("마감기한이 지나버린 모임에는 참여할 수 없다")
@@ -142,7 +142,7 @@ class GroupTest {
 
             assertThatThrownBy(() -> group.participate(participant))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 마감기한이 지났습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
 
         @DisplayName("마감기한이 지나버린 모임을 탈퇴한다")
@@ -156,7 +156,7 @@ class GroupTest {
 
             assertThatThrownBy(() -> group.leave(participant))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 이미 마감기한이 지났습니다.");
+                    .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
     }
 
@@ -177,7 +177,7 @@ class GroupTest {
         void cannotUpdateGroupByExistParticipants() {
             assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("참여자가 존재하는 모임은 수정할 수 없습니다.");
+                    .hasMessage("해당 모임은 참여자가 존재합니다.");
         }
 
         @DisplayName("참여자가 존재하는 모임은 삭제할 수 없습니다")
@@ -185,7 +185,7 @@ class GroupTest {
         void cannotDeleteGroupByExistParticipants() {
             assertThatThrownBy(group::validateGroupIsDeletable)
                     .isInstanceOf(GroupException.class)
-                    .hasMessage("참여자가 존재하는 모임은 삭제할 수 없습니다.");
+                    .hasMessage("해당 모임은 참여자가 존재합니다.");
         }
     }
 

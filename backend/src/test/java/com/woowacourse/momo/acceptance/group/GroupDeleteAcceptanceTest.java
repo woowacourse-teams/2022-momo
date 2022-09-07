@@ -48,7 +48,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
         모임을_삭제한다(anotherAccessToken, groupId)
                 .statusCode(HttpStatus.FORBIDDEN.value())
-                .body("message", Matchers.is("AUTH_ERROR_004"));
+                .body("message", Matchers.is("GROUP_ERROR_017"));
 
         모임을_조회한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.OK.value());
@@ -86,7 +86,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
         모임을_삭제한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_010"));
+                .body("message", Matchers.is("GROUP_ERROR_014"));
 
         모임을_조회한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.OK.value());

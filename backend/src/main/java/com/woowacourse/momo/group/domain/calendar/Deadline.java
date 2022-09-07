@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain.calendar;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.DEADLINE_MUST_BE_SET_FROM_NOW_ON;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DEADLINE_MUST_BE_SET_FROM_NOW_ON;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

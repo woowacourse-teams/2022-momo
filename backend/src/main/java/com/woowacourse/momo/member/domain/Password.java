@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -56,13 +56,13 @@ public class Password {
 
     private static void validatePasswordIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(ErrorCode.MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK);
+            throw new MomoException(GlobalErrorCode.MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK);
         }
     }
 
     private static void validatePasswordPatternIsValid(String value) {
         if (isNotValid(value)) {
-            throw new MomoException(ErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
+            throw new MomoException(GlobalErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
         }
     }
 }

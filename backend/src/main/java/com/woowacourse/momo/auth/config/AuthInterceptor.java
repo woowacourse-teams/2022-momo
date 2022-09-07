@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private void validateToken(HttpServletRequest request) {
         String token = AuthorizationExtractor.extract(request);
         if (jwtTokenProvider.validateTokenNotUsable(token)) {
-            throw new MomoException(ErrorCode.AUTH_INVALID_TOKEN);
+            throw new MomoException(GlobalErrorCode.AUTH_INVALID_TOKEN);
         }
     }
 }

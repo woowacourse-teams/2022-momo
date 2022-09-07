@@ -16,7 +16,7 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.google.GoogleConnector;
 import com.woowacourse.momo.auth.support.google.GoogleProvider;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -59,12 +59,12 @@ public class OauthService {
         validateResponseStatusIsOk(responseEntity.getStatusCode());
 
         return Optional.ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new MomoException(ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
+                .orElseThrow(() -> new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
     }
 
     private void validateResponseStatusIsOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
-            throw new MomoException(ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
+            throw new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
     }
 

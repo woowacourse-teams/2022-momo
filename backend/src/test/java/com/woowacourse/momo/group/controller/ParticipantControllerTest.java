@@ -144,7 +144,7 @@ class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("PARTICIPANT_ERROR_002")))
+                .andExpect(jsonPath("$.message", is("GROUP_ERROR_016")))
                 .andDo(
                         document("participateparticipant",
                                 preprocessRequest(prettyPrint()),
@@ -166,7 +166,7 @@ class ParticipantControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("PARTICIPANT_ERROR_003")))
+                .andExpect(jsonPath("$.message", is("GROUP_ERROR_013")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),
@@ -256,7 +256,7 @@ class ParticipantControllerTest {
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isForbidden())
                 .andDo(
                         document("deletenotparticipant",
                                 preprocessRequest(prettyPrint()),

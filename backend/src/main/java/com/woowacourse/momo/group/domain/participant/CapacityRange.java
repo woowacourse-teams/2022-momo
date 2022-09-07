@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain.participant;
 
-import static com.woowacourse.momo.group.exception.GroupExceptionMessage.MEMBER_CAPACITY_CANNOT_BE_OUT_OF_RANGE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_CANNOT_BE_OUT_OF_RANGE;
 
 import com.woowacourse.momo.group.exception.GroupException;
 
@@ -18,7 +18,7 @@ public enum CapacityRange {
 
     public static void validateCapacityIsInRange(int capacity) {
         if (isOutOfRange(capacity)) {
-            throw new GroupException(MEMBER_CAPACITY_CANNOT_BE_OUT_OF_RANGE);
+            throw new GroupException(CAPACITY_CANNOT_BE_OUT_OF_RANGE);
         }
     }
 
