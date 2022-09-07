@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { getGroupParticipants } from 'apis/request/group';
+import { requestGroupParticipants } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
 import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
 
@@ -32,7 +32,7 @@ function DetailSideBar({
 }) {
   const { data: participants } = useQuery<GroupParticipants>(
     `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
-    () => getGroupParticipants(id),
+    () => requestGroupParticipants(id),
     { staleTime: Infinity },
   );
 

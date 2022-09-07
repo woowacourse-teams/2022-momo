@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { getJoinedGroups } from 'apis/request/group';
+import { requestJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import NoResult from 'components/@shared/NoResult';
 import TopButton from 'components/@shared/TopButton';
@@ -30,7 +30,12 @@ function MyGroup() {
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getJoinedGroups(selectedGroupType, pageNumber, isExcludeFinished, keyword),
+    requestJoinedGroups(
+      selectedGroupType,
+      pageNumber,
+      isExcludeFinished,
+      keyword,
+    ),
     {
       suspense: true,
     },

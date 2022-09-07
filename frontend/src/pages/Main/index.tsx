@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { getGroups } from 'apis/request/group';
+import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/@shared/ErrorBoundary';
 import { CategoryFallback } from 'components/@shared/ErrorBoundary/CategoryFallback';
 import TopButton from 'components/@shared/TopButton';
@@ -29,7 +29,7 @@ function Main() {
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
+    requestGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
     {
       suspense: true,
     },

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import { getGroupDetail } from 'apis/request/group';
+import { requestGroupDetail } from 'apis/request/group';
 import { DetailSideBar, DetailContent } from 'components/Detail';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
@@ -15,7 +15,7 @@ function Detail() {
   const { state: data } = useRecoilQuery(
     groupDetailState,
     QUERY_KEY.GROUP_DETAILS,
-    () => getGroupDetail(Number(id)),
+    () => requestGroupDetail(Number(id)),
     0,
   );
   const { categories } = useCategory();

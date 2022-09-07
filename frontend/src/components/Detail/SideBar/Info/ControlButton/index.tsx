@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import {
-  deleteGroup as requestDeleteGroup,
-  joinGroup as requestJoinGroup,
-  exitGroup as requestExitGroup,
+  requestDeleteGroup,
+  requestJoinGroup,
+  requestExitGroup,
   requestCloseGroup,
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
