@@ -25,25 +25,29 @@ public class GroupSearchController {
 
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupResponse> findGroup(@PathVariable Long groupId) {
-        return ResponseEntity.ok(groupService.findGroup(groupId));
+        GroupResponse response = groupService.findGroup(groupId);
+        return ResponseEntity.ok(response);
     }
 
     @Authenticated
     @GetMapping("/me/participated")
     public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
                                                                     @ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findParticipatedGroups(groupFindRequest, memberId));
+        GroupPageResponse response = groupService.findParticipatedGroups(groupFindRequest, memberId);
+        return ResponseEntity.ok(response);
     }
 
     @Authenticated
     @GetMapping("/me/hosted")
     public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
                                                               @ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findHostedGroups(groupFindRequest, memberId));
+        GroupPageResponse response = groupService.findHostedGroups(groupFindRequest, memberId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
     public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
-        return ResponseEntity.ok(groupService.findGroups(groupFindRequest));
+        GroupPageResponse response = groupService.findGroups(groupFindRequest);
+        return ResponseEntity.ok(response);
     }
 }

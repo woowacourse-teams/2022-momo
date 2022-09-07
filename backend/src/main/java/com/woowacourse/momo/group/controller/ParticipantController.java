@@ -33,7 +33,8 @@ public class ParticipantController {
 
     @GetMapping
     public ResponseEntity<List<MemberResponse>> findParticipants(@PathVariable Long groupId) {
-        return ResponseEntity.ok(participantService.findParticipants(groupId));
+        List<MemberResponse> responses = participantService.findParticipants(groupId);
+        return ResponseEntity.ok(responses);
     }
 
     @Authenticated

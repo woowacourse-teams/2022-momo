@@ -34,9 +34,9 @@ public class GroupHostController {
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
                                                   @RequestBody @Valid GroupParam param) {
-        GroupIdResponse groupIdResponse = groupManageService.create(memberId, assembler.groupRequest(param));
-        return ResponseEntity.created(URI.create("/api/groups/" + groupIdResponse.getGroupId()))
-                .body(groupIdResponse);
+        GroupIdResponse response = groupManageService.create(memberId, assembler.groupRequest(param));
+        URI uri = URI.create("/api/groups/" + response.getGroupId());
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping("/{groupId}")
