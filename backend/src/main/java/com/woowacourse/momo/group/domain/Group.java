@@ -83,41 +83,8 @@ public class Group {
     }
 
     public void closeEarly() {
-        validateGroupCanBeCloseEarly();
+        validateGroupIsProceeding();
         closedEarly = true;
-    }
-
-    private void validateGroupIsUpdatable() {
-        if (closedEarly) {
-            throw new GroupException(ALREADY_CLOSED_EARLY);
-        }
-        if (calendar.isDeadlineOver()) {
-            throw new GroupException(ALREADY_DEADLINE_OVER);
-        }
-        if (participants.isNotEmpty()) {
-            throw new GroupException(PARTICIPANT_EXIST);
-        }
-    }
-
-    public void validateGroupIsDeletable() {
-        if (closedEarly) {
-            throw new GroupException(ALREADY_CLOSED_EARLY);
-        }
-        if (calendar.isDeadlineOver()) {
-            throw new GroupException(ALREADY_DEADLINE_OVER);
-        }
-        if (participants.isNotEmpty()) {
-            throw new GroupException(PARTICIPANT_EXIST);
-        }
-    }
-
-    private void validateGroupCanBeCloseEarly() {
-        if (closedEarly) {
-            throw new GroupException(ALREADY_CLOSED_EARLY);
-        }
-        if (calendar.isDeadlineOver()) {
-            throw new GroupException(ALREADY_DEADLINE_OVER);
-        }
     }
 
     public void participate(Member member) {
@@ -130,12 +97,35 @@ public class Group {
         participants.leave(member);
     }
 
+    public void validateGroupIsDeletable() {
+        validateGroupIsUpdatable();
+    }
+
+    private void validateGroupIsUpdatable() {
+        validateGroupIsProceeding();
+        validateParticipantIsEmpty();
+    }
+
     private void validateGroupIsProceeding() {
+        validateGroupIsNotClosedEarly();
+        validateDeadlineNotOver();
+    }
+
+    private void validateGroupIsNotClosedEarly() {
         if (closedEarly) {
             throw new GroupException(ALREADY_CLOSED_EARLY);
         }
+    }
+
+    private void validateDeadlineNotOver() {
         if (calendar.isDeadlineOver()) {
             throw new GroupException(ALREADY_DEADLINE_OVER);
+        }
+    }
+
+    private void validateParticipantIsEmpty() {
+        if (participants.isNotEmpty()) {
+            throw new GroupException(PARTICIPANT_EXIST);
         }
     }
 
