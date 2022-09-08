@@ -3,12 +3,11 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { requestJoinedGroups } from 'apis/request/group';
-import ErrorBoundary from 'components/@shared/ErrorBoundary';
-import NoResult from 'components/@shared/NoResult';
-import TopButton from 'components/@shared/TopButton';
+import ErrorBoundary from 'components/ErrorBoundary';
+import NoResult from 'components/NoResult';
 import SearchForm from 'components/SearchForm';
+import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
-import useInput from 'hooks/useInput';
 import { GroupList, SelectableGroup } from 'types/data';
 
 import * as S from './index.styled';
@@ -25,7 +24,7 @@ function MyGroup() {
     useState<SelectableGroup>('participated');
 
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-  const { value: keyword, setValue: setKeyword } = useInput('');
+  const [keyword, setKeyword] = useState('');
 
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
@@ -80,7 +79,8 @@ function MyGroup() {
     refetch();
   };
 
-  const search = async () => {
+  const search = async (keyword: string) => {
+    await setKeyword(keyword);
     await setPageNumber(0);
     refetch();
   };
@@ -88,7 +88,7 @@ function MyGroup() {
   return (
     <>
       <S.SearchWrapper>
-        <SearchForm keyword={keyword} setKeyword={setKeyword} search={search} />
+        <SearchForm search={search} />
       </S.SearchWrapper>
       <S.GroupTypeBox>
         {groupTypes.map(({ type, name }) => (

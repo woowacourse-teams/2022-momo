@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { requestGroups } from 'apis/request/group';
-import ErrorBoundary from 'components/@shared/ErrorBoundary';
-import { CategoryFallback } from 'components/@shared/ErrorBoundary/CategoryFallback';
-import TopButton from 'components/@shared/TopButton';
+import ErrorBoundary from 'components/ErrorBoundary';
+import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
+import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import useInput from 'hooks/useInput';
@@ -22,7 +22,7 @@ function Main() {
   const { getCategoryDescription } = useCategory();
 
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-  const { value: keyword, setValue: setKeyword } = useInput('');
+  const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
 
@@ -58,7 +58,8 @@ function Main() {
     refetch();
   };
 
-  const search = async () => {
+  const search = async (keyword: string) => {
+    await setKeyword(keyword);
     await setPageNumber(0);
     refetch();
   };
@@ -77,11 +78,7 @@ function Main() {
 
   return (
     <>
-      <SearchSection
-        keyword={keyword}
-        setKeyword={setKeyword}
-        search={search}
-      />
+      <SearchSection search={search} />
       <ErrorBoundary fallbackUI={<CategoryFallback />}>
         <Category
           selectedCategoryId={selectedCategoryId}

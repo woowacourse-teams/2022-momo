@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -20,7 +19,7 @@ const Modal = styled.div`
 
   border-radius: 20px;
 
-  ${({ theme: { colors } }) => css`
+  ${({ theme: { colors } }) => `
     background: ${colors.white001};
     color: ${colors.gray001};
     filter: drop-shadow(0 0 1px ${colors.gray001});

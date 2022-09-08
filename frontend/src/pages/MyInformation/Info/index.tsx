@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import {
-  getUserInfo,
+  requestUserInfo,
   requestChangeName,
   requestChangePassword,
 } from 'apis/request/user';
@@ -60,7 +60,7 @@ function Info() {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
         setIsNameEditable(false);
 
-        getUserInfo().then(userInfo => {
+        requestUserInfo().then(userInfo => {
           setLoginInfo({ ...loginInfo, user: userInfo });
         });
       })
@@ -75,7 +75,8 @@ function Info() {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
         setIsPasswordEditable(false);
 
-        getUserInfo().then(userInfo => {
+        // TODO: 필요 없는 코드면 지우기
+        requestUserInfo().then(userInfo => {
           setLoginInfo({ ...loginInfo, user: userInfo });
         });
       })

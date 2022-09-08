@@ -6,10 +6,10 @@ import {
   RefetchQueryFilters,
 } from 'react-query';
 
-import { Loading } from 'components/@shared/Animation';
-import Card from 'components/@shared/Card';
-import Checkbox from 'components/@shared/Checkbox';
-import NoResult from 'components/@shared/NoResult';
+import { Loading } from 'components/Animation';
+import Card from 'components/Card';
+import Checkbox from 'components/Checkbox';
+import NoResult from 'components/NoResult';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { CategoryType, GroupList } from 'types/data';
 

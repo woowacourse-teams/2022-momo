@@ -5,6 +5,7 @@ interface isValidSignupFormDataProp {
   isValidPassword: boolean;
   isValidConfirmPassword: boolean;
 }
+
 const passwordRegExp =
   '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$';
 

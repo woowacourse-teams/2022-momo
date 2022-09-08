@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -24,7 +23,7 @@ const GroupListBox = styled.div`
 
   width: 100%;
 
-  ${({ theme: { breakpoints } }) => css`
+  ${({ theme: { breakpoints } }) => `
     @media only screen and (max-width: ${breakpoints.md}px) {
       grid-template-columns: repeat(1, 1fr);
     }

@@ -23,10 +23,12 @@ const Button = styled.button`
 
   border-radius: 5px;
 
-  background: ${({ theme: { colors } }) => colors.blue001};
-  color: ${({ theme: { colors } }) => colors.white001};
-
   font-size: 1.1rem;
+
+  ${({ theme: { colors } }) => `
+    background: ${colors.blue001};
+    color: ${colors.white001};
+  `};
 `;
 
 export { Container, Title, Input, Button };

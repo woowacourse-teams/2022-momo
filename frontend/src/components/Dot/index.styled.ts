@@ -1,4 +1,3 @@
-import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const DotWrapper = styled.div`
@@ -10,23 +9,18 @@ const DotWrapper = styled.div`
   height: 12px;
 `;
 
-const Dot = styled.div`
+const Dot = styled.div<{ isFocused: boolean }>`
   width: 12px;
   height: 12px;
 
   border-radius: 50%;
 
-  ${({ isFocused, theme }: { isFocused: boolean; theme: Theme }) => css`
-    ${isFocused
-      ? `
-      background: ${theme.colors.green002};
-      transform: scale(1.5);
-    `
-      : `
-      background: ${theme.colors.gray003};
-      transform: scale(1);
-    `}
-    transition: 0.2s;
+  transition: 0.2s;
+
+  ${({ isFocused, theme: { colors } }) => `
+    background: ${isFocused ? colors.green002 : colors.gray003};
+
+    transform: scale(${isFocused ? 1.5 : 1});
   `};
 `;
 

@@ -1,4 +1,4 @@
-import CalendarComponent from 'components/@shared/Calendar';
+import CalendarComponent from 'components/Calendar';
 import useDate from 'hooks/useDate';
 import { GroupDetailData } from 'types/data';
 
@@ -9,7 +9,7 @@ interface CalendarProps {
 }
 
 function Calendar({ schedules }: CalendarProps) {
-  const { today, year, month, goToPrevMonth, goToNextMonth } = useDate();
+  const { year, month, goToPrevMonth, goToNextMonth } = useDate();
 
   return (
     <S.Container>
@@ -18,7 +18,6 @@ function Calendar({ schedules }: CalendarProps) {
         month={month}
         goToPrevMonth={goToPrevMonth}
         goToNextMonth={goToNextMonth}
-        today={today}
         schedules={schedules}
         size="medium"
       />

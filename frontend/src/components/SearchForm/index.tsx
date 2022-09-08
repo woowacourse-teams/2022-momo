@@ -1,21 +1,24 @@
+import { useRef } from 'react';
 import * as S from './index.styled';
 
 interface SearchFormProps {
-  keyword: string;
-  setKeyword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  search: () => void;
+  search: (keyword: string) => void;
 }
 
-function SearchForm({ keyword, setKeyword, search }: SearchFormProps) {
+function SearchForm({ search }: SearchFormProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const searchWithPreventSubmitEvent = (e: React.FormEvent) => {
     e.preventDefault();
 
-    search();
+    if (!inputRef.current) return;
+
+    search(inputRef.current.value);
   };
 
   return (
     <S.Form onSubmit={searchWithPreventSubmitEvent}>
-      <S.Input type="text" value={keyword} onChange={setKeyword} />
+      <S.Input type="text" ref={inputRef} />
       <S.Button type="submit">🔎</S.Button>
     </S.Form>
   );

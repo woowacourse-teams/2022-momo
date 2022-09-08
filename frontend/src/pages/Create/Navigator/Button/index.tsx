@@ -1,8 +1,7 @@
-import { useState } from 'react';
-
 import Dot from 'components/Dot';
 
 import * as S from './index.styled';
+import useHover from 'hooks/useHover';
 
 interface ButtonProps {
   content: string;
@@ -12,11 +11,7 @@ interface ButtonProps {
 }
 
 function Button({ content, number, isFocused, changePage }: ButtonProps) {
-  const [isHover, setIsHover] = useState(false);
-
-  const changeHoverState = (isHover: boolean) => () => {
-    setIsHover(isHover);
-  };
+  const { isHover, changeHoverState } = useHover();
 
   return (
     <S.Container>

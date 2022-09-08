@@ -1,4 +1,4 @@
-import CalendarComponent from 'components/@shared/Calendar';
+import CalendarComponent from 'components/Calendar';
 import useDate from 'hooks/useDate';
 import { CreateGroupData } from 'types/data';
 
@@ -18,7 +18,7 @@ function Calendar({
   selectDate,
   selectedDate,
 }: CalendarProps) {
-  const { today, year, month, goToPrevMonth, goToNextMonth } = useDate();
+  const { year, month, goToPrevMonth, goToNextMonth } = useDate();
 
   return (
     <CalendarComponent
@@ -26,7 +26,6 @@ function Calendar({
       month={month}
       goToPrevMonth={goToPrevMonth}
       goToNextMonth={goToNextMonth}
-      today={today}
       duration={duration}
       schedules={schedules}
       selectDate={selectDate}

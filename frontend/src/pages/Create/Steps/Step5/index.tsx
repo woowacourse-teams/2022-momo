@@ -3,7 +3,7 @@ import { forwardRef, LegacyRef, memo } from 'react';
 import { CreateGroupData, ScheduleType } from 'types/data';
 
 import { Container, Heading } from '../@shared/styled';
-import CalendarEditor from './CalendarEditor';
+import CalendarEditor from 'components/CalendarEditor';
 
 interface Step5Props {
   useScheduleState: () => {

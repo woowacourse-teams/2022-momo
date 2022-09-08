@@ -25,14 +25,16 @@ const Input = styled.input`
 const Button = styled.button`
   width: 15%;
 
-  background: ${({ theme: { colors } }) => colors.yellow001};
-  color: ${({ theme: { colors } }) => colors.white001};
-
   border: none;
   border-radius: 0 10px 10px 0;
 
   font-size: 1rem;
   font-weight: 700;
+
+  ${({ theme: { colors } }) => `
+    background: ${colors.yellow001};
+    color: ${colors.white001};
+  `}
 `;
 
 export { Form, Input, Button };
