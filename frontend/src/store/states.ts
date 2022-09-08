@@ -25,6 +25,29 @@ const loginState = atom<LoginState>({
   default: { isLogin: false },
 });
 
+const groupDetailState = atom<GroupDetailData>({
+  key: 'groupDetailState',
+  default: {
+    id: -1,
+    name: '',
+    host: {
+      id: -1,
+      name: '',
+    },
+    categoryId: 0,
+    capacity: 1,
+    duration: {
+      start: '',
+      end: '',
+    },
+    schedules: [],
+    finished: false,
+    deadline: '',
+    location: '',
+    description: '',
+  },
+});
+
 const accessTokenState = selector<string>({
   key: 'accessToken',
   get: () => {
@@ -57,35 +80,12 @@ const refreshTokenState = selector<string>({
   },
 });
 
-const groupDetailState = atom<GroupDetailData>({
-  key: 'groupDetailState',
-  default: {
-    id: -1,
-    name: '',
-    host: {
-      id: -1,
-      name: '',
-    },
-    categoryId: 0,
-    capacity: 1,
-    duration: {
-      start: '',
-      end: '',
-    },
-    schedules: [],
-    finished: false,
-    deadline: '',
-    location: '',
-    description: '',
-  },
-});
-
 export {
   categoryState,
   modalState,
   snackbarState,
   loginState,
+  groupDetailState,
   accessTokenState,
   refreshTokenState,
-  groupDetailState,
 };

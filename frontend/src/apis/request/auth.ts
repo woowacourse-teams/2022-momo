@@ -52,7 +52,7 @@ const requestLogout = () => {
 const requestReissueAccessToken = () => {
   return axios
     .post<{ accessToken: string }>(
-      API_PATH.REISSUE_ACCESS_TOKEN,
+      API_PATH.REFRESH_ACCESS_TOKEN,
       {},
       {
         headers: {

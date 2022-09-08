@@ -16,7 +16,6 @@ const useRecoilQuery = <T>(
     suspense,
   });
 
-  // TODO: React Query + Recoil -> 좀 더 우아한 방법을 찾아보자
   useEffect(() => {
     if (!data) return;
 

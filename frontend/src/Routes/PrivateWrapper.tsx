@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+
+import useAuth from 'hooks/useAuth';
 
 import { BROWSER_PATH } from 'constants/path';
-import { loginState } from 'store/states';
 
 function PrivateWrapper() {
-  const { isLogin } = useRecoilValue(loginState);
+  const { isLogin } = useAuth();
 
   const navigate = useNavigate();
 
