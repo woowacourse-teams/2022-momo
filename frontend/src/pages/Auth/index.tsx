@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { requestGoogleLogin } from 'apis/request/auth';
-import { getUserInfo } from 'apis/request/user';
-import { Loading } from 'components/@shared/Animation';
+import { requestUserInfo } from 'apis/request/user';
+import { Loading } from 'components/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useSnackbar from 'hooks/useSnackbar';
@@ -30,7 +30,7 @@ function Auth() {
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
 
-        getUserInfo().then(userInfo => {
+        requestUserInfo().then(userInfo => {
           setLoginInfo({ isLogin: true, loginType: 'oauth', user: userInfo });
           setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
         });

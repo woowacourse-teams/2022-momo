@@ -3,6 +3,11 @@ import { API_PATH, BROWSER_PATH } from 'constants/path';
 import { Token, User } from 'types/user';
 import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
 
+/**
+ * auth.ts 함수의 이름 규칙은 아래 문서를 참고해주세요.
+ * @ref https://github.com/woowacourse-teams/2022-momo/wiki/%ED%95%A8%EC%88%98-%EC%9D%B4%EB%A6%84-%EA%B7%9C%EC%B9%99
+ */
+
 const requestSignup = (userData: User) => {
   return axios.post(API_PATH.SIGNUP, userData);
 };
@@ -47,7 +52,7 @@ const requestLogout = () => {
 const requestReissueAccessToken = () => {
   return axios
     .post<{ accessToken: string }>(
-      API_PATH.REISSUE_ACCESS_TOKEN,
+      API_PATH.REFRESH_ACCESS_TOKEN,
       {},
       {
         headers: {

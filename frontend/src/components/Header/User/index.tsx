@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestLogout } from 'apis/request/auth';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useClosingState from 'hooks/useClosingState';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 
 import * as S from './index.styled';
+import useAuth from 'hooks/useAuth';
 
 const dropdownAnimationTime = 300;
 
 function User() {
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setRefreshToken = useSetRecoilState(refreshTokenState);
-  const { isLogin, user } = useRecoilValue(loginState);
-  const resetLoginInfo = useResetRecoilState(loginState);
+  const { isLogin, user, resetAuth } = useAuth();
 
   const [isShownDropdown, setIsShownDropdown] = useState(false);
   const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
@@ -52,10 +48,7 @@ function User() {
 
     requestLogout()
       .then(() => {
-        resetLoginInfo();
-
-        setAccessToken('');
-        setRefreshToken('');
+        resetAuth();
 
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
 

@@ -16,16 +16,9 @@ export interface PageType {
   content: string;
 }
 
-export interface CreateGroupData {
-  name: GroupDetailData['name'];
-  selectedCategory: CategoryType;
-  capacity: GroupDetailData['capacity'];
+export interface DurationDate {
   startDate: GroupDetailData['duration']['start'];
   endDate: GroupDetailData['duration']['end'];
-  schedules: GroupDetailData['schedules'];
-  deadline: GroupDetailData['deadline'];
-  location: GroupDetailData['location'];
-  description: GroupDetailData['description'];
 }
 
 export interface GroupDetailData {
@@ -48,9 +41,14 @@ export interface GroupDetailData {
   description: string;
 }
 
-export interface DurationDate {
-  startDate: GroupDetailData['duration']['start'];
-  endDate: GroupDetailData['duration']['end'];
+export interface CreateGroupData extends DurationDate {
+  name: GroupDetailData['name'];
+  selectedCategory: CategoryType;
+  capacity: GroupDetailData['capacity'];
+  schedules: GroupDetailData['schedules'];
+  deadline: GroupDetailData['deadline'];
+  location: GroupDetailData['location'];
+  description: GroupDetailData['description'];
 }
 
 export interface GroupList {

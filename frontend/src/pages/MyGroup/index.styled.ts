@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const SearchWrapper = styled.div`
@@ -32,7 +31,7 @@ const Content = styled.div`
 
   margin: 2rem auto;
 
-  ${({ theme: { breakpoints } }) => css`
+  ${({ theme: { breakpoints } }) => `
     @media only screen and (max-width: ${breakpoints.md}px) {
       align-items: center;
       max-width: ${breakpoints.sm}px;

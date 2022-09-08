@@ -25,4 +25,13 @@ module.exports = merge(common, {
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
     }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
 });

@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { getGroups } from 'apis/request/group';
-import ErrorBoundary from 'components/@shared/ErrorBoundary';
-import { CategoryFallback } from 'components/@shared/ErrorBoundary/CategoryFallback';
-import TopButton from 'components/@shared/TopButton';
-import Category from 'components/Category';
-import RecommendGroups from 'components/RecommendGroups';
-import SearchSection from 'components/SearchSection';
+import { requestGroups } from 'apis/request/group';
+import ErrorBoundary from 'components/ErrorBoundary';
+import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
+import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import useInput from 'hooks/useInput';
 import { CategoryType, GroupList } from 'types/data';
 
+import Category from './Category';
 import * as S from './index.styled';
+import RecommendGroups from './RecommendGroups';
+import SearchSection from './SearchSection';
 
 const invalidCategoryId = -1;
 
@@ -22,14 +22,14 @@ function Main() {
   const { getCategoryDescription } = useCategory();
 
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-  const { value: keyword, setValue: setKeyword } = useInput('');
+  const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
 
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
+    requestGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
     {
       suspense: true,
     },
@@ -58,7 +58,8 @@ function Main() {
     refetch();
   };
 
-  const search = async () => {
+  const search = async (keyword: string) => {
+    await setKeyword(keyword);
     await setPageNumber(0);
     refetch();
   };
@@ -77,11 +78,7 @@ function Main() {
 
   return (
     <>
-      <SearchSection
-        keyword={keyword}
-        setKeyword={setKeyword}
-        search={search}
-      />
+      <SearchSection search={search} />
       <ErrorBoundary fallbackUI={<CategoryFallback />}>
         <Category
           selectedCategoryId={selectedCategoryId}

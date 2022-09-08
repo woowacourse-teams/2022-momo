@@ -43,28 +43,32 @@ const Button = styled.button`
 
   border-radius: 5px;
 
-  background: ${({ theme: { colors } }) => colors.blue001};
-  color: ${({ theme: { colors } }) => colors.white001};
-
   font-size: 1.1rem;
+
+  ${({ theme: { colors } }) => `
+    background: ${colors.blue001};
+    color: ${colors.white001};
+  `};
 `;
 
 const SignupButton = styled.div`
   font-size: 1rem;
 
-  color: ${({ theme: { colors } }) => colors.gray002};
-
   cursor: default;
 
-  span {
-    color: ${({ theme: { colors } }) => colors.gray001};
+  ${({ theme: { colors } }) => `
+    color: ${colors.gray002};
 
-    cursor: pointer;
+    span {
+      color: ${colors.gray001};
 
-    &:hover {
-      color: ${({ theme: { colors } }) => colors.blue001};
+      cursor: pointer;
+
+      &:hover {
+        color: ${colors.blue001};
+      }
     }
-  }
+  `}
 `;
 
 const Divider = styled.div`
@@ -77,13 +81,15 @@ const Divider = styled.div`
 
   margin-top: 1rem;
 
-  background: ${({ theme: { colors } }) => colors.gray003};
+  ${({ theme: { colors } }) => `
+    background: ${colors.gray003};
 
-  span {
-    padding: 0.2rem 1rem 0 1rem;
+    span {
+      padding: 0.2rem 1rem 0 1rem;
 
-    background: ${({ theme: { colors } }) => colors.white001};
-  }
+      background: ${colors.white001};
+    }
+  `}
 `;
 
 const OAuthButtonWrapper = styled.div`

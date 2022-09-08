@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom';
 
-import { getGroupDetail } from 'apis/request/group';
-import { DetailSideBar, DetailContent } from 'components/Detail';
+import { requestGroupDetail } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import useRecoilQuery from 'hooks/useRecoilQuery';
 import { groupDetailState } from 'store/states';
 
+import Content from './Content';
 import * as S from './index.styled';
+import SideBar from './SideBar';
 
 function Detail() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ function Detail() {
   const { state: data } = useRecoilQuery(
     groupDetailState,
     QUERY_KEY.GROUP_DETAILS,
-    () => getGroupDetail(Number(id)),
+    () => requestGroupDetail(Number(id)),
     0,
   );
   const { categories } = useCategory();
@@ -24,7 +25,7 @@ function Detail() {
     <S.PageContainer>
       {data && (
         <>
-          <DetailSideBar
+          <SideBar
             id={Number(id)}
             host={data.host}
             capacity={data.capacity}
@@ -37,7 +38,7 @@ function Detail() {
                 ?.name || ''
             }
           />
-          <DetailContent
+          <Content
             name={data.name}
             deadline={data.deadline}
             finished={data.finished}

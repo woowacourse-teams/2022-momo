@@ -4,7 +4,7 @@ import { API_PATH } from 'constants/path';
 import { UserProfile } from 'types/user';
 import { accessTokenProvider } from 'utils/token';
 
-const getUserInfo = () => {
+const requestUserInfo = () => {
   return axios
     .get<UserProfile>(API_PATH.MEMBERS, {
       headers: {
@@ -52,7 +52,7 @@ const requestWithdrawal = () => {
 };
 
 export {
-  getUserInfo,
+  requestUserInfo,
   requestChangeName,
   requestChangePassword,
   requestWithdrawal,

@@ -2,8 +2,8 @@ const BROWSER_PATH = {
   BASE: '/',
   DETAIL: '/detail',
   CREATE: '/create',
-  MY_INFORMATION: '/myinformation',
-  MY_GROUP: '/mygroup',
+  MY_INFORMATION: '/me',
+  MY_GROUP: '/me/group',
   OAUTH_GOOGLE: '/auth/google',
 };
 
@@ -19,7 +19,7 @@ const API_PATH = {
   LOGIN: '/auth/login',
   GOOGLE_LOGIN: '/auth/oauth2/google/login',
   LOGOUT: '/auth/logout',
-  REISSUE_ACCESS_TOKEN: '/auth/token/refresh',
+  REFRESH_ACCESS_TOKEN: '/auth/token/refresh',
   MEMBERS: '/members',
   NAME: '/members/name',
   PASSWORD: '/members/password',

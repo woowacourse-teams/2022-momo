@@ -1,6 +1,6 @@
-import { Info, Withdrawal } from 'components/MyInformation';
-
 import * as S from './index.styled';
+import Info from './Info';
+import Withdrawal from './Withdrawal';
 
 function MyInformation() {
   return (

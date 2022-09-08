@@ -94,7 +94,7 @@ const requestEditGroup = (
     });
 };
 
-const getJoinedGroups =
+const requestJoinedGroups =
   (
     type: SelectableGroup,
     pageNumber: number,
@@ -124,7 +124,7 @@ const getJoinedGroups =
       .then(response => response.data);
   };
 
-const getGroups =
+const requestGroups =
   (
     pageNumber: number,
     excludeFinished: boolean,
@@ -144,13 +144,13 @@ const getGroups =
       .then(response => response.data);
   };
 
-const getGroupDetail = (id: GroupDetailData['id']) => {
+const requestGroupDetail = (id: GroupDetailData['id']) => {
   return axios
     .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
     .then(response => response.data);
 };
 
-const deleteGroup = (id: GroupDetailData['id']) => {
+const requestDeleteGroup = (id: GroupDetailData['id']) => {
   return axios.delete(`${API_PATH.GROUP}/${id}`, {
     headers: {
       Authorization: `Bearer ${accessTokenProvider.get()}`,
@@ -158,13 +158,13 @@ const deleteGroup = (id: GroupDetailData['id']) => {
   });
 };
 
-const getGroupParticipants = (id: GroupDetailData['id']) => {
+const requestGroupParticipants = (id: GroupDetailData['id']) => {
   return axios
     .get<GroupParticipants>(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const joinGroup = (id: GroupDetailData['id']) => {
+const requestJoinGroup = (id: GroupDetailData['id']) => {
   return axios.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
     {},
@@ -176,7 +176,7 @@ const joinGroup = (id: GroupDetailData['id']) => {
   );
 };
 
-const exitGroup = (id: GroupDetailData['id']) => {
+const requestExitGroup = (id: GroupDetailData['id']) => {
   return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
     headers: {
       Authorization: `Bearer ${accessTokenProvider.get()}`,
@@ -199,12 +199,12 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 export {
   requestCreateGroup,
   requestEditGroup,
-  getJoinedGroups,
-  getGroups,
-  getGroupDetail,
-  deleteGroup,
-  getGroupParticipants,
-  joinGroup,
-  exitGroup,
+  requestJoinedGroups,
+  requestGroups,
+  requestGroupDetail,
+  requestDeleteGroup,
+  requestGroupParticipants,
+  requestJoinGroup,
+  requestExitGroup,
   requestCloseGroup,
 };

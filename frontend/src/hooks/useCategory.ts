@@ -1,4 +1,4 @@
-import { getCategory } from 'apis/request/category';
+import { requestCategory } from 'apis/request/category';
 import { QUERY_KEY } from 'constants/key';
 import { categoryState } from 'store/states';
 import { CategoryType } from 'types/data';
@@ -9,7 +9,7 @@ const useCategory = () => {
   const { state: categories, isLoading } = useRecoilQuery(
     categoryState,
     QUERY_KEY.CATEGORY,
-    getCategory,
+    requestCategory,
   );
 
   const getCategoryDescription = (categoryId: CategoryType['id']) => {

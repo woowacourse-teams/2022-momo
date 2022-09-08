@@ -25,7 +25,7 @@ const useDate = () => {
     setMonth(prevState => prevState + 1);
   };
 
-  return { today, year, month, goToPrevMonth, goToNextMonth };
+  return { year, month, goToPrevMonth, goToNextMonth };
 };
 
 export default useDate;

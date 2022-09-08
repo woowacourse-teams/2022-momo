@@ -4,8 +4,7 @@ import { useQueryClient } from 'react-query';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import { requestEditGroup } from 'apis/request/group';
-import Modal from 'components/@shared/Modal';
-import CalendarEditor from 'components/Create/Step5/CalendarEditor';
+import Modal from 'components/Modal';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { GROUP_RULE } from 'constants/rule';
@@ -13,6 +12,7 @@ import useClosingState from 'hooks/useClosingState';
 import useCreateState from 'hooks/useCreateState';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
+import CalendarEditor from 'components/CalendarEditor';
 import validateGroupData from 'pages/Create/validate';
 import { categoryState, groupDetailState, modalState } from 'store/states';
 import { CategoryType } from 'types/data';
