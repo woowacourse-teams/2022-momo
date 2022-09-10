@@ -27,4 +27,9 @@ public class GroupImage {
 
     @Column
     private String imageName;
+
+    public GroupImage(Group group, String imageName) {
+        this.group = group;
+        this.imageName = imageName;
+    }
 }
