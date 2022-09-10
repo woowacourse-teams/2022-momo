@@ -7,8 +7,12 @@ import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +67,13 @@ class GroupImageServiceTest {
         savedGroup = saveGroup("모모의 그룹", Category.CAFE);
     }
 
+    @AfterAll
+    static void tearDown() throws IOException {
+        String PATH_PREFIX = "./image-save/";
+        File file = new File(PATH_PREFIX);
+        FileUtils.deleteDirectory(file);
+    }
+    
     @DisplayName("이미지 정보를 저장한다")
     @Test
     void save() {
