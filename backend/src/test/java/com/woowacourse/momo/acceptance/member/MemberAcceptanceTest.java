@@ -20,6 +20,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.group.domain.Group;
 
+@SuppressWarnings("NonAsciiCharacters")
 class MemberAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture MEMBER = MemberFixture.MOMO;

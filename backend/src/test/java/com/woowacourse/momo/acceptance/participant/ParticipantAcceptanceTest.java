@@ -17,6 +17,7 @@ import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 
+@SuppressWarnings("NonAsciiCharacters")
 class ParticipantAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture HOST = MemberFixture.DUDU;

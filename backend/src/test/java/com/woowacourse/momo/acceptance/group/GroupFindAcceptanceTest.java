@@ -41,6 +41,7 @@ import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.response.ScheduleResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
+@SuppressWarnings("NonAsciiCharacters")
 class GroupFindAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture HOST = MemberFixture.MOMO;

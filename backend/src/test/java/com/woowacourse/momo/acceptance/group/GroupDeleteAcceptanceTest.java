@@ -15,6 +15,7 @@ import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 
+@SuppressWarnings("NonAsciiCharacters")
 class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
     private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.fixture.GroupFixture;
 
+@SuppressWarnings("NonAsciiCharacters")
 class GroupCreateAcceptanceTest extends AcceptanceTest {
 
     private static final GroupFixture GROUP = GroupFixture.MOMO_STUDY;
