@@ -1,5 +1,6 @@
 package com.woowacourse.momo.storage.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.domain.group.Capacity;
@@ -43,6 +45,13 @@ class GroupImageServiceTest {
     @Autowired
     private GroupRepository groupRepository;
 
+    public static final MockMultipartFile IMAGE = new MockMultipartFile(
+            "imageFile",
+            "asdf.png",
+            MediaType.IMAGE_PNG_VALUE,
+            "asdf".getBytes()
+    );
+
     private Password password;
     private Member savedHost;
     private Group savedGroup;
@@ -57,13 +66,17 @@ class GroupImageServiceTest {
     @DisplayName("이미지 정보를 저장한다")
     @Test
     void save() {
-        MockMultipartFile image = new MockMultipartFile(
-                "imageFile",
-                "asdf.png",
-                MediaType.IMAGE_PNG_VALUE,
-                "asdf".getBytes()
-        );
-        assertDoesNotThrow(() -> groupImageService.save(savedGroup.getId(), image));
+        assertDoesNotThrow(() -> groupImageService.save(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE));
+    }
+
+    @DisplayName("이미지를 저장할 때 주최자가 아니면 예외가 발생한다")
+    @Test
+    void saveMemberIsNotHost() {
+        Member member = memberRepository.save(new Member(UserId.momo("사용자"), password, "momo"));
+
+        assertThatThrownBy(() -> groupImageService.save(member.getId(), savedGroup.getId(), IMAGE))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모임의 주최자가 아닙니다.");
     }
 
     private Group saveGroup(String name, Category category) {
