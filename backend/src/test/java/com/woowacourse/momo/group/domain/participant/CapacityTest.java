@@ -27,7 +27,7 @@ class CapacityTest {
 
     @DisplayName("수용 인원의 범위를 벗어날 경우 예외가 발생한다")
     @ParameterizedTest
-    @ValueSource(ints = {0, 100})
+    @ValueSource(ints = {-1, 0, 100})
     void validateCapacityIsInRange(int capacity) {
         assertThatThrownBy(() -> new Capacity(capacity))
                 .isInstanceOf(GroupException.class)
