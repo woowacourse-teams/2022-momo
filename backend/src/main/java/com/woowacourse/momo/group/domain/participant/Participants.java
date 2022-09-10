@@ -33,7 +33,7 @@ import com.woowacourse.momo.member.domain.Member;
 public class Participants {
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "host_id")
     private Member host;
 
     @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
