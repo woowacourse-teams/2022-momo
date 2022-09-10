@@ -24,10 +24,10 @@ public class StorageService {
     private static final String PATH_PREFIX = "./image-save/";
     private static final List<String> IMAGE_CONTENT_TYPES = List.of(IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE);
 
-    public String save(MultipartFile requestFile) {
+    public String save(String savedFileName, MultipartFile requestFile) {
         validateContentType(requestFile);
 
-        File savedFile = new File(PATH_PREFIX + requestFile.getOriginalFilename());
+        File savedFile = new File(PATH_PREFIX + savedFileName);
         File directory = new File(PATH_PREFIX);
 
         fileInit(savedFile, directory);

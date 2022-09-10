@@ -25,22 +25,32 @@ public class GroupImageService {
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupImageRepository groupImageRepository;
+    private final StorageService storageService;
 
     @Transactional
     public void save(Long memberId, Long groupId, MultipartFile multipartFile) {
         Member member = memberFindService.findMember(memberId);
         Group group = groupFindService.findGroup(groupId);
-        if (group.isNotHost(member)) {
-            throw new MomoException(ErrorCode.MEMBER_IS_NOT_HOST);
-        }
+        validateMemberIsNotHost(member, group);
 
-        String imageName = multipartFile.getOriginalFilename();
-        String extension = imageName.substring(imageName.lastIndexOf("."));
-        String uuid = UUID.randomUUID().toString();
-        String savedImageName = uuid + extension;
+        String savedImageName = generateImageName(multipartFile);
 
         GroupImage groupImage = new GroupImage(group, savedImageName);
 
         groupImageRepository.save(groupImage);
+        storageService.save(savedImageName, multipartFile);
+    }
+
+    private void validateMemberIsNotHost(Member member, Group group) {
+        if (group.isNotHost(member)) {
+            throw new MomoException(ErrorCode.MEMBER_IS_NOT_HOST);
+        }
+    }
+
+    private String generateImageName(MultipartFile multipartFile) {
+        String imageName = multipartFile.getOriginalFilename();
+        String extension = imageName.substring(imageName.lastIndexOf("."));
+        String uuid = UUID.randomUUID().toString();
+        return uuid + extension;
     }
 }
