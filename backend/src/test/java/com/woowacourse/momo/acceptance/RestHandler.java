@@ -1,5 +1,7 @@
 package com.woowacourse.momo.acceptance;
 
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,7 @@ public class RestHandler {
         showLog = value;
     }
 
-    private static ValidatableResponse request(RequestFunction function) {
+    private static ValidatableResponse request(Function<RequestSpecification, Response> function) {
         if (showLog) {
             RequestSpecification given = RestAssured.given().log().all();
             Response response = function.apply(given);
@@ -28,10 +30,6 @@ public class RestHandler {
         RequestSpecification given = RestAssured.given();
         Response response = function.apply(given);
         return response.then();
-    }
-
-    private interface RequestFunction {
-        Response apply(RequestSpecification given);
     }
 
     public static ValidatableResponse getRequest(String path) {
