@@ -28,7 +28,6 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.request.GroupRequest;
-import com.woowacourse.momo.group.service.response.GroupIdResponse;
 import com.woowacourse.momo.member.domain.Member;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -69,8 +68,8 @@ public enum GroupFixture {
         return GroupRestHandler.모임을_생성한다(accessToken, this)
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(GroupIdResponse.class)
-                .getGroupId();
+                .jsonPath()
+                .getLong("groupId");
     }
 
     public long getCategoryId() {
