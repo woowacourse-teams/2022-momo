@@ -9,7 +9,6 @@ import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -26,9 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
@@ -108,7 +105,7 @@ class GroupTest {
         @BeforeEach
         void setUp() {
             group = MOMO_STUDY.toGroup(MOMO.toMember());
-            setDeadlinePast(group);
+            GroupFixture.setDeadlinePast(group, 1);
         }
 
         @DisplayName("마감기한이 지나버린 모임은 더이상 수정할 수 없습니다")
@@ -152,7 +149,7 @@ class GroupTest {
 
             Group group = MOMO_STUDY.toGroup(MOMO.toMember());
             group.participate(participant);
-            setDeadlinePast(group);
+            GroupFixture.setDeadlinePast(group, 1);
 
             assertThatThrownBy(() -> group.leave(participant))
                     .isInstanceOf(GroupException.class)
@@ -326,7 +323,7 @@ class GroupTest {
     @Test
     void isFinishedRecruitmentWhenDeadlinePassed() {
         Group group = MOMO_STUDY.toGroup(MOMO.toMember());
-        setDeadlinePast(group);
+        GroupFixture.setDeadlinePast(group, 1);
 
         assertThat(group.isFinishedRecruitment()).isTrue();
     }
@@ -342,28 +339,5 @@ class GroupTest {
         group.participate(DUDU.toMember());
 
         assertThat(group.isFinishedRecruitment()).isEqualTo(expected);
-    }
-
-    private void setDeadlinePast(Group group) {
-        try {
-            Calendar calendar = newCalendarWithPastDeadline(group, -1);
-
-            Field[] fields = Group.class.getDeclaredFields();
-            fields[2].setAccessible(true);
-            fields[2].set(group, calendar);
-
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    private Calendar newCalendarWithPastDeadline(Group group, int pastDays) throws IllegalAccessException {
-        Calendar calendar = new Calendar(new Deadline(group.getDeadline()), group.getDuration(), group.getSchedules());
-
-        Field[] fields = Calendar.class.getDeclaredFields();
-        fields[2].setAccessible(true);
-        fields[2].set(calendar, DeadlineFixture.newDeadline(pastDays));
-
-        return calendar;
     }
 }

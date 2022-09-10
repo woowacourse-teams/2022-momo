@@ -10,7 +10,6 @@ import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 
@@ -80,23 +79,22 @@ public enum GroupFixture {
         return new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
     }
 
-    public static void setDeadlinePast(Group group, int pastDays) throws IllegalAccessException {
+    public static void setDeadlinePast(Group group, int pastDays) {
         LocalDateTime now = LocalDateTime.now();
         Calendar calendar = new Calendar(new Deadline(now.plusHours(1)), group.getDuration(), group.getSchedules());
 
-        Field fieldDeadline = Stream.of(Calendar.class.getDeclaredFields())
-                .filter(field -> "deadline".equals(field.getName()))
-                .findAny()
-                .orElseThrow(() -> new RuntimeException("Deadline 필드를 찾을 수 없습니다."));
-        fieldDeadline.setAccessible(true);
-        fieldDeadline.set(calendar, DeadlineFixture.newDeadline(-pastDays));
+        try {
+            Field fieldDeadline = Calendar.class.getDeclaredField("deadline");
+            fieldDeadline.setAccessible(true);
+            fieldDeadline.set(calendar, DeadlineFixture.newDeadline(-pastDays));
 
-        Field fieldCalendar = Stream.of(Group.class.getDeclaredFields())
-                .filter(field -> "calendar".equals(field.getName()))
-                .findAny()
-                .orElseThrow(() -> new RuntimeException("Calendar 필드를 찾을 수 없습니다."));
-        fieldCalendar.setAccessible(true);
-        fieldCalendar.set(group, calendar);
+            Field fieldCalendar = Group.class.getDeclaredField("calendar");
+            fieldCalendar.setAccessible(true);
+            fieldCalendar.set(group, calendar);
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("해당하는 필드를 찾을 수 없습니다.");
+        }
     }
 
     public Builder builder() {
