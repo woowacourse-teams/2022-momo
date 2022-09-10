@@ -25,13 +25,15 @@ const Header = styled.p`
 const Summary = styled.div`
   text-align: center;
 
-  color: ${({ theme: { colors } }) => colors.gray001};
-
   font-size: 1rem;
 
-  span {
-    color: ${({ theme: { colors } }) => colors.blue002};
-  }
+  ${({ theme: { colors } }) => `
+    color: ${colors.gray001};
+
+    span {
+      color: ${colors.blue002};
+    }
+  `}
 `;
 
 const Box = styled.div`

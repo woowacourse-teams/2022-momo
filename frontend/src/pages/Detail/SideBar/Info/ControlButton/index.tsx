@@ -18,9 +18,10 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-type ControlButtonProps = Pick<GroupDetailData, 'id' | 'host' | 'finished'> & {
+interface ControlButtonProps
+  extends Pick<GroupDetailData, 'id' | 'host' | 'finished'> {
   participants: GroupParticipants;
-};
+}
 
 function ControlButton({
   id,

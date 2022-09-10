@@ -13,15 +13,16 @@ import { parsedDurationDate } from 'utils/date';
 import ControlButton from './ControlButton';
 import * as S from './index.styled';
 
-const svgSize = 32;
+const svgSize = 25;
 
-type InfoProps = Pick<
-  GroupDetailData,
-  'id' | 'host' | 'duration' | 'finished' | 'location'
-> & {
+interface InfoProps
+  extends Pick<
+    GroupDetailData,
+    'id' | 'host' | 'duration' | 'finished' | 'location'
+  > {
   categoryName: CategoryType['name'];
   participants: GroupParticipants;
-};
+}
 
 function Info({
   id,
