@@ -29,8 +29,6 @@ const Label = styled.label`
 const Input = styled.input`
   width: 20rem;
   height: 2rem;
-
-  box-sizing: border-box;
 `;
 
 const InfoMessage = styled.span<InfoMessageProps>`
