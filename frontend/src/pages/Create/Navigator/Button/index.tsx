@@ -1,7 +1,7 @@
 import Dot from 'components/Dot';
+import useHover from 'hooks/useHover';
 
 import * as S from './index.styled';
-import useHover from 'hooks/useHover';
 
 interface ButtonProps {
   content: string;

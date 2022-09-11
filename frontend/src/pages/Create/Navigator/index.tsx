@@ -10,6 +10,8 @@ import { PageType } from 'types/data';
 import Button from './Button';
 import * as S from './index.styled';
 
+const arrowSize = 40;
+
 interface NavigatorProps {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
@@ -28,7 +30,7 @@ function Navigator({
   createNewGroup,
 }: NavigatorProps) {
   const {
-    colors: { green002: activeColor, gray003: inactiveColor },
+    colors: { green002: active, gray003: inactive },
   } = useTheme();
 
   const goToNextPage = () => {
@@ -47,10 +49,7 @@ function Navigator({
   return (
     <S.Container>
       <S.SideButton type="button" onClick={goToPrevPage}>
-        <LeftArrow
-          width={40}
-          color={page === 1 ? inactiveColor : activeColor}
-        />
+        <LeftArrow width={arrowSize} color={page === 1 ? inactive : active} />
       </S.SideButton>
       {totalPage.map(({ number, content }) => (
         <Button
@@ -64,8 +63,8 @@ function Navigator({
       {page < totalPage.length ? (
         <S.SideButton type="button" onClick={goToNextPage}>
           <RightArrow
-            width={40}
-            color={page === totalPage.length ? inactiveColor : activeColor}
+            width={arrowSize}
+            color={page === totalPage.length ? inactive : active}
           />
         </S.SideButton>
       ) : (

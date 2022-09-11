@@ -4,6 +4,7 @@ import { useQueryClient } from 'react-query';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import { requestEditGroup } from 'apis/request/group';
+import CalendarEditor from 'components/CalendarEditor';
 import Modal from 'components/Modal';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
@@ -12,7 +13,6 @@ import useClosingState from 'hooks/useClosingState';
 import useCreateState from 'hooks/useCreateState';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
-import CalendarEditor from 'components/CalendarEditor';
 import validateGroupData from 'pages/Create/validate';
 import { categoryState, groupDetailState, modalState } from 'store/states';
 import { CategoryType } from 'types/data';
@@ -57,7 +57,8 @@ function GroupEdit() {
 
   const { name, setName, dangerouslySetName } = useNameState();
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const { capacity, setCapacity } = useCapacityState();
+  const { capacity, changeCapacity, dangerouslySetCapacity } =
+    useCapacityState();
   const {
     startDate,
     setStartDate,
@@ -80,7 +81,7 @@ function GroupEdit() {
       id: groupData.categoryId,
       name: categories[groupData.categoryId - 1 || 0].name,
     });
-    setCapacity(groupData.capacity);
+    dangerouslySetCapacity(groupData.capacity);
     dangerouslySetStartDate(groupData.duration.start);
     dangerouslySetEndDate(groupData.duration.end);
     groupData.schedules.forEach(schedule => setSchedules(schedule));
@@ -103,10 +104,6 @@ function GroupEdit() {
   const changeCategory = (item: CategoryType) => () => {
     setSelectedCategory(item);
     close();
-  };
-
-  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCapacity(Number(e.target.value));
   };
 
   const groupEdit = () => {

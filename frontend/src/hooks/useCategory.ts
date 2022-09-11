@@ -6,7 +6,7 @@ import { CategoryType } from 'types/data';
 import useRecoilQuery from './useRecoilQuery';
 
 const useCategory = () => {
-  const { state: categories, isLoading } = useRecoilQuery(
+  const { state: categories } = useRecoilQuery(
     categoryState,
     QUERY_KEY.CATEGORY,
     requestCategory,
@@ -22,7 +22,7 @@ const useCategory = () => {
       : '이런 모임 어때요?';
   };
 
-  return { categories, isLoading, getCategoryDescription };
+  return { categories, getCategoryDescription };
 };
 
 export default useCategory;

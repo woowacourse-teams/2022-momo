@@ -2,6 +2,7 @@ import CalendarComponent from 'components/Calendar';
 import useDate from 'hooks/useDate';
 import { CreateGroupData } from 'types/data';
 
+// TODO: 하리 리팩토링에서 반환하는 타입 적용
 interface CalendarProps {
   duration: {
     start: CreateGroupData['startDate'];

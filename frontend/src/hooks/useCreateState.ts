@@ -48,7 +48,8 @@ const useCreateState = () => {
     setSelectedCategory(newSelectedCategory);
   };
 
-  const changeCapacity = (newCapacity: number) => {
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCapacity = Number(e.target.value);
     const { MIN, MAX } = GROUP_RULE.CAPACITY;
 
     if (newCapacity < MIN) {
@@ -99,7 +100,8 @@ const useCreateState = () => {
     }),
     useCapacityState: () => ({
       capacity,
-      setCapacity: changeCapacity,
+      changeCapacity,
+      dangerouslySetCapacity: setCapacity,
     }),
     useDateState: () => ({
       startDate,

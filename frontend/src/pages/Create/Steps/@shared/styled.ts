@@ -13,19 +13,21 @@ const Container = styled.div`
 const Heading = styled.h2`
   font-size: 1.5rem;
 
-  span {
-    color: ${({ theme: { colors } }) => colors.green002};
-  }
+  ${({ theme: { colors } }) => `
+    span {
+      color: ${colors.green002};
+    }
 
-  p {
-    text-align: center;
+    p {
+      text-align: center;
 
-    margin-top: 0.5rem;
+      margin-top: 0.5rem;
 
-    color: ${({ theme: { colors } }) => colors.gray002};
+      color: ${colors.gray002};
 
-    font-size: 1rem;
-  }
+      font-size: 1rem;
+    }
+  `}
 `;
 
 const LabelContainer = styled.label`
