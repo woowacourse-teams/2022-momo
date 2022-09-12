@@ -18,17 +18,20 @@ const Button = styled.button`
   border-radius: 20px;
 
   background: none;
-  color: ${({ theme: { colors } }) => colors.black002};
 
   font-weight: 700;
   font-size: 1.25rem;
 
-  &:hover,
-  &.select {
-    border: 1px solid ${({ theme: { colors } }) => colors.gray002};
+  ${({ theme: { colors } }) => `
+    color: ${colors.black002};
 
-    background: ${({ theme: { colors } }) => colors.gray002}cc;
-  }
+    &:hover,
+    &.select {
+      border: 1px solid ${colors.gray002};
+
+      background: ${colors.gray002}cc;
+    }
+  `}
 `;
 
 export { Box, Button };

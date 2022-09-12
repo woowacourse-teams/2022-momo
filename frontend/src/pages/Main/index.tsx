@@ -8,7 +8,6 @@ import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
-import useInput from 'hooks/useInput';
 import { CategoryType, GroupList } from 'types/data';
 
 import Category from './Category';

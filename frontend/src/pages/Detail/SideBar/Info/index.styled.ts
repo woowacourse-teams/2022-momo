@@ -3,29 +3,32 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 
   min-width: max-content;
 
   border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 10px;
+`;
 
-  padding-top: 2rem;
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 1rem 1.5rem;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
-  min-height: 32px;
-
-  padding: 0 2rem;
+  min-height: 3rem;
 `;
 
 const EditWrapper = styled(Wrapper)`
   justify-content: space-between;
 
-  padding-right: 1rem;
+  padding-right: 1.5rem;
 
   div {
     display: flex;
@@ -49,4 +52,4 @@ const Text = styled.span`
   font-weight: 700;
 `;
 
-export { Container, Wrapper, EditWrapper, Text };
+export { Container, Content, Wrapper, EditWrapper, Text };

@@ -8,7 +8,7 @@ const Container = styled.div`
   border-radius: 10px;
 `;
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled.div<{ imgSrc: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,9 +17,8 @@ const TitleWrapper = styled.div`
 
   min-height: 300px;
 
-  background: ${({ theme: { filter } }) =>
-      `linear-gradient(${filter.darken001}, ${filter.darken001})`},
-    url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background: ${({ theme: { filter }, imgSrc }) =>
+    `linear-gradient(${filter.darken001}, ${filter.darken001}), url(${imgSrc})`};
   background-size: cover;
 
   border-radius: 10px 10px 0 0;
@@ -78,11 +77,11 @@ const Description = styled(DescriptionBox)`
   color: ${({ theme: { colors } }) => colors.black002};
 `;
 
-const LocationMap = styled.div`
+const LocationMap = styled.div<{ imgSrc: string }>`
   width: 32rem;
   height: 32rem;
 
-  background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background: url(${({ imgSrc }) => imgSrc});
   background-size: cover;
 `;
 
