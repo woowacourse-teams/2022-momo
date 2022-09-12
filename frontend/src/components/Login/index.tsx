@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
-import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
+import { GoogleSVG } from 'assets/svg';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';

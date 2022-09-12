@@ -5,13 +5,13 @@ import Withdrawal from './Withdrawal';
 function MyInformation() {
   return (
     <S.Container>
-      <S.Box>
-        <S.InfoWrapper>
+      <S.InfoSection>
+        <S.BoxContents>
           <h2>내 정보</h2>
           <Info />
-        </S.InfoWrapper>
+        </S.BoxContents>
         <Withdrawal />
-      </S.Box>
+      </S.InfoSection>
     </S.Container>
   );
 }

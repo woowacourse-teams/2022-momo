@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { ReactComponent as CalendarSVG } from 'assets/svg/calendar.svg';
-import { ReactComponent as ClockSVG } from 'assets/svg/clock.svg';
+import { CalendarSVG, ClockSVG } from 'assets/svg';
 import { ERROR_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';

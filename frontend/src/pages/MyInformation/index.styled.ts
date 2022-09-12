@@ -9,7 +9,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Box = styled.div`
+const InfoSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -17,7 +17,7 @@ const Box = styled.div`
   width: fit-content;
 `;
 
-const InfoWrapper = styled.div`
+const BoxContents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,4 +28,4 @@ const InfoWrapper = styled.div`
   padding: 2rem;
 `;
 
-export { Container, Box, InfoWrapper };
+export { Container, InfoSection, BoxContents };

@@ -1,19 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestWithdrawal } from 'apis/request/user';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import useAuth from 'hooks/useAuth';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 
 import * as S from './index.styled';
 
 function Withdrawal() {
-  const resetLoginInfo = useResetRecoilState(loginState);
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setRefreshToken = useSetRecoilState(refreshTokenState);
-
+  const { resetAuth } = useAuth();
   const { setMessage } = useSnackbar();
 
   const navigate = useNavigate();
@@ -24,10 +20,7 @@ function Withdrawal() {
 
     requestWithdrawal()
       .then(() => {
-        resetLoginInfo();
-
-        setAccessToken('');
-        setRefreshToken('');
+        resetAuth();
 
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
 

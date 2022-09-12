@@ -1,0 +1,10 @@
+export { ReactComponent as BeanSVG } from './bean.svg';
+export { ReactComponent as CalendarSVG } from './calendar.svg';
+export { ReactComponent as ClockSVG } from './clock.svg';
+export { ReactComponent as CompleteSVG } from './complete.svg';
+export { ReactComponent as CrownSVG } from './crown.svg';
+export { ReactComponent as GoogleSVG } from './google_login.svg';
+export { ReactComponent as LocationSVG } from './location.svg';
+export { ReactComponent as PencilSVG } from './pencil.svg';
+export { ReactComponent as PersonSVG } from './person.svg';
+export { ReactComponent as TopArrowSVG } from './top_arrow.svg';
