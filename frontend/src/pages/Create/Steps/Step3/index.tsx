@@ -14,7 +14,7 @@ import {
 interface Step3Props {
   useCapacityState: () => {
     capacity: CreateGroupData['capacity'];
-    changeCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -23,7 +23,7 @@ function Step3(
   { useCapacityState, pressEnterToNext }: Step3Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { capacity, changeCapacity } = useCapacityState();
+  const { capacity, setCapacity } = useCapacityState();
 
   return (
     <Container ref={ref}>
@@ -40,7 +40,7 @@ function Step3(
           min={GROUP_RULE.CAPACITY.MIN}
           max={GROUP_RULE.CAPACITY.MAX}
           value={capacity || ''}
-          onChange={changeCapacity}
+          onChange={setCapacity}
           onKeyPress={pressEnterToNext}
           placeholder={GROUP_RULE.CAPACITY.MAX.toString()}
         />

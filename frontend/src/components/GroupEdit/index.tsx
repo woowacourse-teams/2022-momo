@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import { requestEditGroup } from 'apis/request/group';
-import CalendarEditor from 'components/CalendarEditor';
 import Modal from 'components/Modal';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
@@ -14,9 +13,8 @@ import validateGroupData from 'pages/Create/validate';
 import { groupDetailState, modalState } from 'store/states';
 import PageError from 'utils/PageError';
 
-import Inputs from './Inputs';
-
 import * as S from './index.styled';
+import Inputs from './Inputs';
 
 function GroupEdit() {
   const modalFlag = useRecoilValue(modalState);
