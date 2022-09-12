@@ -4,9 +4,11 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-type ParticipantsProps = Pick<GroupDetailData, 'host' | 'capacity'> & {
+const svgSize = 25;
+
+interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {
   participants: GroupParticipants;
-};
+}
 
 function Participants({ host, capacity, participants }: ParticipantsProps) {
   const participantsWithoutHost = participants.filter(
@@ -21,12 +23,12 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
       </S.Summary>
       <S.Box>
         <S.Wrapper>
-          <CrownSVG width={32} />
+          <CrownSVG width={svgSize} />
           <S.HostText>{host.name}</S.HostText>
         </S.Wrapper>
         {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
-            <PersonSVG width={32} />
+            <PersonSVG width={svgSize} />
             <S.Text>{participant.name}</S.Text>
           </S.Wrapper>
         ))}

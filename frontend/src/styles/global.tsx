@@ -44,6 +44,8 @@ const style = (colors: Theme['colors']) => css`
     border: 1px solid ${colors.gray003};
     border-radius: 0.5rem;
 
+    box-sizing: border-box;
+
     font-family: 'GangwonEdu_Bold';
     font-size: 1.2rem;
 

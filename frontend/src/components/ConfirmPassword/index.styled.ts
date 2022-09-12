@@ -13,8 +13,6 @@ const Title = styled.h3`
 const Input = styled.input`
   width: 20rem;
   height: 2rem;
-
-  box-sizing: border-box;
 `;
 
 const Button = styled.button`

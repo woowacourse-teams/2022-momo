@@ -9,6 +9,14 @@ import * as S from './index.styled';
 import Info from './Info';
 import Participants from './Participants';
 
+interface DetailSideBarProps
+  extends Omit<
+    GroupDetailData,
+    'name' | 'categoryId' | 'deadline' | 'description'
+  > {
+  categoryName: CategoryType['name'];
+}
+
 function DetailSideBar({
   id,
   host,
@@ -18,18 +26,7 @@ function DetailSideBar({
   finished,
   location,
   categoryName,
-}: Pick<
-  GroupDetailData,
-  | 'id'
-  | 'host'
-  | 'capacity'
-  | 'duration'
-  | 'schedules'
-  | 'finished'
-  | 'location'
-> & {
-  categoryName: CategoryType['name'];
-}) {
+}: DetailSideBarProps) {
   const { data: participants } = useQuery<GroupParticipants>(
     `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
     () => requestGroupParticipants(id),

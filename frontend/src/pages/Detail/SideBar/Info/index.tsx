@@ -13,15 +13,16 @@ import { parsedDurationDate } from 'utils/date';
 import ControlButton from './ControlButton';
 import * as S from './index.styled';
 
-const svgSize = 32;
+const svgSize = 25;
 
-type InfoProps = Pick<
-  GroupDetailData,
-  'id' | 'host' | 'duration' | 'finished' | 'location'
-> & {
+interface InfoProps
+  extends Pick<
+    GroupDetailData,
+    'id' | 'host' | 'duration' | 'finished' | 'location'
+  > {
   categoryName: CategoryType['name'];
   participants: GroupParticipants;
-};
+}
 
 function Info({
   id,
@@ -37,27 +38,31 @@ function Info({
 
   return (
     <S.Container>
-      <S.EditWrapper>
+      <S.Content>
         <div>
-          <ClockSVG width={svgSize} />
-          <S.Text>{parsedDurationDate(duration)}</S.Text>
+          <S.Wrapper>
+            <ClockSVG width={svgSize} />
+            <S.Text>{parsedDurationDate(duration)}</S.Text>
+          </S.Wrapper>
+          <S.Wrapper>
+            <LocationSVG width={svgSize} />
+            <S.Text>{location}</S.Text>
+          </S.Wrapper>
+          <S.Wrapper>
+            <CategorySVG width={svgSize} />
+            <S.Text>{categoryName}</S.Text>
+          </S.Wrapper>
+          <S.Wrapper>
+            <PersonSVG width={svgSize} />
+            <S.Text>{host.name}</S.Text>
+          </S.Wrapper>
         </div>
         {user?.id === host.id && (
-          <PencilSVG width={svgSize} onClick={showGroupEditModal} />
+          <S.Wrapper>
+            <PencilSVG width={svgSize - 3} onClick={showGroupEditModal} />
+          </S.Wrapper>
         )}
-      </S.EditWrapper>
-      <S.Wrapper>
-        <LocationSVG width={svgSize} />
-        <S.Text>{location}</S.Text>
-      </S.Wrapper>
-      <S.Wrapper>
-        <CategorySVG width={svgSize} />
-        <S.Text>{categoryName}</S.Text>
-      </S.Wrapper>
-      <S.Wrapper>
-        <PersonSVG width={svgSize} />
-        <S.Text>{host.name}</S.Text>
-      </S.Wrapper>
+      </S.Content>
       <ControlButton
         id={id}
         host={host}

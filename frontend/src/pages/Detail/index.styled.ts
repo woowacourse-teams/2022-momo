@@ -5,7 +5,7 @@ const PageContainer = styled.div`
   grid-template-columns: 2fr 5fr;
   gap: 2rem;
 
-  margin: 2rem 10%;
+  padding: 2rem 10%;
 `;
 
 export { PageContainer };

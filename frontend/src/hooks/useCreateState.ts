@@ -6,7 +6,72 @@ import { isEqualObject } from 'utils/compare';
 
 import useInput from './useInput';
 
-const useCreateState = () => {
+export interface CreateStateReturnValues {
+  useNameState: () => {
+    name: string;
+    setName: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetName: React.Dispatch<React.SetStateAction<string>>;
+  };
+  useSelectedCategoryState: () => {
+    selectedCategory: CategoryType;
+    setSelectedCategory: (newSelectedCategory: CategoryType) => void;
+  };
+  useCapacityState: () => {
+    capacity: number;
+    setCapacity: (newCapacity: number) => void;
+  };
+  useDateState: () => {
+    startDate: string;
+    setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    endDate: string;
+    setEndDate: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetStartDate: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetEndDate: React.Dispatch<React.SetStateAction<string>>;
+  };
+  useScheduleState: () => {
+    schedules: ScheduleType[];
+    setSchedules: (newSchedule: ScheduleType) => void;
+    deleteSchedule: (targetSchedule: ScheduleType) => void;
+  };
+  useDeadlineState: () => {
+    deadline: string;
+    setDeadline: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetDeadline: React.Dispatch<React.SetStateAction<string>>;
+  };
+  useLocationState: () => {
+    location: string;
+    setLocation: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetLocation: React.Dispatch<React.SetStateAction<string>>;
+  };
+  useDescriptionState: () => {
+    description: string;
+    setDescription: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetDescription: React.Dispatch<React.SetStateAction<string>>;
+  };
+  getGroupState: () => {
+    name: string;
+    selectedCategory: CategoryType;
+    capacity: number;
+    startDate: string;
+    endDate: string;
+    schedules: ScheduleType[];
+    deadline: string;
+    location: string;
+    description: string;
+  };
+}
+
+const useCreateState = (): CreateStateReturnValues => {
   const {
     value: name,
     setValue: setName,
