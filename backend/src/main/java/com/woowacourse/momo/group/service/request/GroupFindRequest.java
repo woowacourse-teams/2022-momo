@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.service.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,15 @@ import lombok.Setter;
 public class GroupFindRequest {
 
     private int page = 0;
+
     private Long category;
+
     private String keyword;
+
+    @Getter(AccessLevel.NONE)
     private boolean excludeFinished;
+
+    @Getter(AccessLevel.NONE)
     private boolean orderByDeadline;
 
     public boolean excludeFinished() {
