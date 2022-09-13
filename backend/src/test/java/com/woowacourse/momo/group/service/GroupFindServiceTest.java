@@ -51,7 +51,7 @@ class GroupFindServiceTest {
     private Group group6;
 
     @BeforeEach
-    void setUp() throws IllegalAccessException {
+    void setUp() {
         host = memberRepository.save(MOMO.toMember());
         group1 = groupRepository.save(constructGroup("모모의 스터디", host, STUDY, 5, 이틀후_23시_59분까지));
         group2 = groupRepository.save(constructGroup("모모의 술파티", host, Category.DRINK, 15, 내일_23시_59분까지));

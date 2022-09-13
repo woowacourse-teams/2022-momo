@@ -194,7 +194,7 @@ class ParticipateServiceTest {
 
         @DisplayName("모집 마감이 끝난 모임에는 탈퇴할 수 없다")
         @Test
-        void leaveDeadline() throws IllegalAccessException {
+        void leaveDeadline() {
             GroupFixture.setDeadlinePast(group, 1);
             synchronize();
 

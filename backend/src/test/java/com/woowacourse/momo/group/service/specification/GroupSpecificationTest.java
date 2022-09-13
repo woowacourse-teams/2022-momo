@@ -59,7 +59,7 @@ class GroupSpecificationTest {
     private Group group6;
 
     @BeforeEach
-    void setUp() throws IllegalAccessException {
+    void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         momo = memberRepository.save(new Member(UserId.momo("momo"), password, "momo"));
         dudu = memberRepository.save(new Member(UserId.momo("dudu"), password, "dudu"));
