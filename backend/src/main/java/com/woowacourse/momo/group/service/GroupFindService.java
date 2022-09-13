@@ -26,6 +26,7 @@ import com.woowacourse.momo.member.domain.Member;
 public class GroupFindService {
 
     private static final int DEFAULT_PAGE_SIZE = 12;
+
     private final GroupRepository groupRepository;
     private final GroupSpecification groupSpecification;
 
