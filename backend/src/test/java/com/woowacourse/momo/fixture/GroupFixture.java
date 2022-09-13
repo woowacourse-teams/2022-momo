@@ -3,7 +3,6 @@ package com.woowacourse.momo.fixture;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toApiRequests;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 

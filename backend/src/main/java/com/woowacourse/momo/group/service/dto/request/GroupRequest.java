@@ -7,8 +7,8 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
-import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
 @RequiredArgsConstructor
 public class GroupRequest {
