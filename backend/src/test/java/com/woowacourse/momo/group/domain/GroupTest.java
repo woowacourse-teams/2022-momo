@@ -90,7 +90,7 @@ class GroupTest {
             group.participate(participant);
             group.closeEarly();
 
-            assertThatThrownBy(() -> group.leave(participant))
+            assertThatThrownBy(() -> group.remove(participant))
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
@@ -151,7 +151,7 @@ class GroupTest {
             group.participate(participant);
             GroupFixture.setDeadlinePast(group, 1);
 
-            assertThatThrownBy(() -> group.leave(participant))
+            assertThatThrownBy(() -> group.remove(participant))
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
@@ -275,12 +275,12 @@ class GroupTest {
 
     @DisplayName("모임을 탈퇴한다")
     @Test
-    void leave() {
+    void remove() {
         Group group = MOMO_STUDY.toGroup(MOMO.toMember());
 
         Member participant = DUDU.toMember();
         group.participate(participant);
-        group.leave(participant);
+        group.remove(participant);
 
         assertThat(group.getParticipants()).usingRecursiveComparison()
                 .isEqualTo(List.of(HOST));

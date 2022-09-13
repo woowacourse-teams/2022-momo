@@ -52,12 +52,12 @@ public class Participants {
         participants.add(new Participant(group, member));
     }
     
-    public void leave(Member member) {
+    public void remove(Member member) {
         validateMemberCanLeave(member);
-        remove(member);
+        removeParticipant(member);
     }
 
-    private void remove(Member member) {
+    private void removeParticipant(Member member) {
         participants.stream()
                 .filter(participant -> participant.isSameMember(member))
                 .findAny()

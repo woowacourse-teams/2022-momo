@@ -92,9 +92,9 @@ public class Group {
         participants.participate(this, member);
     }
 
-    public void leave(Member member) {
+    public void remove(Member participant) {
         validateGroupIsProceeding();
-        participants.leave(member);
+        participants.remove(participant);
     }
 
     public void validateGroupIsDeletable() {

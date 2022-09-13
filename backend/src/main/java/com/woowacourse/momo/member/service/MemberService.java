@@ -50,7 +50,7 @@ public class MemberService {
                 .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
-        progressingGroups.forEach(group -> group.leave(member));
+        progressingGroups.forEach(group -> group.remove(member));
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {

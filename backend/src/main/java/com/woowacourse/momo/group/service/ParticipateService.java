@@ -39,8 +39,8 @@ public class ParticipateService {
     @Transactional
     public void leave(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
-        Member member = memberFindService.findMember(memberId);
+        Member participant = memberFindService.findMember(memberId);
 
-        group.leave(member);
+        group.remove(participant);
     }
 }

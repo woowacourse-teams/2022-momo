@@ -79,10 +79,10 @@ class ParticipantsTest {
 
     @DisplayName("탈퇴한다")
     @Test
-    void leave() {
+    void remove() {
         Participants participants = new Participants(HOST, CAPACITY);
         participants.participate(GROUP, PARTICIPANT);
-        participants.leave(PARTICIPANT);
+        participants.remove(PARTICIPANT);
 
         assertThat(participants.getParticipants()).containsExactly(HOST);
     }
@@ -92,7 +92,7 @@ class ParticipantsTest {
     void validateMemberIsNotHostWhenLeave() {
         Participants participants = new Participants(HOST, CAPACITY);
 
-        assertThatThrownBy(() -> participants.leave(HOST))
+        assertThatThrownBy(() -> participants.remove(HOST))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자입니다.");
     }
@@ -102,7 +102,7 @@ class ParticipantsTest {
     void validateMemberParticipatedWhenLeave() {
         Participants participants = new Participants(HOST, CAPACITY);
 
-        assertThatThrownBy(() -> participants.leave(PARTICIPANT))
+        assertThatThrownBy(() -> participants.remove(PARTICIPANT))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 참여자가 아닙니다.");
     }
