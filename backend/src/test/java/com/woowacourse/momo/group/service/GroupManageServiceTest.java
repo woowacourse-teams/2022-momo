@@ -25,7 +25,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.service.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 

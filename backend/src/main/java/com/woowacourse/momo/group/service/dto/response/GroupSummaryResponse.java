@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.response;
+package com.woowacourse.momo.group.service.dto.response;
 
 import java.time.LocalDateTime;
 

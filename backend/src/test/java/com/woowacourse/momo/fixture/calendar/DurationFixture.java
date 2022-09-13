@@ -7,9 +7,9 @@ import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.일주�
 import java.time.LocalDate;
 
 import com.woowacourse.momo.fixture.calendar.datetime.DateFixture;
-import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
+import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.domain.calendar.Duration;
-import com.woowacourse.momo.group.service.request.calendar.DurationRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public enum DurationFixture {
@@ -34,8 +34,8 @@ public enum DurationFixture {
         return new DurationRequest(instance.getStartDate(), instance.getEndDate());
     }
 
-    public DurationParam toParam() {
-        return new DurationParam(instance.getStartDate(), instance.getEndDate());
+    public DurationApiRequest toApiRequest() {
+        return new DurationApiRequest(instance.getStartDate(), instance.getEndDate());
     }
 
     public LocalDate getStartDate() {

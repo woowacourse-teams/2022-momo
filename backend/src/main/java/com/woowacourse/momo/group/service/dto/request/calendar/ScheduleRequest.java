@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.request.calendar;
+package com.woowacourse.momo.group.service.dto.request.calendar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

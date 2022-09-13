@@ -17,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.group.controller.param.GroupParam;
-import com.woowacourse.momo.group.controller.param.GroupRequestAssembler;
+import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.GroupRequestAssembler;
 import com.woowacourse.momo.group.service.GroupManageService;
-import com.woowacourse.momo.group.service.response.GroupIdResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 
 @Authenticated
 @RequiredArgsConstructor
@@ -33,16 +33,16 @@ public class GroupHostController {
 
     @PostMapping
     public ResponseEntity<GroupIdResponse> create(@AuthenticationPrincipal Long memberId,
-                                                  @RequestBody @Valid GroupParam param) {
-        GroupIdResponse response = groupManageService.create(memberId, assembler.groupRequest(param));
+                                                  @RequestBody @Valid GroupApiRequest request) {
+        GroupIdResponse response = groupManageService.create(memberId, assembler.groupRequest(request));
         URI uri = URI.create("/api/groups/" + response.getGroupId());
         return ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
-                                       @RequestBody @Valid GroupParam param) {
-        groupManageService.update(memberId, groupId, assembler.groupRequest(param));
+                                       @RequestBody @Valid GroupApiRequest request) {
+        groupManageService.update(memberId, groupId, assembler.groupRequest(request));
         return ResponseEntity.ok().build();
     }
 

@@ -28,11 +28,11 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.service.request.GroupFindRequest;
-import com.woowacourse.momo.group.service.response.GroupPageResponse;
-import com.woowacourse.momo.group.service.response.GroupResponse;
-import com.woowacourse.momo.group.service.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.response.GroupSummaryResponse;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponse;
+import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
+import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 

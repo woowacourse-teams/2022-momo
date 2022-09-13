@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 import com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.service.request.calendar.DeadlineRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public enum DeadlineFixture {
@@ -61,7 +61,7 @@ public enum DeadlineFixture {
         return new DeadlineRequest(instance.getValue());
     }
 
-    public LocalDateTime toParam() {
+    public LocalDateTime toApiRequest() {
         return instance.getValue();
     }
 

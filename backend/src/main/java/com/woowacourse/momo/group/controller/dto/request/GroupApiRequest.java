@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.controller.param;
+package com.woowacourse.momo.group.controller.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,13 +12,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.controller.param.calendar.DurationParam;
-import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
+import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class GroupParam {
+public class GroupApiRequest {
 
     @NotNull
     private String name;
@@ -30,10 +30,10 @@ public class GroupParam {
     private Integer capacity;
 
     @NotNull
-    private DurationParam duration;
+    private DurationApiRequest duration;
 
     @NotNull
-    private List<ScheduleParam> schedules;
+    private List<ScheduleApiRequest> schedules;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")

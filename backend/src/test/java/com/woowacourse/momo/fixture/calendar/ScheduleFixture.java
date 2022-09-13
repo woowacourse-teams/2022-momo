@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 import com.woowacourse.momo.fixture.calendar.datetime.DateFixture;
 import com.woowacourse.momo.fixture.calendar.datetime.TimeFixture;
-import com.woowacourse.momo.group.controller.param.calendar.ScheduleParam;
+import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.service.request.calendar.ScheduleRequest;
-import com.woowacourse.momo.group.service.request.calendar.SchedulesRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.ScheduleRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public enum ScheduleFixture {
@@ -70,18 +70,18 @@ public enum ScheduleFixture {
         return new ScheduleRequest(date.toDate(), startTime.toTime(), endTime.toTime());
     }
 
-    public static List<ScheduleParam> toParams(List<ScheduleFixture> schedules) {
+    public static List<ScheduleApiRequest> toApiRequests(List<ScheduleFixture> schedules) {
         return schedules.stream()
-                .map(ScheduleFixture::toParam)
+                .map(ScheduleFixture::toApiRequest)
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public static List<ScheduleParam> toParams(ScheduleFixture... schedules) {
-        return toParams(List.of(schedules));
+    public static List<ScheduleApiRequest> toApiRequests(ScheduleFixture... schedules) {
+        return toApiRequests(List.of(schedules));
     }
 
-    private ScheduleParam toParam() {
-        return new ScheduleParam(date.toDate(), startTime.toTime(), endTime.toTime());
+    private ScheduleApiRequest toApiRequest() {
+        return new ScheduleApiRequest(date.toDate(), startTime.toTime(), endTime.toTime());
     }
 
     public LocalDate getDate() {

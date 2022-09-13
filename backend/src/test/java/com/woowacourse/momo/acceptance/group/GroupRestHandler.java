@@ -5,7 +5,7 @@ import io.restassured.response.ValidatableResponse;
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.group.controller.param.GroupParam;
+import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GroupRestHandler extends RestHandler {
@@ -13,13 +13,13 @@ public class GroupRestHandler extends RestHandler {
     private static final String BASE_URL = "/api/groups";
 
     public static ValidatableResponse 모임을_생성한다(String accessToken, GroupFixture group) {
-        GroupParam param = group.toParam();
-        return postRequest(accessToken, param, BASE_URL);
+        GroupApiRequest request = group.toApiRequest();
+        return postRequest(accessToken, request, BASE_URL);
     }
 
     public static ValidatableResponse 모임을_생성한다(GroupFixture group) {
-        GroupParam param = group.toParam();
-        return postRequest(param, BASE_URL);
+        GroupApiRequest request = group.toApiRequest();
+        return postRequest(request, BASE_URL);
     }
 
     public static ValidatableResponse 모임을_조회한다(String accessToken, Long groupId) {
@@ -31,8 +31,8 @@ public class GroupRestHandler extends RestHandler {
     }
 
     public static ValidatableResponse 모임을_수정한다(String accessToken, Long groupId, GroupFixture group) {
-        GroupParam param = group.toParam();
-        return putRequest(accessToken, param, BASE_URL + "/" + groupId);
+        GroupApiRequest request = group.toApiRequest();
+        return putRequest(accessToken, request, BASE_URL + "/" + groupId);
     }
 
     public static ValidatableResponse 본인이_참여한_모임을_조회한다(String accessToken) {
@@ -60,8 +60,8 @@ public class GroupRestHandler extends RestHandler {
     }
 
     public static ValidatableResponse 모임을_수정한다(Long groupId, GroupFixture group) {
-        GroupParam param = group.toParam();
-        return putRequest(param, BASE_URL + "/" + groupId);
+        GroupApiRequest request = group.toApiRequest();
+        return putRequest(request, BASE_URL + "/" + groupId);
     }
 
     public static ValidatableResponse 모임을_조기마감한다(String accessToken, Long groupId) {

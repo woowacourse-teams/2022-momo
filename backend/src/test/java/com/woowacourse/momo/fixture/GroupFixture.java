@@ -3,7 +3,7 @@ package com.woowacourse.momo.fixture;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toParams;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toApiRequests;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
@@ -20,13 +20,13 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.fixture.calendar.DurationFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.controller.param.GroupParam;
+import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
-import com.woowacourse.momo.group.service.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -109,8 +109,8 @@ public enum GroupFixture {
         return builder().toRequest();
     }
 
-    public GroupParam toParam() {
-        return builder().toParam();
+    public GroupApiRequest toApiRequest() {
+        return builder().toApiRequest();
     }
 
     public static class Builder {
@@ -188,8 +188,8 @@ public enum GroupFixture {
                     ScheduleFixture.toRequests(schedules), deadline.toRequest(), location, description);
         }
 
-        public GroupParam toParam() {
-            return new GroupParam(name, category, capacity, duration.toParam(), toParams(schedules), deadline.toParam(),
+        public GroupApiRequest toApiRequest() {
+            return new GroupApiRequest(name, category, capacity, duration.toApiRequest(), ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(),
                     location, description);
         }
     }

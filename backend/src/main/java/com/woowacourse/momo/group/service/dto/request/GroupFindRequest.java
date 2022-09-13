@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.request;
+package com.woowacourse.momo.group.service.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.service.request;
+package com.woowacourse.momo.group.service.dto.request;
 
 import lombok.RequiredArgsConstructor;
 
@@ -6,9 +6,9 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
-import com.woowacourse.momo.group.service.request.calendar.DeadlineRequest;
-import com.woowacourse.momo.group.service.request.calendar.DurationRequest;
-import com.woowacourse.momo.group.service.request.calendar.SchedulesRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
 
 @RequiredArgsConstructor
 public class GroupRequest {

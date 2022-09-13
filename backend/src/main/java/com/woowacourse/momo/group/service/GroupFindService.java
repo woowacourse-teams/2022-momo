@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.service.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.group.service.specification.GroupSpecification;
 import com.woowacourse.momo.member.domain.Member;
 

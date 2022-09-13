@@ -1,9 +1,7 @@
-package com.woowacourse.momo.group.controller.param.calendar;
+package com.woowacourse.momo.group.service.dto.response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,17 +13,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class ScheduleParam {
+public class ScheduleResponse {
 
-    @NotNull
     @DateTimeFormat
     private LocalDate date;
 
-    @NotNull
     @DateTimeFormat
     private LocalTime startTime;
 
-    @NotNull
     @DateTimeFormat
     private LocalTime endTime;
 }

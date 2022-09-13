@@ -38,7 +38,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.service.response.ScheduleResponse;
+import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
 @SuppressWarnings("NonAsciiCharacters")

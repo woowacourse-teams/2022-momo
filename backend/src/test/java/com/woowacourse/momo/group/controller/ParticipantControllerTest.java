@@ -34,7 +34,7 @@ import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupManageService;
 import com.woowacourse.momo.group.service.ParticipantService;
-import com.woowacourse.momo.group.service.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 
 @AutoConfigureMockMvc

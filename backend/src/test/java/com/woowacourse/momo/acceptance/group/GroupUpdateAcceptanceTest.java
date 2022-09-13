@@ -26,7 +26,7 @@ import com.woowacourse.momo.acceptance.AcceptanceTest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.service.response.ScheduleResponse;
+import com.woowacourse.momo.group.service.dto.response.ScheduleResponse;
 
 @SuppressWarnings("NonAsciiCharacters")
 class GroupUpdateAcceptanceTest extends AcceptanceTest {
