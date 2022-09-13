@@ -62,17 +62,20 @@ const DailyButton = styled.button`
   width: 2.5rem;
   height: 2.5rem;
 
-  background: ${({ theme: { colors } }) => colors.white001};
-  color: ${({ theme: { colors } }) => colors.gray002};
-
-  border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 50%;
 
-  &.active {
-    color: ${({ theme: { colors } }) => colors.yellow001};
+  ${({ theme: { colors } }) => `
+    background: ${colors.white001};
+    color: ${colors.gray002};
 
-    border: 1px solid ${({ theme: { colors } }) => colors.yellow001};
-  }
+    border: 1px solid ${colors.gray002};
+
+    &.active {
+      color: ${colors.yellow001};
+
+      border: 1px solid ${colors.yellow001};
+    }
+  `}
 `;
 
 const DayBox = styled.div`
@@ -83,13 +86,15 @@ const DayBox = styled.div`
     cursor: pointer;
   }
 
-  .sun {
-    color: ${({ theme: { colors } }) => colors.red001};
-  }
+  ${({ theme: { colors } }) => `
+    .sun {
+      color: ${colors.red001};
+    }
 
-  .sat {
-    color: ${({ theme: { colors } }) => colors.blue001};
-  }
+    .sat {
+      color: ${colors.blue001};
+    }
+  `}
 `;
 
 const InputWrapper = styled.div`
@@ -103,30 +108,27 @@ const Input = styled(BasicInput)`
   height: 3rem;
 `;
 
-const AddButton = styled.button`
+const ControlButton = styled.button`
   width: 26rem;
   height: 3rem;
 
   background: ${({ theme: { colors } }) => colors.white001};
-  color: ${({ theme: { colors } }) => colors.blue001};
-
-  border: 1px solid ${({ theme: { colors } }) => colors.blue001};
-  border-radius: 0.5rem;
-
-  font-size: 1.1rem;
 `;
 
-const DeleteButton = styled.button`
-  width: 26rem;
-  height: 3rem;
+const AddButton = styled(ControlButton)`
+  ${({ theme: { colors } }) => `
+    color: ${colors.blue001};
 
-  background: ${({ theme: { colors } }) => colors.white001};
-  color: ${({ theme: { colors } }) => colors.red001};
+    border: 1px solid ${colors.blue001};
+  `}
+`;
 
-  border: 1px solid ${({ theme: { colors } }) => colors.red001};
-  border-radius: 0.5rem;
+const DeleteButton = styled(ControlButton)`
+  ${({ theme: { colors } }) => `
+    color: ${colors.red001};
 
-  font-size: 1.1rem;
+    border: 1px solid ${colors.red001};
+  `}
 `;
 
 export {

@@ -19,7 +19,7 @@ interface JoinedGroupsProps {
   isFetching: boolean;
   data: GroupList | undefined;
   refetch: (
-    options?: (RefetchOptions & RefetchQueryFilters<GroupList>) | undefined,
+    options?: RefetchOptions & RefetchQueryFilters<GroupList>,
   ) => Promise<QueryObserverResult<GroupList, unknown>>;
   groups: GroupList['groups'];
   isExcludeFinished: boolean;

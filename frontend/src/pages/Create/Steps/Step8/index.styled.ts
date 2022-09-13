@@ -19,14 +19,17 @@ const TextArea = styled.textarea`
   max-width: 40rem;
   height: 15rem;
 
-  background: ${({ theme: { colors } }) => colors.white001};
-
-  border: 1px solid ${({ theme: { colors } }) => colors.gray003};
   border-radius: 0.5rem;
 
   padding: 0.5rem;
 
   font-size: 1.2rem;
+
+  ${({ theme: { colors } }) => `
+    background: ${colors.white001};
+
+    border: 1px solid ${colors.gray003};
+  `}
 `;
 
 export { LabelContainer, Label, TextArea };

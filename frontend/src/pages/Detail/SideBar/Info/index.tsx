@@ -1,8 +1,6 @@
 import { useRecoilValue } from 'recoil';
 
-import { ReactComponent as ClockSVG } from 'assets/svg/clock.svg';
-import { ReactComponent as LocationSVG } from 'assets/svg/location.svg';
-import { ReactComponent as PencilSVG } from 'assets/svg/pencil.svg';
+import { ClockSVG, LocationSVG, PencilSVG } from 'assets/svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
 import useModal from 'hooks/useModal';

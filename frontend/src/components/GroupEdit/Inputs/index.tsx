@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
+
+import { useRecoilValue } from 'recoil';
+
 import CalendarEditor from 'components/CalendarEditor';
 import { GROUP_RULE } from 'constants/rule';
 import useClosingState from 'hooks/useClosingState';
 import { CreateStateReturnValues } from 'hooks/useCreateState';
-import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { categoryState, groupDetailState, modalState } from 'store/states';
 import { CategoryType } from 'types/data';
 import { getNewDateString } from 'utils/date';
+
 import * as S from './index.styled';
 
 const dropdownAnimationTime = 300;
@@ -23,7 +26,7 @@ function Inputs({
 }: Omit<CreateStateReturnValues, 'getGroupState'>) {
   const { name, setName, dangerouslySetName } = useNameState();
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const { capacity, setCapacity } = useCapacityState();
+  const { capacity, setCapacity, dangerouslySetCapacity } = useCapacityState();
   const {
     startDate,
     setStartDate,
@@ -32,7 +35,7 @@ function Inputs({
     dangerouslySetStartDate,
     dangerouslySetEndDate,
   } = useDateState();
-  const { setSchedules } = useScheduleState();
+  const { dangerouslySetSchedules } = useScheduleState();
   const { deadline, setDeadline, dangerouslySetDeadline } = useDeadlineState();
   const { location, setLocation, dangerouslySetLocation } = useLocationState();
   const { description, setDescription, dangerouslySetDescription } =
@@ -53,10 +56,10 @@ function Inputs({
       id: groupData.categoryId,
       name: categories[groupData.categoryId - 1 || 0].name,
     });
-    setCapacity(groupData.capacity);
+    dangerouslySetCapacity(groupData.capacity);
     dangerouslySetStartDate(groupData.duration.start);
     dangerouslySetEndDate(groupData.duration.end);
-    groupData.schedules.forEach(schedule => setSchedules(schedule));
+    dangerouslySetSchedules(groupData.schedules);
     dangerouslySetDeadline(groupData.deadline);
     dangerouslySetLocation(groupData.location);
     dangerouslySetDescription(groupData.description);
@@ -74,10 +77,6 @@ function Inputs({
   const changeCategory = (item: CategoryType) => () => {
     setSelectedCategory(item);
     close();
-  };
-
-  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCapacity(Number(e.target.value));
   };
 
   return (
@@ -118,7 +117,7 @@ function Inputs({
           max="99"
           placeholder="99"
           value={capacity}
-          onChange={changeCapacity}
+          onChange={setCapacity}
         />
       </S.Label>
       <S.Label>

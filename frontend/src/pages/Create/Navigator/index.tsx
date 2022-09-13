@@ -2,13 +2,15 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { ReactComponent as CompleteSVG } from 'assets/svg/complete.svg';
+import { CompleteSVG } from 'assets/svg';
 import LeftArrow from 'components/svg/LeftArrow';
 import RightArrow from 'components/svg/RightArrow';
 import { PageType } from 'types/data';
 
 import Button from './Button';
 import * as S from './index.styled';
+
+const arrowSize = 40;
 
 interface NavigatorProps {
   page: number;
@@ -28,7 +30,7 @@ function Navigator({
   createNewGroup,
 }: NavigatorProps) {
   const {
-    colors: { green002: activeColor, gray003: inactiveColor },
+    colors: { green002: active, gray003: inactive },
   } = useTheme();
 
   const goToNextPage = () => {
@@ -47,10 +49,7 @@ function Navigator({
   return (
     <S.Container>
       <S.SideButton type="button" onClick={goToPrevPage}>
-        <LeftArrow
-          width={40}
-          color={page === 1 ? inactiveColor : activeColor}
-        />
+        <LeftArrow width={arrowSize} color={page === 1 ? inactive : active} />
       </S.SideButton>
       {totalPage.map(({ number, content }) => (
         <Button
@@ -64,8 +63,8 @@ function Navigator({
       {page < totalPage.length ? (
         <S.SideButton type="button" onClick={goToNextPage}>
           <RightArrow
-            width={40}
-            color={page === totalPage.length ? inactiveColor : activeColor}
+            width={arrowSize}
+            color={page === totalPage.length ? inactive : active}
           />
         </S.SideButton>
       ) : (

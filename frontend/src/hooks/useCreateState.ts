@@ -20,7 +20,8 @@ export interface CreateStateReturnValues {
   };
   useCapacityState: () => {
     capacity: number;
-    setCapacity: (newCapacity: number) => void;
+    setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    dangerouslySetCapacity: (newCapacity: number) => void;
   };
   useDateState: () => {
     startDate: string;
@@ -35,6 +36,7 @@ export interface CreateStateReturnValues {
   useScheduleState: () => {
     schedules: ScheduleType[];
     setSchedules: (newSchedule: ScheduleType) => void;
+    dangerouslySetSchedules: (schedules: ScheduleType[]) => void;
     deleteSchedule: (targetSchedule: ScheduleType) => void;
   };
   useDeadlineState: () => {
@@ -113,7 +115,8 @@ const useCreateState = (): CreateStateReturnValues => {
     setSelectedCategory(newSelectedCategory);
   };
 
-  const changeCapacity = (newCapacity: number) => {
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCapacity = Number(e.target.value);
     const { MIN, MAX } = GROUP_RULE.CAPACITY;
 
     if (newCapacity < MIN) {
@@ -146,6 +149,12 @@ const useCreateState = (): CreateStateReturnValues => {
     });
   };
 
+  const dangerouslySetSchedules = (schedules: ScheduleType[]) => {
+    setSchedules([]);
+
+    schedules.forEach(schedule => changeSchedules(schedule));
+  };
+
   const deleteSchedule = (targetSchedule: ScheduleType) => {
     setSchedules(
       schedules.filter(schedule => isEqualObject(schedule, targetSchedule)),
@@ -165,6 +174,7 @@ const useCreateState = (): CreateStateReturnValues => {
     useCapacityState: () => ({
       capacity,
       setCapacity: changeCapacity,
+      dangerouslySetCapacity: setCapacity,
     }),
     useDateState: () => ({
       startDate,
@@ -177,6 +187,7 @@ const useCreateState = (): CreateStateReturnValues => {
     useScheduleState: () => ({
       schedules,
       setSchedules: changeSchedules,
+      dangerouslySetSchedules,
       deleteSchedule,
     }),
     useDeadlineState: () => ({

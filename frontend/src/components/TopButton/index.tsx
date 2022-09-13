@@ -1,4 +1,4 @@
-import { ReactComponent as TopArrowSVG } from 'assets/svg/top_arrow.svg';
+import { TopArrowSVG } from 'assets/svg';
 
 import * as S from './index.styled';
 

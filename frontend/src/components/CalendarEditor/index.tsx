@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-import { ReactComponent as CalendarSVG } from 'assets/svg/calendar.svg';
-import { ReactComponent as ClockSVG } from 'assets/svg/clock.svg';
+import { CalendarSVG, ClockSVG } from 'assets/svg';
 import { ERROR_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
+import { convertToISOString } from 'utils/date';
 
 import Calendar from '../../pages/Create/Steps/Step5/Calendar';
 import * as S from '../../pages/Create/Steps/Step5/index.styled';
+
+const svgSize = 32;
 
 interface CalendarEditorProps {
   useScheduleState: () => {
@@ -42,11 +44,7 @@ function CalendarEditor({
   } = useInput('');
 
   const selectDate = (year: number, month: number, date: number) => {
-    setSelectedDate(
-      `${year}-${month.toString().padStart(2, '0')}-${date
-        .toString()
-        .padStart(2, '0')}`,
-    );
+    setSelectedDate(convertToISOString(year, month, date));
   };
 
   const addSchedule = () => {
@@ -104,7 +102,7 @@ function CalendarEditor({
             <S.Wrapper>
               {selectedDate && (
                 <>
-                  <CalendarSVG width={32} />
+                  <CalendarSVG width={svgSize} />
                   <S.Text>{selectedDate}</S.Text>
                 </>
               )}
@@ -112,7 +110,7 @@ function CalendarEditor({
             <S.Wrapper>
               {getSchedule(selectedDate) && (
                 <>
-                  <ClockSVG width={32} />
+                  <ClockSVG width={svgSize} />
                   <S.Text>
                     {`${getSchedule(selectedDate)?.startTime.slice(0, 5)} ~ 
                 ${getSchedule(selectedDate)?.endTime.slice(0, 5)}`}

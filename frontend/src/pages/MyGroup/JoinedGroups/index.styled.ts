@@ -23,20 +23,24 @@ const GroupListBox = styled.div`
 
   width: 100%;
 
-  ${({ theme: { breakpoints } }) => `
-    @media only screen and (max-width: ${breakpoints.md}px) {
+  ${({
+    theme: {
+      breakpoints: { md, lg, xl },
+    },
+  }) => `
+    @media only screen and (max-width: ${md}px) {
       grid-template-columns: repeat(1, 1fr);
     }
 
-    @media only screen and (min-width: ${breakpoints.md}px) and (max-width: ${breakpoints.lg}px) {
+    @media only screen and (min-width: ${md}px) and (max-width: ${lg}px) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media only screen and (min-width: ${breakpoints.lg}px) and (max-width: ${breakpoints.xl}px) {
+    @media only screen and (min-width: ${lg}px) and (max-width: ${xl}px) {
       grid-template-columns: repeat(3, 1fr);
     }
 
-    @media only screen and (min-width: ${breakpoints.xl}px) {
+    @media only screen and (min-width: ${xl}px) {
       grid-template-columns: repeat(4, 1fr);
     }
   `}

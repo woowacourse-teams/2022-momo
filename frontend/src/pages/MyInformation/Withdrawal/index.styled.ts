@@ -13,8 +13,10 @@ const Button = styled.button`
 
   border-radius: 8px;
 
-  background: ${({ theme: { colors } }) => colors.red001};
-  color: ${({ theme: { colors } }) => colors.white001};
+  ${({ theme: { colors } }) => `
+    background: ${colors.red001};
+    color: ${colors.white001};
+  `}
 `;
 
 export { Wrapper, Button };

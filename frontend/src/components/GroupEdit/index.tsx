@@ -13,9 +13,8 @@ import validateGroupData from 'pages/Create/validate';
 import { groupDetailState, modalState } from 'store/states';
 import PageError from 'utils/PageError';
 
-import Inputs from './Inputs';
-
 import * as S from './index.styled';
+import Inputs from './Inputs';
 
 function GroupEdit() {
   const modalFlag = useRecoilValue(modalState);

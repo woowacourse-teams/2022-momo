@@ -22,7 +22,7 @@ function Step2(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const { categories, isLoading } = useCategory();
+  const { categories } = useCategory();
 
   const selectCategory =
     (newSelectedCategory: CreateGroupData['selectedCategory']) => () => {
@@ -31,15 +31,13 @@ function Step2(
       gotoAdjacentPage('next');
     };
 
-  if (isLoading) return <h2>카테고리 로딩 중...</h2>;
-
   return (
     <Container ref={ref}>
       <Heading>
         <span>어떤</span> 모임인가요? <ErrorColor>*</ErrorColor>
         <p>(카테고리 선택)</p>
       </Heading>
-      <S.Options>
+      <S.OptionBox>
         {categories &&
           categories.map(category => (
             <S.Button
@@ -53,7 +51,7 @@ function Step2(
               {category.name}
             </S.Button>
           ))}
-      </S.Options>
+      </S.OptionBox>
     </Container>
   );
 }

@@ -1,23 +1,19 @@
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 
 import { requestGoogleLogin } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import { Loading } from 'components/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import useAuth from 'hooks/useAuth';
 import useSnackbar from 'hooks/useSnackbar';
-import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
 function Auth() {
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setRefreshToken = useSetRecoilState(refreshTokenState);
-  const setLoginInfo = useSetRecoilState(loginState);
-
+  const { setAuth, setLogin } = useAuth();
   const { setMessage } = useSnackbar();
 
   const navigate = useNavigate();
@@ -27,11 +23,10 @@ function Auth() {
   if (code) {
     requestGoogleLogin(code)
       .then(({ accessToken, refreshToken }) => {
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
+        setAuth(accessToken, refreshToken);
 
         requestUserInfo().then(userInfo => {
-          setLoginInfo({ isLogin: true, loginType: 'oauth', user: userInfo });
+          setLogin('oauth', userInfo);
           setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
         });
 
