@@ -22,15 +22,17 @@ import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
@@ -41,32 +43,23 @@ import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.service.GroupManageService;
-import com.woowacourse.momo.group.service.ParticipateService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Transactional
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @SpringBootTest
 class GroupManageControllerTest {
 
     private static final DurationApiRequest DURATION_REQUEST = 이틀후_하루동안.toApiRequest();
     private static final List<ScheduleApiRequest> SCHEDULE_REQUESTS = ScheduleFixture.toApiRequests(이틀후_10시부터_12시까지);
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
-    GroupManageService groupManageService;
-
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    ParticipateService participateService;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
+    private final GroupManageService groupManageService;
+    private final AuthService authService;
 
     @DisplayName("그룹이 정상적으로 생성되는 경우를 테스트한다")
     @Test

@@ -15,16 +15,16 @@ import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
-import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
@@ -40,32 +40,20 @@ import com.woowacourse.momo.member.service.MemberService;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Transactional
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @SpringBootTest
 class ParticipateControllerTest {
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/participants";
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ParticipateService participateService;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private GroupManageService groupManageService;
-
-    @Autowired
-    private GroupFindService groupFindService;
-
-    @Autowired
-    private EntityManager entityManager;
+    private final MockMvc mockMvc;
+    private final ParticipateService participateService;
+    private final AuthService authService;
+    private final MemberService memberService;
+    private final GroupManageService groupManageService;
+    private final GroupFindService groupFindService;
 
     @DisplayName("모임에 참여한다")
     @Test
