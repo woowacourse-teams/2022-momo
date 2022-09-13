@@ -19,7 +19,7 @@ import lombok.ToString;
 @Embeddable
 public class Schedules {
 
-    @OneToMany(orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "group_id")
     private final List<Schedule> value = new ArrayList<>();
 
