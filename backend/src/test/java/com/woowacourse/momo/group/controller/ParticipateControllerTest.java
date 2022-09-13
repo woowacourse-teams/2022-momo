@@ -33,7 +33,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.group.service.GroupManageService;
-import com.woowacourse.momo.group.service.ParticipantService;
+import com.woowacourse.momo.group.service.ParticipateService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 
@@ -41,7 +41,7 @@ import com.woowacourse.momo.member.service.MemberService;
 @AutoConfigureRestDocs
 @Transactional
 @SpringBootTest
-class ParticipantControllerTest {
+class ParticipateControllerTest {
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/participants";
@@ -50,7 +50,7 @@ class ParticipantControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ParticipantService participantService;
+    private ParticipateService participateService;
 
     @Autowired
     private AuthService authService;
@@ -334,6 +334,6 @@ class ParticipantControllerTest {
     }
 
     void participateMember(Long groupId, Long memberId) {
-        participantService.participate(groupId, memberId);
+        participateService.participate(groupId, memberId);
     }
 }

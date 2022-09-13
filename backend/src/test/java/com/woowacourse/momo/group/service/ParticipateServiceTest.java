@@ -38,9 +38,9 @@ import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class ParticipantServiceTest {
+class ParticipateServiceTest {
 
-    private final ParticipantService participantService;
+    private final ParticipateService participateService;
     private final GroupManageService groupManageService;
     private final MemberService memberService;
     private final GroupRepository groupRepository;
@@ -64,9 +64,9 @@ class ParticipantServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        participantService.participate(groupId, participantId);
+        participateService.participate(groupId, participantId);
 
-        List<MemberResponse> participants = participantService.findParticipants(groupId);
+        List<MemberResponse> participants = participateService.findParticipants(groupId);
 
         assertThat(participants).hasSize(2);
     }
@@ -77,7 +77,7 @@ class ParticipantServiceTest {
         long groupId = 0;
         long participantId = participant.getId();
 
-        assertThatThrownBy(() -> participantService.participate(groupId, participantId))
+        assertThatThrownBy(() -> participateService.participate(groupId, participantId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -88,7 +88,7 @@ class ParticipantServiceTest {
         long groupId = group.getId();
         long participantId = 0;
 
-        assertThatThrownBy(() -> participantService.participate(groupId, participantId))
+        assertThatThrownBy(() -> participateService.participate(groupId, participantId))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
@@ -105,7 +105,7 @@ class ParticipantServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        assertThatThrownBy(() -> participantService.participate(groupId, participantId))
+        assertThatThrownBy(() -> participateService.participate(groupId, participantId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("참여인원이 가득 찼습니다.");
     }
@@ -115,7 +115,7 @@ class ParticipantServiceTest {
     void findParticipantsNotExistGroup() {
         long groupId = 0;
 
-        assertThatThrownBy(() -> participantService.findParticipants(groupId))
+        assertThatThrownBy(() -> participateService.findParticipants(groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -126,7 +126,7 @@ class ParticipantServiceTest {
         long groupId = group.getId();
         long hostId = host.getId();
 
-        assertThatThrownBy(() -> participantService.leave(groupId, hostId))
+        assertThatThrownBy(() -> participateService.leave(groupId, hostId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자입니다.");
     }
@@ -137,7 +137,7 @@ class ParticipantServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        assertThatThrownBy(() -> participantService.leave(groupId, participantId))
+        assertThatThrownBy(() -> participateService.leave(groupId, participantId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 참여자가 아닙니다.");
     }
@@ -157,13 +157,13 @@ class ParticipantServiceTest {
             hostId = host.getId();
             participantId = participant.getId();
 
-            participantService.participate(groupId, participantId);
+            participateService.participate(groupId, participantId);
         }
 
         @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
         @Test
         void reParticipate() {
-            assertThatThrownBy(() -> participantService.participate(groupId, participantId))
+            assertThatThrownBy(() -> participateService.participate(groupId, participantId))
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임의 참여자입니다.");
         }
@@ -171,7 +171,7 @@ class ParticipantServiceTest {
         @DisplayName("모임의 참여자 목록을 조회한다")
         @Test
         void findParticipants() {
-            List<String> actual = participantService.findParticipants(groupId)
+            List<String> actual = participateService.findParticipants(groupId)
                     .stream()
                     .map(MemberResponse::getName)
                     .collect(Collectors.toList());
@@ -182,10 +182,10 @@ class ParticipantServiceTest {
         @DisplayName("모임에 탈퇴한다")
         @Test
         void leave() {
-            participantService.leave(groupId, participantId);
+            participateService.leave(groupId, participantId);
             synchronize();
 
-            List<Long> participantIds = participantService.findParticipants(groupId)
+            List<Long> participantIds = participateService.findParticipants(groupId)
                     .stream()
                     .map(MemberResponse::getId)
                     .collect(Collectors.toList());
@@ -198,7 +198,7 @@ class ParticipantServiceTest {
             GroupFixture.setDeadlinePast(group, 1);
             synchronize();
 
-            assertThatThrownBy(() -> participantService.leave(groupId, participantId))
+            assertThatThrownBy(() -> participateService.leave(groupId, participantId))
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
@@ -209,7 +209,7 @@ class ParticipantServiceTest {
             groupManageService.closeEarly(hostId, groupId);
             synchronize();
 
-            assertThatThrownBy(() -> participantService.leave(groupId, participantId))
+            assertThatThrownBy(() -> participateService.leave(groupId, participantId))
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
@@ -221,7 +221,7 @@ class ParticipantServiceTest {
             memberService.deleteById(participantId);
             synchronize();
 
-            List<String> names = participantService.findParticipants(groupId)
+            List<String> names = participateService.findParticipants(groupId)
                     .stream()
                     .map(MemberResponse::getName)
                     .collect(Collectors.toList());

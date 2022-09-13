@@ -33,7 +33,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupManageService;
-import com.woowacourse.momo.group.service.ParticipantService;
+import com.woowacourse.momo.group.service.ParticipateService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 @AutoConfigureMockMvc
@@ -57,7 +57,7 @@ class GroupSearchControllerTest {
     AuthService authService;
 
     @Autowired
-    ParticipantService participantService;
+    ParticipateService participateService;
 
     @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
     @Test

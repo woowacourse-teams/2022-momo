@@ -39,7 +39,7 @@ class GroupManageServiceTest {
     private final GroupSearchService groupSearchService;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
-    private final ParticipantService participantService;
+    private final ParticipateService participateService;
 
     private Group group;
     private Member host;
@@ -240,7 +240,7 @@ class GroupManageServiceTest {
         long groupId = group.getId();
         long hostId = host.getId();
 
-        participantService.participate(group.getId(), participant.getId());
+        participateService.participate(group.getId(), participant.getId());
 
         assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
