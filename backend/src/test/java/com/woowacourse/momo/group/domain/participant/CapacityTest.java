@@ -53,10 +53,10 @@ class CapacityTest {
     @DisplayName("수용 인원이 참여자 수보다 큰지 확인한다")
     @ParameterizedTest
     @MethodSource("provideIsUnderArguments")
-    void isUnder(int numberOfPeople, boolean expected) {
+    void isSmallThan(int numberOfPeople, boolean expected) {
         Capacity capacity = new Capacity(1);
 
-        assertThat(capacity.isUnder(numberOfPeople)).isEqualTo(expected);
+        assertThat(capacity.isSmallThan(numberOfPeople)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideIsUnderArguments() {

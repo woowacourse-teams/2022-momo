@@ -35,7 +35,7 @@ public class Capacity {
         return value == numberOfPeople;
     }
 
-    public boolean isUnder(int numberOfPeople) {
+    public boolean isSmallThan(int numberOfPeople) {
         return value < numberOfPeople;
     }
 

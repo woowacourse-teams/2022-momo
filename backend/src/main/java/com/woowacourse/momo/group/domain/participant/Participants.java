@@ -105,7 +105,7 @@ public class Participants {
     }
 
     private void validateCapacityIsOverParticipantsSize(Capacity capacity) {
-        if (capacity.isUnder(getSize())) {
+        if (capacity.isSmallThan(getSize())) {
             throw new GroupException(CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE);
         }
     }
