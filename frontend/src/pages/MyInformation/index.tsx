@@ -6,10 +6,10 @@ function MyInformation() {
   return (
     <S.Container>
       <S.InfoSection>
-        <S.BoxContents>
+        <S.InfoContainer>
           <h2>내 정보</h2>
           <Info />
-        </S.BoxContents>
+        </S.InfoContainer>
         <Withdrawal />
       </S.InfoSection>
     </S.Container>

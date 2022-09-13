@@ -38,16 +38,14 @@ const kongKong = keyframes`
   }
 `;
 
-const FlexBox = styled.div`
-  display: flex;
-`;
-
 const Container = styled.div`
   display: flex;
   gap: 3rem;
 `;
 
-const LiveBeanBox = styled(FlexBox)``;
+const LiveBeanBox = styled.div`
+  display: flex;
+`;
 
 const LiveBean = styled.div`
   position: relative;
@@ -59,6 +57,8 @@ const LiveBean = styled.div`
   }
 `;
 
-const Right = styled(FlexBox)``;
+const Right = styled.div`
+  display: flex;
+`;
 
-export { FlexBox, Container, LiveBeanBox, LiveBean, Right };
+export { Container, LiveBeanBox, LiveBean, Right };

@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 
-import { FlexBox } from '../index.styled';
-
-const ButtonBox = styled(FlexBox)`
+const ButtonBox = styled.div`
+  display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 1.5rem;

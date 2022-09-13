@@ -17,7 +17,7 @@ const InfoSection = styled.div`
   width: fit-content;
 `;
 
-const BoxContents = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,4 +28,4 @@ const BoxContents = styled.div`
   padding: 2rem;
 `;
 
-export { Container, InfoSection, BoxContents };
+export { Container, InfoSection, InfoContainer };

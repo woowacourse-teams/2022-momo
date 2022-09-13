@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 
-import { FlexBox } from '../index.styled';
-
-const InputBox = styled(FlexBox)`
+const InputBox = styled.div`
+  display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
@@ -18,8 +17,6 @@ const Label = styled.label`
 const Input = styled.input`
   width: 15rem;
   height: 2rem;
-
-  box-sizing: border-box;
 `;
 
 export { InputBox, Label, Input };

@@ -36,7 +36,7 @@ export interface CreateStateReturnValues {
   useScheduleState: () => {
     schedules: ScheduleType[];
     setSchedules: (newSchedule: ScheduleType) => void;
-    dangerouslySchedules: (schedules: ScheduleType[]) => void;
+    dangerouslySetSchedules: (schedules: ScheduleType[]) => void;
     deleteSchedule: (targetSchedule: ScheduleType) => void;
   };
   useDeadlineState: () => {
@@ -149,7 +149,7 @@ const useCreateState = (): CreateStateReturnValues => {
     });
   };
 
-  const dangerouslySchedules = (schedules: ScheduleType[]) => {
+  const dangerouslySetSchedules = (schedules: ScheduleType[]) => {
     setSchedules([]);
 
     schedules.forEach(schedule => changeSchedules(schedule));
@@ -187,7 +187,7 @@ const useCreateState = (): CreateStateReturnValues => {
     useScheduleState: () => ({
       schedules,
       setSchedules: changeSchedules,
-      dangerouslySchedules,
+      dangerouslySetSchedules,
       deleteSchedule,
     }),
     useDeadlineState: () => ({

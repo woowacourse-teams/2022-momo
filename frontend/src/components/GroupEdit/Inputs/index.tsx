@@ -35,7 +35,7 @@ function Inputs({
     dangerouslySetStartDate,
     dangerouslySetEndDate,
   } = useDateState();
-  const { dangerouslySchedules } = useScheduleState();
+  const { dangerouslySetSchedules } = useScheduleState();
   const { deadline, setDeadline, dangerouslySetDeadline } = useDeadlineState();
   const { location, setLocation, dangerouslySetLocation } = useLocationState();
   const { description, setDescription, dangerouslySetDescription } =
@@ -59,7 +59,7 @@ function Inputs({
     dangerouslySetCapacity(groupData.capacity);
     dangerouslySetStartDate(groupData.duration.start);
     dangerouslySetEndDate(groupData.duration.end);
-    dangerouslySchedules(groupData.schedules);
+    dangerouslySetSchedules(groupData.schedules);
     dangerouslySetDeadline(groupData.deadline);
     dangerouslySetLocation(groupData.location);
     dangerouslySetDescription(groupData.description);
