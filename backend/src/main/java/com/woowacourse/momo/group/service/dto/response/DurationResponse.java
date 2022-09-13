@@ -13,6 +13,7 @@ public class DurationResponse {
 
     @DateTimeFormat
     private LocalDate start;
+
     @DateTimeFormat
     private LocalDate end;
 }

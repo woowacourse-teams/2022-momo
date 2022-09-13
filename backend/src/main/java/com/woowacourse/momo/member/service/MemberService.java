@@ -10,16 +10,15 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
-import com.woowacourse.momo.participant.domain.ParticipantRepository;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -29,7 +28,6 @@ public class MemberService {
     private final MemberFindService memberFindService;
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
-    private final ParticipantRepository participantRepository;
     private final TokenRepository tokenRepository;
 
     public MyInfoResponse findById(Long id) {
@@ -49,16 +47,15 @@ public class MemberService {
     private void leaveProgressingGroup(Member member) {
         List<Group> progressingGroups = groupFindService.findParticipatedGroups(member)
                 .stream()
-                .filter(group -> !group.isEnd())
+                .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
-        progressingGroups.forEach(
-                group -> participantRepository.deleteByGroupIdAndMemberId(group.getId(), member.getId()));
+        progressingGroups.forEach(group -> group.remove(member));
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {
         if (isHost(member, groups)) {
-            throw new MomoException(ErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
+            throw new MomoException(GlobalErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
     }
 
@@ -85,7 +82,7 @@ public class MemberService {
     private void confirmPassword(Member member, String password) {
         String encryptedPassword = passwordEncoder.encrypt(password);
         if (member.isNotSamePassword(encryptedPassword)) {
-            throw new MomoException(ErrorCode.MEMBER_WRONG_PASSWORD);
+            throw new MomoException(GlobalErrorCode.MEMBER_WRONG_PASSWORD);
         }
     }
 }

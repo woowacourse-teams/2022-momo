@@ -1,5 +1,8 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_FROM_NOW_ON;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_START_DATE_MUST_BE_BEFORE_END_DATE;
+
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
@@ -7,12 +10,15 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -41,13 +47,13 @@ public class Duration {
 
     private void validateStartIsBeforeEnd(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_START_AFTER_END);
+            throw new GroupException(DURATION_START_DATE_MUST_BE_BEFORE_END_DATE);
         }
     }
 
     private void validateDatesAreNotPast(LocalDate startDate, LocalDate endDate) {
         if (hasAnyDatesBeforeThanNow(startDate, endDate)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_PAST);
+            throw new GroupException(DURATION_MUST_BE_SET_FROM_NOW_ON);
         }
     }
 
@@ -58,10 +64,5 @@ public class Duration {
 
     private boolean isBeforeThanNow(LocalDate date) {
         return date.isBefore(LocalDate.now());
-    }
-
-    @Override
-    public String toString() {
-        return "Duration{" + startDate + "~" + endDate + '}';
     }
 }

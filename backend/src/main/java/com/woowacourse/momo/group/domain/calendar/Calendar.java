@@ -1,15 +1,21 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_BEFORE_DEADLINE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
+
+import java.util.List;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
@@ -31,8 +37,8 @@ public class Calendar {
         this.deadline = deadline;
     }
 
-    public Calendar(Schedules schedules, Duration duration, Deadline deadline) {
-        this(deadline, duration, schedules);
+    public Calendar(Deadline deadline, Duration duration, List<Schedule> schedules) {
+        this(deadline, duration, new Schedules(schedules));
     }
 
     public void update(Deadline deadline, Duration duration, Schedules schedules) {
@@ -40,10 +46,6 @@ public class Calendar {
         this.schedules.change(schedules);
         this.duration = duration;
         this.deadline = deadline;
-    }
-
-    public void update(Schedules schedules, Duration duration, Deadline deadline) {
-        update(deadline, duration, schedules);
     }
 
     public boolean isDeadlineOver() {
@@ -57,22 +59,13 @@ public class Calendar {
 
     private void validateDeadlineIsNotAfterDurationStart(Duration duration, Deadline deadline) {
         if (duration.isStartBeforeDeadline(deadline)) {
-            throw new MomoException(ErrorCode.GROUP_DURATION_NOT_AFTER_DEADLINE);
+            throw new GroupException(DURATION_MUST_BE_SET_BEFORE_DEADLINE);
         }
     }
 
     private void validateSchedulesAreInDuration(Schedules schedules, Duration duration) {
         if (schedules.hasAnyScheduleOutOfDuration(duration)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_NOT_RANGE_DURATION);
+            throw new GroupException(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Calendar{" +
-                "schedules=" + schedules +
-                ", duration=" + duration +
-                ", deadline=" + deadline +
-                '}';
     }
 }

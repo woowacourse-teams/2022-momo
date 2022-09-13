@@ -23,7 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
 class ScheduleTest {
 
@@ -48,7 +48,7 @@ class ScheduleTest {
     @MethodSource("provideForScheduleValidator")
     void validateStartIsBeforeEnd(LocalDate date, LocalTime startTime, LocalTime endTime) {
         assertThatThrownBy(() -> new Schedule(date, startTime, endTime))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(GroupException.class)
                 .hasMessage("일정의 시작 시간은 종료 시간 이전이어야 합니다.");
     }
 

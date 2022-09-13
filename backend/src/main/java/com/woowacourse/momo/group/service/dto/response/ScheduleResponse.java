@@ -17,8 +17,10 @@ public class ScheduleResponse {
 
     @DateTimeFormat
     private LocalDate date;
+
     @DateTimeFormat
     private LocalTime startTime;
+
     @DateTimeFormat
     private LocalTime endTime;
 }

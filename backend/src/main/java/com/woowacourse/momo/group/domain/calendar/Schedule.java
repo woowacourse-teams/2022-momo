@@ -1,5 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -12,10 +14,11 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.group.exception.GroupException;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -47,16 +50,7 @@ public class Schedule {
 
     private void validateStartIsBeforeEnd(LocalTime startTime, LocalTime endTime) {
         if (!startTime.isBefore(endTime)) {
-            throw new MomoException(ErrorCode.GROUP_SCHEDULE_START_AFTER_END);
+            throw new GroupException(SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "id=" + id +
-                ", " + date +
-                " " + startTime + "~" + endTime +
-                '}';
     }
 }

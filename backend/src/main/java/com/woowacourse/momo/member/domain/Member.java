@@ -12,9 +12,11 @@ import org.hibernate.annotations.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -63,6 +65,10 @@ public class Member {
         password = password.delete();
         userName = userName.delete();
         deleted = true;
+    }
+
+    public boolean isSameUserId(Member member) {
+        return userId.equals(member.userId);
     }
 
     public String getUserId() {

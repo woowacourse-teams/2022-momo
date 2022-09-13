@@ -2,16 +2,13 @@ package com.woowacourse.momo.group.service.specification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.이틀후_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.일주일후_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.일주일후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.어제_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.이틀후_23시_59분;
-import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.일주일후_23시_59분;
 
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,13 +24,10 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.category.domain.Category;
-import com.woowacourse.momo.group.domain.calendar.Calendar;
-import com.woowacourse.momo.group.domain.calendar.Deadline;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
-import com.woowacourse.momo.group.domain.group.Capacity;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.group.GroupName;
-import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -65,19 +59,19 @@ class GroupSpecificationTest {
     private Group group6;
 
     @BeforeEach
-    void setUp() throws IllegalAccessException {
+    void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         momo = memberRepository.save(new Member(UserId.momo("momo"), password, "momo"));
         dudu = memberRepository.save(new Member(UserId.momo("dudu"), password, "dudu"));
-        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분.toDateTime()));
-        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분.toDateTime()));
-        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분.toDateTime()));
-        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분.toDateTime()));
-        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분.toDateTime()));
+        group1 = groupRepository.save(constructGroup("모모의 스터디", momo, Category.STUDY, 5, 이틀후_23시_59분까지));
+        group2 = groupRepository.save(constructGroup("모모의 술파티", momo, Category.DRINK, 15, 내일_23시_59분까지));
+        group3 = groupRepository.save(constructGroup("모모의 헬스클럽", momo, Category.HEALTH, 1, 일주일후_23시_59분까지));
+        group4 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 6, 내일_23시_59분까지));
+        group5 = groupRepository.save(constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분까지));
         group5.participate(momo);
 
-        Group group = constructGroup("두두의 스터디", dudu, Category.STUDY, 10, LocalDateTime.now().plusMinutes(1));
-        setPastDeadline(group, 어제_23시_59분.toDateTime());
+        Group group = constructGroup("두두의 스터디", dudu, Category.STUDY, 10, 이틀후_23시_59분까지);
+        GroupFixture.setDeadlinePast(group, 1);
         group6 = groupRepository.save(group);
 
         synchronize();
@@ -148,7 +142,7 @@ class GroupSpecificationTest {
     @DisplayName("생성된 역순으로 목록을 조회한다")
     @Test
     void findGroupThatOrderByIdDesc() {
-        Specification<Group> specification = groupSpecification.orderByDeadline(null);
+        Specification<Group> specification = groupSpecification.orderByDeadline(false);
         List<Group> actual = groupRepository.findAll(specification);
 
         assertThat(actual).usingRecursiveComparison()
@@ -203,34 +197,15 @@ class GroupSpecificationTest {
                 .isEqualTo(List.of(group2, group1));
     }
 
-    private Group constructGroup(String name, Member host, Category category, int capacity, LocalDateTime deadline) {
-        return new Group(new GroupName(name), host, category, new Capacity(capacity), 일주일후_하루동안.toDuration(),
-                new Deadline(deadline), new Schedules(List.of(일주일후_10시부터_12시까지.toSchedule())),
-                "", "");
-    }
-
-    private void setPastDeadline(Group group, LocalDateTime date) throws IllegalAccessException {
-        LocalDateTime original = LocalDateTime.of(group.getDuration().getStartDate().minusDays(1), LocalTime.now());
-        Deadline deadline = new Deadline(original);
-        Calendar calendar = new Calendar(new Schedules(group.getSchedules()), group.getDuration(), deadline);
-
-        int index = 0;
-        Class<Deadline> clazzDeadline = Deadline.class;
-        Field[] fieldDeadline = clazzDeadline.getDeclaredFields();
-        fieldDeadline[index].setAccessible(true);
-        fieldDeadline[index].set(deadline, date);
-
-        int calendarField = 2;
-        Class<Calendar> clazzCalendar = Calendar.class;
-        Field[] fieldCalendar = clazzCalendar.getDeclaredFields();
-        fieldCalendar[calendarField].setAccessible(true);
-        fieldCalendar[calendarField].set(calendar, deadline);
-
-        int deadlineField = 4;
-        Class<Group> clazzGroup = Group.class;
-        Field[] fieldGroup = clazzGroup.getDeclaredFields();
-        fieldGroup[deadlineField].setAccessible(true);
-        fieldGroup[deadlineField].set(group, calendar);
+    private Group constructGroup(String name, Member host, Category category, int capacity, DeadlineFixture deadline) {
+        return MOMO_STUDY.builder()
+                .name(name)
+                .category(category)
+                .capacity(capacity)
+                .deadline(deadline)
+                .duration(일주일후_하루동안)
+                .schedules(일주일후_10시부터_12시까지)
+                .toGroup(host);
     }
 
     private void synchronize() {

@@ -6,18 +6,18 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 
 public enum GroupAttribute {
 
     ID("id"),
-    HOST("host"),
+    HOST("participants", "host"),
     NAME("name", "value"),
     CATEGORY("category"),
     CAPACITY("participants", "capacity"),
     DEADLINE("calendar", "deadline"),
     DESCRIPTION("description"),
-    IS_EARLY_CLOSED("isEarlyClosed"),
+    CLOSED_EARLY("closedEarly"),
     ;
 
     private final String startAttribute;

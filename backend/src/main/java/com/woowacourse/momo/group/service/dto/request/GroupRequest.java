@@ -1,37 +1,48 @@
 package com.woowacourse.momo.group.service.dto.request;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.GroupName;
+import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
+import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GroupRequest {
 
-    @NotNull
-    private String name;
-    @NotNull
-    private Long categoryId;
-    @NotNull
-    private Integer capacity;
-    @NotNull
-    private DurationRequest duration;
-    @NotNull
-    private List<ScheduleRequest> schedules;
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime deadline;
-    @NotNull
-    private String location;
-    @NotNull
-    private String description;
+    private final String name;
+    private final long categoryId;
+    private final int capacity;
+    private final DurationRequest duration;
+    private final SchedulesRequest schedules;
+    private final DeadlineRequest deadline;
+    private final String location;
+    private final String description;
+
+    public GroupName getName() {
+        return new GroupName(name);
+    }
+
+    public Category getCategory() {
+        return Category.from(categoryId);
+    }
+
+    public Capacity getCapacity() {
+        return new Capacity(capacity);
+    }
+
+    public Calendar getCalendar() {
+        return new Calendar(deadline.getDeadline(), duration.getDuration(), schedules.getSchedules());
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
