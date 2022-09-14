@@ -6,9 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -17,7 +14,6 @@ import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Component
 public class GroupRequestAssembler {
 
