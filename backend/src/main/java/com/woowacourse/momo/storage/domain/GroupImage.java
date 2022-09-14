@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

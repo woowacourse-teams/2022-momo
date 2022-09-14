@@ -8,14 +8,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
+import com.woowacourse.momo.storage.exception.GroupImageErrorCode;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,7 +43,7 @@ public class GroupImageService {
 
     private void validateMemberIsNotHost(Member member, Group group) {
         if (group.isNotHost(member)) {
-            throw new MomoException(ErrorCode.MEMBER_IS_NOT_HOST);
+            throw new MomoException(GroupImageErrorCode.MEMBER_IS_NOT_HOST);
         }
     }
 
