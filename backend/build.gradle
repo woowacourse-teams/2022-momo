@@ -51,6 +51,7 @@ dependencies {
 	testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
+/* QueryDsl Start */
 def querydslSrcDir = "$buildDir/generated/querydsl"
 
 querydsl {
@@ -65,7 +66,9 @@ sourceSets {
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
+/* QueryDsl End */
 
+/* RestDocs Start */
 tasks.named('test') {
 	useJUnitPlatform()
 
@@ -99,9 +102,12 @@ bootJar {
 		into file("build/resources/main/static")
 	}
 }
+/* RestDocs End */
 
+/* Sonarqube Start */
 sonarqube {
 	properties {
 		property "sonar.projectKey", "woowacourse-teams_2022-momo_AYKR-JWB6L96jeu46QtV"
 	}
 }
+/* Sonarqube End */
