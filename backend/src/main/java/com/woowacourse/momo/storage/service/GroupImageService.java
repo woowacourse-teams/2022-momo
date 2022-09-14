@@ -62,4 +62,9 @@ public class GroupImageService {
         String uuid = UUID.randomUUID().toString();
         return uuid + extension;
     }
+
+    @Transactional
+    public void delete(Group group) {
+        groupImageRepository.deleteByGroup(group);
+    }
 }

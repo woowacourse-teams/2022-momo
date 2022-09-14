@@ -40,6 +40,8 @@ import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.storage.domain.GroupImage;
+import com.woowacourse.momo.storage.domain.GroupImageRepository;
 
 @Transactional
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -49,6 +51,7 @@ class GroupModifyServiceTest {
 
     private final GroupModifyService groupModifyService;
     private final GroupSearchService groupSearchService;
+    private final GroupRepository groupRepository;
     private final GroupSearchRepository groupSearchRepository;
     private final MemberRepository memberRepository;
     private final EntityManager entityManager;

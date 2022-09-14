@@ -10,6 +10,7 @@ import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -85,11 +86,12 @@ class GroupImageServiceTest {
         groupImageService.init(savedGroup);
 
         String imageName = savedGroup.getCategory().getDefaultImageName();
-        GroupImage groupImage = groupImageRepository.findByGroup(savedGroup);
+        Optional<GroupImage> groupImage = groupImageRepository.findByGroup(savedGroup);
 
+        assertThat(groupImage).isPresent();
         assertAll(
-                () -> assertThat(groupImage.getGroup()).isEqualTo(savedGroup),
-                () -> assertThat(groupImage.getImageName()).isEqualTo(imageName)
+                () -> assertThat(groupImage.get().getGroup()).isEqualTo(savedGroup),
+                () -> assertThat(groupImage.get().getImageName()).isEqualTo(imageName)
         );
     }
 
