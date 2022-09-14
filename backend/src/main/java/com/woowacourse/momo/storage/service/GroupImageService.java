@@ -28,6 +28,15 @@ public class GroupImageService {
     private final StorageService storageService;
 
     @Transactional
+    public void init(Group group) {
+        String defaultImageName = group.getCategory()
+                .getDefaultImageName();
+        GroupImage groupImage = new GroupImage(group, defaultImageName);
+
+        groupImageRepository.save(groupImage);
+    }
+
+    @Transactional
     public void save(Long memberId, Long groupId, MultipartFile multipartFile) {
         Member member = memberFindService.findMember(memberId);
         Group group = groupFindService.findGroup(groupId);

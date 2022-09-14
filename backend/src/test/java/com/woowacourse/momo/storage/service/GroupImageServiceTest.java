@@ -1,19 +1,16 @@
 package com.woowacourse.momo.storage.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateTimeFixture.내일_23시_59분;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +36,8 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.storage.domain.GroupImage;
+import com.woowacourse.momo.storage.domain.GroupImageRepository;
 
 @Transactional
 @SpringBootTest
@@ -52,6 +51,9 @@ class GroupImageServiceTest {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private GroupImageRepository groupImageRepository;
 
     @MockBean
     private StorageService storageService;
@@ -75,6 +77,20 @@ class GroupImageServiceTest {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
         savedGroup = saveGroup("모모의 그룹", Category.CAFE);
+    }
+
+    @DisplayName("기본 이미지 정보를 저장한다")
+    @Test
+    void init() {
+        groupImageService.init(savedGroup);
+
+        String imageName = savedGroup.getCategory().getDefaultImageName();
+        GroupImage groupImage = groupImageRepository.findByGroup(savedGroup);
+
+        assertAll(
+                () -> assertThat(groupImage.getGroup()).isEqualTo(savedGroup),
+                () -> assertThat(groupImage.getImageName()).isEqualTo(imageName)
+        );
     }
 
     @DisplayName("이미지 정보를 저장한다")
