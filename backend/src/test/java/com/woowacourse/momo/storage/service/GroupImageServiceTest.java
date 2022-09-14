@@ -13,11 +13,14 @@ import java.util.List;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +53,9 @@ class GroupImageServiceTest {
     @Autowired
     private GroupRepository groupRepository;
 
+    @MockBean
+    private StorageService storageService;
+
     public static final MockMultipartFile IMAGE = new MockMultipartFile(
             "imageFile",
             "asdf.png",
@@ -63,18 +69,14 @@ class GroupImageServiceTest {
 
     @BeforeEach
     void setUp() {
+        Mockito.when(storageService.save(Mockito.anyString(), Mockito.any()))
+                .thenReturn("abc.jpg");
+
         password = Password.encrypt("momo123!", new SHA256Encoder());
         savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
         savedGroup = saveGroup("모모의 그룹", Category.CAFE);
     }
 
-    @AfterAll
-    static void tearDown() throws IOException {
-        String PATH_PREFIX = "./image-save/";
-        File file = new File(PATH_PREFIX);
-        FileUtils.deleteDirectory(file);
-    }
-    
     @DisplayName("이미지 정보를 저장한다")
     @Test
     void save() {
