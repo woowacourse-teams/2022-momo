@@ -1,9 +1,10 @@
 package com.woowacourse.momo.group.service.dto.request;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import com.woowacourse.momo.group.repository.FindCondition;
 
 @Getter
 @Setter
@@ -16,17 +17,11 @@ public class GroupFindRequest {
 
     private String keyword;
 
-    @Getter(AccessLevel.NONE)
     private boolean excludeFinished;
 
-    @Getter(AccessLevel.NONE)
     private boolean orderByDeadline;
 
-    public boolean excludeFinished() {
-        return excludeFinished;
-    }
-
-    public boolean orderByDeadline() {
-        return orderByDeadline;
+    public FindCondition toFindCondition() {
+        return new FindCondition(category, keyword, excludeFinished, orderByDeadline);
     }
 }

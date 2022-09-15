@@ -27,7 +27,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.participant.Participant;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 
 @Repository
@@ -40,31 +39,31 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     }
 
     @Override
-    public Page<Group> findGroups(GroupFindRequest request, Pageable pageable) {
-        return findGroups(request, pageable, () -> null);
+    public Page<Group> findGroups(FindCondition condition, Pageable pageable) {
+        return findGroups(condition, pageable, () -> null);
     }
 
     @Override
-    public Page<Group> findHostedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-        return findGroups(request, pageable, () -> isHost(member));
+    public Page<Group> findHostedGroups(FindCondition condition, Member member, Pageable pageable) {
+        return findGroups(condition, pageable, () -> isHost(member));
     }
 
     @Override
-    public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-        return findGroups(request, pageable, () -> isParticipated(member));
+    public Page<Group> findParticipatedGroups(FindCondition condition, Member member, Pageable pageable) {
+        return findGroups(condition, pageable, () -> isParticipated(member));
     }
 
-    private Page<Group> findGroups(GroupFindRequest request, Pageable pageable, Supplier<BooleanExpression> supplier) {
+    private Page<Group> findGroups(FindCondition condition, Pageable pageable, Supplier<BooleanExpression> supplier) {
         List<Group> groups = queryFactory
                 .selectFrom(group)
                 .where(
                         supplier.get(),
-                        excludeFinished(request.excludeFinished()),
-                        filterByCategory(request.getCategory()),
-                        containKeyword(request.getKeyword()),
-                        afterNow(request.orderByDeadline())
+                        excludeFinished(condition.excludeFinished()),
+                        filterByCategory(condition.getCategory()),
+                        containKeyword(condition.getKeyword()),
+                        afterNow(condition.orderByDeadline())
                 )
-                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

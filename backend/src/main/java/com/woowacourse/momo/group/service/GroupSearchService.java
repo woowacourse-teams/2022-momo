@@ -38,7 +38,7 @@ public class GroupSearchService {
 
     public GroupPageResponse findGroups(GroupFindRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupRepository.findGroups(request, pageable);
+        Page<Group> groups = groupRepository.findGroups(request.toFindCondition(), pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
@@ -48,7 +48,7 @@ public class GroupSearchService {
     public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupRepository.findParticipatedGroups(request, member, pageable);
+        Page<Group> groups = groupRepository.findParticipatedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
@@ -58,7 +58,7 @@ public class GroupSearchService {
     public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupRepository.findHostedGroups(request, member, pageable);
+        Page<Group> groups = groupRepository.findHostedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
