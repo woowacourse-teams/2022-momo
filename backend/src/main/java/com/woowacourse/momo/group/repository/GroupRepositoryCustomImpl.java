@@ -94,6 +94,17 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
+    @Override
+    public List<Group> findParticipatedGroups(Member member) {
+        QGroup group = QGroup.group;
+
+        return queryFactory
+                .select(group)
+                .from(group)
+                .where(isParticipated(member))
+                .fetch();
+    }
+
     private BooleanExpression isHost(Member member) {
         return group.participants.host.eq(member);
     }
