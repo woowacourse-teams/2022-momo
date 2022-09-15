@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.repository;
+package com.woowacourse.momo.group.infrastructure.querydsl;
 
 import static com.woowacourse.momo.group.domain.QGroup.group;
 

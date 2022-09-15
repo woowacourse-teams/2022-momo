@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
+import com.woowacourse.momo.group.infrastructure.querydsl.GroupFindRepository;
 import com.woowacourse.momo.member.domain.Member;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import com.woowacourse.momo.member.domain.Member;
 public class GroupFindService {
 
     private final GroupRepository groupRepository;
+    private final GroupFindRepository groupFindRepository;
 
     public Group findGroup(Long id) {
         return groupRepository.findById(id)
@@ -27,6 +29,6 @@ public class GroupFindService {
     }
 
     public List<Group> findParticipatedGroups(Member member) {
-        return groupRepository.findParticipatedGroups(member);
+        return groupFindRepository.findParticipatedGroups(member);
     }
 }

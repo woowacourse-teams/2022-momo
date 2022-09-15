@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.repository;
+package com.woowacourse.momo.group.infrastructure.querydsl;
 
 import lombok.AllArgsConstructor;
 

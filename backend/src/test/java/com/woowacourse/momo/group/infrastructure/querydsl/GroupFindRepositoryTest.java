@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.domain;
+package com.woowacourse.momo.group.infrastructure.querydsl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.TestConstructor;
 
 import lombok.RequiredArgsConstructor;
@@ -29,17 +31,20 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
-@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-class GroupQueryDslRepositoryTest {
+@DataJpaTest(includeFilters = @ComponentScan.Filter(classes = Repository.class))
+class GroupFindRepositoryTest {
 
     private final GroupRepository groupRepository;
+    private final GroupFindRepository groupFindRepository;
     private final MemberRepository memberRepository;
 
     private Member host;
@@ -49,7 +54,6 @@ class GroupQueryDslRepositoryTest {
     private Group group4;
     private Group group5;
     private Group group6;
-
 
     private static final Pageable pageable = PageRequest.of(0, 12);
 
@@ -86,7 +90,7 @@ class GroupQueryDslRepositoryTest {
     void findGroups() {
         GroupFindRequest request = new GroupFindRequest();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group3, group2, group1));
@@ -97,7 +101,7 @@ class GroupQueryDslRepositoryTest {
     void findParticipatedGroups() {
         GroupFindRequest request = new GroupFindRequest();
 
-        List<Group> actual = groupRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupFindRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group3, group2, group1));
@@ -108,7 +112,7 @@ class GroupQueryDslRepositoryTest {
     void findHostedGroups() {
         GroupFindRequest request = new GroupFindRequest();
 
-        List<Group> actual = groupRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupFindRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
@@ -121,7 +125,7 @@ class GroupQueryDslRepositoryTest {
                 .category(STUDY)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group1));
@@ -134,7 +138,7 @@ class GroupQueryDslRepositoryTest {
                 .keyword("모모")
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
@@ -147,7 +151,7 @@ class GroupQueryDslRepositoryTest {
                 .excludeFinished(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group4, group2, group1));
@@ -160,7 +164,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1, group3));
@@ -174,7 +178,7 @@ class GroupQueryDslRepositoryTest {
                 .excludeFinished(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
@@ -188,7 +192,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1, group3));
@@ -202,7 +206,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group4, group2, group5, group1));
@@ -217,7 +221,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findGroups(request.toFindCondition(), pageable).getContent();
+        List<Group> actual = groupFindRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));
@@ -232,7 +236,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupFindRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5));
@@ -247,7 +251,7 @@ class GroupQueryDslRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupFindRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));

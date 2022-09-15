@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.woowacourse.momo.group.repository.FindCondition;
+import com.woowacourse.momo.group.infrastructure.querydsl.FindCondition;
 
 @Getter
 @Setter

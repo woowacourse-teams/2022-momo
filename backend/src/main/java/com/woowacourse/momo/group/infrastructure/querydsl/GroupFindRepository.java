@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.repository;
+package com.woowacourse.momo.group.infrastructure.querydsl;
 
 import static com.woowacourse.momo.group.domain.QGroup.group;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
@@ -25,27 +25,24 @@ import com.woowacourse.momo.group.domain.participant.Participant;
 import com.woowacourse.momo.member.domain.Member;
 
 @Repository
-public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
+public class GroupFindRepository {
 
     private final JPAQueryFactory queryFactory;
     private final ConditionFilter conditionFilter;
 
-    public GroupRepositoryCustomImpl(EntityManager entityManager) {
+    public GroupFindRepository(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.conditionFilter = new ConditionFilter();
     }
 
-    @Override
     public Page<Group> findGroups(FindCondition condition, Pageable pageable) {
         return findGroups(condition, pageable, () -> null);
     }
 
-    @Override
     public Page<Group> findHostedGroups(FindCondition condition, Member member, Pageable pageable) {
         return findGroups(condition, pageable, () -> isHost(member));
     }
 
-    @Override
     public Page<Group> findParticipatedGroups(FindCondition condition, Member member, Pageable pageable) {
         return findGroups(condition, pageable, () -> isParticipated(member));
     }
@@ -65,7 +62,6 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
-    @Override
     public List<Group> findParticipatedGroups(Member member) {
         return queryFactory
                 .selectFrom(group)
