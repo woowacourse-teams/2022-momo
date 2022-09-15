@@ -71,7 +71,6 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     @Override
     public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
         return findGroups(request, pageable, () -> isParticipated(member));
-
     }
 
     @Override
@@ -94,6 +93,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
 
     private BooleanExpression isParticipant(Member member) {
         QParticipant participant = QParticipant.participant;
+
         return group.participants.participants.contains(
                 JPAExpressions
                         .selectFrom(participant)
@@ -114,6 +114,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         NumberPath<Integer> capacity = group.participants.capacity.value;
         NumberExpression<Integer> participantsSize = group.participants.participants.size()
                 .add(Expressions.constant(1));
+
         return capacity.gt(participantsSize);
     }
 
@@ -125,6 +126,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         if (categoryId == null) {
             return null;
         }
+
         Category category = Category.from(categoryId);
         return group.category.eq(category);
     }
@@ -133,8 +135,10 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         if (keyword == null) {
             return null;
         }
+
         BooleanExpression nameContains = group.name.value.contains(keyword);
         BooleanExpression descriptionContains = group.description.contains(keyword);
+
         return nameContains.or(descriptionContains);
     }
 
@@ -142,6 +146,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         if (!orderByDeadline) {
             return null;
         }
+
         return group.calendar.deadline.value.gt(LocalDateTime.now());
     }
 
