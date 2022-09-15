@@ -176,6 +176,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
 
         return orderBy;
     }
+
     private OrderSpecifier<Long> orderByIdDesc() {
         return group.id.desc();
     }

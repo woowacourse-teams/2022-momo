@@ -188,7 +188,8 @@ public enum GroupFixture {
         }
 
         public GroupApiRequest toApiRequest() {
-            return new GroupApiRequest(name, category, capacity, duration.toApiRequest(), ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(),
+            return new GroupApiRequest(name, category, capacity, duration.toApiRequest(),
+                    ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(),
                     location, description);
         }
     }

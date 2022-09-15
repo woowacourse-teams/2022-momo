@@ -23,7 +23,7 @@ class DeadlineTest {
     @ParameterizedTest
     @MethodSource("provideForConstruct")
     void construct(LocalDateTime dateTime) {
-        Deadline deadline =  new Deadline(dateTime);
+        Deadline deadline = new Deadline(dateTime);
 
         assertThat(deadline.getValue()).isEqualTo(dateTime);
     }

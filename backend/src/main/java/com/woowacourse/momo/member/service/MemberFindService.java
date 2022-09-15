@@ -28,7 +28,7 @@ public class MemberFindService {
 
     public Member findByUserIdAndPassword(UserId userId, Password password) {
         Member member = memberRepository.findByUserIdAndPassword(userId, password)
-            .orElseThrow(() -> new MomoException(GlobalErrorCode.LOGIN_INVALID_ID_AND_PASSWORD));
+                .orElseThrow(() -> new MomoException(GlobalErrorCode.LOGIN_INVALID_ID_AND_PASSWORD));
         validateExistMember(member);
         return member;
     }
