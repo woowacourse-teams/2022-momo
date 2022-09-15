@@ -37,4 +37,9 @@ public enum Category {
     public String getDefaultImageName() {
         return defaultImageName;
     }
+
+    public static boolean isDefaultImage(String imageName) {
+        return Arrays.stream(values())
+                .anyMatch(category -> category.defaultImageName.equals(imageName));
+    }
 }

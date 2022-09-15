@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -21,6 +22,9 @@ import com.woowacourse.momo.storage.exception.GroupImageErrorCode;
 @Transactional(readOnly = true)
 @Service
 public class GroupImageService {
+
+    private static final String SAVED_PATH_PREFIX = "./image/saved";
+    private static final String DEFAULT_PATH_PREFIX = "./image/default";
 
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
@@ -47,7 +51,7 @@ public class GroupImageService {
         GroupImage groupImage = new GroupImage(group, savedImageName);
 
         groupImageRepository.save(groupImage);
-        storageService.save(savedImageName, multipartFile);
+        storageService.save(getImagePath(savedImageName), multipartFile);
     }
 
     private void validateMemberIsNotHost(Member member, Group group) {
@@ -66,5 +70,23 @@ public class GroupImageService {
     @Transactional
     public void delete(Group group) {
         groupImageRepository.deleteByGroup(group);
+    }
+
+    public byte[] load(Long groupId) {
+        Group group = groupFindService.findGroup(groupId);
+        GroupImage groupImage = groupImageRepository.findByGroup(group)
+                .orElseThrow(() -> new IllegalArgumentException("그룹의 썸네일이 존재하지 않습니다."));
+        String imageName = getImagePath(groupImage.getImageName());
+
+        return storageService.load(imageName);
+    }
+
+    private String getImagePath(String fileName) {
+        String loadFile = SAVED_PATH_PREFIX + fileName;
+        if (Category.isDefaultImage(fileName)) {
+            loadFile = DEFAULT_PATH_PREFIX + fileName;
+        }
+
+        return loadFile;
     }
 }

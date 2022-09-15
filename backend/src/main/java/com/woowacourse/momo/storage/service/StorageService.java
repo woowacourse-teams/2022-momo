@@ -21,14 +21,13 @@ import com.woowacourse.momo.storage.exception.StorageException;
 @Service
 public class StorageService {
 
-    private static final String PATH_PREFIX = "./image-save/";
     private static final List<String> IMAGE_CONTENT_TYPES = List.of(IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE);
 
-    public String save(String savedFileName, MultipartFile requestFile) {
+    public String save(String path, MultipartFile requestFile) {
         validateContentType(requestFile);
 
-        File savedFile = new File(PATH_PREFIX + savedFileName);
-        File directory = new File(PATH_PREFIX);
+        File savedFile = new File(path);
+        File directory = new File(savedFile.getParent());
 
         fileInit(savedFile, directory);
 
@@ -65,8 +64,13 @@ public class StorageService {
         }
     }
 
-    public byte[] load(String fileName) {
-        File file = new File(PATH_PREFIX + fileName);
+    public byte[] load(String path) {
+        File file = new File(path);
+
+        if (!file.exists()) {
+            throw new IllegalArgumentException("파일이 존재하지 않습니다.");
+        }
+
         try (InputStream inputStream = new FileInputStream(file)) {
             return inputStream.readAllBytes();
         } catch (IOException e) {
