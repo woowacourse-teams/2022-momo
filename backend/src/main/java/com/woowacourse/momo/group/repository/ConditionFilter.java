@@ -3,7 +3,6 @@ package com.woowacourse.momo.group.repository;
 import static com.woowacourse.momo.group.domain.QGroup.group;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -26,32 +25,32 @@ public class ConditionFilter {
         return booleanBuilder;
     }
 
-    private void excludeFinished(BooleanBuilder booleanBuilder, boolean condition) {
-        if (condition) {
+    private void excludeFinished(BooleanBuilder booleanBuilder, boolean excludeFinished) {
+        if (excludeFinished) {
             booleanBuilder.and(afterNow()
                     .and(notClosedEarly())
                     .and(isNotParticipantsFull()));
         }
     }
 
-    private void filterByCategory(BooleanBuilder booleanBuilder, Optional<Long> condition) {
-        condition.ifPresent(categoryId -> {
+    private void filterByCategory(BooleanBuilder booleanBuilder, Long categoryId) {
+        if (categoryId != null) {
             Category category = Category.from(categoryId);
             booleanBuilder.and(group.category.eq(category));
-        });
+        }
     }
 
-    private void containKeyword(BooleanBuilder booleanBuilder, Optional<String> condition) {
-        condition.ifPresent(keyword -> {
+    private void containKeyword(BooleanBuilder booleanBuilder, String keyword) {
+        if (keyword != null) {
             BooleanExpression nameContains = group.name.value.contains(keyword);
             BooleanExpression descriptionContains = group.description.contains(keyword);
 
             booleanBuilder.and(nameContains.or(descriptionContains));
-        });
+        }
     }
 
-    private void afterNow(BooleanBuilder booleanBuilder, boolean condition) {
-        if (condition) {
+    private void afterNow(BooleanBuilder booleanBuilder, boolean orderByDeadline) {
+        if (orderByDeadline) {
             booleanBuilder.and(afterNow());
         }
     }
