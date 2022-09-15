@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 const showDropdown = keyframes`
   from {
-    top: 16.4rem;
+    transform: translate3d(0, 1.6rem, 0);
 
     opacity: 0;
   }
 
   to {
-    top: 18.9rem;
+    transform: translate3d(0, 4.1rem, 0);
 
     opacity: 1;
   }
@@ -17,13 +17,13 @@ const showDropdown = keyframes`
 
 const hideDropdown = keyframes`
   from {
-    top: 18.9rem;
+    transform: translate3d(0, 4.1rem, 0);
 
     opacity: 1;
   }
 
   to {
-    top: 16.4rem;
+    transform: translate3d(0, 1.6rem, 0);
 
     opacity: 0;
   }
@@ -44,6 +44,8 @@ const Label = styled.label`
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
+
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -73,7 +75,7 @@ const CategoryBox = styled.div`
   flex-direction: column;
 
   position: absolute;
-  top: 18.9rem;
+  transform: translate3d(0, 4.1rem, 0);
 
   z-index: 99;
 
@@ -97,10 +99,6 @@ const CategoryList = styled(CategoryButton)`
 
   &:not(:first-of-type, :last-child) {
     border-radius: 0;
-  }
-
-  &:hover {
-    background: ${({ theme: { colors } }) => colors.green002};
   }
 `;
 

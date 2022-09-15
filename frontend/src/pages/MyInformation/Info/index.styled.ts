@@ -3,38 +3,31 @@ import styled from '@emotion/styled';
 
 const kongKong = keyframes`
   0% {
-    bottom: 0;
-    left: 0;
+    transform: translate3d(0, 0, 0);
   }
 
   20% {
-    bottom: 1rem;
-    left: 0.2rem;
+    transform: translate3d(0.2rem, -1rem, 0);
   }
 
   30% {
-    bottom: 1rem;
-    left: 0.3rem;
+    transform: translate3d(0.3rem, -1rem, 0);
   }
 
   50% {
-    bottom: 0;
-    left: 0.5rem;
+    transform: translate3d(0.5rem, 0, 0);
   }
 
   70% {
-    bottom: 1rem;
-    left: 0.7rem;
+    transform: translate3d(0.7rem, -1rem, 0);
   }
 
   80% {
-    bottom: 1rem;
-    left: 0.8rem;
+    transform: translate3d(0.8rem, -1rem, 0);
   }
 
   100% {
-    bottom: 0;
-    left: 1rem;
+    transform: translate3d(1rem, 0, 0);
   }
 `;
 
@@ -49,6 +42,8 @@ const LiveBeanBox = styled.div`
 
 const LiveBean = styled.div`
   position: relative;
+
+  bottom: 0;
 
   animation: 1.5s ${kongKong} ease-out infinite alternate;
 

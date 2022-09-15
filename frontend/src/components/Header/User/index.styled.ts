@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 const showDropdown = keyframes`
   from {
-    top: 2rem;
+    transform: translate3d(-7rem, 0, 0);
 
     opacity: 0;
   }
 
   to {
-    top: 4rem;
+    transform: translate3d(-7rem, 3rem, 0);
 
     opacity: 1;
   }
@@ -17,13 +17,13 @@ const showDropdown = keyframes`
 
 const hideDropdown = keyframes`
   from {
-    top: 4rem;
+    transform: translate3d(-7rem, 3rem, 0);
 
     opacity: 1;
   }
 
   to {
-    top: 2rem;
+    transform: translate3d(-7rem, 0, 0);
 
     opacity: 0;
   }
@@ -39,14 +39,14 @@ const Profile = styled.div`
   justify-content: center;
   align-items: center;
 
+  border-radius: 50%;
+
+  background: ${({ theme: { colors } }) => colors.gray004};
+
   ${({ width }: { width: string }) => `
     width: ${width};
     height: ${width};
   `}
-
-  border-radius: 50%;
-
-  background: ${({ theme: { colors } }) => colors.gray004};
 `;
 
 const ToggleButton = styled.button`
@@ -66,8 +66,7 @@ const Dropdown = styled.div`
   text-align: center;
 
   position: absolute;
-  top: 4rem;
-  right: 2rem;
+  transform: translate3d(-7rem, 3rem, 0);
 
   width: 10rem;
 

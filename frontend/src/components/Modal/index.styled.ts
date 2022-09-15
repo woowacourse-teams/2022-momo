@@ -12,12 +12,12 @@ const openDimmer = keyframes`
 `;
 
 const openModal = keyframes`
-  from {
-    transform: scale(0);
+  0% {
+    transform: scale3d(0.5, 0.5, 0.5);
   }
 
-  to {
-    transform: scale(1);
+  100% {
+    transform: scale3d(1, 1, 1);
   }
 `;
 
@@ -33,11 +33,11 @@ const closeDimmer = keyframes`
 
 const closeModal = keyframes`
   from {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
 
   to {
-    transform: scale(0);
+    transform: scale3d(0.5, 0.5, 0.5);
   }
 `;
 
