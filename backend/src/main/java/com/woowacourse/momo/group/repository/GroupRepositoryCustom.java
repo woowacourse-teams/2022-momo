@@ -11,7 +11,7 @@ public interface GroupRepositoryCustom {
 
     Page<Group> findGroups(GroupFindRequest request, Pageable pageable);
 
-//    Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable);
+    Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable);
 
     Page<Group> findHostedGroups(GroupFindRequest request, Member member, Pageable pageable);
 }

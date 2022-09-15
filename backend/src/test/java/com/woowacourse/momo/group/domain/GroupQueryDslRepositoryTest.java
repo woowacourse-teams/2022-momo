@@ -91,18 +91,18 @@ class GroupQueryDslRepositoryTest {
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group6, group5, group4, group3, group2, group1));
     }
-//
-//    @DisplayName("참여한 모임 목록을 조회한다")
-//    @Test
-//    void findParticipatedGroups() {
-//        GroupFindRequest request = new GroupFindRequest();
-//
-//        List<Group> actual = groupRepository.findParticipatedGroups(request, host).getContent();
-//
-//        assertThat(actual).usingRecursiveComparison()
-//                .isEqualTo(List.of(group5, group3, group2, group1));
-//    }
-//
+
+    @DisplayName("참여한 모임 목록을 조회한다")
+    @Test
+    void findParticipatedGroups() {
+        GroupFindRequest request = new GroupFindRequest();
+
+        List<Group> actual = groupRepository.findParticipatedGroups(request, host, pageable).getContent();
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group5, group3, group2, group1));
+    }
+
     @DisplayName("주최한 모임을 조회한다")
     @Test
     void findHostedGroups() {
@@ -223,21 +223,21 @@ class GroupQueryDslRepositoryTest {
                 .isEqualTo(List.of(group2, group1));
     }
 
-//    @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 참여한 모임 목록을 조회한다")
-//    @Test
-//    void findParticipatedGroupsAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
-//        GroupFindRequest request = new FindRequestBuilder()
-//                .keyword("두두")
-//                .excludeFinished(true)
-//                .orderByDeadline(true)
-//                .build();
-//
-//        List<Group> actual = groupRepository.findParticipatedGroups(request, host).getContent();
-//
-//        assertThat(actual).usingRecursiveComparison()
-//                .isEqualTo(List.of(group5));
-//    }
-//
+    @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 참여한 모임 목록을 조회한다")
+    @Test
+    void findParticipatedGroupsAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {
+        GroupFindRequest request = new FindRequestBuilder()
+                .keyword("두두")
+                .excludeFinished(true)
+                .orderByDeadline(true)
+                .build();
+
+        List<Group> actual = groupRepository.findParticipatedGroups(request, host, pageable).getContent();
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group5));
+    }
+
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 주최한 모임을 조회한다")
     @Test
     void findHostedGroupsAndContainKeywordsAndExcludeFinishedRecruitmentOrderByDeadline() {

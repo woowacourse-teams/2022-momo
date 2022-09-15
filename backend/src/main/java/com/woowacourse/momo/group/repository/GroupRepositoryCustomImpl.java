@@ -16,11 +16,13 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.QGroup;
+import com.woowacourse.momo.group.domain.participant.QParticipant;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -68,8 +70,39 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
+    @Override
+    public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
+        QGroup group = QGroup.group;
+
+        List<Group> groups = queryFactory
+                .select(group)
+                .from(group)
+                .where(isParticipated(member),
+                        excludeFinished(request.excludeFinished(), group),
+                        filterByCategory(request.getCategory()),
+                        containKeyword(request.getKeyword()),
+                        afterNow(request.orderByDeadline()))
+                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
     private BooleanExpression isHost(Member member) {
         return group.participants.host.eq(member);
+    }
+
+    private BooleanExpression isParticipated(Member member) {
+        return isHost(member).or(isParticipant(member));
+    }
+
+    private BooleanExpression isParticipant(Member member) {
+        QParticipant participant = QParticipant.participant;
+        return group.participants.participants.contains(
+                JPAExpressions
+                        .selectFrom(participant)
+                        .where(participant.member.eq(member))
+        );
     }
 
     private BooleanExpression excludeFinished(boolean excludeFinished, QGroup group) {
@@ -126,14 +159,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
 
         return orderBy;
     }
-
     private OrderSpecifier<Long> orderByIdDesc() {
         return group.id.desc();
     }
-//    @Override
-//    public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-//
-
-//        return null;
-//    }
 }
