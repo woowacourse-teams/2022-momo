@@ -5,7 +5,6 @@ module.exports = {
     'react-app',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:storybook/recommended',
   ],
   rules: {
     'react/function-component-definition': [
