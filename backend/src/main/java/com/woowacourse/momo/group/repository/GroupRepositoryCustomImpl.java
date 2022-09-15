@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -58,10 +59,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                 .selectFrom(group)
                 .where(
                         supplier.get(),
-                        excludeFinished(condition.excludeFinished()),
-                        filterByCategory(condition.getCategory()),
-                        containKeyword(condition.getKeyword()),
-                        afterNow(condition.orderByDeadline())
+                        filterByCondition(condition)
                 )
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
@@ -95,13 +93,36 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return group.participants.participants.contains(targetMember);
     }
 
-    private BooleanExpression excludeFinished(boolean excludeFinished) {
-        if (!excludeFinished) {
-            return null;
+    private BooleanBuilder filterByCondition(FindCondition condition) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        if (condition.excludeFinished()) {
+            booleanBuilder.and(afterNow()
+                    .and(notClosedEarly())
+                    .and(isNotParticipantsFull()));
         }
-        return afterNow(true)
-                .and(notClosedEarly())
-                .and(isNotParticipantsFull());
+
+        if (condition.getCategory() != null) {
+            long categoryId = condition.getCategory();
+
+            Category category = Category.from(categoryId);
+            booleanBuilder.and(group.category.eq(category));
+        }
+
+        if (condition.getKeyword() != null) {
+            String keyword = condition.getKeyword();
+
+            BooleanExpression nameContains = group.name.value.contains(keyword);
+            BooleanExpression descriptionContains = group.description.contains(keyword);
+
+            booleanBuilder.and(nameContains.or(descriptionContains));
+        }
+
+        if (condition.orderByDeadline()) {
+            booleanBuilder.and(afterNow());
+        }
+
+        return booleanBuilder;
     }
 
     private BooleanExpression isNotParticipantsFull() {
@@ -116,31 +137,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return group.closedEarly.isFalse();
     }
 
-    private BooleanExpression filterByCategory(Long categoryId) {
-        if (categoryId == null) {
-            return null;
-        }
-
-        Category category = Category.from(categoryId);
-        return group.category.eq(category);
-    }
-
-    private BooleanExpression containKeyword(String keyword) {
-        if (keyword == null) {
-            return null;
-        }
-
-        BooleanExpression nameContains = group.name.value.contains(keyword);
-        BooleanExpression descriptionContains = group.description.contains(keyword);
-
-        return nameContains.or(descriptionContains);
-    }
-
-    private BooleanExpression afterNow(boolean orderByDeadline) {
-        if (!orderByDeadline) {
-            return null;
-        }
-
+    private BooleanExpression afterNow() {
         return group.calendar.deadline.value.gt(LocalDateTime.now());
     }
 
