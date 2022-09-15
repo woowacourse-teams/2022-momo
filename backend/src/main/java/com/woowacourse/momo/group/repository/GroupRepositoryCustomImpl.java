@@ -22,6 +22,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.QGroup;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.member.domain.Member;
 
 @Repository
 public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
@@ -47,6 +48,28 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                 .fetch();
 
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
+    @Override
+    public Page<Group> findHostedGroups(GroupFindRequest request, Member member, Pageable pageable) {
+        QGroup group = QGroup.group;
+
+        List<Group> groups = queryFactory
+                .select(group)
+                .from(group)
+                .where(isHost(member),
+                        excludeFinished(request.excludeFinished(), group),
+                        filterByCategory(request.getCategory()),
+                        containKeyword(request.getKeyword()),
+                        afterNow(request.orderByDeadline()))
+                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
+    private BooleanExpression isHost(Member member) {
+        return group.participants.host.eq(member);
     }
 
     private BooleanExpression excludeFinished(boolean excludeFinished, QGroup group) {
@@ -107,14 +130,10 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     private OrderSpecifier<Long> orderByIdDesc() {
         return group.id.desc();
     }
-
 //    @Override
 //    public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-//        return null;
-//    }
 //
-//    @Override
-//    public Page<Group> findHostedGroups(GroupFindRequest request, Member member, Pageable pageable) {
+
 //        return null;
 //    }
 }
