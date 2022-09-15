@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Repository;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 
-@DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@DataJpaTest(includeFilters = @ComponentScan.Filter(classes = Repository.class))
 class MemberRepositoryTest {
 
     @Autowired
@@ -71,3 +73,4 @@ class MemberRepositoryTest {
         entityManager.clear();
     }
 }
+

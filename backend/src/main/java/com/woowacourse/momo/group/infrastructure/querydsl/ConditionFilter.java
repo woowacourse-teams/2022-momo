@@ -12,10 +12,11 @@ import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.search.SearchCondition;
 
 public class ConditionFilter {
 
-    public BooleanBuilder filterByCondition(FindCondition condition) {
+    public BooleanBuilder filterByCondition(SearchCondition condition) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         excludeFinished(booleanBuilder, condition.excludeFinished());

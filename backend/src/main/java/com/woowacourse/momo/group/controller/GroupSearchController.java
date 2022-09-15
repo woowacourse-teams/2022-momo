@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.service.GroupSearchService;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 
@@ -32,22 +32,22 @@ public class GroupSearchController {
     @Authenticated
     @GetMapping("/me/participated")
     public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
-                                                                    @ModelAttribute GroupFindRequest groupFindRequest) {
-        GroupPageResponse response = groupService.findParticipatedGroups(groupFindRequest, memberId);
+                                                                    @ModelAttribute GroupSearchRequest groupSearchRequest) {
+        GroupPageResponse response = groupService.findParticipatedGroups(groupSearchRequest, memberId);
         return ResponseEntity.ok(response);
     }
 
     @Authenticated
     @GetMapping("/me/hosted")
     public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
-                                                              @ModelAttribute GroupFindRequest groupFindRequest) {
-        GroupPageResponse response = groupService.findHostedGroups(groupFindRequest, memberId);
+                                                              @ModelAttribute GroupSearchRequest groupSearchRequest) {
+        GroupPageResponse response = groupService.findHostedGroups(groupSearchRequest, memberId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupFindRequest groupFindRequest) {
-        GroupPageResponse response = groupService.findGroups(groupFindRequest);
+    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupSearchRequest groupSearchRequest) {
+        GroupPageResponse response = groupService.findGroups(groupSearchRequest);
         return ResponseEntity.ok(response);
     }
 }

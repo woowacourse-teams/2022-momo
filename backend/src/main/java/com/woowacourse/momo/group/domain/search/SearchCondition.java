@@ -1,9 +1,9 @@
-package com.woowacourse.momo.group.infrastructure.querydsl;
+package com.woowacourse.momo.group.domain.search;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class FindCondition {
+public class SearchCondition {
 
     private Long category;
     private String keyword;

@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.infrastructure.querydsl.GroupFindRepository;
 import com.woowacourse.momo.member.domain.Member;
 
 @RequiredArgsConstructor
@@ -19,14 +19,14 @@ import com.woowacourse.momo.member.domain.Member;
 @Service
 public class GroupFindService {
 
-    private final GroupFindRepository groupFindRepository;
+    private final GroupSearchRepository groupSearchRepository;
 
     public Group findGroup(Long id) {
-        return groupFindRepository.findById(id)
+        return groupSearchRepository.findById(id)
                 .orElseThrow(() -> new GroupException(NOT_EXIST));
     }
 
     public List<Group> findParticipatedGroups(Member member) {
-        return groupFindRepository.findParticipatedGroups(member);
+        return groupSearchRepository.findParticipatedGroups(member);
     }
 }

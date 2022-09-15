@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.infrastructure.querydsl.GroupFindRepository;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
+import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
@@ -29,36 +29,36 @@ public class GroupSearchService {
 
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
-    private final GroupFindRepository groupFindRepository;
+    private final GroupSearchRepository groupSearchRepository;
 
     public GroupResponse findGroup(Long id) {
         Group group = groupFindService.findGroup(id);
         return GroupResponseAssembler.groupResponse(group);
     }
 
-    public GroupPageResponse findGroups(GroupFindRequest request) {
+    public GroupPageResponse findGroups(GroupSearchRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupFindRepository.findGroups(request.toFindCondition(), pageable);
+        Page<Group> groups = groupSearchRepository.findGroups(request.toFindCondition(), pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    public GroupPageResponse findParticipatedGroups(GroupFindRequest request, Long memberId) {
+    public GroupPageResponse findParticipatedGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindRepository.findParticipatedGroups(request.toFindCondition(), member, pageable);
+        Page<Group> groups = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    public GroupPageResponse findHostedGroups(GroupFindRequest request, Long memberId) {
+    public GroupPageResponse findHostedGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupFindRepository.findHostedGroups(request.toFindCondition(), member, pageable);
+        Page<Group> groups = groupSearchRepository.findHostedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
 

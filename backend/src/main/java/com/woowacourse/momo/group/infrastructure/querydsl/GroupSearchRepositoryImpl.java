@@ -22,35 +22,37 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.participant.Participant;
+import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
+import com.woowacourse.momo.group.domain.search.SearchCondition;
 import com.woowacourse.momo.member.domain.Member;
 
 @Repository
-public class GroupFindRepositoryImpl implements GroupFindRepositoryCustom {
+public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     private final ConditionFilter conditionFilter;
 
-    public GroupFindRepositoryImpl(EntityManager entityManager) {
+    public GroupSearchRepositoryImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.conditionFilter = new ConditionFilter();
     }
 
     @Override
-    public Page<Group> findGroups(FindCondition condition, Pageable pageable) {
+    public Page<Group> findGroups(SearchCondition condition, Pageable pageable) {
         return findGroups(condition, pageable, () -> null);
     }
 
     @Override
-    public Page<Group> findHostedGroups(FindCondition condition, Member member, Pageable pageable) {
+    public Page<Group> findHostedGroups(SearchCondition condition, Member member, Pageable pageable) {
         return findGroups(condition, pageable, () -> isHost(member));
     }
 
     @Override
-    public Page<Group> findParticipatedGroups(FindCondition condition, Member member, Pageable pageable) {
+    public Page<Group> findParticipatedGroups(SearchCondition condition, Member member, Pageable pageable) {
         return findGroups(condition, pageable, () -> isParticipated(member));
     }
 
-    private Page<Group> findGroups(FindCondition condition, Pageable pageable, Supplier<BooleanExpression> supplier) {
+    private Page<Group> findGroups(SearchCondition condition, Pageable pageable, Supplier<BooleanExpression> supplier) {
         List<Group> groups = queryFactory
                 .selectFrom(group)
                 .where(

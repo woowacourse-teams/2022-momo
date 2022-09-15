@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.woowacourse.momo.group.infrastructure.querydsl.FindCondition;
+import com.woowacourse.momo.group.domain.search.SearchCondition;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class GroupFindRequest {
+public class GroupSearchRequest {
 
     private int page = 0;
 
@@ -21,7 +21,7 @@ public class GroupFindRequest {
 
     private boolean orderByDeadline;
 
-    public FindCondition toFindCondition() {
-        return new FindCondition(category, keyword, excludeFinished, orderByDeadline);
+    public SearchCondition toFindCondition() {
+        return new SearchCondition(category, keyword, excludeFinished, orderByDeadline);
     }
 }

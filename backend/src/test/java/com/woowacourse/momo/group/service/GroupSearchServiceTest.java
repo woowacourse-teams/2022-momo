@@ -28,7 +28,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
@@ -88,7 +88,7 @@ class GroupSearchServiceTest {
         saveGroup("모모의 술파티", Category.DRINK);
         saveGroup("두두와의 헬스 클럽", Category.HEALTH);
 
-        GroupFindRequest request = new GroupFindRequest();
+        GroupSearchRequest request = new GroupSearchRequest();
         request.setKeyword("모모");
         request.setPage(0);
 
@@ -118,7 +118,7 @@ class GroupSearchServiceTest {
                 saveGroup("모모의 스터디", Category.STUDY);
             }
 
-            GroupFindRequest request = new GroupFindRequest();
+            GroupSearchRequest request = new GroupSearchRequest();
             request.setPage(1);
 
             GroupPageResponse actual = groupService.findGroups(request);
@@ -138,7 +138,7 @@ class GroupSearchServiceTest {
                 saveGroup("모모의 술파티", Category.DRINK);
             }
 
-            GroupFindRequest request = new GroupFindRequest();
+            GroupSearchRequest request = new GroupSearchRequest();
             request.setCategory(Category.DRINK.getId());
             request.setPage(1);
 
