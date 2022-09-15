@@ -5,6 +5,7 @@ import static com.woowacourse.momo.group.domain.QGroup.group;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -35,63 +38,40 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public Page<Group> findGroups(GroupFindRequest request, Pageable pageable) {
+    private Page<Group> findGroups(GroupFindRequest request, Pageable pageable, Supplier<BooleanExpression> supplier) {
         QGroup group = QGroup.group;
 
         List<Group> groups = queryFactory
-                .select(group)
-                .from(group)
-                .where(excludeFinished(request.excludeFinished(), group),
+                .selectFrom(group)
+                .where(
+                        supplier.get(),
+                        excludeFinished(request.excludeFinished(), group),
                         filterByCategory(request.getCategory()),
                         containKeyword(request.getKeyword()),
-                        afterNow(request.orderByDeadline()))
+                        afterNow(request.orderByDeadline())
+                )
                 .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
+    @Override
+    public Page<Group> findGroups(GroupFindRequest request, Pageable pageable) {
+        return findGroups(request, pageable, () -> null);
     }
 
     @Override
     public Page<Group> findHostedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-        QGroup group = QGroup.group;
-
-        List<Group> groups = queryFactory
-                .select(group)
-                .from(group)
-                .where(isHost(member),
-                        excludeFinished(request.excludeFinished(), group),
-                        filterByCategory(request.getCategory()),
-                        containKeyword(request.getKeyword()),
-                        afterNow(request.orderByDeadline()))
-                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+        return findGroups(request, pageable, () -> isHost(member));
     }
 
     @Override
     public Page<Group> findParticipatedGroups(GroupFindRequest request, Member member, Pageable pageable) {
-        QGroup group = QGroup.group;
+        return findGroups(request, pageable, () -> isParticipated(member));
 
-        List<Group> groups = queryFactory
-                .select(group)
-                .from(group)
-                .where(isParticipated(member),
-                        excludeFinished(request.excludeFinished(), group),
-                        filterByCategory(request.getCategory()),
-                        containKeyword(request.getKeyword()),
-                        afterNow(request.orderByDeadline()))
-                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
     @Override
@@ -99,8 +79,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         QGroup group = QGroup.group;
 
         return queryFactory
-                .select(group)
-                .from(group)
+                .selectFrom(group)
                 .where(isParticipated(member))
                 .fetch();
     }
@@ -154,7 +133,6 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         if (keyword == null) {
             return null;
         }
-
         BooleanExpression nameContains = group.name.value.contains(keyword);
         BooleanExpression descriptionContains = group.description.contains(keyword);
         return nameContains.or(descriptionContains);
