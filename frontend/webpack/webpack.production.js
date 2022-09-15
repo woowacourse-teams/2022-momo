@@ -11,21 +11,23 @@ require('dotenv').config({
 
 module.exports = merge(common, {
   mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: {
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+          },
+        },
+      },
+    ],
+  },
   plugins: [
     new DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
     }),
   ],
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'esbuild-loader',
-        options: {
-          loader: 'tsx',
-          target: 'es2015',
-        },
-      },
-    ],
-  },
 });

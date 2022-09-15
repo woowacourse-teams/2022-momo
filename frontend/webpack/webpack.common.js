@@ -1,6 +1,7 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path = require('path');
 
@@ -9,7 +10,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif)$/i,
+        test: /\.(woff(2)?|ttf|png|jpe?g|gif)$/i,
         type: 'asset/resource',
       },
       {
@@ -39,14 +40,22 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: '[contenthash].bundle.js',
+    clean: true,
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-      favicon: './public/favicon.ico',
+      template: 'public/index.html',
+      favicon: 'public/favicon.ico',
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/assets/font',
+          to: 'font',
+        },
+      ],
+    }),
+    new BundleAnalyzerPlugin(),
   ],
 };

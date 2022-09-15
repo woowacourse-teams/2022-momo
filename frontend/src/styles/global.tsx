@@ -4,7 +4,7 @@ import emotionReset from 'emotion-reset';
 import { fontStyle } from './font';
 
 // Heading => SuseongDotum
-// Basic => GangwonEdu_OTFBoldA
+// Basic => GangwonEdu_Bold
 
 const style = (colors: Theme['colors']) => css`
   ${emotionReset}

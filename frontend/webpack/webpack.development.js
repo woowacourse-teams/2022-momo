@@ -1,3 +1,4 @@
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { merge } = require('webpack-merge');
 
@@ -20,18 +21,24 @@ module.exports = merge(common, {
       logging: 'none',
     },
   },
-  plugins: [
-    new DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
-    }),
-  ],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        },
         exclude: /node_modules/,
       },
     ],
   },
+  plugins: [
+    new ForkTsCheckerWebpackPlugin(),
+    new DefinePlugin({
+      'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
+    }),
+  ],
 });
