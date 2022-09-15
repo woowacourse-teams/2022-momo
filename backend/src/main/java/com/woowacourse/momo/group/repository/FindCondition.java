@@ -1,10 +1,9 @@
 package com.woowacourse.momo.group.repository;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.util.Optional;
 
-@Getter
+import lombok.AllArgsConstructor;
+
 @AllArgsConstructor
 public class FindCondition {
 
@@ -12,11 +11,17 @@ public class FindCondition {
 
     private String keyword;
 
-    @Getter(AccessLevel.NONE)
     private boolean excludeFinished;
 
-    @Getter(AccessLevel.NONE)
     private boolean orderByDeadline;
+
+    public Optional<Long> getCategory() {
+        return Optional.ofNullable(category);
+    }
+
+    public Optional<String> getKeyword() {
+        return Optional.ofNullable(keyword);
+    }
 
     public boolean excludeFinished() {
         return excludeFinished;

@@ -6,6 +6,7 @@ import static com.woowacourse.momo.group.domain.participant.QParticipant.partici
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
@@ -96,33 +97,42 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     private BooleanBuilder filterByCondition(FindCondition condition) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (condition.excludeFinished()) {
+        excludeFinished(booleanBuilder, condition.excludeFinished());
+        filterByCategory(booleanBuilder, condition.getCategory());
+        containKeyword(booleanBuilder, condition.getKeyword());
+        afterNow(booleanBuilder, condition.orderByDeadline());
+
+        return booleanBuilder;
+    }
+
+    private void excludeFinished(BooleanBuilder booleanBuilder, boolean condition) {
+        if (condition) {
             booleanBuilder.and(afterNow()
                     .and(notClosedEarly())
                     .and(isNotParticipantsFull()));
         }
+    }
 
-        if (condition.getCategory() != null) {
-            long categoryId = condition.getCategory();
-
+    private void filterByCategory(BooleanBuilder booleanBuilder, Optional<Long> condition) {
+        condition.ifPresent(categoryId -> {
             Category category = Category.from(categoryId);
             booleanBuilder.and(group.category.eq(category));
-        }
+        });
+    }
 
-        if (condition.getKeyword() != null) {
-            String keyword = condition.getKeyword();
-
+    private void containKeyword(BooleanBuilder booleanBuilder, Optional<String> condition) {
+        condition.ifPresent(keyword -> {
             BooleanExpression nameContains = group.name.value.contains(keyword);
             BooleanExpression descriptionContains = group.description.contains(keyword);
 
             booleanBuilder.and(nameContains.or(descriptionContains));
-        }
+        });
+    }
 
-        if (condition.orderByDeadline()) {
+    private void afterNow(BooleanBuilder booleanBuilder, boolean condition) {
+        if (condition) {
             booleanBuilder.and(afterNow());
         }
-
-        return booleanBuilder;
     }
 
     private BooleanExpression isNotParticipantsFull() {
