@@ -47,6 +47,8 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                         containKeyword(request.getKeyword()),
                         afterNow(request.orderByDeadline()))
                 .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
@@ -65,6 +67,8 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                         containKeyword(request.getKeyword()),
                         afterNow(request.orderByDeadline()))
                 .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
@@ -83,6 +87,8 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                         containKeyword(request.getKeyword()),
                         afterNow(request.orderByDeadline()))
                 .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return PageableExecutionUtils.getPage(groups, pageable, groups::size);
