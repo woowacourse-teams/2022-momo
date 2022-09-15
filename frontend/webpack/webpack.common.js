@@ -42,7 +42,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: '[contenthash].bundle.js',
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
