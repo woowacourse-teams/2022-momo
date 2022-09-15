@@ -1,6 +1,4 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -43,10 +41,9 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
     filename: '[contenthash].bundle.js',
+    clean: true,
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
