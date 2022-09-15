@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
+import com.woowacourse.momo.group.infrastructure.querydsl.GroupFindRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
@@ -34,6 +35,9 @@ class GroupRepositoryTest {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private GroupFindRepository groupFindRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -89,7 +93,7 @@ class GroupRepositoryTest {
 
         synchronize();
 
-        Optional<Group> foundGroup = groupRepository.findById(savedGroup.getId());
+        Optional<Group> foundGroup = groupFindRepository.findById(savedGroup.getId());
 
         assertThat(foundGroup).isPresent();
         assertThat(foundGroup.get()).usingRecursiveComparison()
@@ -106,7 +110,7 @@ class GroupRepositoryTest {
 
         synchronize();
 
-        List<Group> actual = groupRepository.findAll();
+        List<Group> actual = groupFindRepository.findAll();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(savedGroup1, savedGroup2));
@@ -123,7 +127,7 @@ class GroupRepositoryTest {
         groupRepository.deleteById(group.getId());
         synchronize();
 
-        Optional<Group> foundGroup = groupRepository.findById(group.getId());
+        Optional<Group> foundGroup = groupFindRepository.findById(group.getId());
 
         assertThat(foundGroup).isEmpty();
     }
@@ -140,7 +144,7 @@ class GroupRepositoryTest {
         groupRepository.deleteById(savedGroup.getId());
         synchronize();
 
-        Optional<Group> deletedGroup = groupRepository.findById(savedGroup.getId());
+        Optional<Group> deletedGroup = groupFindRepository.findById(savedGroup.getId());
         assertThat(deletedGroup).isEmpty();
     }
 
@@ -153,7 +157,7 @@ class GroupRepositoryTest {
         savedGroup.participate(participant);
         synchronize();
 
-        Optional<Group> foundGroup = groupRepository.findById(savedGroup.getId());
+        Optional<Group> foundGroup = groupFindRepository.findById(savedGroup.getId());
 
         assertThat(foundGroup).isPresent();
         assertThat(foundGroup.get().getParticipants()).usingRecursiveFieldByFieldElementComparator()

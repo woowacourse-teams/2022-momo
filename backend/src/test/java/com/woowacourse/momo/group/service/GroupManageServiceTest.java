@@ -25,6 +25,7 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
+import com.woowacourse.momo.group.infrastructure.querydsl.GroupFindRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -38,6 +39,7 @@ class GroupManageServiceTest {
     private final GroupManageService groupManageService;
     private final GroupSearchService groupSearchService;
     private final GroupRepository groupRepository;
+    private final GroupFindRepository groupFindRepository;
     private final MemberRepository memberRepository;
     private final ParticipateService participateService;
 
@@ -60,7 +62,7 @@ class GroupManageServiceTest {
         long groupId = groupManageService.create(host.getId(), request)
                 .getGroupId();
 
-        Optional<Group> group = groupRepository.findById(groupId);
+        Optional<Group> group = groupFindRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
@@ -109,7 +111,7 @@ class GroupManageServiceTest {
         GroupRequest request = target.toRequest();
         groupManageService.update(host.getId(), groupId, request);
 
-        Optional<Group> group = groupRepository.findById(groupId);
+        Optional<Group> group = groupFindRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
