@@ -132,8 +132,10 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     }
 
     private BooleanExpression isNotFull(QGroup group) {
-        return group.participants.capacity.value.gt(
-                group.participants.participants.size().add(Expressions.constant(1)));
+        NumberPath<Integer> capacity = group.participants.capacity.value;
+        NumberExpression<Integer> participantsSize = group.participants.participants.size()
+                .add(Expressions.constant(1));
+        return capacity.gt(participantsSize);
     }
 
     private BooleanExpression notClosedEarly() {
