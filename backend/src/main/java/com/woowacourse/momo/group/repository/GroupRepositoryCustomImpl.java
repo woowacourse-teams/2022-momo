@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.repository;
 
 import static com.woowacourse.momo.group.domain.QGroup.group;
+import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -20,12 +21,12 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.QGroup;
-import com.woowacourse.momo.group.domain.participant.QParticipant;
+import com.woowacourse.momo.group.domain.participant.Participant;
 import com.woowacourse.momo.group.service.dto.request.GroupFindRequest;
 import com.woowacourse.momo.member.domain.Member;
 
@@ -36,26 +37,6 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
 
     public GroupRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
-    }
-
-    private Page<Group> findGroups(GroupFindRequest request, Pageable pageable, Supplier<BooleanExpression> supplier) {
-        QGroup group = QGroup.group;
-
-        List<Group> groups = queryFactory
-                .selectFrom(group)
-                .where(
-                        supplier.get(),
-                        excludeFinished(request.excludeFinished(), group),
-                        filterByCategory(request.getCategory()),
-                        containKeyword(request.getKeyword()),
-                        afterNow(request.orderByDeadline())
-                )
-                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
     @Override
@@ -73,10 +54,26 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return findGroups(request, pageable, () -> isParticipated(member));
     }
 
+    private Page<Group> findGroups(GroupFindRequest request, Pageable pageable, Supplier<BooleanExpression> supplier) {
+        List<Group> groups = queryFactory
+                .selectFrom(group)
+                .where(
+                        supplier.get(),
+                        excludeFinished(request.excludeFinished()),
+                        filterByCategory(request.getCategory()),
+                        containKeyword(request.getKeyword()),
+                        afterNow(request.orderByDeadline())
+                )
+                .orderBy(orderByDeadlineAsc(request.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
     @Override
     public List<Group> findParticipatedGroups(Member member) {
-        QGroup group = QGroup.group;
-
         return queryFactory
                 .selectFrom(group)
                 .where(isParticipated(member))
@@ -92,25 +89,23 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     }
 
     private BooleanExpression isParticipant(Member member) {
-        QParticipant participant = QParticipant.participant;
+        JPQLQuery<Participant> targetMember = JPAExpressions
+                .selectFrom(participant)
+                .where(participant.member.eq(member));
 
-        return group.participants.participants.contains(
-                JPAExpressions
-                        .selectFrom(participant)
-                        .where(participant.member.eq(member))
-        );
+        return group.participants.participants.contains(targetMember);
     }
 
-    private BooleanExpression excludeFinished(boolean excludeFinished, QGroup group) {
+    private BooleanExpression excludeFinished(boolean excludeFinished) {
         if (!excludeFinished) {
             return null;
         }
         return afterNow(true)
                 .and(notClosedEarly())
-                .and(isNotFull(group));
+                .and(isNotParticipantsFull());
     }
 
-    private BooleanExpression isNotFull(QGroup group) {
+    private BooleanExpression isNotParticipantsFull() {
         NumberPath<Integer> capacity = group.participants.capacity.value;
         NumberExpression<Integer> participantsSize = group.participants.participants.size()
                 .add(Expressions.constant(1));
