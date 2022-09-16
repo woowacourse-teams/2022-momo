@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --config ./webpack/webpack.development.js --open",
     "start:prod": "webpack-dev-server --config ./webpack/webpack.production.js --open",
-    "build": "webpack --config ./webpack/webpack.production.js",
+    "build": "webpack --config ./webpack/webpack.development.js",
+    "build:prod": "webpack --config ./webpack/webpack.production.js",
     "test": "jest"
   },
   "repository": {
