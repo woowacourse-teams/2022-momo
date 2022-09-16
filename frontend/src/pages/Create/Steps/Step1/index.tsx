@@ -1,7 +1,7 @@
 import React, { forwardRef, LegacyRef, memo } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CreateGroupData } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 
 import {
   Container,
@@ -13,10 +13,7 @@ import {
 } from '../@shared/styled';
 
 interface Step1Props {
-  useNameState: () => {
-    name: CreateGroupData['name'];
-    setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+  useNameState: CreateStateReturnValues['useNameState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 

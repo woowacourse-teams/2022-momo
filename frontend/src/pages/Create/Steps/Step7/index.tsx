@@ -1,16 +1,13 @@
 import { memo, forwardRef, LegacyRef } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CreateGroupData } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 
 import { Container, Heading, Input, Label } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step7Props {
-  useLocationState: () => {
-    location: CreateGroupData['location'];
-    setLocation: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+  useLocationState: CreateStateReturnValues['useLocationState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 

@@ -1,76 +1,85 @@
 import { useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CategoryType, CreateGroupData, ScheduleType } from 'types/data';
+import { CreateGroupData } from 'types/data';
+import { ArrElement } from 'types/utils';
 import { isEqualObject } from 'utils/compare';
 
 import useInput from './useInput';
 
 export interface CreateStateReturnValues {
   useNameState: () => {
-    name: string;
+    name: CreateGroupData['name'];
     setName: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    dangerouslySetName: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetName: React.Dispatch<
+      React.SetStateAction<CreateGroupData['name']>
+    >;
   };
   useSelectedCategoryState: () => {
-    selectedCategory: CategoryType;
-    setSelectedCategory: (newSelectedCategory: CategoryType) => void;
+    selectedCategory: CreateGroupData['selectedCategory'];
+    setSelectedCategory: (
+      newSelectedCategory: CreateGroupData['selectedCategory'],
+    ) => void;
   };
   useCapacityState: () => {
-    capacity: number;
+    capacity: CreateGroupData['capacity'];
     setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    dangerouslySetCapacity: (newCapacity: number) => void;
+    dangerouslySetCapacity: (newCapacity: CreateGroupData['capacity']) => void;
   };
   useDateState: () => {
-    startDate: string;
+    startDate: CreateGroupData['startDate'];
     setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    endDate: string;
+    endDate: CreateGroupData['endDate'];
     setEndDate: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    dangerouslySetStartDate: React.Dispatch<React.SetStateAction<string>>;
-    dangerouslySetEndDate: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetStartDate: React.Dispatch<
+      React.SetStateAction<CreateGroupData['startDate']>
+    >;
+    dangerouslySetEndDate: React.Dispatch<
+      React.SetStateAction<CreateGroupData['endDate']>
+    >;
   };
   useScheduleState: () => {
-    schedules: ScheduleType[];
-    setSchedules: (newSchedule: ScheduleType) => void;
-    dangerouslySetSchedules: (schedules: ScheduleType[]) => void;
-    deleteSchedule: (targetSchedule: ScheduleType) => void;
+    schedules: CreateGroupData['schedules'];
+    setSchedules: (
+      newSchedule: ArrElement<CreateGroupData['schedules']>,
+    ) => void;
+    dangerouslySetSchedules: (schedules: CreateGroupData['schedules']) => void;
+    deleteSchedule: (
+      targetSchedule: ArrElement<CreateGroupData['schedules']>,
+    ) => void;
   };
   useDeadlineState: () => {
-    deadline: string;
+    deadline: CreateGroupData['deadline'];
     setDeadline: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    dangerouslySetDeadline: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetDeadline: React.Dispatch<
+      React.SetStateAction<CreateGroupData['deadline']>
+    >;
   };
   useLocationState: () => {
-    location: string;
+    location: CreateGroupData['location'];
     setLocation: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    dangerouslySetLocation: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetLocation: React.Dispatch<
+      React.SetStateAction<CreateGroupData['location']>
+    >;
   };
   useDescriptionState: () => {
-    description: string;
+    description: CreateGroupData['description'];
     setDescription: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    dangerouslySetDescription: React.Dispatch<React.SetStateAction<string>>;
+    dangerouslySetDescription: React.Dispatch<
+      React.SetStateAction<CreateGroupData['description']>
+    >;
   };
-  getGroupState: () => {
-    name: string;
-    selectedCategory: CategoryType;
-    capacity: number;
-    startDate: string;
-    endDate: string;
-    schedules: ScheduleType[];
-    deadline: string;
-    location: string;
-    description: string;
-  };
+  getGroupState: () => CreateGroupData;
 }
 
 const useCreateState = (): CreateStateReturnValues => {
@@ -79,7 +88,9 @@ const useCreateState = (): CreateStateReturnValues => {
     setValue: setName,
     dangerouslySetValue: dangerouslySetName,
   } = useInput('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
+  const [selectedCategory, setSelectedCategory] = useState<
+    CreateGroupData['selectedCategory']
+  >({
     id: -1,
     name: '',
   });
@@ -111,7 +122,9 @@ const useCreateState = (): CreateStateReturnValues => {
     dangerouslySetValue: dangerouslySetDescription,
   } = useInput('');
 
-  const changeSelectedCategory = (newSelectedCategory: CategoryType) => {
+  const changeSelectedCategory = (
+    newSelectedCategory: CreateGroupData['selectedCategory'],
+  ) => {
     setSelectedCategory(newSelectedCategory);
   };
 
@@ -141,7 +154,9 @@ const useCreateState = (): CreateStateReturnValues => {
     }
   };
 
-  const changeSchedules = (newSchedule: ScheduleType) => {
+  const changeSchedules = (
+    newSchedule: ArrElement<CreateGroupData['schedules']>,
+  ) => {
     setSchedules(prevState => {
       if (!prevState.length) return [newSchedule];
 
@@ -149,13 +164,15 @@ const useCreateState = (): CreateStateReturnValues => {
     });
   };
 
-  const dangerouslySetSchedules = (schedules: ScheduleType[]) => {
+  const dangerouslySetSchedules = (schedules: CreateGroupData['schedules']) => {
     setSchedules([]);
 
     schedules.forEach(schedule => changeSchedules(schedule));
   };
 
-  const deleteSchedule = (targetSchedule: ScheduleType) => {
+  const deleteSchedule = (
+    targetSchedule: ArrElement<CreateGroupData['schedules']>,
+  ) => {
     setSchedules(
       schedules.filter(schedule => isEqualObject(schedule, targetSchedule)),
     );

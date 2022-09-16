@@ -1,20 +1,14 @@
 import { forwardRef, LegacyRef, memo } from 'react';
 
 import CalendarEditor from 'components/CalendarEditor';
-import { CreateGroupData, ScheduleType } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
+import { GroupDetailData } from 'types/data';
 
 import { Container, Heading } from '../@shared/styled';
 
 interface Step5Props {
-  useScheduleState: () => {
-    schedules: CreateGroupData['schedules'];
-    setSchedules: (schedule: ScheduleType) => void;
-    deleteSchedule: (targetSchedule: ScheduleType) => void;
-  };
-  duration: {
-    start: CreateGroupData['startDate'];
-    end: CreateGroupData['endDate'];
-  };
+  useScheduleState: CreateStateReturnValues['useScheduleState'];
+  duration: GroupDetailData['duration'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
