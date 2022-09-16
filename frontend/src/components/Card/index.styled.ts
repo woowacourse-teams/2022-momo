@@ -16,7 +16,7 @@ const Container = styled.div`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale3d(1.02, 1.02, 1.02);
   }
 `;
 

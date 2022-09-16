@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { requestChangePassword } from 'apis/request/user';
-import { BeanSVG } from 'assets/svg';
 import ConfirmPasswordModal from 'components/ConfirmPassword';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
@@ -13,6 +12,7 @@ import { loginState } from 'store/states';
 import Buttons from './Buttons';
 import * as S from './index.styled';
 import Inputs from './Inputs';
+import LiveBean from './LiveBean';
 
 function Info() {
   const [loginInfo, setLoginInfo] = useRecoilState(loginState);
@@ -41,14 +41,7 @@ function Info() {
 
   return (
     <S.Container>
-      <S.LiveBeanBox>
-        <S.LiveBean className="reverse">
-          <BeanSVG width={100} height={100} />
-        </S.LiveBean>
-        <S.LiveBean>
-          <BeanSVG width={100} height={100} />
-        </S.LiveBean>
-      </S.LiveBeanBox>
+      <LiveBean />
       <S.Right>
         <Inputs
           loginInfo={loginInfo}

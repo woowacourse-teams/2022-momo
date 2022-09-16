@@ -5,11 +5,11 @@ type Size = 'medium' | 'large';
 
 const calendarAnimation = keyframes`
   from {
-    transform: translate(0, 10px);
+    transform: translate3d(0, 0.5rem, 0);
   }
 
   to {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
   }
 `;
 

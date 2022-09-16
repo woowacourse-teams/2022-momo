@@ -1,7 +1,7 @@
 import { forwardRef, LegacyRef, memo } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CreateGroupData } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 
 import {
   Container,
@@ -12,10 +12,7 @@ import {
 } from '../@shared/styled';
 
 interface Step3Props {
-  useCapacityState: () => {
-    capacity: CreateGroupData['capacity'];
-    setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+  useCapacityState: CreateStateReturnValues['useCapacityState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 

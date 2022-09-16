@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { Link } from 'react-router-dom';
 
 import { BROWSER_PATH } from 'constants/path';
@@ -46,4 +48,4 @@ function Card({ group }: CardProps) {
   );
 }
 
-export default Card;
+export default memo(Card);

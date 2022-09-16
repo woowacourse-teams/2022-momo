@@ -1,16 +1,13 @@
 import { memo, LegacyRef, forwardRef } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CreateGroupData } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 
 import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step8Props {
-  useDescriptionState: () => {
-    description: CreateGroupData['description'];
-    setDescription: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  };
+  useDescriptionState: CreateStateReturnValues['useDescriptionState'];
 }
 
 function Step8(

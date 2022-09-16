@@ -1,6 +1,6 @@
 import { forwardRef, LegacyRef, memo } from 'react';
 
-import { CreateGroupData } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 import { convertRemainTime, getNewDateString } from 'utils/date';
 
 import {
@@ -13,10 +13,7 @@ import {
 } from '../@shared/styled';
 
 interface Step6Props {
-  useDeadlineState: () => {
-    deadline: CreateGroupData['deadline'];
-    setDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+  useDeadlineState: CreateStateReturnValues['useDeadlineState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 

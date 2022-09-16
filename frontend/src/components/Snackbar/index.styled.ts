@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 const show = keyframes`
   from {
-    bottom: 0;
+    transform: translate3d(-50%, 2rem, 0);
 
     opacity: 0;
   }
 
   to {
-    bottom: 2rem;
+    transform: translate3d(-50%, 0, 0);
 
     opacity: 1;
   }
@@ -17,13 +17,13 @@ const show = keyframes`
 
 const close = keyframes`
   from {
-    bottom: 2rem;
+    transform: translate3d(-50%, 0, 0);
 
     opacity: 1;
   }
 
   to {
-    bottom: 0;
+    transform: translate3d(-50%, 2rem, 0);
 
     opacity: 0;
   }
@@ -37,7 +37,7 @@ const Container = styled.div`
   position: fixed;
   left: 50%;
   bottom: 2rem;
-  transform: translate(-50%, 0);
+  transform: translate3d(-50%, 0, 0);
 
   width: fit-content;
   max-width: 40rem;

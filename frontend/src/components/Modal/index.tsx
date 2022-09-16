@@ -12,7 +12,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const modalAnimationTime = 300;
+const modalAnimationTime = 150;
 
 function Modal({ modalState, children }: ModalProps) {
   const { setOffModal } = useModal();

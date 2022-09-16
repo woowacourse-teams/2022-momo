@@ -1,6 +1,7 @@
 import { forwardRef, LegacyRef, memo } from 'react';
 
 import useCategory from 'hooks/useCategory';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 import { CreateGroupData } from 'types/data';
 import { isEqualObject } from 'utils/compare';
 
@@ -8,12 +9,7 @@ import { Container, ErrorColor, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step2Props {
-  useSelectedCategoryState: () => {
-    selectedCategory: CreateGroupData['selectedCategory'];
-    setSelectedCategory: (
-      category: CreateGroupData['selectedCategory'],
-    ) => void;
-  };
+  useSelectedCategoryState: CreateStateReturnValues['useSelectedCategoryState'];
   gotoAdjacentPage: (direction: 'next' | 'prev') => void;
 }
 

@@ -1,6 +1,6 @@
 import { memo, LegacyRef, forwardRef } from 'react';
 
-import { DurationDate } from 'types/data';
+import { CreateStateReturnValues } from 'hooks/useCreateState';
 import { getNewDateString } from 'utils/date';
 
 import {
@@ -11,12 +11,8 @@ import {
 } from '../@shared/styled';
 import * as S from './index.styled';
 
-// TODO: 하리 리팩토링에서 반환하는 타입 적용
 interface Step4Props {
-  useDateState: () => DurationDate & {
-    setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    setEndDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+  useDateState: CreateStateReturnValues['useDateState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
