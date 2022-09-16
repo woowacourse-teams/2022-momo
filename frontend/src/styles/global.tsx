@@ -13,6 +13,23 @@ const style = (colors: Theme['colors']) => css`
   body {
     font-family: 'GangwonEdu_Bold';
     font-size: 1.1rem;
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: none;
+
+      width: 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: ${colors.green002};
+
+      border-radius: 5px;
+    }
   }
 
   h1,
