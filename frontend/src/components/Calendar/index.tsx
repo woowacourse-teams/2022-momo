@@ -3,8 +3,8 @@ import { useTheme } from '@emotion/react';
 import LeftArrow from 'components/svg/LeftArrow';
 import RightArrow from 'components/svg/RightArrow';
 import { GroupDetailData } from 'types/data';
-import Content from './Content';
 
+import Content from './Content';
 import * as S from './index.styled';
 
 interface CalendarProps {
