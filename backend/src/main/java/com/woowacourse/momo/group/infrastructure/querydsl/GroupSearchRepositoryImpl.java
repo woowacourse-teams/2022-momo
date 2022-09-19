@@ -52,11 +52,12 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return findGroups(condition, pageable, () -> isParticipated(member));
     }
 
-    private Page<Group> findGroups(SearchCondition condition, Pageable pageable, Supplier<BooleanExpression> supplier) {
+    private Page<Group> findGroups(SearchCondition condition, Pageable pageable,
+                                   Supplier<BooleanExpression> mainCondition) {
         List<Group> groups = queryFactory
                 .selectFrom(group)
                 .where(
-                        supplier.get(),
+                        mainCondition.get(),
                         conditionFilter.filterByCondition(condition)
                 )
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
