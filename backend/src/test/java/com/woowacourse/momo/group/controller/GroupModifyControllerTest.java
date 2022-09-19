@@ -42,7 +42,7 @@ import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
-import com.woowacourse.momo.group.service.GroupManageService;
+import com.woowacourse.momo.group.service.GroupModifyService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 @AutoConfigureMockMvc
@@ -51,14 +51,14 @@ import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class GroupManageControllerTest {
+class GroupModifyControllerTest {
 
     private static final DurationApiRequest DURATION_REQUEST = 이틀후_하루동안.toApiRequest();
     private static final List<ScheduleApiRequest> SCHEDULE_REQUESTS = ScheduleFixture.toApiRequests(이틀후_10시부터_12시까지);
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final GroupManageService groupManageService;
+    private final GroupModifyService groupModifyService;
     private final AuthService authService;
 
     @DisplayName("그룹이 정상적으로 생성되는 경우를 테스트한다")
@@ -149,7 +149,7 @@ class GroupManageControllerTest {
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
                 "", "");
 
-        return groupManageService.create(hostId, groupRequest).getGroupId();
+        return groupModifyService.create(hostId, groupRequest).getGroupId();
     }
 
     String accessToken(String id, String password) {

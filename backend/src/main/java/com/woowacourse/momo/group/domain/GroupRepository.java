@@ -1,7 +1,10 @@
 package com.woowacourse.momo.group.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.Repository;
 
-public interface GroupRepository extends JpaRepository<Group, Long>, JpaSpecificationExecutor<Group> {
+public interface GroupRepository extends Repository<Group, Long> {
+
+    Group save(Group group);
+
+    void deleteById(Long id);
 }

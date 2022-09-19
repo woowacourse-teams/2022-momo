@@ -51,7 +51,7 @@ public class Participants {
         validateMemberCanParticipate(member);
         participants.add(new Participant(group, member));
     }
-    
+
     public void remove(Member member) {
         validateMemberCanLeave(member);
         removeParticipant(member);

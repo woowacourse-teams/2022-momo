@@ -41,7 +41,7 @@ import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 class ParticipateServiceTest {
 
     private final ParticipateService participateService;
-    private final GroupManageService groupManageService;
+    private final GroupModifyService groupModifyService;
     private final MemberService memberService;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
@@ -206,7 +206,7 @@ class ParticipateServiceTest {
         @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
         @Test
         void deleteEarlyClosed() {
-            groupManageService.closeEarly(hostId, groupId);
+            groupModifyService.closeEarly(hostId, groupId);
             synchronize();
 
             assertThatThrownBy(() -> participateService.leave(groupId, participantId))

@@ -24,6 +24,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
+import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.domain.Member;
@@ -33,11 +34,12 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class GroupManageServiceTest {
+class GroupModifyServiceTest {
 
-    private final GroupManageService groupManageService;
+    private final GroupModifyService groupModifyService;
     private final GroupSearchService groupSearchService;
     private final GroupRepository groupRepository;
+    private final GroupSearchRepository groupSearchRepository;
     private final MemberRepository memberRepository;
     private final ParticipateService participateService;
 
@@ -57,10 +59,10 @@ class GroupManageServiceTest {
     @Test
     void create() {
         GroupRequest request = MOMO_STUDY.toRequest();
-        long groupId = groupManageService.create(host.getId(), request)
+        long groupId = groupModifyService.create(host.getId(), request)
                 .getGroupId();
 
-        Optional<Group> group = groupRepository.findById(groupId);
+        Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
@@ -95,7 +97,7 @@ class GroupManageServiceTest {
                 .category(0)
                 .toRequest();
 
-        assertThatThrownBy(() -> groupManageService.create(hostId, request))
+        assertThatThrownBy(() -> groupModifyService.create(hostId, request))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
@@ -107,9 +109,9 @@ class GroupManageServiceTest {
 
         long groupId = this.group.getId();
         GroupRequest request = target.toRequest();
-        groupManageService.update(host.getId(), groupId, request);
+        groupModifyService.update(host.getId(), groupId, request);
 
-        Optional<Group> group = groupRepository.findById(groupId);
+        Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
@@ -142,7 +144,7 @@ class GroupManageServiceTest {
         long hostId = host.getId();
 
         GroupRequest request = MOMO_STUDY.toRequest();
-        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
+        assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -154,7 +156,7 @@ class GroupManageServiceTest {
         long participantId = participant.getId();
 
         GroupRequest request = DUDU_STUDY.toRequest();
-        assertThatThrownBy(() -> groupManageService.update(participantId, groupId, request))
+        assertThatThrownBy(() -> groupModifyService.update(participantId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
     }
@@ -168,7 +170,7 @@ class GroupManageServiceTest {
         group.participate(participant);
 
         GroupRequest request = DUDU_STUDY.toRequest();
-        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
+        assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
     }
@@ -182,7 +184,7 @@ class GroupManageServiceTest {
         group.participate(participant);
 
         GroupRequest request = DUDU_STUDY.toRequest();
-        assertThatThrownBy(() -> groupManageService.update(hostId, groupId, request))
+        assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
     }
@@ -193,7 +195,7 @@ class GroupManageServiceTest {
         long groupId = group.getId();
         long hostId = host.getId();
 
-        groupManageService.closeEarly(hostId, groupId);
+        groupModifyService.closeEarly(hostId, groupId);
 
         boolean actual = groupSearchService.findGroup(groupId).isFinished();
         assertThat(actual).isTrue();
@@ -205,7 +207,7 @@ class GroupManageServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        assertThatThrownBy(() -> groupManageService.closeEarly(participantId, groupId))
+        assertThatThrownBy(() -> groupModifyService.closeEarly(participantId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
     }
@@ -216,7 +218,7 @@ class GroupManageServiceTest {
         long groupId = group.getId();
         long hostId = host.getId();
 
-        groupManageService.delete(hostId, groupId);
+        groupModifyService.delete(hostId, groupId);
 
         assertThatThrownBy(() -> groupSearchService.findGroup(groupId))
                 .isInstanceOf(GroupException.class)
@@ -229,7 +231,7 @@ class GroupManageServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        assertThatThrownBy(() -> groupManageService.delete(participantId, groupId))
+        assertThatThrownBy(() -> groupModifyService.delete(participantId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
     }
@@ -242,7 +244,7 @@ class GroupManageServiceTest {
 
         participateService.participate(group.getId(), participant.getId());
 
-        assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
+        assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
     }
@@ -255,7 +257,7 @@ class GroupManageServiceTest {
 
         group.participate(participant);
 
-        assertThatThrownBy(() -> groupManageService.delete(hostId, groupId))
+        assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
     }

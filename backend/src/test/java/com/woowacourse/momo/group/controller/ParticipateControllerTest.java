@@ -32,7 +32,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupFindService;
-import com.woowacourse.momo.group.service.GroupManageService;
+import com.woowacourse.momo.group.service.GroupModifyService;
 import com.woowacourse.momo.group.service.ParticipateService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
@@ -52,7 +52,7 @@ class ParticipateControllerTest {
     private final ParticipateService participateService;
     private final AuthService authService;
     private final MemberService memberService;
-    private final GroupManageService groupManageService;
+    private final GroupModifyService groupModifyService;
     private final GroupFindService groupFindService;
 
     @DisplayName("모임에 참여한다")
@@ -282,7 +282,7 @@ class ParticipateControllerTest {
         participateMember(groupId, participantId);
         String accessToken = accessToken("participant");
 
-        groupManageService.closeEarly(hostId, groupId);
+        groupModifyService.closeEarly(hostId, groupId);
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
@@ -318,7 +318,7 @@ class ParticipateControllerTest {
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지),
                 내일_23시_59분까지.toRequest(), "", "");
 
-        return groupManageService.create(hostId, request).getGroupId();
+        return groupModifyService.create(hostId, request).getGroupId();
     }
 
     void participateMember(Long groupId, Long memberId) {

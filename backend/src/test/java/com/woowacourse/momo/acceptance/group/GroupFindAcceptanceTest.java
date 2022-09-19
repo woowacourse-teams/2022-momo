@@ -85,7 +85,8 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                 () -> {
                     String startDuration = group.getDuration().getStartDate().format(DateTimeFormatter.ISO_DATE);
                     String endDuration = group.getDuration().getEndDate().format(DateTimeFormatter.ISO_DATE);
-                    String deadline = group.getDeadline().getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                    String deadline = group.getDeadline().getValue()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                     response
                             .body("name", is(group.getName().getValue()))
                             .body("host.id", is(1))

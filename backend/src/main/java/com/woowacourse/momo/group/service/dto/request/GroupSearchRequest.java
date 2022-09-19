@@ -1,14 +1,15 @@
 package com.woowacourse.momo.group.service.dto.request;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.woowacourse.momo.group.domain.search.SearchCondition;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class GroupFindRequest {
+public class GroupSearchRequest {
 
     private int page = 0;
 
@@ -16,17 +17,11 @@ public class GroupFindRequest {
 
     private String keyword;
 
-    @Getter(AccessLevel.NONE)
     private boolean excludeFinished;
 
-    @Getter(AccessLevel.NONE)
     private boolean orderByDeadline;
 
-    public boolean excludeFinished() {
-        return excludeFinished;
-    }
-
-    public boolean orderByDeadline() {
-        return orderByDeadline;
+    public SearchCondition toFindCondition() {
+        return new SearchCondition(category, keyword, excludeFinished, orderByDeadline);
     }
 }

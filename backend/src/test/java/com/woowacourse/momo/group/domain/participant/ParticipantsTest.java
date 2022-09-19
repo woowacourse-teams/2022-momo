@@ -109,7 +109,7 @@ class ParticipantsTest {
 
     @DisplayName("참여 가능 인원수를 수정한다")
     @ParameterizedTest
-    @ValueSource(ints = {5,6,7})
+    @ValueSource(ints = {5, 6, 7})
     void updateCapacity(int capacity) {
         Participants participants = new Participants(HOST, new Capacity(10));
 

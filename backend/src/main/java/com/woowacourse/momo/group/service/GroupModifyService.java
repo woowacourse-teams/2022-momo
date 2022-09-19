@@ -25,7 +25,7 @@ import com.woowacourse.momo.member.service.MemberFindService;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class GroupManageService {
+public class GroupModifyService {
 
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
