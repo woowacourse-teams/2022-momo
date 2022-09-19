@@ -69,7 +69,7 @@ public class OauthService {
     }
 
     private Member findOrSaveMember(GoogleUserResponse response) {
-        return memberRepository.findByUserId(UserId.momo(response.getEmail()))
+        return memberRepository.findByUserId(UserId.oauth(response.getEmail()))
                 .orElseGet(() -> saveMember(response));
     }
 
