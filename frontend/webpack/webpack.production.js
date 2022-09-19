@@ -1,3 +1,4 @@
+const CompressionPlugin = require('compression-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { merge } = require('webpack-merge');
 
@@ -28,6 +29,9 @@ module.exports = merge(common, {
   plugins: [
     new DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
+    }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
     }),
   ],
 });
