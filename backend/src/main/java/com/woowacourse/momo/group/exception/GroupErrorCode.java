@@ -35,6 +35,9 @@ public enum GroupErrorCode implements ErrorCode {
     MEMBER_IS_PARTICIPANT(400, "GROUP_ERROR_016", "해당 모임의 참여자입니다."),
     MEMBER_IS_NOT_HOST(403, "GROUP_ERROR_017", "해당 모임의 주최자가 아닙니다."),
     MEMBER_IS_NOT_PARTICIPANT(403, "GROUP_ERROR_018", "해당 모임의 참여자가 아닙니다."),
+
+    MEMBER_ALREADY_LIKE(400, "GROUP_ERROR_019", "이미 찜한 모임입니다."),
+    MEMBER_NOT_YET_LIKE(403, "GROUP_ERROR_020", "찜하지 않은 모임입니다."),
     ;
 
     private final int statusCode;

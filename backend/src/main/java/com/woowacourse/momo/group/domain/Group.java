@@ -27,6 +27,7 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.favorite.Favorites;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.domain.participant.Participants;
 import com.woowacourse.momo.group.exception.GroupException;
@@ -44,6 +45,9 @@ public class Group {
 
     @Embedded
     private Participants participants;
+
+    @Embedded
+    private Favorites favorites;
 
     @Embedded
     private Calendar calendar;
@@ -100,6 +104,16 @@ public class Group {
     public void remove(Member participant) {
         validateGroupIsProceeding();
         participants.remove(participant);
+    }
+
+    public void like(Member member) {
+        validateGroupIsProceeding();
+        favorites.like(this, member);
+    }
+
+    public void cancelLike(Member member) {
+        validateGroupIsProceeding();
+        favorites.cancel(member);
     }
 
     public void validateGroupIsDeletable() {
