@@ -32,7 +32,7 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
-import com.woowacourse.momo.group.service.GroupManageService;
+import com.woowacourse.momo.group.service.GroupModifyService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 @AutoConfigureMockMvc
@@ -46,7 +46,7 @@ class GroupSearchControllerTest {
     private static final int TWO_PAGE_WITH_EIGHT_GROUP_AT_TWO_PAGE = 20;
 
     private final MockMvc mockMvc;
-    private final GroupManageService groupManageService;
+    private final GroupModifyService groupModifyService;
     private final AuthService authService;
 
     @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
@@ -217,7 +217,7 @@ class GroupSearchControllerTest {
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
                 "", "");
 
-        return groupManageService.create(hostId, groupRequest).getGroupId();
+        return groupModifyService.create(hostId, groupRequest).getGroupId();
     }
 
     String accessToken(String id, String password) {
