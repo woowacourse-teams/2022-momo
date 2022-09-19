@@ -28,6 +28,7 @@ const Image = styled.div`
 
   background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
   background-size: cover;
+  background-position: center;
 `;
 
 const Description = styled.div`

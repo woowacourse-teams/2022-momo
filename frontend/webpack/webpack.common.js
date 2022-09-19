@@ -10,7 +10,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(woff(2)?|ttf|png|jpe?g|gif)$/i,
+        test: /\.(woff(2)?|ttf|png|jpe?g|gif|webp)$/i,
         type: 'asset/resource',
       },
       {
