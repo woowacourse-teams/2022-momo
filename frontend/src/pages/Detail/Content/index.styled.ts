@@ -20,6 +20,7 @@ const TitleWrapper = styled.div<{ imgSrc: string }>`
   background: ${({ theme: { filter }, imgSrc }) =>
     `linear-gradient(${filter.darken001}, ${filter.darken001}), url(${imgSrc})`};
   background-size: cover;
+  background-position: center;
 
   border-radius: 10px 10px 0 0;
 `;
