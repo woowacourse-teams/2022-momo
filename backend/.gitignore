@@ -38,3 +38,6 @@ out/
 
 ### momolog ###
 momolog/
+
+### docker
+docker/db/mysql/data
