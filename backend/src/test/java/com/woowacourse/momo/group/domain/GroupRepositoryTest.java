@@ -102,22 +102,6 @@ class GroupRepositoryTest {
                 .isEqualTo(savedGroup);
     }
 
-    @DisplayName("모임 리스트를 조회한다")
-    @Test
-    void findAll() {
-        Group group1 = constructGroup(host, List.of(이틀후_10시부터_12시까지));
-        Group group2 = constructGroup(host, List.of(일주일후_10시부터_12시까지));
-        Group savedGroup1 = groupRepository.save(group1);
-        Group savedGroup2 = groupRepository.save(group2);
-
-        synchronize();
-
-        List<Group> actual = groupSearchRepository.findAll();
-
-        assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(savedGroup1, savedGroup2));
-    }
-
     @DisplayName("식별자를 통해 모임을 삭제한다")
     @Test
     void deleteById() {
