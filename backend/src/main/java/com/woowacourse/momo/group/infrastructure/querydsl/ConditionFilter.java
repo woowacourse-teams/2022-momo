@@ -19,10 +19,10 @@ public class ConditionFilter {
     public BooleanBuilder filterByCondition(SearchCondition condition) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        excludeFinished(booleanBuilder, condition.excludeFinished());
         filterByCategory(booleanBuilder, condition.getCategory());
-        containKeyword(booleanBuilder, condition.getKeyword());
+        excludeFinished(booleanBuilder, condition.excludeFinished());
         afterNow(booleanBuilder, condition.orderByDeadline());
+        containKeyword(booleanBuilder, condition.getKeyword());
 
         return booleanBuilder;
     }
