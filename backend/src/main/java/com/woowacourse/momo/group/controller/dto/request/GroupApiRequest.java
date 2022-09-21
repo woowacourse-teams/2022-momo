@@ -40,7 +40,7 @@ public class GroupApiRequest {
     private LocalDateTime deadline;
 
     @NotNull
-    private String location;
+    private LocationApiRequest location;
 
     @NotNull
     private String description;
