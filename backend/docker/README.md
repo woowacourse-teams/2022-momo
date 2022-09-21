@@ -10,5 +10,5 @@
 ### docker 종료
 명령어 : `./down.sh`
 
-### docker 접속
-명령어 : `./bash.sh`
+### docker mysql 접속
+명령어 : `./connect.sh` -> (root 자동 접속)
