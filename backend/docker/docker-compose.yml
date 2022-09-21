@@ -1,6 +1,7 @@
 version: "3.9"
 services:
-  master_db:
+  db:
+    container_name: momo_mysql
     image: mysql:8.0.28
     platform: linux/x86_64
     restart: always
@@ -15,4 +16,4 @@ services:
     volumes:
       - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/config:/etc/mysql/conf.d
-      - ./db/mysql/init:/docker-entrypoint-initdb.d
+      - ./db/mysql/init/:/docker-entrypoint-initdb.d/
