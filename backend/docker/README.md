@@ -7,10 +7,13 @@
     - 예시) `chmod +x run.sh`
 
 ### docker 실행
-명령어 : `./run.sh`
+명령어 : `./script/run.sh`
 
 ### docker 종료
-명령어 : `./down.sh`
+명령어 : `./script/down.sh`
+
+### docker shell 접속
+명령어 : `./script/connect_shell.sh` -> (root 자동 접속)
 
 ### docker mysql 접속
-명령어 : `./connect.sh` -> (root 자동 접속)
+명령어 : `./script/connect_mysql.sh` -> (root 자동 접속)
