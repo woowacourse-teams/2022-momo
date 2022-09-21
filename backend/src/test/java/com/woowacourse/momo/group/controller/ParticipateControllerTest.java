@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static com.woowacourse.momo.fixture.LocationFixture.잠실캠퍼스;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
@@ -316,7 +317,7 @@ class ParticipateControllerTest {
     Long saveGroupWithSetCapacity(Long hostId, int capacity) {
         GroupRequest request = new GroupRequest("모모의 스터디", 1L, capacity,
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지),
-                내일_23시_59분까지.toRequest(), "", "");
+                내일_23시_59분까지.toRequest(), 잠실캠퍼스.toRequest(), "");
 
         return groupModifyService.create(hostId, request).getGroupId();
     }

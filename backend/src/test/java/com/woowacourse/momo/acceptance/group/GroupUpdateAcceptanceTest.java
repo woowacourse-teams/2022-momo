@@ -68,7 +68,9 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                             .body("duration.start", is(startDuration))
                             .body("duration.end", is(endDuration))
                             .body("deadline", is(deadline))
-                            .body("location", is(updatedGroup.getLocation()))
+                            .body("location.address", is(updatedGroup.getLocation().getAddress()))
+                            .body("location.buildingName", is(updatedGroup.getLocation().getBuildingName()))
+                            .body("location.detail", is(updatedGroup.getLocation().getDetail()))
                             .body("description", is(updatedGroup.getDescription()));
                 },
                 () -> {

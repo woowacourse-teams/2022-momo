@@ -196,7 +196,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String location = fixture.getLocation();
+        Location location = fixture.getLocationObject();
         String description = fixture.getDescription();
 
         Group group = fixture.toGroup(host);
@@ -224,7 +224,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String location = fixture.getLocation();
+        Location location = fixture.getLocationObject();
         String description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, location, description);
@@ -246,7 +246,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String location = fixture.getLocation();
+        Location location = fixture.getLocationObject();
         String description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, location, description);
