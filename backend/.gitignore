@@ -39,5 +39,8 @@ out/
 ### momolog ###
 momolog/
 
+### RestDocs index.html ###
+src/main/resources/static/docs/index.html
+
 ### docker
 docker/db/mysql/data
