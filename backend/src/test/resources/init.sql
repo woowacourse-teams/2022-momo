@@ -16,7 +16,7 @@ create table momo_group
     closedEarly          boolean      not null,
     locationAddress      varchar(255) not null,
     locationBuildingName varchar(255) not null,
-    locationDetails      varchar(255) not null,
+    locationDetail       varchar(255) not null,
     name                 varchar(255) not null,
     host_id              bigint,
     primary key (id)
