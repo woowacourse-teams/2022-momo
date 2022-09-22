@@ -1,9 +1,22 @@
 import styled from '@emotion/styled';
 
-import { LabelContainer as Label } from '../@shared/styled';
+import { Input as BaseInput } from '../@shared/styled';
 
-const LabelContainer = styled(Label)`
-  max-width: 43.75rem;
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 `;
 
-export { LabelContainer };
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const Input = styled(BaseInput)`
+  cursor: pointer;
+`;
+
+export { InputContainer, Label, Input };
