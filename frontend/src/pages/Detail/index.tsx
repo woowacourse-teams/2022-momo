@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+
+import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 import { requestGroupDetail } from 'apis/request/group';
@@ -5,6 +8,7 @@ import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import useRecoilQuery from 'hooks/useRecoilQuery';
 import { groupDetailState } from 'store/states';
+import { accessTokenProvider } from 'utils/token';
 
 import Content from './Content';
 import * as S from './index.styled';
@@ -14,13 +18,18 @@ import SideBar from './SideBar';
 function Detail() {
   const { id } = useParams();
 
-  const { state: data } = useRecoilQuery(
+  const { state: data, refetch } = useRecoilQuery(
     groupDetailState,
     QUERY_KEY.GROUP_DETAILS,
     () => requestGroupDetail(Number(id)),
     0,
   );
   const { categories } = useCategory();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
+  }, [accessTokenProvider.get()]);
 
   return (
     <S.PageContainer>
@@ -47,7 +56,7 @@ function Detail() {
             location={data.location}
             description={data.description}
           />
-          <LikeButton id={Number(id)} like={data.like} />
+          <LikeButton id={Number(id)} like={data.like} refetch={refetch} />
         </>
       )}
     </S.PageContainer>

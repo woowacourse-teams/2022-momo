@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -9,6 +9,7 @@ import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import useCategory from 'hooks/useCategory';
 import { CategoryType, GroupList } from 'types/data';
+import { accessTokenProvider } from 'utils/token';
 
 import Category from './Category';
 import * as S from './index.styled';
@@ -19,12 +20,14 @@ const invalidCategoryId = -1;
 
 function Main() {
   const { getCategoryDescription } = useCategory();
+  const queryClient = useQueryClient();
 
   const [isExcludeFinished, setIsExcludeFinished] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
 
+  const [groups, setGroups] = useState<GroupList['groups']>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
@@ -34,7 +37,9 @@ function Main() {
     },
   );
 
-  const [groups, setGroups] = useState<GroupList['groups']>([]);
+  useEffect(() => {
+    queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
+  }, [accessTokenProvider.get()]);
 
   useEffect(() => {
     if (!data) return;
@@ -66,8 +71,6 @@ function Main() {
   const selectCategory = (id: CategoryType['id']) => async () => {
     await setSelectedCategoryId(id);
     await setPageNumber(0);
-    // hotfix : 2022-08-19
-    await setIsExcludeFinished(false);
     refetch();
   };
 
@@ -95,7 +98,6 @@ function Main() {
             groups={groups}
             isExcludeFinished={isExcludeFinished}
             toggleIsExcludeFinished={toggleIsExcludeFinished}
-            selectedCategoryId={selectedCategoryId}
           />
         </ErrorBoundary>
       </S.Content>

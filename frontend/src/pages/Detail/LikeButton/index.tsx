@@ -1,4 +1,10 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
+
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from 'react-query';
 
 import { requestLikeGroup, requestUnlikeGroup } from 'apis/request/group';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
@@ -15,13 +21,15 @@ const likeDelay = 1000;
 interface LikeButtonProps {
   like: GroupDetailData['like'];
   id: number;
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+  ) => Promise<QueryObserverResult<GroupDetailData, unknown>>;
 }
 
-function LikeButton({ like, id }: LikeButtonProps) {
+function LikeButton({ like, id, refetch }: LikeButtonProps) {
   const { setMessage } = useSnackbar();
   const { throttle } = useThrottle();
   const { isLogin } = useAuth();
-  const [liked, setLiked] = useState(false);
 
   const toggleLiked = () => {
     if (!isLogin) {
@@ -32,7 +40,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
     if (like) {
       requestUnlikeGroup(id)
         .then(() => {
-          setLiked(false);
+          refetch();
         })
         .catch(() => {
           setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
@@ -42,7 +50,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
 
     requestLikeGroup(id)
       .then(() => {
-        setLiked(true);
+        refetch();
       })
       .catch(() => {
         setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
@@ -52,7 +60,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
   return (
     <>
       <S.Button type="button" onClick={() => throttle(toggleLiked, likeDelay)}>
-        {liked ? <FilledHeartSVG /> : <EmptyHeartSVG />}
+        {like ? <FilledHeartSVG /> : <EmptyHeartSVG />}
       </S.Button>
     </>
   );

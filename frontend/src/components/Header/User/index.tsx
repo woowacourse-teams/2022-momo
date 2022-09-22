@@ -5,11 +5,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { requestLogout } from 'apis/request/auth';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import useAuth from 'hooks/useAuth';
 import useClosingState from 'hooks/useClosingState';
 import useSnackbar from 'hooks/useSnackbar';
 
 import * as S from './index.styled';
-import useAuth from 'hooks/useAuth';
 
 const dropdownAnimationTime = 300;
 
@@ -49,7 +49,6 @@ function User() {
     requestLogout()
       .then(() => {
         resetAuth();
-
         setMessage(GUIDE_MESSAGE.AUTH.LOGOUT_SUCCESS);
 
         navigate(BROWSER_PATH.BASE);

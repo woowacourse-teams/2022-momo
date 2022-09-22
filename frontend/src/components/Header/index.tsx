@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 
-import useAuth from 'hooks/useAuth';
-
 import { requestReissueAccessToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
+import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
 import { getLoginType } from 'utils/user';
 
