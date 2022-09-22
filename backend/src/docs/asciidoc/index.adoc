@@ -54,6 +54,14 @@ include::{snippets}/groupupdate/http-request.adoc[]
 Response
 include::{snippets}/groupupdate/http-response.adoc[]
 
+=== 모임 장소 수정
+
+Request
+include::{snippets}/grouplocationupdate/http-request.adoc[]
+
+Response
+include::{snippets}/grouplocationupdate/http-response.adoc[]
+
 === 모임 삭제
 
 Request
