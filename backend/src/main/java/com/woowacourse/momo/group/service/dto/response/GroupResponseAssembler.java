@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
@@ -18,7 +19,7 @@ public class GroupResponseAssembler {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                group.getLocation(), group.getDescription());
+                locationResponse(group.getLocation()), group.getDescription());
     }
 
     public static List<GroupSummaryResponse> groupSummaryResponses(List<Group> groups) {
@@ -55,5 +56,9 @@ public class GroupResponseAssembler {
 
     private static ScheduleResponse scheduleResponse(Schedule schedule) {
         return new ScheduleResponse(schedule.getDate(), schedule.getStartTime(), schedule.getEndTime());
+    }
+
+    private static LocationResponse locationResponse(Location location) {
+        return new LocationResponse(location.getAddress(), location.getBuildingName(), location.getDetail());
     }
 }

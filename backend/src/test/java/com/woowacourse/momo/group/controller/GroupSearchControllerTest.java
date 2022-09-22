@@ -9,6 +9,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static com.woowacourse.momo.fixture.LocationFixture.잠실역_스타벅스;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
@@ -215,7 +216,7 @@ class GroupSearchControllerTest {
     Long saveGroup(String name, Long hostId, Category category) {
         GroupRequest groupRequest = new GroupRequest(name, category.getId(), 10,
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
-                "", "");
+                잠실역_스타벅스.toRequest(), "");
 
         return groupModifyService.create(hostId, groupRequest).getGroupId();
     }

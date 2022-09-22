@@ -18,7 +18,7 @@ import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiReq
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class GroupApiRequest {
+public class GroupUpdateApiRequest {
 
     @NotNull
     private String name;
@@ -38,9 +38,6 @@ public class GroupApiRequest {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
-
-    @NotNull
-    private LocationApiRequest location;
 
     @NotNull
     private String description;

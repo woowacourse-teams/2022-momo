@@ -97,7 +97,9 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                             .body("duration.end", is(endDuration))
                             .body("finished", is(false))
                             .body("deadline", is(deadline))
-                            .body("location", is(group.getLocation()))
+                            .body("location.address", is(group.getLocation().getAddress()))
+                            .body("location.buildingName", is(group.getLocation().getBuildingName()))
+                            .body("location.detail", is(group.getLocation().getDetail()))
                             .body("description", is(group.getDescription()));
                 },
                 () -> {

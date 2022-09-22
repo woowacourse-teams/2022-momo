@@ -5,7 +5,9 @@ import io.restassured.response.ValidatableResponse;
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.LocationFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GroupRestHandler extends RestHandler {
@@ -33,6 +35,11 @@ public class GroupRestHandler extends RestHandler {
     public static ValidatableResponse 모임을_수정한다(String accessToken, Long groupId, GroupFixture group) {
         GroupApiRequest request = group.toApiRequest();
         return putRequest(accessToken, request, BASE_URL + "/" + groupId);
+    }
+
+    public static ValidatableResponse 모임_장소를_수정한다(String accessToken, Long groupId, LocationFixture location) {
+        LocationUpdateApiRequest request = location.toUpdateApiRequest();
+        return putRequest(accessToken, request, BASE_URL + "/" + groupId + "/location");
     }
 
     public static ValidatableResponse 본인이_참여한_모임을_조회한다(String accessToken) {

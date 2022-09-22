@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static com.woowacourse.momo.fixture.LocationFixture.잠실역_스타벅스;
+import static com.woowacourse.momo.fixture.LocationFixture.잠실캠퍼스;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
@@ -40,6 +42,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.service.GroupModifyService;
@@ -67,7 +70,7 @@ class GroupModifyControllerTest {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         String accessToken = accessToken("woowa", "wooteco1!");
         GroupApiRequest request = new GroupApiRequest("모모의 스터디", 1L, 10,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), 잠실캠퍼스.toApiRequest(), "");
 
         mockMvc.perform(post("/api/groups/")
                         .header("Authorization", "bearer " + accessToken)
@@ -90,7 +93,7 @@ class GroupModifyControllerTest {
         String accessToken = accessToken("woowa", "wooteco1!");
         Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         GroupApiRequest request = new GroupApiRequest("두두의 스터디", 1L, 15,
-                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), "", "");
+                DURATION_REQUEST, SCHEDULE_REQUESTS, 내일_23시_59분.toDateTime(), 잠실캠퍼스.toApiRequest(), "");
 
         mockMvc.perform(put("/api/groups/" + savedGroupId)
                         .header("Authorization", "bearer " + accessToken)
@@ -100,6 +103,28 @@ class GroupModifyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(
                         document("groupupdate",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("그룹 장소가 정상적으로 수정되는 경우를 테스트한다")
+    @Test
+    void groupUpdateLocationTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String accessToken = accessToken("woowa", "wooteco1!");
+        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+        LocationUpdateApiRequest request = 잠실캠퍼스.toUpdateApiRequest();
+
+        mockMvc.perform(put("/api/groups/" + savedGroupId + "/location")
+                        .header("Authorization", "bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document("grouplocationupdate",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -147,7 +172,7 @@ class GroupModifyControllerTest {
     Long saveGroup(String name, Long hostId, Category category) {
         GroupRequest groupRequest = new GroupRequest(name, category.getId(), 10,
                 이틀후_하루동안.toRequest(), ScheduleFixture.toRequests(이틀후_10시부터_12시까지), 내일_23시_59분까지.toRequest(),
-                "", "");
+                잠실역_스타벅스.toRequest(), "");
 
         return groupModifyService.create(hostId, groupRequest).getGroupId();
     }

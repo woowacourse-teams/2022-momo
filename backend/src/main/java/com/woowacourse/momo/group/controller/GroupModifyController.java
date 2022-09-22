@@ -18,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.GroupRequestAssembler;
+import com.woowacourse.momo.group.controller.dto.request.GroupUpdateApiRequest;
 import com.woowacourse.momo.group.service.GroupModifyService;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 
@@ -41,8 +43,15 @@ public class GroupModifyController {
 
     @PutMapping("/{groupId}")
     public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
-                                       @RequestBody @Valid GroupApiRequest request) {
-        groupModifyService.update(memberId, groupId, assembler.groupRequest(request));
+                                       @RequestBody @Valid GroupUpdateApiRequest request) {
+        groupModifyService.update(memberId, groupId, assembler.groupUpdateRequest(request));
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{groupId}/location")
+    public ResponseEntity<Void> updateLocation(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
+                                       @RequestBody @Valid LocationUpdateApiRequest request) {
+        groupModifyService.updateLocation(memberId, groupId, assembler.groupLocationUpdateRequest(request));
         return ResponseEntity.ok().build();
     }
 

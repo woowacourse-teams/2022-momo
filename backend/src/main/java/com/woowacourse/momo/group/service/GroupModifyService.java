@@ -17,6 +17,8 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
+import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
@@ -42,26 +44,27 @@ public class GroupModifyService {
     }
 
     @Transactional
-    public void update(Long hostId, Long groupId, GroupRequest request) {
-        ifMemberIsHost(hostId, groupId, (host, group) -> {
-            updateGroup(group, request);
-        });
+    public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
+        ifMemberIsHost(hostId, groupId, (host, group) -> updateGroup(group, request));
     }
 
-    private void updateGroup(Group group, GroupRequest request) {
+    private void updateGroup(Group group, GroupUpdateRequest request) {
         GroupName groupName = request.getName();
         Category category = request.getCategory();
         Capacity capacity = request.getCapacity();
         Calendar calendar = request.getCalendar();
 
-        group.update(capacity, calendar, groupName, category, request.getLocation(), request.getDescription());
+        group.update(capacity, calendar, groupName, category, request.getDescription());
+    }
+
+    @Transactional
+    public void updateLocation(Long hostId, Long groupId, LocationRequest request) {
+        ifMemberIsHost(hostId, groupId, (host, group) -> group.updateLocation(request.getLocation()));
     }
 
     @Transactional
     public void closeEarly(Long hostId, Long groupId) {
-        ifMemberIsHost(hostId, groupId, (host, group) -> {
-            group.closeEarly();
-        });
+        ifMemberIsHost(hostId, groupId, (host, group) -> group.closeEarly());
     }
 
     @Transactional

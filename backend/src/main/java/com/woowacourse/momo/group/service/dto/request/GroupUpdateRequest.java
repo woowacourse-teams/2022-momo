@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.GroupName;
-import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
@@ -12,7 +11,7 @@ import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
 @RequiredArgsConstructor
-public class GroupRequest {
+public class GroupUpdateRequest {
 
     private final String name;
     private final long categoryId;
@@ -20,7 +19,6 @@ public class GroupRequest {
     private final DurationRequest duration;
     private final SchedulesRequest schedules;
     private final DeadlineRequest deadline;
-    private final LocationRequest location;
     private final String description;
 
     public GroupName getName() {
@@ -37,10 +35,6 @@ public class GroupRequest {
 
     public Calendar getCalendar() {
         return new Calendar(deadline.getDeadline(), duration.getDuration(), schedules.getSchedules());
-    }
-
-    public Location getLocation() {
-        return location.getLocation();
     }
 
     public String getDescription() {
