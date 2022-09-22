@@ -15,7 +15,7 @@ import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
-interface JoinedGroupsProps {
+interface CardListProps {
   isFetching: boolean;
   data: GroupList | undefined;
   refetch: (
@@ -26,14 +26,14 @@ interface JoinedGroupsProps {
   toggleIsExcludeFinished: () => void;
 }
 
-function JoinedGroups({
+function CardList({
   isFetching,
   data,
   refetch,
   groups,
   isExcludeFinished,
   toggleIsExcludeFinished,
-}: JoinedGroupsProps) {
+}: CardListProps) {
   const target = useRef<HTMLDivElement>(null);
 
   useInfiniteScroll(target, isFetching, data, refetch, groups);
@@ -55,9 +55,9 @@ function JoinedGroups({
         </>
       ) : (
         <NoResult>
-          아직 참여하신 모임이 없어요 ・゜・(ノД`)
+          아직 모임이 없어요 ・゜・(ノД`)
           <br />
-          새로운 모임에 참여해보는 건 어떨까요?
+          새로운 모임을 찾아보는 건 어떨까요?
         </NoResult>
       )}
       {isFetching && (
@@ -70,4 +70,4 @@ function JoinedGroups({
   );
 }
 
-export default JoinedGroups;
+export default CardList;
