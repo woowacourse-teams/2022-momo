@@ -71,6 +71,7 @@ public class Group {
     public Group(Member host, Capacity capacity, Calendar calendar, GroupName name, Category category,
                  Location location, String description) {
         this.participants = new Participants(host, capacity);
+        this.favorites = new Favorites();
         this.calendar = calendar;
         this.name = name;
         this.category = category;
@@ -186,5 +187,9 @@ public class Group {
 
     public List<Member> getParticipants() {
         return participants.getParticipants();
+    }
+
+    public boolean isMemberLiked(Member member) {
+        return favorites.hasMember(member);
     }
 }

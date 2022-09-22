@@ -296,6 +296,30 @@ class GroupTest {
                 .isEqualTo(List.of(HOST));
     }
 
+    @DisplayName("모임을 찜한다")
+    @Test
+    void like() {
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
+
+        Member member = DUDU.toMember();
+        group.like(member);
+
+        assertThat(group.isMemberLiked(member)).isTrue();
+    }
+
+    @DisplayName("모임을 찜하기를 취소한다")
+    @Test
+    void cancelLike() {
+        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
+
+        Member member = DUDU.toMember();
+        group.like(member);
+
+        group.cancelLike(member);
+
+        assertThat(group.isMemberLiked(member)).isFalse();
+    }
+
     @DisplayName("모임의 주최자와 일치하는지 확인한다")
     @ParameterizedTest
     @MethodSource("provideIsHostArguments")

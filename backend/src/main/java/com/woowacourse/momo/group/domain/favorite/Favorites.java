@@ -46,7 +46,7 @@ public class Favorites {
         }
     }
 
-    private boolean hasMember(Member member) {
+    public boolean hasMember(Member member) {
         return favorites.stream()
                 .anyMatch(favorite -> favorite.isSameMember(member));
     }
