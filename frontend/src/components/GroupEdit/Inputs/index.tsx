@@ -21,9 +21,8 @@ function Inputs({
   useDateState,
   useScheduleState,
   useDeadlineState,
-  useLocationState,
   useDescriptionState,
-}: Omit<CreateStateReturnValues, 'getGroupState'>) {
+}: Omit<CreateStateReturnValues, 'useLocationState' | 'getGroupState'>) {
   const { name, setName, dangerouslySetName } = useNameState();
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
   const { capacity, setCapacity, dangerouslySetCapacity } = useCapacityState();
@@ -37,7 +36,6 @@ function Inputs({
   } = useDateState();
   const { dangerouslySetSchedules } = useScheduleState();
   const { deadline, setDeadline, dangerouslySetDeadline } = useDeadlineState();
-  const { location, setLocation, dangerouslySetLocation } = useLocationState();
   const { description, setDescription, dangerouslySetDescription } =
     useDescriptionState();
 
@@ -61,9 +59,8 @@ function Inputs({
     dangerouslySetEndDate(groupData.duration.end);
     dangerouslySetSchedules(groupData.schedules);
     dangerouslySetDeadline(groupData.deadline);
-    dangerouslySetLocation(groupData.location);
     dangerouslySetDescription(groupData.description);
-  }, [modalFlag]);
+  }, [modalFlag]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleDropdownState = () => {
     if (isShownDropdown) {
@@ -153,10 +150,6 @@ function Inputs({
           onChange={setDeadline}
           min={getNewDateString('min')}
         />
-      </S.Label>
-      <S.Label>
-        장소
-        <S.Input type="text" value={location} onChange={setLocation} />
       </S.Label>
       <S.Label>
         설명
