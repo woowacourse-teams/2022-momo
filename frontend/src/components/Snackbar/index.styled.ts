@@ -46,7 +46,7 @@ const Container = styled.div`
   border-radius: 4px;
   padding: 0 1rem;
 
-  z-index: 999;
+  z-index: 2147483647;
 
   ${({ theme: { colors } }) => `
     background: ${colors.black001}bb;
