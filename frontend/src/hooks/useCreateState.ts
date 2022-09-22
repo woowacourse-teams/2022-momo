@@ -10,9 +10,7 @@ import useInput from './useInput';
 export interface CreateStateReturnValues {
   useNameState: () => {
     name: CreateGroupData['name'];
-    setName: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => void;
+    setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
     dangerouslySetName: React.Dispatch<
       React.SetStateAction<CreateGroupData['name']>
     >;
@@ -32,9 +30,7 @@ export interface CreateStateReturnValues {
     startDate: CreateGroupData['startDate'];
     setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
     endDate: CreateGroupData['endDate'];
-    setEndDate: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => void;
+    setEndDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
     dangerouslySetStartDate: React.Dispatch<
       React.SetStateAction<CreateGroupData['startDate']>
     >;
@@ -54,21 +50,19 @@ export interface CreateStateReturnValues {
   };
   useDeadlineState: () => {
     deadline: CreateGroupData['deadline'];
-    setDeadline: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => void;
+    setDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
     dangerouslySetDeadline: React.Dispatch<
       React.SetStateAction<CreateGroupData['deadline']>
     >;
   };
   useLocationState: () => {
     location: CreateGroupData['location'];
-    setLocation: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setLocationAddress: (
+      address: CreateGroupData['location']['address'],
+      buildingName: CreateGroupData['location']['buildingName'],
+      detail?: CreateGroupData['location']['detail'],
     ) => void;
-    dangerouslySetLocation: React.Dispatch<
-      React.SetStateAction<CreateGroupData['location']>
-    >;
+    setLocationDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   useDescriptionState: () => {
     description: CreateGroupData['description'];
@@ -111,11 +105,11 @@ const useCreateState = (): CreateStateReturnValues => {
     setValue: setDeadline,
     dangerouslySetValue: dangerouslySetDeadline,
   } = useInput('');
-  const {
-    value: location,
-    setValue: setLocation,
-    dangerouslySetValue: dangerouslySetLocation,
-  } = useInput('');
+  const [location, setLocation] = useState({
+    address: '',
+    buildingName: '',
+    detail: '',
+  });
   const {
     value: description,
     setValue: setDescription,
@@ -178,6 +172,23 @@ const useCreateState = (): CreateStateReturnValues => {
     );
   };
 
+  const setLocationAddress = (
+    address: CreateGroupData['location']['address'],
+    buildingName: CreateGroupData['location']['buildingName'],
+    detail?: CreateGroupData['location']['detail'],
+  ) => {
+    if (typeof detail === 'string' && detail.length === 0) {
+      setLocation({ address, buildingName, detail });
+      return;
+    }
+
+    setLocation({ ...location, address, buildingName });
+  };
+
+  const changeLocationDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation({ ...location, detail: e.target.value });
+  };
+
   return {
     useNameState: () => ({
       name,
@@ -214,8 +225,8 @@ const useCreateState = (): CreateStateReturnValues => {
     }),
     useLocationState: () => ({
       location,
-      setLocation,
-      dangerouslySetLocation,
+      setLocationAddress,
+      setLocationDetail: changeLocationDetail,
     }),
     useDescriptionState: () => ({
       description,

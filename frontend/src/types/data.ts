@@ -37,7 +37,7 @@ export interface GroupDetailData {
   schedules: ScheduleType[];
   finished: boolean;
   deadline: string;
-  location: string;
+  location: Record<'address' | 'buildingName' | 'detail', string>;
   description: string;
 }
 
