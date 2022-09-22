@@ -1,43 +1,67 @@
 import { memo, forwardRef, LegacyRef } from 'react';
 
+import { Address } from 'react-daum-postcode';
+
+import Postcode from 'components/Postcode';
 import { GROUP_RULE } from 'constants/rule';
 import { CreateStateReturnValues } from 'hooks/useCreateState';
+import useModal from 'hooks/useModal';
 
-import { Container, Heading, Input, Label } from '../@shared/styled';
+import { Container, Heading } from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step7Props {
   useLocationState: CreateStateReturnValues['useLocationState'];
-  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function Step7(
-  { useLocationState, pressEnterToNext }: Step7Props,
+  { useLocationState }: Step7Props,
   ref: LegacyRef<HTMLDivElement>,
 ) {
-  const { location, setLocation } = useLocationState();
+  const { location, setLocationAddress, setLocationDetail } =
+    useLocationState();
+
+  const { showPostcodeModal } = useModal();
+
+  const setLocation = (data: Address) => {
+    setLocationAddress(data.address, data.buildingName, '');
+  };
+
+  const isNotFulfilledAddress = location.address === '';
 
   return (
     <Container ref={ref}>
       <Heading>
         <span>어디에서</span> 모일까요?
       </Heading>
-      <S.LabelContainer>
-        <Label>
-          <p>장소</p>
-          <p>
-            {location.length}/{GROUP_RULE.LOCATION.MAX_LENGTH}
-          </p>
-        </Label>
-        <Input
-          type="text"
-          value={location}
-          onChange={setLocation}
-          onKeyPress={pressEnterToNext}
-          placeholder="이춘복참치 잠실점"
-          maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
-        />
-      </S.LabelContainer>
+      <S.InputContainer>
+        <S.Label>
+          주소
+          <S.Input
+            type="text"
+            value={
+              location.buildingName ? location.buildingName : location.address
+            }
+            onClick={showPostcodeModal}
+            placeholder="한국루터회관"
+            maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
+            readOnly
+          />
+        </S.Label>
+        <S.Label>
+          상세
+          <S.Input
+            type="text"
+            value={location.detail}
+            onChange={setLocationDetail}
+            title={isNotFulfilledAddress ? '주소를 먼저 입력해주세요.' : ''}
+            placeholder="14층"
+            maxLength={GROUP_RULE.LOCATION.MAX_LENGTH}
+            disabled={isNotFulfilledAddress}
+          />
+        </S.Label>
+      </S.InputContainer>
+      <Postcode completeFunc={setLocation} />
     </Container>
   );
 }

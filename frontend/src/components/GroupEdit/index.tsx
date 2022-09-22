@@ -36,7 +36,6 @@ function GroupEdit() {
     useDateState,
     useScheduleState,
     useDeadlineState,
-    useLocationState,
     useDescriptionState,
     getGroupState,
   } = useCreateState();
@@ -79,7 +78,6 @@ function GroupEdit() {
           useDateState={useDateState}
           useScheduleState={useScheduleState}
           useDeadlineState={useDeadlineState}
-          useLocationState={useLocationState}
           useDescriptionState={useDescriptionState}
         />
         <S.ButtonContainer>

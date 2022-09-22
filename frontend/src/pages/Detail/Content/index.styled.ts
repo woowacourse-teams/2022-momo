@@ -4,6 +4,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
+  height: fit-content;
+
   border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 10px;
 `;
@@ -78,12 +80,9 @@ const Description = styled(DescriptionBox)`
   color: ${({ theme: { colors } }) => colors.black002};
 `;
 
-const LocationMap = styled.div<{ imgSrc: string }>`
+const LocationMap = styled.div`
   width: 32rem;
   height: 32rem;
-
-  background: url(${({ imgSrc }) => imgSrc});
-  background-size: cover;
 `;
 
 export {

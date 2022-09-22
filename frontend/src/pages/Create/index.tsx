@@ -142,11 +142,7 @@ function Create() {
           ref={getPageRef(6)}
           pressEnterToNext={pressEnterToNext}
         />
-        <Step7
-          useLocationState={useLocationState}
-          ref={getPageRef(7)}
-          pressEnterToNext={pressEnterToNext}
-        />
+        <Step7 useLocationState={useLocationState} ref={getPageRef(7)} />
         <Step8 useDescriptionState={useDescriptionState} ref={getPageRef(8)} />
       </S.ScrollContainer>
       <Navigator

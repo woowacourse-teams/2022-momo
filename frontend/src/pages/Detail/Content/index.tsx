@@ -1,4 +1,4 @@
-import map from 'assets/map.jpg';
+import useKakaoMap from 'hooks/useKakaoMap';
 import { GroupDetailData } from 'types/data';
 import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
@@ -10,11 +10,14 @@ function DetailContent({
   deadline,
   finished,
   categoryId,
+  location,
   description,
 }: Pick<
   GroupDetailData,
-  'name' | 'deadline' | 'finished' | 'categoryId' | 'description'
+  'name' | 'deadline' | 'finished' | 'categoryId' | 'location' | 'description'
 >) {
+  useKakaoMap(location);
+
   return (
     <S.Container>
       <S.TitleWrapper imgSrc={getCategoryImage(categoryId)}>
@@ -26,7 +29,7 @@ function DetailContent({
           {finished ? '마감 완료' : convertDeadlineToRemainTime(deadline)}
         </S.Duration>
         {description && <S.Description>{description}</S.Description>}
-        <S.LocationMap imgSrc={map} />
+        {location.address && <S.LocationMap id="map" />}
       </S.DescriptionContainer>
     </S.Container>
   );
