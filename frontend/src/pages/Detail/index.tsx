@@ -43,6 +43,7 @@ function Detail() {
             deadline={data.deadline}
             finished={data.finished}
             categoryId={data.categoryId}
+            location={data.location}
             description={data.description}
           />
         </>

@@ -7,6 +7,7 @@ import useModal from 'hooks/useModal';
 import { loginState } from 'store/states';
 import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
 import { parsedDurationDate } from 'utils/date';
+import { processLocation } from 'utils/location';
 
 import ControlButton from './ControlButton';
 import * as S from './index.styled';
@@ -34,6 +35,12 @@ function Info({
   const { showGroupEditModal } = useModal();
   const { user } = useRecoilValue(loginState);
 
+  const isHost = user?.id === host.id;
+
+  const preparing = () => {
+    alert('모임 장소 수정은 준비 중입니다 😅');
+  };
+
   return (
     <S.Container>
       <S.Content>
@@ -43,8 +50,10 @@ function Info({
             <S.Text>{parsedDurationDate(duration)}</S.Text>
           </S.Wrapper>
           <S.Wrapper>
-            <LocationSVG width={svgSize} />
-            <S.Text>{location}</S.Text>
+            <LocationSVG width={svgSize} onClick={preparing} />
+            <S.Text title={location.address}>
+              {processLocation(location)}
+            </S.Text>
           </S.Wrapper>
           <S.Wrapper>
             <CategorySVG width={svgSize} />
@@ -55,7 +64,7 @@ function Info({
             <S.Text>{host.name}</S.Text>
           </S.Wrapper>
         </div>
-        {user?.id === host.id && (
+        {isHost && (
           <S.Wrapper>
             <PencilSVG width={svgSize - 3} onClick={showGroupEditModal} />
           </S.Wrapper>
