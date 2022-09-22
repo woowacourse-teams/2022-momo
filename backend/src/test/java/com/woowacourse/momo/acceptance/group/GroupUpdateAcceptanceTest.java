@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임_장소를_수정한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_수정한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조기마감한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.participant.ParticipantRestHandler.모임에_참여한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
+import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 
 import java.time.format.DateTimeFormatter;
@@ -140,5 +142,12 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
         모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("message", Matchers.is("GROUP_ERROR_014"));
+    }
+
+    @DisplayName("모임의 장소를 수정한다")
+    @Test
+    void updateLocation() {
+        모임_장소를_수정한다(hostAccessToken, groupId, 선릉캠퍼스)
+                .statusCode(HttpStatus.OK.value());
     }
 }

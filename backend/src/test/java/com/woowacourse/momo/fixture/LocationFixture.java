@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import com.woowacourse.momo.group.controller.dto.request.LocationApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
+import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -20,11 +22,19 @@ public enum LocationFixture {
     private final String buildingName;
     private final String detail;
 
+    public Location toLocation() {
+        return new Location(address, buildingName, detail);
+    }
+
     public LocationRequest toRequest() {
         return new LocationRequest(address, buildingName, detail);
     }
 
     public LocationApiRequest toApiRequest() {
         return new LocationApiRequest(address, buildingName, detail);
+    }
+
+    public LocationUpdateApiRequest toUpdateApiRequest() {
+        return new LocationUpdateApiRequest(address, buildingName, detail);
     }
 }
