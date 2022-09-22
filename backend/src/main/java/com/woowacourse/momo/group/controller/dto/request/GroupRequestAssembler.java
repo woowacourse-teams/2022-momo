@@ -32,6 +32,10 @@ public class GroupRequestAssembler {
                 deadlineRequest(request.getDeadline()), request.getDescription());
     }
 
+    public LocationRequest groupLocationUpdateRequest(LocationUpdateApiRequest request) {
+        return new LocationRequest(request.getAddress(), request.getBuildingName(), request.getBuildingName());
+    }
+
 
     private DurationRequest durationRequest(DurationApiRequest request) {
         return new DurationRequest(request.getStart(), request.getEnd());

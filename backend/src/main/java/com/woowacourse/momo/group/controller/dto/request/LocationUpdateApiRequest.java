@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class LocationApiRequest {
+public class LocationUpdateApiRequest {
 
     @NotNull
     private String address;

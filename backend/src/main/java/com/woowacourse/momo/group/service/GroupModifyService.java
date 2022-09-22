@@ -18,6 +18,7 @@ import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
+import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
@@ -54,6 +55,11 @@ public class GroupModifyService {
         Calendar calendar = request.getCalendar();
 
         group.update(capacity, calendar, groupName, category, request.getDescription());
+    }
+
+    @Transactional
+    public void updateLocation(Long hostId, Long groupId, LocationRequest request) {
+        ifMemberIsHost(hostId, groupId, (host, group) -> group.updateLocation(request.getLocation()));
     }
 
     @Transactional

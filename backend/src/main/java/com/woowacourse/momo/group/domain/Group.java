@@ -83,6 +83,10 @@ public class Group {
         this.description = description;
     }
 
+    public void updateLocation(Location location) {
+        this.location = location;
+    }
+
     public void closeEarly() {
         validateGroupIsProceeding();
         closedEarly = true;
