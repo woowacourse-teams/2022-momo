@@ -196,6 +196,26 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
   );
 };
 
+const requestLikeGroup = (id: GroupDetailData['id']) => {
+  return axios.post(
+    `${API_PATH.GROUP}/${id}${API_PATH.LIKED}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
+      },
+    },
+  );
+};
+
+const requestUnlikeGroup = (id: GroupDetailData['id']) => {
+  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKED}`, {
+    headers: {
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
+    },
+  });
+};
+
 export {
   requestCreateGroup,
   requestEditGroup,
@@ -207,4 +227,6 @@ export {
   requestJoinGroup,
   requestExitGroup,
   requestCloseGroup,
+  requestLikeGroup,
+  requestUnlikeGroup,
 };
