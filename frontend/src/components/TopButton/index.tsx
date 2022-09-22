@@ -1,22 +1,15 @@
 import { memo } from 'react';
 
 import { TopArrowSVG } from 'assets/svg';
+import useThrottle from 'hooks/useThrottle';
 
 import * as S from './index.styled';
 
 function TopButton() {
-  let isScrolling = false;
+  const { throttle } = useThrottle();
 
   const scrollToTop = () => {
-    if (isScrolling) return;
-
-    isScrolling = true;
-
-    window.scroll({ top: 0, behavior: 'smooth' });
-
-    setTimeout(() => {
-      isScrolling = false;
-    }, 800);
+    throttle(() => window.scroll({ top: 0, behavior: 'smooth' }), 800);
   };
 
   return (

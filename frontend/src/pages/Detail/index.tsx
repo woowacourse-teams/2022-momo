@@ -8,6 +8,7 @@ import { groupDetailState } from 'store/states';
 
 import Content from './Content';
 import * as S from './index.styled';
+import LikeButton from './LikeButton';
 import SideBar from './SideBar';
 
 function Detail() {
@@ -46,6 +47,7 @@ function Detail() {
             location={data.location}
             description={data.description}
           />
+          <LikeButton id={Number(id)} like={data.like} />
         </>
       )}
     </S.PageContainer>
