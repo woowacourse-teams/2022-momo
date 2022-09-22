@@ -1,11 +1,13 @@
 import { useRef } from 'react';
 
+import { useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import { GoogleSVG } from 'assets/svg';
 import Modal from 'components/Modal';
+import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
@@ -23,6 +25,8 @@ function Login() {
 
   const { setMessage } = useSnackbar();
 
+  const queryClient = useQueryClient();
+
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -39,8 +43,10 @@ function Login() {
         setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
         setAuth(accessToken, refreshToken);
 
-        requestUserInfo().then(userInfo => {
+        requestUserInfo().then(async userInfo => {
           setLogin('basic', userInfo);
+          queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
+          queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
         });
 
         setOffModal();

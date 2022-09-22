@@ -4,14 +4,13 @@ import { useQuery } from 'react-query';
 
 import { requestJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
-import NoResult from 'components/NoResult';
 import SearchForm from 'components/SearchForm';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import { GroupList, SelectableGroup } from 'types/data';
 
+import CardList from './CardList';
 import * as S from './index.styled';
-import JoinedGroups from './JoinedGroups';
 
 const groupTypes: { type: SelectableGroup; name: string }[] = [
   { type: 'participated', name: '내가 참여한 모임' },
@@ -20,13 +19,13 @@ const groupTypes: { type: SelectableGroup; name: string }[] = [
 ];
 
 function MyGroup() {
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [pageNumber, setPageNumber] = useState(0);
+  const [groups, setGroups] = useState<GroupList['groups']>([]);
   const [selectedGroupType, setSelectedGroupType] =
     useState<SelectableGroup>('participated');
 
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-  const [keyword, setKeyword] = useState('');
-
-  const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
     requestJoinedGroups(
@@ -39,10 +38,6 @@ function MyGroup() {
       suspense: true,
     },
   );
-
-  const [groups, setGroups] = useState<GroupList['groups']>([]);
-
-  const [isPreparing, setIsPreparing] = useState(false);
 
   useEffect(() => {
     if (!data) return;
@@ -61,14 +56,6 @@ function MyGroup() {
 
   const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
     await setSelectedGroupType(newType);
-
-    // 찜한 목록은 준비 중 페이지로 대체
-    if (newType === 'liked') {
-      setIsPreparing(true);
-      return;
-    }
-
-    await setIsPreparing(false);
     await setPageNumber(0);
     refetch();
   };
@@ -103,18 +90,14 @@ function MyGroup() {
       </S.GroupTypeBox>
       <S.Content>
         <ErrorBoundary>
-          {isPreparing ? (
-            <NoResult>준비 중이에요 ・゜・(ノД`)</NoResult>
-          ) : (
-            <JoinedGroups
-              isFetching={isFetching}
-              data={data}
-              refetch={refetch}
-              groups={groups}
-              isExcludeFinished={isExcludeFinished}
-              toggleIsExcludeFinished={toggleIsExcludeFinished}
-            />
-          )}
+          <CardList
+            isFetching={isFetching}
+            data={data}
+            refetch={refetch}
+            groups={groups}
+            isExcludeFinished={isExcludeFinished}
+            toggleIsExcludeFinished={toggleIsExcludeFinished}
+          />
         </ErrorBoundary>
       </S.Content>
       <TopButton />

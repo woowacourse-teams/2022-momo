@@ -12,7 +12,7 @@ import Participants from './Participants';
 interface DetailSideBarProps
   extends Omit<
     GroupDetailData,
-    'name' | 'categoryId' | 'deadline' | 'description'
+    'name' | 'categoryId' | 'deadline' | 'description' | 'like'
   > {
   categoryName: CategoryType['name'];
 }

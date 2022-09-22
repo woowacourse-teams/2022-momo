@@ -2,6 +2,7 @@ import { memo } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
 import { BROWSER_PATH } from 'constants/path';
 import { GroupSummary } from 'types/data';
 import { getCategoryImage } from 'utils/category';
@@ -23,6 +24,7 @@ function Card({ group }: CardProps) {
     finished,
     numOfParticipant,
     capacity,
+    like,
   } = group;
 
   return (
@@ -31,16 +33,19 @@ function Card({ group }: CardProps) {
         <S.Image imgSrc={getCategoryImage(categoryId)} />
         <S.Description>
           <S.Left>
-            <S.Title>{name}</S.Title>
-            <S.HostName>{host.name}</S.HostName>
+            <div>
+              <S.Title>{name}</S.Title>
+              <S.HostName>{host.name}</S.HostName>
+            </div>
+            <S.Capacity>
+              <span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명
+            </S.Capacity>
           </S.Left>
           <S.Right>
             <S.Deadline>
               {finished ? '마감 완료' : convertDeadlineToRemainTime(deadline)}
             </S.Deadline>
-            <S.Capacity>
-              <span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명
-            </S.Capacity>
+            <S.Liked>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</S.Liked>
           </S.Right>
         </S.Description>
       </S.Container>

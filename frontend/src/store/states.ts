@@ -43,6 +43,7 @@ const groupDetailState = atom<GroupDetailData>({
     schedules: [],
     finished: false,
     deadline: '',
+    like: false,
     location: {
       address: '',
       buildingName: '',

@@ -10,6 +10,7 @@ import {
   CategoryType,
   SelectableGroup,
 } from 'types/data';
+import { authenticationHeader } from 'utils/header';
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
 
@@ -140,13 +141,16 @@ const requestGroups =
     };
 
     return axios
-      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
+      .get<GroupList>(
+        makeUrl(API_PATH.GROUP, queryParams),
+        authenticationHeader(),
+      )
       .then(response => response.data);
   };
 
 const requestGroupDetail = (id: GroupDetailData['id']) => {
   return axios
-    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
+    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`, authenticationHeader())
     .then(response => response.data);
 };
 
@@ -196,6 +200,26 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
   );
 };
 
+const requestLikeGroup = (id: GroupDetailData['id']) => {
+  return axios.post(
+    `${API_PATH.GROUP}/${id}${API_PATH.LIKED}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
+      },
+    },
+  );
+};
+
+const requestUnlikeGroup = (id: GroupDetailData['id']) => {
+  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKED}`, {
+    headers: {
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
+    },
+  });
+};
+
 export {
   requestCreateGroup,
   requestEditGroup,
@@ -207,4 +231,6 @@ export {
   requestJoinGroup,
   requestExitGroup,
   requestCloseGroup,
+  requestLikeGroup,
+  requestUnlikeGroup,
 };
