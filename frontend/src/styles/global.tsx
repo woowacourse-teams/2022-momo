@@ -68,6 +68,8 @@ const style = (colors: Theme['colors']) => css`
 
     &:disabled {
       background: ${colors.gray005};
+
+      cursor: not-allowed;
     }
 
     &:focus {
