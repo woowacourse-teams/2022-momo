@@ -34,4 +34,9 @@ public class AuthorizationExtractor {
 
         throw new MomoException(GlobalErrorCode.AUTH_REQUIRED_LOGIN);
     }
+
+    public static boolean hasNotAuthHeader(HttpServletRequest request) {
+        Enumeration<String> headers = request.getHeaders(AUTHORIZATION);
+        return !headers.hasMoreElements();
+    }
 }
