@@ -224,10 +224,9 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        Location location = fixture.getLocationObject();
         String description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, location, description);
+        group.update(capacity, calendar, name, category, description);
 
         assertAll(
                 () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
@@ -236,7 +235,6 @@ class GroupTest {
                         .isEqualTo(calendar),
                 () -> assertThat(group.getName()).isEqualTo(name.getValue()),
                 () -> assertThat(group.getCategory()).isEqualTo(category),
-                () -> assertThat(group.getLocation()).isEqualTo(location),
                 () -> assertThat(group.getDescription()).isEqualTo(description)
         );
     }
@@ -246,10 +244,9 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        Location location = fixture.getLocationObject();
         String description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, location, description);
+        group.update(capacity, calendar, name, category, description);
     }
 
     @DisplayName("모임 모집을 조기마감한다")

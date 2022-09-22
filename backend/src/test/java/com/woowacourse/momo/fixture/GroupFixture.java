@@ -23,6 +23,7 @@ import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.fixture.calendar.DurationFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
+import com.woowacourse.momo.group.controller.dto.request.GroupUpdateApiRequest;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.Location;
@@ -30,6 +31,7 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.member.domain.Member;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -117,6 +119,10 @@ public enum GroupFixture {
         return builder().toRequest();
     }
 
+    public GroupUpdateRequest toUpdateRequest() {
+        return builder().toUpdateRequest();
+    }
+
     public GroupApiRequest toApiRequest() {
         return builder().toApiRequest();
     }
@@ -197,10 +203,20 @@ public enum GroupFixture {
                     location.toRequest(), description);
         }
 
+        public GroupUpdateRequest toUpdateRequest() {
+            return new GroupUpdateRequest(name, category, capacity, duration.toRequest(),
+                    ScheduleFixture.toRequests(schedules), deadline.toRequest(), description);
+        }
+
         public GroupApiRequest toApiRequest() {
             return new GroupApiRequest(name, category, capacity, duration.toApiRequest(),
                     ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(),
                     location.toApiRequest(), description);
+        }
+
+        public GroupUpdateApiRequest toUpdateApiRequest() {
+            return new GroupUpdateApiRequest(name, category, capacity, duration.toApiRequest(),
+                    ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(), description);
         }
     }
 }

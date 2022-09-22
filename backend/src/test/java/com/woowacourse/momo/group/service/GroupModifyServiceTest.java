@@ -27,6 +27,7 @@ import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -108,7 +109,7 @@ class GroupModifyServiceTest {
         GroupFixture target = DUDU_STUDY;
 
         long groupId = this.group.getId();
-        GroupRequest request = target.toRequest();
+        GroupUpdateRequest request = target.toUpdateRequest();
         groupModifyService.update(host.getId(), groupId, request);
 
         Optional<Group> group = groupSearchRepository.findById(groupId);
@@ -143,7 +144,7 @@ class GroupModifyServiceTest {
         long groupId = 1000;
         long hostId = host.getId();
 
-        GroupRequest request = MOMO_STUDY.toRequest();
+        GroupUpdateRequest request = MOMO_STUDY.toUpdateRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
@@ -155,7 +156,7 @@ class GroupModifyServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        GroupRequest request = DUDU_STUDY.toRequest();
+        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
         assertThatThrownBy(() -> groupModifyService.update(participantId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
@@ -169,7 +170,7 @@ class GroupModifyServiceTest {
 
         group.participate(participant);
 
-        GroupRequest request = DUDU_STUDY.toRequest();
+        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
@@ -183,7 +184,7 @@ class GroupModifyServiceTest {
 
         group.participate(participant);
 
-        GroupRequest request = DUDU_STUDY.toRequest();
+        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 참여자가 존재합니다.");
