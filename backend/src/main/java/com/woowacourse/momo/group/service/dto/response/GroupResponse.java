@@ -24,5 +24,6 @@ public class GroupResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
     private LocationResponse location;
+    private boolean like;
     private String description;
 }

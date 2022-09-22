@@ -29,7 +29,7 @@ public class GroupSearchController {
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupResponse> findGroup(@AuthenticationOptionalPrincipal Long memberId,
                                                    @PathVariable Long groupId) {
-        GroupResponse response = groupService.findGroup(groupId);
+        GroupResponse response = groupService.findGroup(groupId, memberId);
         return ResponseEntity.ok(response);
     }
 
@@ -37,7 +37,7 @@ public class GroupSearchController {
     @GetMapping
     public ResponseEntity<GroupPageResponse> findAll(@AuthenticationOptionalPrincipal Long memberId,
                                                      @ModelAttribute GroupSearchRequest groupSearchRequest) {
-        GroupPageResponse response = groupService.findGroups(groupSearchRequest);
+        GroupPageResponse response = groupService.findGroups(groupSearchRequest, memberId);
         return ResponseEntity.ok(response);
     }
 

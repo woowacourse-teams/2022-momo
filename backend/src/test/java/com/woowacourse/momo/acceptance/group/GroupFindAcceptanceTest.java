@@ -71,6 +71,17 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         checkGroupResponse(response, group);
     }
 
+    @DisplayName("회원이 찜한 모임을 조회한다")
+    @Test
+    void findLikeGroupByMember() {
+        GroupFixture group = MOMO_STUDY;
+        모임을_찜한다(hostAccessToken, groupIds.get(group));
+
+        ValidatableResponse response = 모임을_조회한다(hostAccessToken, groupIds.get(group));
+
+        checkLikedGroupResponse(response, group);
+    }
+
     @DisplayName("비회원이 모임을 조회한다")
     @Test
     void findGroupByNonMember() {
@@ -80,7 +91,15 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         checkGroupResponse(response, group);
     }
 
+    void checkLikedGroupResponse(ValidatableResponse response, GroupFixture group) {
+        checkGroupResponseWithLikeOrNot(response, group, true);
+    }
+
     void checkGroupResponse(ValidatableResponse response, GroupFixture group) {
+        checkGroupResponseWithLikeOrNot(response, group, false);
+    }
+
+    void checkGroupResponseWithLikeOrNot(ValidatableResponse response, GroupFixture group, boolean like) {
         response.statusCode(HttpStatus.OK.value());
 
         assertAll(
@@ -102,7 +121,8 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                             .body("location.address", is(group.getLocation().getAddress()))
                             .body("location.buildingName", is(group.getLocation().getBuildingName()))
                             .body("location.detail", is(group.getLocation().getDetail()))
-                            .body("description", is(group.getDescription()));
+                            .body("description", is(group.getDescription()))
+                            .body("like", is(like));
                 },
                 () -> {
                     List<ScheduleResponse> schedules = response.extract()

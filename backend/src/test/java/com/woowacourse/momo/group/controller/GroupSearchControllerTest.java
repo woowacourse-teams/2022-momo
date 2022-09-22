@@ -52,9 +52,26 @@ class GroupSearchControllerTest {
     private final AuthService authService;
     private final LikeService likeService;
 
-    @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
+    @DisplayName("로그인을 하지 않은 상태로 하나의 그룹을 가져오는 경우를 테스트한다")
     @Test
     void groupGetTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        Long saveId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/" + saveId))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("name", is("모모의 스터디")))
+                .andDo(
+                        document("groupget",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("로그인한 후 하나의 그룹을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetWithAuthorizationHeaderTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         Long saveId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         String accessToken = accessToken("woowa", "wooteco1!");
