@@ -37,6 +37,7 @@ export interface GroupDetailData {
   schedules: ScheduleType[];
   finished: boolean;
   deadline: string;
+  like: boolean;
   location: Record<'address' | 'buildingName' | 'detail', string>;
   description: string;
 }
@@ -57,10 +58,29 @@ export interface GroupList {
   hasNextPage: boolean;
 }
 
-export type GroupSummary = Pick<
-  GroupDetailData,
-  'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'finished' | 'capacity'
-> & { numOfParticipant: number };
+export interface GroupSummary {
+  id: GroupDetailData['id'];
+  name: GroupDetailData['name'];
+  host: GroupDetailData['host'];
+  categoryId: GroupDetailData['categoryId'];
+  deadline: GroupDetailData['deadline'];
+  finished: GroupDetailData['finished'];
+  capacity: GroupDetailData['capacity'];
+  like: GroupDetailData['like'];
+  numOfParticipant: number;
+}
+
+// export type GroupSummary = Pick<
+//   GroupDetailData,
+//   | 'id'
+//   | 'name'
+//   | 'host'
+//   | 'categoryId'
+//   | 'deadline'
+//   | 'finished'
+//   | 'capacity'
+//   | 'like'
+// > & { numOfParticipant: number };
 
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
 

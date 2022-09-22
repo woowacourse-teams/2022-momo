@@ -44,6 +44,7 @@ const Description = styled.div`
 const Left = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   width: 50%;
 `;
@@ -114,6 +115,8 @@ const Capacity = styled.div`
   `}
 `;
 
+const Liked = styled.div``;
+
 export {
   Container,
   Image,
@@ -126,4 +129,5 @@ export {
   Hashtag,
   Deadline,
   Capacity,
+  Liked,
 };
