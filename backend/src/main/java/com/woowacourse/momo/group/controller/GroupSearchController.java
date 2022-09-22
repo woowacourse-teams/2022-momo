@@ -29,6 +29,20 @@ public class GroupSearchController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
+    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupSearchRequest groupSearchRequest) {
+        GroupPageResponse response = groupService.findGroups(groupSearchRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @Authenticated
+    @GetMapping("/me/liked")
+    public ResponseEntity<GroupPageResponse> findLikedGroups(@AuthenticationPrincipal Long memberId,
+                                                             @ModelAttribute GroupSearchRequest groupSearchRequest) {
+        GroupPageResponse response = groupService.findLikedGroups(groupSearchRequest, memberId);
+        return ResponseEntity.ok(response);
+    }
+
     @Authenticated
     @GetMapping("/me/participated")
     public ResponseEntity<GroupPageResponse> findParticipatedGroups(@AuthenticationPrincipal Long memberId,
@@ -42,12 +56,6 @@ public class GroupSearchController {
     public ResponseEntity<GroupPageResponse> findHostedGroups(@AuthenticationPrincipal Long memberId,
                                                               @ModelAttribute GroupSearchRequest groupSearchRequest) {
         GroupPageResponse response = groupService.findHostedGroups(groupSearchRequest, memberId);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<GroupPageResponse> findAll(@ModelAttribute GroupSearchRequest groupSearchRequest) {
-        GroupPageResponse response = groupService.findGroups(groupSearchRequest);
         return ResponseEntity.ok(response);
     }
 }

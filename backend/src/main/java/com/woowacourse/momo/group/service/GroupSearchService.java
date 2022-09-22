@@ -64,4 +64,14 @@ public class GroupSearchService {
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
+
+    public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
+        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), member, pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
 }

@@ -10,10 +10,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 
+@Getter
+@NoArgsConstructor
 @Embeddable
 public class Favorites {
 

@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_주최한_모임을_조회한다;
+import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_찜한_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_참여한_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.키워드로_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
+import static com.woowacourse.momo.acceptance.like.LikeRestHandler.모임을_찜한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
@@ -176,6 +178,18 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
         checkHostedGroup(response);
     }
 
+    @DisplayName("본인이 찜한 모임들을 조회한다.")
+    @Test
+    void findLikedGroups() {
+        hostAccessToken = HOST.로_로그인한다();
+        모임을_찜한다(hostAccessToken, groupIds.get(MOMO_TRAVEL));
+        모임을_찜한다(hostAccessToken, groupIds.get(DUDU_STUDY));
+
+        ValidatableResponse response = 본인이_찜한_모임을_조회한다(hostAccessToken);
+
+        checkLikedGroup(response);
+    }
+
     private void checkParticipatedGroup(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
         response.body("groups", hasSize(1));
@@ -184,6 +198,11 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     private void checkHostedGroup(ValidatableResponse response) {
         response.statusCode(HttpStatus.OK.value());
         response.body("groups", hasSize(4));
+    }
+
+    private void checkLikedGroup(ValidatableResponse response) {
+        response.statusCode(HttpStatus.OK.value());
+        response.body("groups", hasSize(2));
     }
 
     private void checkGroupSummaryResponsesByPageNumber(ValidatableResponse response) {

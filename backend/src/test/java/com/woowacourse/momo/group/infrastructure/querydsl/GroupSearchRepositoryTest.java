@@ -62,13 +62,16 @@ class GroupSearchRepositoryTest {
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
         group1 = groupRepository.save(constructGroup("모모의 스터디", host, STUDY, 5, 이틀후_23시_59분까지));
+        group1.like(host);
         group2 = groupRepository.save(constructGroup("모모의 술파티", host, Category.DRINK, 15, 내일_23시_59분까지));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", host, Category.HEALTH, 1, 일주일후_23시_59분까지));
+        group3.like(host);
 
         Member anotherHost = memberRepository.save(DUDU.toMember());
         group4 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 6, 내일_23시_59분까지));
         group5 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지));
         group5.participate(host);
+        group5.like(host);
 
         Group group = constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지);
         GroupFixture.setDeadlinePast(group, 1);
@@ -102,7 +105,8 @@ class GroupSearchRepositoryTest {
     void findParticipatedGroups() {
         GroupSearchRequest request = new GroupSearchRequest();
 
-        List<Group> actual = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), host, pageable)
+                .getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5, group3, group2, group1));
@@ -113,10 +117,23 @@ class GroupSearchRepositoryTest {
     void findHostedGroups() {
         GroupSearchRequest request = new GroupSearchRequest();
 
-        List<Group> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(), host, pageable)
+                .getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group3, group2, group1));
+    }
+
+    @DisplayName("찜한 모임을 조회한다")
+    @Test
+    void findLikedGroups() {
+        GroupSearchRequest request = new GroupSearchRequest();
+
+        List<Group> actual = groupSearchRepository.findLikedGroups(request.toFindCondition(), host, pageable)
+                .getContent();
+
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(group5, group3, group1));
     }
 
     @DisplayName("카테고리에 해당하는 모임 목록을 조회한다")
@@ -237,7 +254,8 @@ class GroupSearchRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), host, pageable)
+                .getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group5));
@@ -252,7 +270,8 @@ class GroupSearchRepositoryTest {
                 .orderByDeadline(true)
                 .build();
 
-        List<Group> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(), host, pageable).getContent();
+        List<Group> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(), host, pageable)
+                .getContent();
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(group2, group1));

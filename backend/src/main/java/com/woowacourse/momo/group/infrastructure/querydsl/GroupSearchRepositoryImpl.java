@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.infrastructure.querydsl;
 
 import static com.woowacourse.momo.group.domain.QGroup.group;
+import static com.woowacourse.momo.group.domain.favorite.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 
 import java.util.LinkedList;
@@ -16,12 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.participant.Participant;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
 import com.woowacourse.momo.member.domain.Member;
@@ -50,6 +48,25 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     @Override
     public Page<Group> findParticipatedGroups(SearchCondition condition, Member member, Pageable pageable) {
         return findGroups(condition, pageable, () -> isParticipated(member));
+    }
+
+    @Override
+    public Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable) {
+        List<Group> groups = queryFactory
+                .selectFrom(group)
+                .leftJoin(group.participants.participants, participant)
+                .innerJoin(group.favorites.favorites, favorite)
+                .fetchJoin()
+                .where(
+                        favorite.member.eq(member),
+                        conditionFilter.filterByCondition(condition)
+                )
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
     private Page<Group> findGroups(SearchCondition condition, Pageable pageable,
@@ -84,15 +101,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     }
 
     private BooleanExpression isParticipated(Member member) {
-        return isHost(member).or(isParticipant(member));
-    }
-
-    private BooleanExpression isParticipant(Member member) {
-        JPQLQuery<Participant> targetMember = JPAExpressions
-                .selectFrom(participant)
-                .where(participant.member.eq(member));
-
-        return group.participants.participants.contains(targetMember);
+        return isHost(member).or(participant.member.eq(member));
     }
 
     private List<OrderSpecifier<?>> orderByDeadlineAsc(boolean orderByDeadline) {
