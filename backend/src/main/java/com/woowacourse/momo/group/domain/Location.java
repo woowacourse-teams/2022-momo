@@ -24,6 +24,6 @@ public class Location {
     @Column(name = "locationBuildingName", nullable = false)
     private String buildingName;
 
-    @Column(name = "locationDetails", nullable = false)
+    @Column(name = "locationDetail", nullable = false)
     private String detail;
 }
