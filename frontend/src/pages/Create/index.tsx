@@ -3,6 +3,12 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { requestCreateGroup } from 'apis/request/group';
+import { BROWSER_PATH } from 'constants/path';
+import useCreateState from 'hooks/useCreateState';
+import Navigator from 'pages/Create/Navigator';
+import PageError from 'utils/PageError';
+
+import * as S from './index.styled';
 import {
   Step1,
   Step2,
@@ -12,13 +18,7 @@ import {
   Step6,
   Step7,
   Step8,
-} from 'components/Create';
-import Navigator from 'components/Create/Navigator';
-import { BROWSER_PATH } from 'constants/path';
-import useCreateState from 'hooks/useCreateState';
-import PageError from 'utils/PageError';
-
-import * as S from './index.styled';
+} from './Steps';
 import validateGroupData from './validate';
 
 const totalPage = [
@@ -142,11 +142,7 @@ function Create() {
           ref={getPageRef(6)}
           pressEnterToNext={pressEnterToNext}
         />
-        <Step7
-          useLocationState={useLocationState}
-          ref={getPageRef(7)}
-          pressEnterToNext={pressEnterToNext}
-        />
+        <Step7 useLocationState={useLocationState} ref={getPageRef(7)} />
         <Step8 useDescriptionState={useDescriptionState} ref={getPageRef(8)} />
       </S.ScrollContainer>
       <Navigator

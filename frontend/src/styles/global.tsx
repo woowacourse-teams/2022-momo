@@ -4,15 +4,32 @@ import emotionReset from 'emotion-reset';
 import { fontStyle } from './font';
 
 // Heading => SuseongDotum
-// Basic => GangwonEdu_OTFBoldA, GangwonEdu_OTFLightA
+// Basic => GangwonEdu_Bold
 
-const style = (theme: Theme) => css`
+const style = (colors: Theme['colors']) => css`
   ${emotionReset}
   ${fontStyle}
 
   body {
     font-family: 'GangwonEdu_Bold';
     font-size: 1.1rem;
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: none;
+
+      width: 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: ${colors.green002};
+
+      border-radius: 5px;
+    }
   }
 
   h1,
@@ -25,7 +42,7 @@ const style = (theme: Theme) => css`
 
   a {
     text-decoration: none;
-    color: ${theme.colors.black002};
+    color: ${colors.black002};
   }
 
   button {
@@ -39,26 +56,30 @@ const style = (theme: Theme) => css`
   input {
     padding: 0 0.5rem;
 
-    background: ${theme.colors.white001};
+    background: ${colors.white001};
 
-    border: 1px solid ${theme.colors.gray003};
+    border: 1px solid ${colors.gray003};
     border-radius: 0.5rem;
+
+    box-sizing: border-box;
 
     font-family: 'GangwonEdu_Bold';
     font-size: 1.2rem;
 
     &:disabled {
-      background: ${theme.colors.gray005};
+      background: ${colors.gray005};
+
+      cursor: not-allowed;
     }
 
     &:focus {
-      border: 1.5px solid ${theme.colors.green002};
+      border: 1.5px solid ${colors.green002};
 
       outline: none;
     }
 
     &::placeholder {
-      color: ${theme.colors.gray003};
+      color: ${colors.gray003};
     }
   }
 
@@ -66,7 +87,7 @@ const style = (theme: Theme) => css`
     font-family: 'GangwonEdu_Bold';
 
     &:focus {
-      border: 1.5px solid ${theme.colors.green002};
+      border: 1.5px solid ${colors.green002};
 
       outline: none;
     }
@@ -76,7 +97,7 @@ const style = (theme: Theme) => css`
 function GlobalStyle() {
   const theme = useTheme();
 
-  return <Global styles={style(theme)} />;
+  return <Global styles={style(theme.colors)} />;
 }
 
 export default GlobalStyle;

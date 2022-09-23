@@ -1,24 +1,26 @@
 import { useEffect } from 'react';
 
-import { useRecoilState, useResetRecoilState } from 'recoil';
-
 import { requestReissueAccessToken } from 'apis/request/auth';
-import { getUserInfo } from 'apis/request/user';
-import NavLink from 'components/@shared/NavLink';
+import { requestUserInfo } from 'apis/request/user';
+import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
+import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
-import { accessTokenState, loginState, refreshTokenState } from 'store/states';
 import { getLoginType } from 'utils/user';
 
 import * as S from './index.styled';
 import User from './User';
 
 function Header() {
-  const [{ isLogin }, setLoginInfo] = useRecoilState(loginState);
-  const resetLoginInfo = useResetRecoilState(loginState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
+  const {
+    isLogin,
+    setLoginInfo,
+    resetAuth,
+    accessToken,
+    setAccessToken,
+    refreshToken,
+  } = useAuth();
 
   const { showSignupModal, showLoginModal } = useModal();
 
@@ -28,21 +30,15 @@ function Header() {
     const reissueAccessToken = () => {
       requestReissueAccessToken()
         .then(accessToken => {
-          // 리프레시 토큰이 유효한 경우
           setAccessToken(accessToken);
         })
         .catch(() => {
-          // 리프레시 토큰이 유효하지 않거나 만료인 경우
-          resetLoginInfo();
-
-          setAccessToken('');
-          setRefreshToken('');
+          resetAuth();
         });
     };
 
-    getUserInfo()
+    requestUserInfo()
       .then(userInfo => {
-        // 액세스 토큰이 유효한 경우
         setLoginInfo({
           isLogin: true,
           loginType: getLoginType(userInfo.userId),
@@ -50,17 +46,9 @@ function Header() {
         });
       })
       .catch(() => {
-        // 액세스 토큰이 유효하지 않은 경우
         reissueAccessToken();
       });
-  }, [
-    accessToken,
-    setAccessToken,
-    refreshToken,
-    setRefreshToken,
-    setLoginInfo,
-    resetLoginInfo,
-  ]);
+  }, [accessToken, setAccessToken, refreshToken, setLoginInfo]);
 
   return (
     <S.Container>

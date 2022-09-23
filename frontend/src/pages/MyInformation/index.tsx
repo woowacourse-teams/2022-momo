@@ -1,17 +1,17 @@
-import { Info, Withdrawal } from 'components/MyInformation';
-
 import * as S from './index.styled';
+import Info from './Info';
+import Withdrawal from './Withdrawal';
 
 function MyInformation() {
   return (
     <S.Container>
-      <S.Box>
-        <S.InfoWrapper>
+      <S.InfoSection>
+        <S.InfoContainer>
           <h2>내 정보</h2>
           <Info />
-        </S.InfoWrapper>
+        </S.InfoContainer>
         <Withdrawal />
-      </S.Box>
+      </S.InfoSection>
     </S.Container>
   );
 }

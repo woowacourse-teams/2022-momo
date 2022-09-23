@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 
-import Snackbar from 'components/@shared/Snackbar';
 import Header from 'components/Header';
+import Snackbar from 'components/Snackbar';
 import { snackbarState } from 'store/states';
 
 import * as S from './index.styled';

@@ -16,16 +16,9 @@ export interface PageType {
   content: string;
 }
 
-export interface CreateGroupData {
-  name: GroupDetailData['name'];
-  selectedCategory: CategoryType;
-  capacity: GroupDetailData['capacity'];
+export interface DurationDate {
   startDate: GroupDetailData['duration']['start'];
   endDate: GroupDetailData['duration']['end'];
-  schedules: GroupDetailData['schedules'];
-  deadline: GroupDetailData['deadline'];
-  location: GroupDetailData['location'];
-  description: GroupDetailData['description'];
 }
 
 export interface GroupDetailData {
@@ -44,13 +37,19 @@ export interface GroupDetailData {
   schedules: ScheduleType[];
   finished: boolean;
   deadline: string;
-  location: string;
+  like: boolean;
+  location: Record<'address' | 'buildingName' | 'detail', string>;
   description: string;
 }
 
-export interface DurationDate {
-  startDate: GroupDetailData['duration']['start'];
-  endDate: GroupDetailData['duration']['end'];
+export interface CreateGroupData extends DurationDate {
+  name: GroupDetailData['name'];
+  selectedCategory: CategoryType;
+  capacity: GroupDetailData['capacity'];
+  schedules: GroupDetailData['schedules'];
+  deadline: GroupDetailData['deadline'];
+  location: GroupDetailData['location'];
+  description: GroupDetailData['description'];
 }
 
 export interface GroupList {
@@ -59,10 +58,17 @@ export interface GroupList {
   hasNextPage: boolean;
 }
 
-export type GroupSummary = Pick<
-  GroupDetailData,
-  'id' | 'name' | 'host' | 'categoryId' | 'deadline' | 'finished' | 'capacity'
-> & { numOfParticipant: number };
+export interface GroupSummary {
+  id: GroupDetailData['id'];
+  name: GroupDetailData['name'];
+  host: GroupDetailData['host'];
+  categoryId: GroupDetailData['categoryId'];
+  deadline: GroupDetailData['deadline'];
+  finished: GroupDetailData['finished'];
+  capacity: GroupDetailData['capacity'];
+  like: GroupDetailData['like'];
+  numOfParticipant: number;
+}
 
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
 

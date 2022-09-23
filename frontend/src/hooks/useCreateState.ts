@@ -1,18 +1,90 @@
 import { useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CategoryType, CreateGroupData, ScheduleType } from 'types/data';
+import { CreateGroupData } from 'types/data';
+import { ArrElement } from 'types/utils';
 import { isEqualObject } from 'utils/compare';
 
 import useInput from './useInput';
 
-const useCreateState = () => {
+export interface CreateStateReturnValues {
+  useNameState: () => {
+    name: CreateGroupData['name'];
+    setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    dangerouslySetName: React.Dispatch<
+      React.SetStateAction<CreateGroupData['name']>
+    >;
+  };
+  useSelectedCategoryState: () => {
+    selectedCategory: CreateGroupData['selectedCategory'];
+    setSelectedCategory: (
+      newSelectedCategory: CreateGroupData['selectedCategory'],
+    ) => void;
+  };
+  useCapacityState: () => {
+    capacity: CreateGroupData['capacity'];
+    setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    dangerouslySetCapacity: (newCapacity: CreateGroupData['capacity']) => void;
+  };
+  useDateState: () => {
+    startDate: CreateGroupData['startDate'];
+    setStartDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    endDate: CreateGroupData['endDate'];
+    setEndDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    dangerouslySetStartDate: React.Dispatch<
+      React.SetStateAction<CreateGroupData['startDate']>
+    >;
+    dangerouslySetEndDate: React.Dispatch<
+      React.SetStateAction<CreateGroupData['endDate']>
+    >;
+  };
+  useScheduleState: () => {
+    schedules: CreateGroupData['schedules'];
+    setSchedules: (
+      newSchedule: ArrElement<CreateGroupData['schedules']>,
+    ) => void;
+    dangerouslySetSchedules: (schedules: CreateGroupData['schedules']) => void;
+    deleteSchedule: (
+      targetSchedule: ArrElement<CreateGroupData['schedules']>,
+    ) => void;
+  };
+  useDeadlineState: () => {
+    deadline: CreateGroupData['deadline'];
+    setDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    dangerouslySetDeadline: React.Dispatch<
+      React.SetStateAction<CreateGroupData['deadline']>
+    >;
+  };
+  useLocationState: () => {
+    location: CreateGroupData['location'];
+    setLocationAddress: (
+      address: CreateGroupData['location']['address'],
+      buildingName: CreateGroupData['location']['buildingName'],
+      detail?: CreateGroupData['location']['detail'],
+    ) => void;
+    setLocationDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  };
+  useDescriptionState: () => {
+    description: CreateGroupData['description'];
+    setDescription: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    dangerouslySetDescription: React.Dispatch<
+      React.SetStateAction<CreateGroupData['description']>
+    >;
+  };
+  getGroupState: () => CreateGroupData;
+}
+
+const useCreateState = (): CreateStateReturnValues => {
   const {
     value: name,
     setValue: setName,
     dangerouslySetValue: dangerouslySetName,
   } = useInput('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>({
+  const [selectedCategory, setSelectedCategory] = useState<
+    CreateGroupData['selectedCategory']
+  >({
     id: -1,
     name: '',
   });
@@ -33,22 +105,25 @@ const useCreateState = () => {
     setValue: setDeadline,
     dangerouslySetValue: dangerouslySetDeadline,
   } = useInput('');
-  const {
-    value: location,
-    setValue: setLocation,
-    dangerouslySetValue: dangerouslySetLocation,
-  } = useInput('');
+  const [location, setLocation] = useState({
+    address: '',
+    buildingName: '',
+    detail: '',
+  });
   const {
     value: description,
     setValue: setDescription,
     dangerouslySetValue: dangerouslySetDescription,
   } = useInput('');
 
-  const changeSelectedCategory = (newSelectedCategory: CategoryType) => {
+  const changeSelectedCategory = (
+    newSelectedCategory: CreateGroupData['selectedCategory'],
+  ) => {
     setSelectedCategory(newSelectedCategory);
   };
 
-  const changeCapacity = (newCapacity: number) => {
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCapacity = Number(e.target.value);
     const { MIN, MAX } = GROUP_RULE.CAPACITY;
 
     if (newCapacity < MIN) {
@@ -73,7 +148,9 @@ const useCreateState = () => {
     }
   };
 
-  const changeSchedules = (newSchedule: ScheduleType) => {
+  const changeSchedules = (
+    newSchedule: ArrElement<CreateGroupData['schedules']>,
+  ) => {
     setSchedules(prevState => {
       if (!prevState.length) return [newSchedule];
 
@@ -81,10 +158,35 @@ const useCreateState = () => {
     });
   };
 
-  const deleteSchedule = (targetSchedule: ScheduleType) => {
+  const dangerouslySetSchedules = (schedules: CreateGroupData['schedules']) => {
+    setSchedules([]);
+
+    schedules.forEach(schedule => changeSchedules(schedule));
+  };
+
+  const deleteSchedule = (
+    targetSchedule: ArrElement<CreateGroupData['schedules']>,
+  ) => {
     setSchedules(
       schedules.filter(schedule => isEqualObject(schedule, targetSchedule)),
     );
+  };
+
+  const setLocationAddress = (
+    address: CreateGroupData['location']['address'],
+    buildingName: CreateGroupData['location']['buildingName'],
+    detail?: CreateGroupData['location']['detail'],
+  ) => {
+    if (typeof detail === 'string' && detail.length === 0) {
+      setLocation({ address, buildingName, detail });
+      return;
+    }
+
+    setLocation({ ...location, address, buildingName });
+  };
+
+  const changeLocationDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation({ ...location, detail: e.target.value });
   };
 
   return {
@@ -100,6 +202,7 @@ const useCreateState = () => {
     useCapacityState: () => ({
       capacity,
       setCapacity: changeCapacity,
+      dangerouslySetCapacity: setCapacity,
     }),
     useDateState: () => ({
       startDate,
@@ -112,6 +215,7 @@ const useCreateState = () => {
     useScheduleState: () => ({
       schedules,
       setSchedules: changeSchedules,
+      dangerouslySetSchedules,
       deleteSchedule,
     }),
     useDeadlineState: () => ({
@@ -121,8 +225,8 @@ const useCreateState = () => {
     }),
     useLocationState: () => ({
       location,
-      setLocation,
-      dangerouslySetLocation,
+      setLocationAddress,
+      setLocationDetail: changeLocationDetail,
     }),
     useDescriptionState: () => ({
       description,

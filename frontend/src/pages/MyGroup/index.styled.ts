@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const SearchWrapper = styled.div`
@@ -18,13 +17,15 @@ const GroupTypeBox = styled.div`
 `;
 
 const Button = styled.div`
-  color: ${({ theme: { colors } }) => colors.gray002};
-
   cursor: pointer;
 
-  &.selected {
-    color: ${({ theme: { colors } }) => colors.black001};
-  }
+  ${({ theme: { colors } }) => `
+    color: ${colors.gray002};
+    
+    &.selected {
+      color: ${colors.black001};
+    }
+  `}
 `;
 
 const Content = styled.div`
@@ -32,22 +33,26 @@ const Content = styled.div`
 
   margin: 2rem auto;
 
-  ${({ theme: { breakpoints } }) => css`
-    @media only screen and (max-width: ${breakpoints.md}px) {
+  ${({
+    theme: {
+      breakpoints: { sm, md, lg, xl },
+    },
+  }) => `
+    @media only screen and (max-width: ${md}px) {
       align-items: center;
-      max-width: ${breakpoints.sm}px;
+      max-width: ${sm}px;
     }
 
-    @media only screen and (min-width: ${breakpoints.md}px) and (max-width: ${breakpoints.lg}px) {
-      max-width: ${breakpoints.md}px;
+    @media only screen and (min-width: ${md}px) and (max-width: ${lg}px) {
+      max-width: ${md}px;
     }
 
-    @media only screen and (min-width: ${breakpoints.lg}px) and (max-width: ${breakpoints.xl}px) {
-      max-width: ${breakpoints.lg}px;
+    @media only screen and (min-width: ${lg}px) and (max-width: ${xl}px) {
+      max-width: ${lg}px;
     }
 
-    @media only screen and (min-width: ${breakpoints.xl}px) {
-      max-width: ${breakpoints.xl}px;
+    @media only screen and (min-width: ${xl}px) {
+      max-width: ${xl}px;
     }
   `}
 `;

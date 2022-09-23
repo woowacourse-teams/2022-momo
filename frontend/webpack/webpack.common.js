@@ -1,6 +1,6 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const BundleAnalyzerPlugin =
+//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path = require('path');
 
@@ -9,17 +9,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
+        test: /\.(woff(2)?|ttf|png|jpe?g|gif|webp)$/i,
+        type: 'asset/resource',
       },
       {
         test: /\.svg$/i,
@@ -48,14 +39,18 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: '[contenthash].bundle.js',
+    clean: true,
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      favicon: './public/favicon.ico',
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/assets/font',
+          to: 'font',
+        },
+      ],
     }),
+    // new BundleAnalyzerPlugin(),
   ],
 };

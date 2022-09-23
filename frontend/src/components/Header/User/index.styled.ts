@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 const showDropdown = keyframes`
   from {
-    top: 2rem;
+    transform: translate3d(-7rem, 0, 0);
 
     opacity: 0;
   }
 
   to {
-    top: 4rem;
+    transform: translate3d(-7rem, 3rem, 0);
 
     opacity: 1;
   }
@@ -17,13 +17,13 @@ const showDropdown = keyframes`
 
 const hideDropdown = keyframes`
   from {
-    top: 4rem;
+    transform: translate3d(-7rem, 3rem, 0);
 
     opacity: 1;
   }
 
   to {
-    top: 2rem;
+    transform: translate3d(-7rem, 0, 0);
 
     opacity: 0;
   }
@@ -39,14 +39,14 @@ const Profile = styled.div`
   justify-content: center;
   align-items: center;
 
-  ${({ width }: { width: string }) => css`
-    width: ${width};
-    height: ${width};
-  `}
-
   border-radius: 50%;
 
   background: ${({ theme: { colors } }) => colors.gray004};
+
+  ${({ width }: { width: string }) => `
+    width: ${width};
+    height: ${width};
+  `}
 `;
 
 const ToggleButton = styled.button`
@@ -66,16 +66,19 @@ const Dropdown = styled.div`
   text-align: center;
 
   position: absolute;
-  top: 4rem;
-  right: 2rem;
+  transform: translate3d(-7rem, 3rem, 0);
 
   width: 10rem;
 
   border-radius: 4px;
 
-  ${({ theme: { colors } }) => css`
+  ${({ theme: { colors } }) => `
     background: ${colors.white001};
     filter: drop-shadow(0 0 1.5px ${colors.gray001});
+
+    > div:not(:last-child) {
+      border-bottom: 1px solid ${colors.gray003};
+    }
   `}
 
   ${({ animationTime }: { animationTime: number }) => css`
@@ -85,10 +88,6 @@ const Dropdown = styled.div`
       animation: ${hideDropdown} ${animationTime}ms;
     }
   `};
-
-  > div:not(:last-child) {
-    border-bottom: 1px solid ${({ theme: { colors } }) => colors.gray003};
-  }
 `;
 
 const User = styled.div`

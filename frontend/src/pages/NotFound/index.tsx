@@ -1,4 +1,4 @@
-import { NotFoundPage } from 'components/@shared/Animation';
+import { NotFoundPage } from 'components/Animation';
 
 import * as S from './index.styled';
 

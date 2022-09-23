@@ -1,33 +1,31 @@
 import { useRef } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useQueryClient } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
-import { getUserInfo } from 'apis/request/user';
-import { ReactComponent as GoogleSVG } from 'assets/svg/google_login.svg';
-import Modal from 'components/@shared/Modal';
+import { requestUserInfo } from 'apis/request/user';
+import { GoogleSVG } from 'assets/svg';
+import Modal from 'components/Modal';
+import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
+import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
-import {
-  accessTokenState,
-  loginState,
-  modalState,
-  refreshTokenState,
-} from 'store/states';
+import { modalState } from 'store/states';
 import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
 function Login() {
-  const setAccessToken = useSetRecoilState(accessTokenState);
-  const setRefreshToken = useSetRecoilState(refreshTokenState);
-  const setLoginInfo = useSetRecoilState(loginState);
+  const { setAuth, setLogin } = useAuth();
 
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal, showSignupModal } = useModal();
 
   const { setMessage } = useSnackbar();
+
+  const queryClient = useQueryClient();
 
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -43,12 +41,12 @@ function Login() {
     requestLogin({ userId, password })
       .then(({ accessToken, refreshToken }) => {
         setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
+        setAuth(accessToken, refreshToken);
 
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-
-        getUserInfo().then(userInfo => {
-          setLoginInfo({ isLogin: true, loginType: 'basic', user: userInfo });
+        requestUserInfo().then(userInfo => {
+          setLogin('basic', userInfo);
+          queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
+          queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
         });
 
         setOffModal();

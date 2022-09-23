@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,6 +32,11 @@ public class AuthorizationExtractor {
             }
         }
 
-        throw new MomoException(ErrorCode.AUTH_REQUIRED_LOGIN);
+        throw new MomoException(GlobalErrorCode.AUTH_REQUIRED_LOGIN);
+    }
+
+    public static boolean hasNotAuthHeader(HttpServletRequest request) {
+        Enumeration<String> headers = request.getHeaders(AUTHORIZATION);
+        return !headers.hasMoreElements();
     }
 }

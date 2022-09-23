@@ -6,6 +6,11 @@ import lombok.Getter;
 
 import com.woowacourse.momo.acceptance.auth.AuthRestHandler;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
+import com.woowacourse.momo.auth.support.SHA256Encoder;
+import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Getter
@@ -13,7 +18,7 @@ public enum MemberFixture {
 
     MOMO("momo", "qwe123!@#", "모모"),
     DUDU("dudu", "qwe123!@#", "두두"),
-    GUGU("gugu", "qwe123!@#", "구구")
+    GUGU("gugu", "qwe123!@#", "구구"),
     ;
 
     private final String userId;
@@ -33,5 +38,9 @@ public enum MemberFixture {
                 .extract()
                 .as(LoginResponse.class)
                 .getAccessToken();
+    }
+
+    public Member toMember() {
+        return new Member(UserId.momo(userId), Password.encrypt(password, new SHA256Encoder()), new UserName(name));
     }
 }

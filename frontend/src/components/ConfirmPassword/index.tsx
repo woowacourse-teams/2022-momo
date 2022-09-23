@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import Modal from 'components/@shared/Modal';
+import Modal from 'components/Modal';
 import useModal from 'hooks/useModal';
 import { modalState } from 'store/states';
 
@@ -22,7 +22,7 @@ function ConfirmPassword({
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal } = useModal();
 
-  const edit = () => {
+  const handleEditPassword = () => {
     editPassword();
     setOffModal();
   };
@@ -38,7 +38,7 @@ function ConfirmPassword({
           onChange={setConfirmPassword}
           required
         />
-        <S.Button type="button" onClick={edit}>
+        <S.Button type="button" onClick={handleEditPassword}>
           비밀번호 확인
         </S.Button>
       </S.Container>

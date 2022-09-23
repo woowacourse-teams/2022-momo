@@ -25,12 +25,17 @@ const useModal = () => {
     setModalFlag('groupEdit');
   };
 
+  const showPostcodeModal = () => {
+    setModalFlag('postcode');
+  };
+
   return {
     setOffModal,
     showSignupModal,
     showLoginModal,
     showConfirmPasswordModal,
     showGroupEditModal,
+    showPostcodeModal,
   };
 };
 

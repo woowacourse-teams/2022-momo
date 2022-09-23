@@ -32,7 +32,7 @@ public class ImageController {
 
     @GetMapping(
             value = "{imageFileName}",
-            produces = { MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE }
+            produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
     )
     public ResponseEntity<byte[]> serveImage(@PathVariable String imageFileName) {
         byte[] imageBytes = storageService.load(imageFileName);

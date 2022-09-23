@@ -1,5 +1,3 @@
-import { useTheme } from '@emotion/react';
-
 import * as S from './index.styled';
 
 interface DotProps {
@@ -7,11 +5,9 @@ interface DotProps {
 }
 
 function Dot({ isFocused }: DotProps) {
-  const theme = useTheme();
-
   return (
     <S.DotWrapper>
-      <S.Dot isFocused={isFocused} theme={theme} />
+      <S.Dot isFocused={isFocused} />
     </S.DotWrapper>
   );
 }

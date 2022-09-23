@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,53 +12,74 @@ import org.hibernate.annotations.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import com.woowacourse.momo.auth.support.PasswordEncoder;
+
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
 
-    private static final String GHOST_NAME = "알 수 없음";
-    private static final String GHOST_PRIVATE_INFO = "";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    private String userId;
+    @Embedded
+    private UserId userId;
 
-    @Column(nullable = false)
-    private String password;
+    @Embedded
+    private Password password;
 
-    @Column(nullable = false, length = 30)
-    private String name;
+    @Embedded
+    private UserName userName;
 
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean deleted;
 
-    public Member(String userId, String password, String name) {
+    public Member(UserId userId, Password password, UserName userName) {
         this.userId = userId;
         this.password = password;
-        this.name = name;
+        this.userName = userName;
+    }
+
+    public Member(UserId userId, Password password, String userName) {
+        this(userId, password, new UserName(userName));
     }
 
     public boolean isNotSamePassword(String password) {
-        return !this.password.equals(password);
+        return !this.password.isSame(password);
     }
 
-    public void changePassword(String password) {
-        this.password = password;
+    public void changePassword(String password, PasswordEncoder encoder) {
+        this.password = this.password.update(password, encoder);
     }
 
-    public void changeName(String name) {
-        this.name = name;
+    public void changeUserName(String userName) {
+        this.userName = this.userName.update(userName);
     }
 
     public void delete() {
-        password = GHOST_PRIVATE_INFO;
-        name = GHOST_NAME;
+        password = password.delete();
+        userName = userName.delete();
         deleted = true;
+    }
+
+    public boolean isSameUserId(Member member) {
+        return userId.equals(member.userId);
+    }
+
+    public String getUserId() {
+        return userId.getValue();
+    }
+
+    public String getPassword() {
+        return password.getValue();
+    }
+
+    public String getUserName() {
+        return userName.getValue();
     }
 }

@@ -26,3 +26,9 @@ declare module '@emotion/react' {
     filter: Record<'darken001', string>;
   }
 }
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}

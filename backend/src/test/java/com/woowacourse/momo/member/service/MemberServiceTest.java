@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import static com.woowacourse.momo.fixture.DateTimeFixture.내일_23시_59분;
-import static com.woowacourse.momo.fixture.DurationFixture.이틀후부터_일주일후까지;
-import static com.woowacourse.momo.fixture.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 
 import java.util.List;
 
@@ -21,13 +19,15 @@ import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
-import com.woowacourse.momo.group.domain.group.Group;
-import com.woowacourse.momo.group.domain.group.GroupRepository;
+import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
@@ -60,11 +60,13 @@ class MemberServiceTest {
     @Autowired
     private TokenRepository tokenRepository;
 
+    private Password password;
     private Member savedHost;
 
     @BeforeEach
     void setUp() {
-        savedHost = memberRepository.save(new Member("주최자", "password", "momo"));
+        password = Password.encrypt("momo123!", new SHA256Encoder());
+        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
     }
 
     @DisplayName("회원 정보를 조회한다")
@@ -95,13 +97,13 @@ class MemberServiceTest {
     void updateName() {
         Long memberId = createMember();
         Member beforeMember = memberFindService.findMember(memberId);
-        String beforeName = beforeMember.getName();
+        String beforeName = beforeMember.getUserName();
 
         ChangeNameRequest request = new ChangeNameRequest("무무");
         memberService.updateName(memberId, request);
 
         Member member = memberFindService.findMember(memberId);
-        assertThat(member.getName()).isNotEqualTo(beforeName);
+        assertThat(member.getUserName()).isNotEqualTo(beforeName);
     }
 
     @DisplayName("존재하지 않는 회원의 이름을 수정하는 경우 예외가 발생한다")
@@ -120,7 +122,7 @@ class MemberServiceTest {
         SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", beforePassword);
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", beforePassword);
         memberService.updatePassword(memberId, changePasswordRequest);
 
         Member member = memberFindService.findMember(memberId);
@@ -136,7 +138,7 @@ class MemberServiceTest {
         SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
         Long memberId = authService.signUp(signUpRequest);
 
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword", "wrongPassword");
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "wrongPassword");
         assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");
@@ -164,7 +166,6 @@ class MemberServiceTest {
                 .isInstanceOf(MomoException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
-
 
     @DisplayName("회원 정보 삭제 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
     @Test
@@ -196,8 +197,9 @@ class MemberServiceTest {
     }
 
     private Group saveGroup() {
-        return groupRepository.save(new Group("모모의 스터디", savedHost, Category.STUDY, 3,
-                이틀후부터_일주일후까지.getInstance(), 내일_23시_59분.getInstance(), List.of(이틀후_10시부터_12시까지.newInstance()),
-                "", ""));
+        Group group = MOMO_STUDY.builder()
+                .capacity(3)
+                .toGroup(savedHost);
+        return groupRepository.save(group);
     }
 }
