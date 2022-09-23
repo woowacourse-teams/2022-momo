@@ -70,18 +70,6 @@ export interface GroupSummary {
   numOfParticipant: number;
 }
 
-// export type GroupSummary = Pick<
-//   GroupDetailData,
-//   | 'id'
-//   | 'name'
-//   | 'host'
-//   | 'categoryId'
-//   | 'deadline'
-//   | 'finished'
-//   | 'capacity'
-//   | 'like'
-// > & { numOfParticipant: number };
-
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
 
 export type SelectableGroup = 'participated' | 'hosted' | 'liked';

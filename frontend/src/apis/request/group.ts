@@ -10,7 +10,7 @@ import {
   CategoryType,
   SelectableGroup,
 } from 'types/data';
-import { authenticationHeader } from 'utils/header';
+import { conditionalAuthenticationHeader } from 'utils/header';
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
 
@@ -143,14 +143,17 @@ const requestGroups =
     return axios
       .get<GroupList>(
         makeUrl(API_PATH.GROUP, queryParams),
-        authenticationHeader(),
+        conditionalAuthenticationHeader(),
       )
       .then(response => response.data);
   };
 
 const requestGroupDetail = (id: GroupDetailData['id']) => {
   return axios
-    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`, authenticationHeader())
+    .get<GroupDetailData>(
+      `${API_PATH.GROUP}/${id}`,
+      conditionalAuthenticationHeader(),
+    )
     .then(response => response.data);
 };
 
@@ -202,7 +205,7 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
 
 const requestLikeGroup = (id: GroupDetailData['id']) => {
   return axios.post(
-    `${API_PATH.GROUP}/${id}${API_PATH.LIKED}`,
+    `${API_PATH.GROUP}/${id}${API_PATH.LIKE}`,
     {},
     {
       headers: {
@@ -213,7 +216,7 @@ const requestLikeGroup = (id: GroupDetailData['id']) => {
 };
 
 const requestUnlikeGroup = (id: GroupDetailData['id']) => {
-  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKED}`, {
+  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`, {
     headers: {
       Authorization: `Bearer ${accessTokenProvider.get()}`,
     },

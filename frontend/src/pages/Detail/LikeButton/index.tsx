@@ -28,8 +28,10 @@ interface LikeButtonProps {
 
 function LikeButton({ like, id, refetch }: LikeButtonProps) {
   const { setMessage } = useSnackbar();
-  const { throttle } = useThrottle();
+  const throttle = useThrottle();
   const { isLogin } = useAuth();
+
+  const throttleToggleLiked = () => throttle(toggleLiked, likeDelay);
 
   const toggleLiked = () => {
     if (!isLogin) {
@@ -59,7 +61,7 @@ function LikeButton({ like, id, refetch }: LikeButtonProps) {
 
   return (
     <>
-      <S.Button type="button" onClick={() => throttle(toggleLiked, likeDelay)}>
+      <S.Button type="button" onClick={throttleToggleLiked}>
         {like ? <FilledHeartSVG /> : <EmptyHeartSVG />}
       </S.Button>
     </>

@@ -43,7 +43,7 @@ function Login() {
         setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
         setAuth(accessToken, refreshToken);
 
-        requestUserInfo().then(async userInfo => {
+        requestUserInfo().then(userInfo => {
           setLogin('basic', userInfo);
           queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
           queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);

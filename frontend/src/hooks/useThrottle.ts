@@ -13,7 +13,7 @@ const useThrottle = () => {
     }, delay);
   };
 
-  return { throttle };
+  return throttle;
 };
 
 export default useThrottle;

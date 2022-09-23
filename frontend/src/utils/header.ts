@@ -1,6 +1,6 @@
 import { accessTokenProvider } from './token';
 
-const authenticationHeader = () =>
+const conditionalAuthenticationHeader = () =>
   accessTokenProvider.get() === ''
     ? {}
     : {
@@ -9,4 +9,4 @@ const authenticationHeader = () =>
         },
       };
 
-export { authenticationHeader };
+export { conditionalAuthenticationHeader };
