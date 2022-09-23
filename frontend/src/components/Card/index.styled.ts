@@ -115,8 +115,6 @@ const Capacity = styled.div`
   `}
 `;
 
-const Liked = styled.div``;
-
 export {
   Container,
   Image,
@@ -129,5 +127,4 @@ export {
   Hashtag,
   Deadline,
   Capacity,
-  Liked,
 };

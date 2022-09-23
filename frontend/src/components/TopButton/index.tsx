@@ -6,7 +6,7 @@ import useThrottle from 'hooks/useThrottle';
 import * as S from './index.styled';
 
 function TopButton() {
-  const { throttle } = useThrottle();
+  const throttle = useThrottle();
 
   const scrollToTop = () => {
     throttle(() => window.scroll({ top: 0, behavior: 'smooth' }), 800);

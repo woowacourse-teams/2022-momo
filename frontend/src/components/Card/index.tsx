@@ -45,7 +45,7 @@ function Card({ group }: CardProps) {
             <S.Deadline>
               {finished ? '마감 완료' : convertDeadlineToRemainTime(deadline)}
             </S.Deadline>
-            <S.Liked>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</S.Liked>
+            <div>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</div>
           </S.Right>
         </S.Description>
       </S.Container>
