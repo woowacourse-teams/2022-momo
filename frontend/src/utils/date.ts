@@ -33,11 +33,26 @@ const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
   return `마감까지 ${remainTime}`;
 };
 
+// TODO: 누락된 테스트 코드 추가
+/**
+ * 년, 월, 일 데이터를 ISO 8601 형식 문자열로 변환하는 함수입니다.
+ * return 'YYYY-MM-DD'
+ */
+const convertToISOString = (year: number, month: number, date: number) => {
+  return `${year}-${month.toString().padStart(2, '0')}-${date
+    .toString()
+    .padStart(2, '0')}`;
+};
+
 const getTimeInKorea = (time: Date = new Date()) => {
   const offset = time.getTimezoneOffset() * 60 * 1000;
   return new Date(time.getTime() - offset);
 };
 
+/**
+ * 현재 시간을 기준으로 인자 단위까지의 ISO 형식 문자열을 생성합니다.
+ * @param {string} until - 'day': {YYYY-MM-DD} | 'min': {YYYY-MM-DDTHH:MM}
+ */
 const getNewDateString = (until: 'day' | 'min') => {
   const timeInKorea = getTimeInKorea();
 
@@ -94,6 +109,7 @@ const parsedTime = (time: string) => {
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
+  convertToISOString,
   getNewDateString,
   getTimeInKorea,
   resetDateToStartOfDay,

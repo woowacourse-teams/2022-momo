@@ -10,6 +10,7 @@ import {
   CategoryType,
   SelectableGroup,
 } from 'types/data';
+import { conditionalAuthenticationHeader } from 'utils/header';
 import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
 
@@ -94,7 +95,7 @@ const requestEditGroup = (
     });
 };
 
-const getJoinedGroups =
+const requestJoinedGroups =
   (
     type: SelectableGroup,
     pageNumber: number,
@@ -124,7 +125,7 @@ const getJoinedGroups =
       .then(response => response.data);
   };
 
-const getGroups =
+const requestGroups =
   (
     pageNumber: number,
     excludeFinished: boolean,
@@ -140,17 +141,23 @@ const getGroups =
     };
 
     return axios
-      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
+      .get<GroupList>(
+        makeUrl(API_PATH.GROUP, queryParams),
+        conditionalAuthenticationHeader(),
+      )
       .then(response => response.data);
   };
 
-const getGroupDetail = (id: GroupDetailData['id']) => {
+const requestGroupDetail = (id: GroupDetailData['id']) => {
   return axios
-    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
+    .get<GroupDetailData>(
+      `${API_PATH.GROUP}/${id}`,
+      conditionalAuthenticationHeader(),
+    )
     .then(response => response.data);
 };
 
-const deleteGroup = (id: GroupDetailData['id']) => {
+const requestDeleteGroup = (id: GroupDetailData['id']) => {
   return axios.delete(`${API_PATH.GROUP}/${id}`, {
     headers: {
       Authorization: `Bearer ${accessTokenProvider.get()}`,
@@ -158,13 +165,13 @@ const deleteGroup = (id: GroupDetailData['id']) => {
   });
 };
 
-const getGroupParticipants = (id: GroupDetailData['id']) => {
+const requestGroupParticipants = (id: GroupDetailData['id']) => {
   return axios
     .get<GroupParticipants>(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const joinGroup = (id: GroupDetailData['id']) => {
+const requestJoinGroup = (id: GroupDetailData['id']) => {
   return axios.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
     {},
@@ -176,7 +183,7 @@ const joinGroup = (id: GroupDetailData['id']) => {
   );
 };
 
-const exitGroup = (id: GroupDetailData['id']) => {
+const requestExitGroup = (id: GroupDetailData['id']) => {
   return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
     headers: {
       Authorization: `Bearer ${accessTokenProvider.get()}`,
@@ -196,15 +203,37 @@ const requestCloseGroup = (id: GroupDetailData['id']) => {
   );
 };
 
+const requestLikeGroup = (id: GroupDetailData['id']) => {
+  return axios.post(
+    `${API_PATH.GROUP}/${id}${API_PATH.LIKE}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessTokenProvider.get()}`,
+      },
+    },
+  );
+};
+
+const requestUnlikeGroup = (id: GroupDetailData['id']) => {
+  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`, {
+    headers: {
+      Authorization: `Bearer ${accessTokenProvider.get()}`,
+    },
+  });
+};
+
 export {
   requestCreateGroup,
   requestEditGroup,
-  getJoinedGroups,
-  getGroups,
-  getGroupDetail,
-  deleteGroup,
-  getGroupParticipants,
-  joinGroup,
-  exitGroup,
+  requestJoinedGroups,
+  requestGroups,
+  requestGroupDetail,
+  requestDeleteGroup,
+  requestGroupParticipants,
+  requestJoinGroup,
+  requestExitGroup,
   requestCloseGroup,
+  requestLikeGroup,
+  requestUnlikeGroup,
 };

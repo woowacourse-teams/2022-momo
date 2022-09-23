@@ -49,7 +49,7 @@ const validateDeadlineDate =
   };
 
 const validateLocation = (location: CreateGroupData['location']) => () => {
-  return location.length <= GROUP_RULE.LOCATION.MAX_LENGTH;
+  return location.address.length <= GROUP_RULE.LOCATION.MAX_LENGTH;
 };
 
 const validateDescription =

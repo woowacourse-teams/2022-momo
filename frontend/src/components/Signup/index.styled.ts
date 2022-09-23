@@ -29,8 +29,6 @@ const Label = styled.label`
 const Input = styled.input`
   width: 20rem;
   height: 2rem;
-
-  box-sizing: border-box;
 `;
 
 const InfoMessage = styled.span<InfoMessageProps>`
@@ -50,10 +48,12 @@ const Button = styled.button`
 
   border-radius: 5px;
 
-  background: ${({ theme: { colors } }) => colors.blue001};
-  color: ${({ theme: { colors } }) => colors.white001};
-
   font-size: 1.1rem;
+
+  ${({ theme: { colors } }) => `
+    background: ${colors.blue001};
+    color: ${colors.white001};
+  `}
 `;
 
 export {

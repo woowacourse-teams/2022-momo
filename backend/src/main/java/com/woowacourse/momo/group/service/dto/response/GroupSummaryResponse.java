@@ -22,4 +22,5 @@ public class GroupSummaryResponse {
     private boolean finished;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
+    private boolean like;
 }

@@ -2,7 +2,7 @@ import { GROUP_RULE } from './rule';
 
 const GUIDE_MESSAGE = {
   AUTH: {
-    NEED_LOGIN: '로그인이 필요한 서비스예요. 로그인부터 해주세요.',
+    NEED_LOGIN: '로그인이 필요한 서비스예요. 로그인을 먼저 해주세요 🙏',
     LOGIN_SUCCESS: '로그인에 성공했어요.',
     SIGNUP_SUCCESS: '회원가입에 성공했어요.',
     CONFIRM_LOGOUT: '로그아웃 하실건가요?',
@@ -85,6 +85,8 @@ const ERROR_MESSAGE = {
       '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
     FAILURE_EDIT_GROUP:
       '모임 정보를 수정하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_LIKE_GROUP:
+      '모임을 찜하던 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
   },
 };
 

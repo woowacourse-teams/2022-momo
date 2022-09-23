@@ -1,8 +1,5 @@
 package com.woowacourse.momo.auth.service;
 
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS;
-import static com.woowacourse.momo.global.exception.exception.ErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY;
-
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -19,9 +16,13 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.google.GoogleConnector;
 import com.woowacourse.momo.auth.support.google.GoogleProvider;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @RequiredArgsConstructor
 @Service
@@ -55,28 +56,28 @@ public class OauthService {
     private GoogleUserResponse requestUserInfo(String code, String redirectUrl) {
         ResponseEntity<GoogleUserResponse> responseEntity = oauthConnector.requestUserInfo(code, redirectUrl);
 
-        validateResponseStatusOk(responseEntity.getStatusCode());
+        validateResponseStatusIsOk(responseEntity.getStatusCode());
 
         return Optional.ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new MomoException(OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
+                .orElseThrow(() -> new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
     }
 
-    private void validateResponseStatusOk(HttpStatus status) {
+    private void validateResponseStatusIsOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
-            throw new MomoException(OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
+            throw new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
     }
 
     private Member findOrSaveMember(GoogleUserResponse response) {
-        return memberRepository.findByUserId(response.getEmail())
+        return memberRepository.findByUserId(UserId.oauth(response.getEmail()))
                 .orElseGet(() -> saveMember(response));
     }
 
     private Member saveMember(GoogleUserResponse response) {
-        String userId = response.getEmail();
-        String name = response.getName();
-        String password = passwordEncoder.encrypt(oauthProvider.getTemporaryPassword());
+        UserId userId = UserId.oauth(response.getEmail());
+        UserName userName = new UserName(response.getName());
+        Password password = Password.encrypt(oauthProvider.getTemporaryPassword(), passwordEncoder);
 
-        return memberRepository.save(new Member(userId, password, name));
+        return memberRepository.save(new Member(userId, password, userName));
     }
 }

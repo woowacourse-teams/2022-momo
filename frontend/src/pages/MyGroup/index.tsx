@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { getJoinedGroups } from 'apis/request/group';
-import ErrorBoundary from 'components/@shared/ErrorBoundary';
-import NoResult from 'components/@shared/NoResult';
-import TopButton from 'components/@shared/TopButton';
-import JoinedGroups from 'components/JoinedGroups';
-import SearchForm from 'components/SearchSection/SearchForm';
+import { requestJoinedGroups } from 'apis/request/group';
+import ErrorBoundary from 'components/ErrorBoundary';
+import SearchForm from 'components/SearchForm';
+import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
-import useInput from 'hooks/useInput';
 import { GroupList, SelectableGroup } from 'types/data';
 
+import CardList from './CardList';
 import * as S from './index.styled';
 
 const groupTypes: { type: SelectableGroup; name: string }[] = [
@@ -21,24 +19,25 @@ const groupTypes: { type: SelectableGroup; name: string }[] = [
 ];
 
 function MyGroup() {
+  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [pageNumber, setPageNumber] = useState(0);
+  const [groups, setGroups] = useState<GroupList['groups']>([]);
   const [selectedGroupType, setSelectedGroupType] =
     useState<SelectableGroup>('participated');
 
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
-  const { value: keyword, setValue: setKeyword } = useInput('');
-
-  const [pageNumber, setPageNumber] = useState(0);
   const { isFetching, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
-    getJoinedGroups(selectedGroupType, pageNumber, isExcludeFinished, keyword),
+    requestJoinedGroups(
+      selectedGroupType,
+      pageNumber,
+      isExcludeFinished,
+      keyword,
+    ),
     {
       suspense: true,
     },
   );
-
-  const [groups, setGroups] = useState<GroupList['groups']>([]);
-
-  const [isPreparing, setIsPreparing] = useState(false);
 
   useEffect(() => {
     if (!data) return;
@@ -57,14 +56,6 @@ function MyGroup() {
 
   const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
     await setSelectedGroupType(newType);
-
-    // 찜한 목록은 준비 중 페이지로 대체
-    if (newType === 'liked') {
-      setIsPreparing(true);
-      return;
-    }
-
-    await setIsPreparing(false);
     await setPageNumber(0);
     refetch();
   };
@@ -75,7 +66,8 @@ function MyGroup() {
     refetch();
   };
 
-  const search = async () => {
+  const search = async (keyword: string) => {
+    await setKeyword(keyword);
     await setPageNumber(0);
     refetch();
   };
@@ -83,7 +75,7 @@ function MyGroup() {
   return (
     <>
       <S.SearchWrapper>
-        <SearchForm keyword={keyword} setKeyword={setKeyword} search={search} />
+        <SearchForm search={search} />
       </S.SearchWrapper>
       <S.GroupTypeBox>
         {groupTypes.map(({ type, name }) => (
@@ -98,18 +90,14 @@ function MyGroup() {
       </S.GroupTypeBox>
       <S.Content>
         <ErrorBoundary>
-          {isPreparing ? (
-            <NoResult>준비 중이에요 ・゜・(ノД`)</NoResult>
-          ) : (
-            <JoinedGroups
-              isFetching={isFetching}
-              data={data}
-              refetch={refetch}
-              groups={groups}
-              isExcludeFinished={isExcludeFinished}
-              toggleIsExcludeFinished={toggleIsExcludeFinished}
-            />
-          )}
+          <CardList
+            isFetching={isFetching}
+            data={data}
+            refetch={refetch}
+            groups={groups}
+            isExcludeFinished={isExcludeFinished}
+            toggleIsExcludeFinished={toggleIsExcludeFinished}
+          />
         </ErrorBoundary>
       </S.Content>
       <TopButton />

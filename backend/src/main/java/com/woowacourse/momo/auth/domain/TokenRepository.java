@@ -10,7 +10,5 @@ public interface TokenRepository extends Repository<Token, Long> {
 
     Optional<Token> findByMemberId(Long memberId);
 
-    boolean existsByMemberId(Long memberId);
-
     void deleteByMemberId(Long memberId);
 }

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,9 @@ import com.woowacourse.momo.acceptance.group.GroupRestHandler;
 import com.woowacourse.momo.acceptance.participant.ParticipantRestHandler;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
-import com.woowacourse.momo.group.domain.group.Group;
+import com.woowacourse.momo.group.domain.Group;
 
+@SuppressWarnings("NonAsciiCharacters")
 class MemberAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture MEMBER = MemberFixture.MOMO;
@@ -69,9 +71,9 @@ class MemberAcceptanceTest extends AcceptanceTest {
         MemberRestHandler.회원탈퇴를_한다(accessToken)
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
-        // TODO: UNAUTHORIZED 상태코드여야 함.
         AuthRestHandler.로그인을_한다(MEMBER.getUserId(), MEMBER.getPassword())
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("LOGIN_ERROR_001"));
     }
 
     @DisplayName("회원 탈퇴 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
@@ -100,6 +102,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
         GroupRestHandler.모임을_생성한다(accessToken, GroupFixture.DUDU_COFFEE_TIME);
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("MEMBER_ERROR_003"));
     }
 }

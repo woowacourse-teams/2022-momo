@@ -5,7 +5,7 @@ import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
@@ -30,6 +30,6 @@ public enum Category {
         return Arrays.stream(values())
                 .filter(category -> category.id == id)
                 .findFirst()
-                .orElseThrow(() -> new MomoException(ErrorCode.CATEGORY_NOT_EXIST));
+                .orElseThrow(() -> new MomoException(GlobalErrorCode.CATEGORY_NOT_EXIST));
     }
 }

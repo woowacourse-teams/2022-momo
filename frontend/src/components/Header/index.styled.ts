@@ -12,16 +12,14 @@ const Container = styled.div`
   width: 100%;
   height: 4rem;
 
-  background: linear-gradient(
-    90deg,
-    ${({ theme: { colors } }) => colors.blue001}cc 0%,
-    ${({ theme: { colors } }) => colors.green002}cc 100%
-  );
-
   backdrop-filter: saturate(150%) blur(5px);
 
   box-sizing: border-box;
   padding: 0.5rem 2rem;
+
+  ${({ theme: { colors } }) => `
+    background: linear-gradient(90deg, ${colors.blue001}cc 0%, ${colors.green002}cc 100%);
+  `}
 `;
 
 const Logo = styled.div`

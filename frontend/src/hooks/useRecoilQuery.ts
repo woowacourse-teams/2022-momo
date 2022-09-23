@@ -11,19 +11,18 @@ const useRecoilQuery = <T>(
   suspense = true,
 ) => {
   const [state, setState] = useRecoilState(recoilState);
-  const { isLoading, data } = useQuery(key, getFunc, {
+  const { isLoading, data, refetch } = useQuery(key, getFunc, {
     staleTime,
     suspense,
   });
 
-  // TODO: React Query + Recoil -> 좀 더 우아한 방법을 찾아보자
   useEffect(() => {
     if (!data) return;
 
     setState(data);
   }, [data, setState]);
 
-  return { state, isLoading };
+  return { state, isLoading, refetch };
 };
 
 export default useRecoilQuery;

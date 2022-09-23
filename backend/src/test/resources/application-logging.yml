@@ -12,3 +12,6 @@
 momo-logging:
   show: 'false'
   file-path: './momolog/'
+
+acceptance:
+  show: 'false'

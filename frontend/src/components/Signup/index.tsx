@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
-import Modal from 'components/@shared/Modal';
+import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import useModal from 'hooks/useModal';
@@ -22,11 +22,7 @@ function Signup() {
   const modalFlag = useRecoilValue(modalState);
   const { showLoginModal } = useModal();
 
-  const {
-    value: userId,
-    setValue: setUserId,
-    dangerouslySetValue: dangerouslySetUserId,
-  } = useInput('');
+  const idRef = useRef<HTMLInputElement>(null);
   const {
     value: name,
     setValue: setName,
@@ -49,7 +45,9 @@ function Signup() {
   const { setMessage } = useSnackbar();
 
   const resetValues = () => {
-    dangerouslySetUserId('');
+    if (!idRef.current) return;
+
+    idRef.current.value = '';
     dangerouslySetName('');
     dangerouslySetPassword('');
     dangerouslySetConfirmPassword('');
@@ -69,7 +67,9 @@ function Signup() {
       return;
     }
 
-    requestSignup({ userId, password, name })
+    if (!idRef.current) return;
+
+    requestSignup({ userId: idRef.current.value, password, name })
       .then(() => {
         setMessage(GUIDE_MESSAGE.AUTH.SIGNUP_SUCCESS);
         resetValues();
@@ -98,13 +98,7 @@ function Signup() {
         <S.InputContainer>
           <S.Label>
             아이디
-            <S.Input
-              type="text"
-              value={userId}
-              onChange={setUserId}
-              autoFocus
-              required
-            />
+            <S.Input type="text" ref={idRef} autoFocus required />
           </S.Label>
           <S.Label>
             닉네임

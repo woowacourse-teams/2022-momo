@@ -1,6 +1,6 @@
 package com.woowacourse.momo.member.service.dto.request;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChangeNameRequest {
 
-    @NotBlank(message = "이름은 빈 값일 수 없습니다.")
+    @NotNull
     private String name;
 }

@@ -16,7 +16,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Component
@@ -66,7 +66,7 @@ public class JwtTokenProvider {
 
             return claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
-            throw new MomoException(ErrorCode.AUTH_EXPIRED_TOKEN);
+            throw new MomoException(GlobalErrorCode.AUTH_EXPIRED_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
             return true;
         }

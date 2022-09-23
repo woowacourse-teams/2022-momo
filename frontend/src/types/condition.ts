@@ -3,7 +3,8 @@ export type ModalStateType =
   | 'login'
   | 'signup'
   | 'confirmPassword'
-  | 'groupEdit';
+  | 'groupEdit'
+  | 'postcode';
 
 export interface SnackbarState {
   isShowing: boolean;

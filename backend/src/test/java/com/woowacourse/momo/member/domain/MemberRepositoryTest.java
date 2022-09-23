@@ -12,9 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Repository;
 
-@DataJpaTest
+import com.woowacourse.momo.auth.support.SHA256Encoder;
+
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@DataJpaTest(includeFilters = @ComponentScan.Filter(classes = Repository.class))
 class MemberRepositoryTest {
 
     @Autowired
@@ -23,10 +27,14 @@ class MemberRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    private static final UserId USER_ID = UserId.momo("momo");
+    private static final String USER_NAME = "모모";
+    private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
+
     @DisplayName("회원을 저장한다")
     @Test
     void save() {
-        Member member = new Member("aaaa", "1q2w3e4r!", "모모");
+        Member member = new Member(USER_ID, PASSWORD, USER_NAME);
         Long id = memberRepository.save(member).getId();
 
         assertThat(id).isNotNull();
@@ -35,7 +43,7 @@ class MemberRepositoryTest {
     @DisplayName("식별자를 통해 회원을 조회한다")
     @Test
     void findById() {
-        Member member = new Member("aaaa", "1q2w3e4r!", "모모");
+        Member member = new Member(USER_ID, PASSWORD, USER_NAME);
         Member expected = memberRepository.save(member);
         synchronize();
 
@@ -49,13 +57,11 @@ class MemberRepositoryTest {
     @DisplayName("userId과 Password가 일치하는 회원을 조회한다")
     @Test
     void findByUserIdAndPassword() {
-        String userId = "aaaa";
-        String password = "1q2w3e4r!";
-        Member member = new Member(userId, password, "모모");
+        Member member = new Member(USER_ID, PASSWORD, USER_NAME);
         Member expected = memberRepository.save(member);
         synchronize();
 
-        Optional<Member> actual = memberRepository.findByUserIdAndPassword(userId, password);
+        Optional<Member> actual = memberRepository.findByUserIdAndPassword(USER_ID, PASSWORD);
 
         assertThat(actual).isPresent();
         assertThat(actual.get()).usingRecursiveComparison()
@@ -67,3 +73,4 @@ class MemberRepositoryTest {
         entityManager.clear();
     }
 }
+
