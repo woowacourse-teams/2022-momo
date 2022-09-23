@@ -16,5 +16,7 @@ public interface GroupSearchRepositoryCustom {
 
     Page<Group> findParticipatedGroups(SearchCondition condition, Member member, Pageable pageable);
 
+    Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable);
+
     List<Group> findParticipatedGroups(Member member);
 }

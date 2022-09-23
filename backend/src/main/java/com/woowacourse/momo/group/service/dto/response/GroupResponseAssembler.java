@@ -10,29 +10,50 @@ import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponse(Group group) {
+    public static GroupResponse groupResponseWithLogin(Group group, Member member) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), group.getDescription());
+                locationResponse(group.getLocation()), group.isMemberLiked(member), group.getDescription());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponses(List<Group> groups) {
+    public static GroupResponse groupResponseWithoutLogin(Group group) {
+        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
+                group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
+                scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
+                locationResponse(group.getLocation()), false, group.getDescription());
+    }
+
+    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, Member member) {
         return groups.stream()
-                .map(GroupResponseAssembler::groupSummaryResponse)
+                .map(group -> GroupResponseAssembler.groupSummaryResponseWithLogin(group, member))
                 .collect(Collectors.toList());
     }
 
-    public static GroupSummaryResponse groupSummaryResponse(Group group) {
+    public static List<GroupSummaryResponse> groupSummaryResponsesWithoutLogin(List<Group> groups) {
+        return groups.stream()
+                .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
+                .collect(Collectors.toList());
+    }
+
+    public static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, Member member) {
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
                 group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline());
+                group.getDeadline(), group.isMemberLiked(member));
+    }
+
+    public static GroupSummaryResponse groupSummaryResponseWithoutLogin(Group group) {
+        return new GroupSummaryResponse(group.getId(), group.getName(),
+                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
+                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
+                group.getDeadline(), false);
     }
 
     public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses,

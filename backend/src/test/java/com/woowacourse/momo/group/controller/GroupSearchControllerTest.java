@@ -34,6 +34,7 @@ import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupModifyService;
+import com.woowacourse.momo.group.service.LikeService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 
 @AutoConfigureMockMvc
@@ -49,10 +50,28 @@ class GroupSearchControllerTest {
     private final MockMvc mockMvc;
     private final GroupModifyService groupModifyService;
     private final AuthService authService;
+    private final LikeService likeService;
 
-    @DisplayName("하나의 그룹을 가져오는 경우를 테스트한다")
+    @DisplayName("로그인을 하지 않은 상태로 하나의 그룹을 가져오는 경우를 테스트한다")
     @Test
     void groupGetTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        Long saveId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/groups/" + saveId))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("name", is("모모의 스터디")))
+                .andDo(
+                        document("groupget",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("로그인한 후 하나의 그룹을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetWithAuthorizationHeaderTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         Long saveId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
         String accessToken = accessToken("woowa", "wooteco1!");
@@ -147,6 +166,34 @@ class GroupSearchControllerTest {
                 );
     }
 
+    @DisplayName("내가 찜한 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetLikedListTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String token = accessToken("woowa", "wooteco1!");
+
+        Long groupId1 = saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
+        likeGroup(groupId1, saveMemberId);
+        Long groupId2 = saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        likeGroup(groupId2, saveMemberId);
+        Long groupId3 = saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        Long groupId4 = saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
+        likeGroup(groupId4, saveMemberId);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                                "/api/groups/me/liked?keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                        .header("Authorization", "bearer " + token))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
+                .andDo(
+                        document("likedgrouplist",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
     @DisplayName("로그인하지 않은 경우 내가 주최한 그룹 목록을 가져오는 경우 401 응답 코드를 반환한다")
     @Test
     void groupGetHostedListWithoutLoginTest() throws Exception {
@@ -200,7 +247,7 @@ class GroupSearchControllerTest {
                 );
     }
 
-    @DisplayName("그룹 목록을 페이지네이션 하여 가져온 결과를 출력한다")
+    @DisplayName("그룹 목록을 페이지네이션하여 가져온 결과를 출력한다")
     @Test
     void groupGetListWithPaginationTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
@@ -230,5 +277,9 @@ class GroupSearchControllerTest {
     Long saveMember(String id, String password, String name) {
         SignUpRequest request = new SignUpRequest(id, password, name);
         return authService.signUp(request);
+    }
+
+    void likeGroup(Long groupId, Long memberId) {
+        likeService.like(groupId, memberId);
     }
 }

@@ -220,7 +220,7 @@ class GroupModifyServiceTest {
 
         groupModifyService.closeEarly(hostId, groupId);
 
-        boolean actual = groupSearchService.findGroup(groupId).isFinished();
+        boolean actual = groupSearchService.findGroup(groupId, null).isFinished();
         assertThat(actual).isTrue();
     }
 
@@ -243,7 +243,7 @@ class GroupModifyServiceTest {
 
         groupModifyService.delete(hostId, groupId);
 
-        assertThatThrownBy(() -> groupSearchService.findGroup(groupId))
+        assertThatThrownBy(() -> groupSearchService.findGroup(groupId, null))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }

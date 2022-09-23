@@ -31,18 +31,31 @@ public class GroupSearchService {
     private final GroupFindService groupFindService;
     private final GroupSearchRepository groupSearchRepository;
 
-    public GroupResponse findGroup(Long id) {
-        Group group = groupFindService.findGroup(id);
-        return GroupResponseAssembler.groupResponse(group);
+    public GroupResponse findGroup(Long groupId, Long memberId) {
+        Group group = groupFindService.findGroup(groupId);
+        if (memberId == null) {
+            return GroupResponseAssembler.groupResponseWithoutLogin(group);
+        }
+        Member member = memberFindService.findMember(memberId);
+        return GroupResponseAssembler.groupResponseWithLogin(group, member);
     }
 
-    public GroupPageResponse findGroups(GroupSearchRequest request) {
+    public GroupPageResponse findGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Page<Group> groups = groupSearchRepository.findGroups(request.toFindCondition(), pageable);
         List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+        List<GroupSummaryResponse> summaries = getGroupSummaryResponses(groupsOfPage, memberId);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    private List<GroupSummaryResponse> getGroupSummaryResponses(List<Group> groupsOfPage, Long memberId) {
+        if (memberId == null) {
+            return GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
+        }
+
+        Member member = memberFindService.findMember(memberId);
+        return GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, member);
     }
 
     public GroupPageResponse findParticipatedGroups(GroupSearchRequest request, Long memberId) {
@@ -50,7 +63,8 @@ public class GroupSearchService {
         Member member = memberFindService.findMember(memberId);
         Page<Group> groups = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
+                member);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
@@ -60,7 +74,19 @@ public class GroupSearchService {
         Member member = memberFindService.findMember(memberId);
         Page<Group> groups = groupSearchRepository.findHostedGroups(request.toFindCondition(), member, pageable);
         List<Group> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
+                member);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
+        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+        Member member = memberFindService.findMember(memberId);
+        Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), member, pageable);
+        List<Group> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
+                member);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }

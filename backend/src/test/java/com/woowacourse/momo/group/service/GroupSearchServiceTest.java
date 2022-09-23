@@ -65,8 +65,8 @@ class GroupSearchServiceTest {
     void findById() {
         Group group = groupRepository.save(MOMO_STUDY.toGroup(host));
 
-        GroupResponse actual = groupService.findGroup(group.getId());
-        GroupResponse expected = GroupResponseAssembler.groupResponse(group);
+        GroupResponse actual = groupService.findGroup(group.getId(), null);
+        GroupResponse expected = GroupResponseAssembler.groupResponseWithoutLogin(group);
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -75,7 +75,7 @@ class GroupSearchServiceTest {
     @DisplayName("존재하지 않는 모임을 조회할 수 없다")
     @Test
     void findByIdWithNotExistGroupId() {
-        assertThatThrownBy(() -> groupService.findGroup(0L))
+        assertThatThrownBy(() -> groupService.findGroup(0L, null))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
@@ -92,7 +92,7 @@ class GroupSearchServiceTest {
         request.setKeyword("모모");
         request.setPage(0);
 
-        GroupPageResponse actual = groupService.findGroups(request);
+        GroupPageResponse actual = groupService.findGroups(request, null);
 
         assertThat(actual.getGroups()).hasSize(2);
     }
@@ -110,7 +110,7 @@ class GroupSearchServiceTest {
         void findAllWithPage() {
             List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
                     .mapToObj(i -> saveGroup("모모의 스터디", Category.STUDY))
-                    .map(GroupResponseAssembler::groupSummaryResponse)
+                    .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
                     .sorted(Comparator.comparing(GroupSummaryResponse::getId).reversed())
                     .collect(Collectors.toList());
 
@@ -121,7 +121,7 @@ class GroupSearchServiceTest {
             GroupSearchRequest request = new GroupSearchRequest();
             request.setPage(1);
 
-            GroupPageResponse actual = groupService.findGroups(request);
+            GroupPageResponse actual = groupService.findGroups(request, null);
 
             assertAll(
                     () -> assertThat(actual.isHasNextPage()).isFalse(),
@@ -142,7 +142,7 @@ class GroupSearchServiceTest {
             request.setCategory(Category.DRINK.getId());
             request.setPage(1);
 
-            GroupPageResponse actual = groupService.findGroups(request);
+            GroupPageResponse actual = groupService.findGroups(request, null);
 
             assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
         }

@@ -94,6 +94,22 @@ include::{snippets}/hostedgrouplist/http-request.adoc[]
 Response
 include::{snippets}/hostedgrouplist/http-response.adoc[]
 
+=== 모임 찜하기
+
+Request
+include::{snippets}/like/http-request.adoc[]
+
+Response
+include::{snippets}/like/http-response.adoc[]
+
+=== 모임 찜 취소하기
+
+Request
+include::{snippets}/cancellike/http-request.adoc[]
+
+Response
+include::{snippets}/cancellike/http-response.adoc[]
+
 
 == 유저
 
