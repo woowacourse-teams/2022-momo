@@ -58,10 +58,10 @@ public class Member {
     }
 
     public void delete() {
-        GhostMember ghostMember = new GhostMember();
-        userId = ghostMember.getUserId();
-        password = ghostMember.getPassword();
-        userName = ghostMember.getUserName();
+        DeletedMember deletedMember = new DeletedMember();
+        userId = deletedMember.getUserId();
+        password = deletedMember.getPassword();
+        userName = deletedMember.getUserName();
         deleted = true;
     }
 

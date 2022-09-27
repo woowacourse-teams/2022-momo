@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.Getter;
 
 @Getter
-public class GhostMember {
+public class DeletedMember {
 
     private static final String GHOST_PASSWORD = "";
 
@@ -13,7 +13,7 @@ public class GhostMember {
     private final UserName userName;
     private final Password password;
 
-    public GhostMember() {
+    public DeletedMember() {
         this.userId = createUserId();
         this.userName = createUserName();
         this.password = createPassword();
