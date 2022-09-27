@@ -78,6 +78,9 @@ public class Member {
     }
 
     public String getUserName() {
+        if (deleted) {
+            return "";
+        }
         return userName.getValue();
     }
 }
