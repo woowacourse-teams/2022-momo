@@ -45,10 +45,6 @@ public class Member {
         this.userName = userName;
     }
 
-    public Member(UserId userId, Password password, String userName) {
-        this(userId, password, new UserName(userName));
-    }
-
     public boolean isNotSamePassword(String password) {
         return !this.password.isSame(password);
     }
@@ -62,8 +58,10 @@ public class Member {
     }
 
     public void delete() {
-        password = password.delete();
-        userName = userName.delete();
+        GhostMember ghostMember = new GhostMember();
+        userId = ghostMember.getUserId();
+        password = ghostMember.getPassword();
+        userName = ghostMember.getUserName();
         deleted = true;
     }
 

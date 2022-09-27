@@ -19,6 +19,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(classes = Repository.class))
@@ -31,7 +32,7 @@ class TokenRepositoryTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = UserId.momo("momo");
-    private static final String USER_NAME = "모모";
+    private static final UserName USER_NAME = UserName.from("모모");
 
     private Password password;
     private Member member;

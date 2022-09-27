@@ -28,6 +28,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
@@ -66,7 +67,7 @@ class MemberServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, "momo"));
+        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, UserName.from("momo")));
     }
 
     @DisplayName("회원 정보를 조회한다")
