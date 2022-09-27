@@ -73,6 +73,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                                    Supplier<BooleanExpression> mainCondition) {
         List<Group> groups = queryFactory
                 .select(group).distinct()
+                .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
@@ -89,6 +90,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     public List<Group> findParticipatedGroups(Member member) {
         return queryFactory
                 .select(group).distinct()
+                .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .where(isParticipated(member))
                 .fetch();
