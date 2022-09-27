@@ -22,6 +22,8 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 @Entity
 public class Member {
 
+    private static final String SHOWN_DELETED_USER_NAME = "";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -79,7 +81,7 @@ public class Member {
 
     public String getUserName() {
         if (deleted) {
-            return "";
+            return SHOWN_DELETED_USER_NAME;
         }
         return userName.getValue();
     }
