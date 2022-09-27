@@ -123,7 +123,6 @@ public class Group {
 
     private void validateGroupIsUpdatable() {
         validateGroupIsProceeding();
-        //validateParticipantIsEmpty();
     }
 
     private void validateGroupIsProceeding() {
@@ -140,12 +139,6 @@ public class Group {
     private void validateDeadlineNotOver() {
         if (calendar.isDeadlineOver()) {
             throw new GroupException(ALREADY_DEADLINE_OVER);
-        }
-    }
-
-    private void validateParticipantIsEmpty() {
-        if (participants.isNotEmpty()) {
-            throw new GroupException(PARTICIPANT_EXIST);
         }
     }
 
