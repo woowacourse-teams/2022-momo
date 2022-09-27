@@ -24,7 +24,7 @@ public class Token {
     private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(nullable = false)
