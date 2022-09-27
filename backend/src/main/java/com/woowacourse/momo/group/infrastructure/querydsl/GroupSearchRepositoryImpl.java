@@ -72,7 +72,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     private Page<Group> findGroups(SearchCondition condition, Pageable pageable,
                                    Supplier<BooleanExpression> mainCondition) {
         List<Group> groups = queryFactory
-                .selectFrom(group)
+                .select(group).distinct()
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
@@ -88,7 +88,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     public List<Group> findParticipatedGroups(Member member) {
         return queryFactory
-                .selectFrom(group)
+                .select(group).distinct()
                 .leftJoin(group.participants.participants, participant)
                 .where(isParticipated(member))
                 .fetch();
