@@ -74,7 +74,6 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         List<Group> groups = queryFactory
                 .selectFrom(group)
                 .leftJoin(group.participants.participants, participant)
-                .fetchJoin()
                 .where(
                         mainCondition.get(),
                         conditionFilter.filterByCondition(condition)
@@ -91,7 +90,6 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return queryFactory
                 .selectFrom(group)
                 .leftJoin(group.participants.participants, participant)
-                .fetchJoin()
                 .where(isParticipated(member))
                 .fetch();
     }
