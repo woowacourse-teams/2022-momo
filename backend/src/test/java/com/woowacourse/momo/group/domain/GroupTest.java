@@ -60,7 +60,7 @@ class GroupTest {
         @DisplayName("조기마감된 모임은 더이상 삭제할 수 없습니다")
         @Test
         void cannotDeleteGroupByClosedEarly() {
-            assertThatThrownBy(group::validateGroupIsDeletable)
+            assertThatThrownBy(group::validateGroupIsProceeding)
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
@@ -121,7 +121,7 @@ class GroupTest {
         @DisplayName("마감기한이 지나버린 모임은 더이상 삭제할 수 없습니다")
         @Test
         void cannotDeleteGroupByDeadlinePassed() {
-            assertThatThrownBy(group::validateGroupIsDeletable)
+            assertThatThrownBy(group::validateGroupIsProceeding)
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
@@ -180,7 +180,7 @@ class GroupTest {
         @DisplayName("참여자가 존재하는 모임을 삭제할 수 있습니다")
         @Test
         void cannotDeleteGroupByExistParticipants() {
-            assertDoesNotThrow(group::validateGroupIsDeletable);
+            assertDoesNotThrow(group::validateGroupIsProceeding);
         }
     }
 

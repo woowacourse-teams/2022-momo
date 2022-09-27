@@ -80,7 +80,7 @@ public class Group {
     }
 
     public void update(Capacity capacity, Calendar calendar, GroupName name, Category category, String description) {
-        validateGroupIsUpdatable();
+        validateGroupIsProceeding();
         this.participants.updateCapacity(capacity);
         this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
         this.name = name;
@@ -117,15 +117,7 @@ public class Group {
         favorites.cancel(member);
     }
 
-    public void validateGroupIsDeletable() {
-        validateGroupIsUpdatable();
-    }
-
-    private void validateGroupIsUpdatable() {
-        validateGroupIsProceeding();
-    }
-
-    private void validateGroupIsProceeding() {
+    public void validateGroupIsProceeding() {
         validateGroupIsNotClosedEarly();
         validateDeadlineNotOver();
     }
