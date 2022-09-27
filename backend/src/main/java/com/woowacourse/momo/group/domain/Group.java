@@ -123,7 +123,7 @@ public class Group {
 
     private void validateGroupIsUpdatable() {
         validateGroupIsProceeding();
-        validateParticipantIsEmpty();
+        //validateParticipantIsEmpty();
     }
 
     private void validateGroupIsProceeding() {
@@ -158,7 +158,7 @@ public class Group {
     }
 
     public boolean isFinishedRecruitment() {
-        return closedEarly || calendar.isDeadlineOver() || participants.isFull();
+        return closedEarly || calendar.isDeadlineOver();
     }
 
     public Member getHost() {

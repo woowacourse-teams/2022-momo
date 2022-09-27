@@ -86,10 +86,9 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(participantAccessToken, groupId);
 
         모임을_삭제한다(hostAccessToken, groupId)
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_014"));
+                .statusCode(HttpStatus.NO_CONTENT.value());
 
         모임을_조회한다(hostAccessToken, groupId)
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }
