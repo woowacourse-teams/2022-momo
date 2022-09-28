@@ -70,7 +70,7 @@ public class GroupModifyService {
     @Transactional
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
-            group.validateGroupIsDeletable();
+            group.validateGroupIsProceeding();
             groupRepository.deleteById(groupId);
         });
     }

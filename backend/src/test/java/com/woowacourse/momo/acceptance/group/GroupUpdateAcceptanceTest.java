@@ -140,8 +140,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(participantAccessToken, groupId);
 
         모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY)
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_014"));
+                .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("모임의 장소를 수정한다")

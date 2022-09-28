@@ -30,8 +30,7 @@ public class ConditionFilter {
     private void excludeFinished(BooleanBuilder booleanBuilder, boolean excludeFinished) {
         if (excludeFinished) {
             booleanBuilder.and(afterNow()
-                    .and(notClosedEarly())
-                    .and(isNotParticipantsFull()));
+                    .and(notClosedEarly()));
         }
     }
 

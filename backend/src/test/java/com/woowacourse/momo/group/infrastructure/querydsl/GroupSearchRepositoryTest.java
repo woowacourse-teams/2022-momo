@@ -172,7 +172,7 @@ class GroupSearchRepositoryTest {
         List<Group> actual = groupSearchRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(group5, group4, group2, group1));
+                .isEqualTo(List.of(group5, group4, group3, group2, group1));
     }
 
     @DisplayName("마감기한이 적은 순으로 목록을 조회한다")
@@ -199,7 +199,7 @@ class GroupSearchRepositoryTest {
         List<Group> actual = groupSearchRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(group2, group1));
+                .isEqualTo(List.of(group3, group2, group1));
     }
 
     @DisplayName("키워드가 포함된 목록 중 마감기한이 적게 남은 순으로 목록을 조회한다")
@@ -227,7 +227,7 @@ class GroupSearchRepositoryTest {
         List<Group> actual = groupSearchRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(group4, group2, group5, group1));
+                .isEqualTo(List.of(group4, group2, group5, group1, group3));
     }
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 목록을 조회한다")
@@ -242,7 +242,7 @@ class GroupSearchRepositoryTest {
         List<Group> actual = groupSearchRepository.findGroups(request.toFindCondition(), pageable).getContent();
 
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(group2, group1));
+                .isEqualTo(List.of(group2, group1, group3));
     }
 
     @DisplayName("키워드가 포함되고 모집 마감이 완료된 모임을 제외한 모임 중 마감기한이 적게 남은 순으로 참여한 모임 목록을 조회한다")
@@ -274,7 +274,7 @@ class GroupSearchRepositoryTest {
                 .getContent();
 
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(List.of(group2, group1));
+                .isEqualTo(List.of(group2, group1, group3));
     }
 
     private static class FindRequestBuilder {
