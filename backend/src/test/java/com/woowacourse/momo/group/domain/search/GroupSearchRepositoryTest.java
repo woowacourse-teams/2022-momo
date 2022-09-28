@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.infrastructure.querydsl;
+package com.woowacourse.momo.group.domain.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
