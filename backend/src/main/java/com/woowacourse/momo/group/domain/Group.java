@@ -112,7 +112,6 @@ public class Group {
     }
 
     public void cancelLike(Member member) {
-        validateGroupIsProceeding();
         favorites.cancel(member);
     }
 
