@@ -11,6 +11,8 @@ import lombok.ToString;
 
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.member.exception.MemberErrorCode;
+import com.woowacourse.momo.member.exception.MemberException;
 
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
@@ -45,7 +47,7 @@ public class UserId {
 
     private static void validateUserIdIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(GlobalErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
+            throw new MemberException(MemberErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
@@ -57,7 +59,7 @@ public class UserId {
 
     private static void validateUserEmailIsValidPattern(String value) {
         if (!value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(GlobalErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
+            throw new MemberException(MemberErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
     }
 }

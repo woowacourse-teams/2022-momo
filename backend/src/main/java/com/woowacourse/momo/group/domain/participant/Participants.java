@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.domain.participant;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_PARTICIPANTS_SIZE_FULL;
-import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_LESS_THAN_PARTICIPANTS_SIZE;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_HOST;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_PARTICIPANT;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_PARTICIPANT;
@@ -107,7 +107,7 @@ public class Participants {
 
     private void validateCapacityIsOverParticipantsSize(Capacity capacity) {
         if (capacity.isSmallThan(getSize())) {
-            throw new GroupException(CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE);
+            throw new GroupException(CAPACITY_LESS_THAN_PARTICIPANTS_SIZE);
         }
     }
 
