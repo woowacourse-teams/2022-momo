@@ -214,18 +214,33 @@ class ParticipateServiceTest {
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
-        @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")
+        @DisplayName("회원 탈퇴한 주최자의 이름은 빈값으로 대체된다")
         @Test
-        void findParticipantsExistGhost() {
+        void findParticipantsWhenHostDeleted() {
+            group.closeEarly();
+            memberService.deleteById(hostId);
+            synchronize();
+
+            List<String> names = getParticipantNames();
+            assertThat(names).containsExactly("", participant.getUserName());
+        }
+
+        @DisplayName("회원 탈퇴한 참여자의 이름은 빈값으로 대체된다")
+        @Test
+        void findParticipantsWhenParticipantDeleted() {
             group.closeEarly();
             memberService.deleteById(participantId);
             synchronize();
 
-            List<String> names = participateService.findParticipants(groupId)
+            List<String> names = getParticipantNames();
+            assertThat(names).containsExactly(host.getUserName(), "");
+        }
+
+        private List<String> getParticipantNames() {
+            return participateService.findParticipants(groupId)
                     .stream()
                     .map(MemberResponse::getName)
                     .collect(Collectors.toList());
-            assertThat(names).contains("알 수 없음");
         }
     }
 

@@ -39,6 +39,10 @@ public class UserId {
         return new UserId(value);
     }
 
+    public static UserId deletedAs(String value) {
+        return new UserId(value);
+    }
+
     private static void validateUserIdIsNotBlank(String value) {
         if (value.isBlank()) {
             throw new MomoException(GlobalErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);

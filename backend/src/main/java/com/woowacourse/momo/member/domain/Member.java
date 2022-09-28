@@ -22,6 +22,8 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 @Entity
 public class Member {
 
+    private static final String SHOWN_DELETED_USER_NAME = "";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,10 +47,6 @@ public class Member {
         this.userName = userName;
     }
 
-    public Member(UserId userId, Password password, String userName) {
-        this(userId, password, new UserName(userName));
-    }
-
     public boolean isNotSamePassword(String password) {
         return !this.password.isSame(password);
     }
@@ -62,8 +60,10 @@ public class Member {
     }
 
     public void delete() {
-        password = password.delete();
-        userName = userName.delete();
+        DeletedMember deletedMember = new DeletedMember();
+        userId = deletedMember.getUserId();
+        password = deletedMember.getPassword();
+        userName = deletedMember.getUserName();
         deleted = true;
     }
 
@@ -80,6 +80,9 @@ public class Member {
     }
 
     public String getUserName() {
+        if (deleted) {
+            return SHOWN_DELETED_USER_NAME;
+        }
         return userName.getValue();
     }
 }

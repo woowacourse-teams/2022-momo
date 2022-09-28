@@ -15,6 +15,7 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
 
 @Transactional
 @SpringBootTest
@@ -27,7 +28,7 @@ class MemberFindServiceTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = UserId.momo("momo");
-    private static final String USER_NAME = "momo";
+    private static final UserName USER_NAME = UserName.from("모모");
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")

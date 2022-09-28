@@ -23,7 +23,6 @@ public class Password {
      */
     private static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_FORMAT);
-    private static final String GHOST_PASSWORD = "";
 
     @Column(name = "password", nullable = false)
     private String value;
@@ -38,12 +37,12 @@ public class Password {
         return new Password(encoder.encrypt(value));
     }
 
-    public Password update(String value, PasswordEncoder encoder) {
-        return Password.encrypt(value, encoder);
+    public static Password deletedAs(String password) {
+        return new Password(password);
     }
 
-    public Password delete() {
-        return new Password(GHOST_PASSWORD);
+    public Password update(String value, PasswordEncoder encoder) {
+        return Password.encrypt(value, encoder);
     }
 
     public boolean isSame(String password) {

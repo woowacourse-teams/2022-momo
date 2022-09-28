@@ -49,7 +49,7 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpRequest request) {
         UserId userId = UserId.momo(request.getUserId());
-        UserName userName = new UserName(request.getName());
+        UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         Member member = new Member(userId, password, userName);
 
