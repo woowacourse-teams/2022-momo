@@ -73,7 +73,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                             .body("location.address", is(updatedGroup.getLocation().getAddress()))
                             .body("location.buildingName", is(updatedGroup.getLocation().getBuildingName()))
                             .body("location.detail", is(updatedGroup.getLocation().getDetail()))
-                            .body("description", is(updatedGroup.getDescription()));
+                            .body("description", is(updatedGroup.getDescription().getValue()));
                 },
                 () -> {
                     List<ScheduleResponse> schedules = response.extract()

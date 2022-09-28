@@ -2,7 +2,6 @@ package com.woowacourse.momo.group.domain;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_CLOSED_EARLY;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_DEADLINE_OVER;
-import static com.woowacourse.momo.group.exception.GroupErrorCode.PARTICIPANT_EXIST;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -62,14 +60,13 @@ public class Group {
     @Embedded
     private Location location;
 
-    @Lob
-    @Column(nullable = false)
-    private String description;
+    @Embedded
+    private Description description;
 
     private boolean closedEarly;
 
     public Group(Member host, Capacity capacity, Calendar calendar, GroupName name, Category category,
-                 Location location, String description) {
+                 Location location, Description description) {
         this.participants = new Participants(host, capacity);
         this.favorites = new Favorites();
         this.calendar = calendar;
@@ -79,7 +76,8 @@ public class Group {
         this.description = description;
     }
 
-    public void update(Capacity capacity, Calendar calendar, GroupName name, Category category, String description) {
+    public void update(Capacity capacity, Calendar calendar, GroupName name, Category category,
+                       Description description) {
         validateGroupIsProceeding();
         this.participants.updateCapacity(capacity);
         this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
@@ -146,6 +144,10 @@ public class Group {
         return closedEarly || calendar.isDeadlineOver();
     }
 
+    public boolean isMemberLiked(Member member) {
+        return favorites.hasMember(member);
+    }
+
     public Member getHost() {
         return participants.getHost();
     }
@@ -174,7 +176,7 @@ public class Group {
         return participants.getParticipants();
     }
 
-    public boolean isMemberLiked(Member member) {
-        return favorites.hasMember(member);
+    public Description getDescription() {
+        return description;
     }
 }

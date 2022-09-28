@@ -44,7 +44,7 @@ public class ConditionFilter {
     private void containKeyword(BooleanBuilder booleanBuilder, String keyword) {
         if (keyword != null) {
             BooleanExpression nameContains = group.name.value.contains(keyword);
-            BooleanExpression descriptionContains = group.description.contains(keyword);
+            BooleanExpression descriptionContains = group.description.value.contains(keyword);
 
             booleanBuilder.and(nameContains.or(descriptionContains));
         }

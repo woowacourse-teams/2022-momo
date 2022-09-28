@@ -40,6 +40,7 @@ public enum GroupErrorCode implements ErrorCode {
     MEMBER_NOT_YET_LIKE(403, "GROUP_ERROR_020", "찜하지 않은 모임입니다."),
 
     NAME_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_ERROR_021", "모임의 이름은 1자 이상 50자 이하여야 합니다."),
+    DESCRIPTION_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_ERROR_022", "모임의 설명은 1000자 이하여야 합니다.")
     ;
 
     private final int statusCode;

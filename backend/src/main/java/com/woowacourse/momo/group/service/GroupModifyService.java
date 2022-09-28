@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
@@ -53,8 +54,9 @@ public class GroupModifyService {
         Category category = request.getCategory();
         Capacity capacity = request.getCapacity();
         Calendar calendar = request.getCalendar();
+        Description description = request.getDescription();
 
-        group.update(capacity, calendar, groupName, category, request.getDescription());
+        group.update(capacity, calendar, groupName, category, description);
     }
 
     @Transactional
