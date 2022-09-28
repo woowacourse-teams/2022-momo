@@ -60,9 +60,42 @@ class LikeServiceTest {
         assertThat(expected).isTrue();
     }
 
-    @DisplayName("모임을 찜하기를 취소한다")
+    @DisplayName("마감된 모임을 찜한다")
+    @Test
+    void likeClosedGroup() {
+        group.closeEarly();
+        long groupId = group.getId();
+        long userId = user.getId();
+
+        likeService.like(groupId, userId);
+        synchronize();
+
+        Group findGroup = groupFindService.findGroup(groupId);
+        boolean expected = findGroup.isMemberLiked(user);
+
+        assertThat(expected).isTrue();
+    }
+
+    @DisplayName("모임의 찜하기를 취소한다")
     @Test
     void cancel() {
+        long groupId = group.getId();
+        long userId = user.getId();
+
+        likeService.like(groupId, userId);
+        likeService.cancel(groupId, userId);
+        synchronize();
+
+        Group findGroup = groupFindService.findGroup(groupId);
+        boolean expected = findGroup.isMemberLiked(user);
+
+        assertThat(expected).isFalse();
+    }
+
+    @DisplayName("마감된 모임의 찜하기를 취소한다")
+    @Test
+    void cancelClosedGroup() {
+        group.closeEarly();
         long groupId = group.getId();
         long userId = user.getId();
 
