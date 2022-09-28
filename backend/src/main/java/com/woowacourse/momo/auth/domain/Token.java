@@ -24,7 +24,7 @@ public class Token {
     private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(nullable = false)
@@ -35,8 +35,8 @@ public class Token {
         this.refreshToken = refreshToken;
     }
 
-    public boolean isSameRefreshToken(String refreshToken) {
-        return this.refreshToken.equals(refreshToken);
+    public boolean isDifferentRefreshToken(String refreshToken) {
+        return !this.refreshToken.equals(refreshToken);
     }
 
     public void updateRefreshToken(String refreshToken) {
