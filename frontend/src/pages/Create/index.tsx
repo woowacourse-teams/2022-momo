@@ -92,10 +92,12 @@ function Create() {
     try {
       validateGroupData(groupData);
     } catch (error) {
-      if (!(error instanceof PageError)) return;
+      if (!(error instanceof PageError)) {
+        alert(error);
+        return;
+      }
 
       alert(error.message);
-
       return;
     }
 
