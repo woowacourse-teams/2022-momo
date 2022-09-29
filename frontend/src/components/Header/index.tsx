@@ -31,24 +31,35 @@ function Header() {
       requestReissueAccessToken()
         .then(accessToken => {
           setAccessToken(accessToken);
+          setUserInfo();
         })
         .catch(() => {
           resetAuth();
         });
     };
 
-    requestUserInfo()
-      .then(userInfo => {
-        setLoginInfo({
-          isLogin: true,
-          loginType: getLoginType(userInfo.userId),
-          user: userInfo,
+    const setUserInfo = () => {
+      requestUserInfo()
+        .then(userInfo => {
+          setLoginInfo({
+            isLogin: true,
+            loginType: getLoginType(userInfo.userId),
+            user: userInfo,
+          });
+        })
+        .catch(() => {
+          reissueAccessToken();
         });
-      })
-      .catch(() => {
-        reissueAccessToken();
-      });
-  }, [accessToken, setAccessToken, refreshToken, setLoginInfo]);
+    };
+
+    if (accessToken) {
+      setUserInfo();
+      return;
+    }
+
+    reissueAccessToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <S.Container>
