@@ -58,6 +58,21 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .innerJoin(group.favorites.favorites, favorite)
                 .fetchJoin()
                 .where(
+                        group.id.in(findLikedGroupIds(condition, member, pageable))
+                )
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+    }
+
+    private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
+        return queryFactory
+                .select(group.id)
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .innerJoin(group.favorites.favorites, favorite)
+                .where(
                         favorite.member.eq(member),
                         conditionFilter.filterByCondition(condition)
                 )
@@ -65,8 +80,6 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
     }
 
     private Page<Group> findGroups(SearchCondition condition, Pageable pageable,

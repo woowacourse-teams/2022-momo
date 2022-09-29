@@ -5,11 +5,7 @@ import static com.woowacourse.momo.group.domain.QGroup.group;
 import java.time.LocalDateTime;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.NumberPath;
 
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
@@ -54,16 +50,6 @@ public class ConditionFilter {
         if (orderByDeadline) {
             booleanBuilder.and(afterNow());
         }
-    }
-
-    private BooleanExpression isNotParticipantsFull() {
-        NumberPath<Integer> capacity = group.participants.capacity.value;
-
-        NumberExpression<Integer> sizeWithoutHost = group.participants.participants.size();
-        Expression<Integer> hostSize = Expressions.constant(1);
-        NumberExpression<Integer> participantsSize = sizeWithoutHost.add(hostSize);
-
-        return capacity.gt(participantsSize);
     }
 
     private BooleanExpression notClosedEarly() {
