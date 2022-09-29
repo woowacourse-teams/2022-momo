@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.Group;
@@ -97,7 +98,16 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.countDistinct())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .where(
+                        mainCondition.get(),
+                        conditionFilter.filterByCondition(condition)
+                );
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
     public List<Group> findParticipatedGroups(Member member) {

@@ -7,11 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +27,6 @@ import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
-import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -51,13 +45,6 @@ class GroupSearchServiceTest {
     @BeforeEach
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
-    }
-
-    private Group saveGroup(String name, Category category) {
-        return groupRepository.save(MOMO_STUDY.builder()
-                .name(name)
-                .category(category)
-                .toGroup(host));
     }
 
     @DisplayName("모임을 조회한다")
@@ -97,27 +84,56 @@ class GroupSearchServiceTest {
         assertThat(actual.getGroups()).hasSize(2);
     }
 
+    @DisplayName("카테고리의 그룹 목록을 조회한다")
+    @Test
+    void findGroupsByCategory() {
+        saveGroup("모모의 스터디", Category.STUDY);
+        saveGroup("구구의 스터디", Category.STUDY);
+        saveGroup("모모의 술파티", Category.DRINK);
+        saveGroup("두두와의 헬스 클럽", Category.HEALTH);
+
+        GroupSearchRequest request = new GroupSearchRequest();
+        request.setCategory(Category.STUDY.getId());
+        request.setPage(0);
+
+        GroupPageResponse actual = groupService.findGroups(request, null);
+
+        assertThat(actual.getGroups()).hasSize(2);
+    }
+
     @DisplayName("페이지 테스트")
     @TestInstance(value = Lifecycle.PER_CLASS)
     @Nested
     class PageTest {
 
         private static final int PAGE_SIZE = 12;
+
         private static final int TWO_PAGE_GROUPS = 8;
+
+        @BeforeEach
+        void setUp() {
+            for (int i = 0; i < PAGE_SIZE + TWO_PAGE_GROUPS; i++) {
+                saveGroup("모모의 스터디", Category.STUDY);
+            }
+        }
+
+        @DisplayName("모임 목록중 첫번째 페이지를 조회한다")
+        @Test
+        void findFirstPage() {
+            GroupSearchRequest request = new GroupSearchRequest();
+            request.setPage(0);
+
+            GroupPageResponse actual = groupService.findGroups(request, null);
+
+            assertAll(
+                    () -> assertThat(actual.isHasNextPage()).isTrue(),
+                    () -> assertThat(actual.getGroups()).hasSize(PAGE_SIZE)
+            );
+        }
 
         @DisplayName("모임 목록중 두번째 페이지를 조회한다")
         @Test
-        void findAllWithPage() {
-            List<GroupSummaryResponse> summaries = IntStream.range(0, TWO_PAGE_GROUPS)
-                    .mapToObj(i -> saveGroup("모모의 스터디", Category.STUDY))
-                    .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
-                    .sorted(Comparator.comparing(GroupSummaryResponse::getId).reversed())
-                    .collect(Collectors.toList());
-
-            for (int i = 0; i < PAGE_SIZE; i++) {
-                saveGroup("모모의 스터디", Category.STUDY);
-            }
-
+        void findSecondPage() {
             GroupSearchRequest request = new GroupSearchRequest();
             request.setPage(1);
 
@@ -125,26 +141,15 @@ class GroupSearchServiceTest {
 
             assertAll(
                     () -> assertThat(actual.isHasNextPage()).isFalse(),
-                    () -> assertThat(actual.getGroups()).usingRecursiveFieldByFieldElementComparator()
-                            .isEqualTo(summaries)
+                    () -> assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS)
             );
         }
+    }
 
-        @DisplayName("카테고리의 그룹 목록을 조회한다")
-        @Test
-        void findGroupsByCategory() {
-            for (int i = 0; i < PAGE_SIZE + TWO_PAGE_GROUPS; i++) {
-                saveGroup("모모의 스터디", Category.STUDY);
-                saveGroup("모모의 술파티", Category.DRINK);
-            }
-
-            GroupSearchRequest request = new GroupSearchRequest();
-            request.setCategory(Category.DRINK.getId());
-            request.setPage(1);
-
-            GroupPageResponse actual = groupService.findGroups(request, null);
-
-            assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS);
-        }
+    private void saveGroup(String name, Category category) {
+        groupRepository.save(MOMO_STUDY.builder()
+                .name(name)
+                .category(category)
+                .toGroup(host));
     }
 }
