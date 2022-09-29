@@ -58,13 +58,20 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .leftJoin(group.participants.participants, participant)
                 .innerJoin(group.favorites.favorites, favorite)
                 .fetchJoin()
-                .where(
-                        group.id.in(findLikedGroupIds(condition, member, pageable))
-                )
+                .where(group.id.in(findLikedGroupIds(condition, member, pageable)))
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.count())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .innerJoin(group.favorites.favorites, favorite)
+                .where(
+                        group.id.in(findLikedGroupIds(condition, member, pageable))
+                );
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
     private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
