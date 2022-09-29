@@ -54,7 +54,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     @Override
     public Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable) {
         List<Group> groups = queryFactory
-                .selectFrom(group)
+                .select(group).distinct()
+                .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .innerJoin(group.favorites.favorites, favorite)
                 .fetchJoin()
@@ -63,7 +64,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
-                .select(group.count())
+                .select(group.countDistinct())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .innerJoin(group.favorites.favorites, favorite)
