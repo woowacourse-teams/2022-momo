@@ -15,4 +15,11 @@ const GROUP_RULE = {
   },
 };
 
-export { GROUP_RULE };
+const MEMBER_RULE = {
+  NAME: {
+    MIN_LENGTH: 2,
+    MAX_LENGTH: 30,
+  },
+};
+
+export { GROUP_RULE, MEMBER_RULE };
