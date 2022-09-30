@@ -92,13 +92,10 @@ function Create() {
     try {
       validateGroupData(groupData);
     } catch (error) {
-      if (!(error instanceof PageError)) {
-        alert(error);
+      if (error instanceof Error) {
+        alert(error.message);
         return;
       }
-
-      alert(error.message);
-      return;
     }
 
     requestCreateGroup(groupData)
