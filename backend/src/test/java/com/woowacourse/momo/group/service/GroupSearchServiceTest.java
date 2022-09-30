@@ -150,7 +150,7 @@ class GroupSearchServiceTest {
             );
         }
 
-        @DisplayName("모임 목록중 두번째 페이지를 조회한다")
+        @DisplayName("모임 목록중 첫번째 페이지를 조회한다")
         @Test
         void findLikedGroupsFirstPage() {
             GroupSearchRequest request = new GroupSearchRequest();
@@ -161,6 +161,20 @@ class GroupSearchServiceTest {
             assertAll(
                     () -> assertThat(actual.isHasNextPage()).isTrue(),
                     () -> assertThat(actual.getGroups()).hasSize(PAGE_SIZE)
+            );
+        }
+
+        @DisplayName("모임 목록중 두번째 페이지를 조회한다")
+        @Test
+        void findLikedGroupsSecondPage() {
+            GroupSearchRequest request = new GroupSearchRequest();
+            request.setPage(1);
+
+            GroupPageResponse actual = groupService.findLikedGroups(request, host.getId());
+
+            assertAll(
+                    () -> assertThat(actual.isHasNextPage()).isFalse(),
+                    () -> assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS)
             );
         }
     }
