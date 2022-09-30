@@ -29,7 +29,9 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
         {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
             <PersonSVG width={svgSize} />
-            <S.Text>{participant.name}</S.Text>
+            <S.Text>
+              {participant.name ? participant.name : '탈퇴한 회원입니다.'}
+            </S.Text>
           </S.Wrapper>
         ))}
       </S.Box>
