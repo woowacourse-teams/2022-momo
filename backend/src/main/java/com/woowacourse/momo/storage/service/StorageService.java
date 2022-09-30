@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.storage.exception.StorageErrorCode;
+import com.woowacourse.momo.storage.exception.StorageException;
 
 @Service
 public class StorageService {
@@ -35,7 +37,7 @@ public class StorageService {
         try (OutputStream outputStream = new FileOutputStream(savedFile)) {
             outputStream.write(requestFile.getBytes());
         } catch (IOException e) {
-            throw new MomoException(GlobalErrorCode.FILE_IO_ERROR);
+            throw new StorageException(StorageErrorCode.FILE_IO_ERROR);
         }
 
         return savedFile.getName();
@@ -45,7 +47,7 @@ public class StorageService {
         String contentType = file.getContentType();
 
         if (contentType == null || isContentTypeNotImage(contentType)) {
-            throw new MomoException(GlobalErrorCode.FILE_INVALID_EXTENSION);
+            throw new StorageException(StorageErrorCode.FILE_INVALID_EXTENSION);
         }
     }
 
@@ -61,7 +63,7 @@ public class StorageService {
             }
             temporary.createNewFile();
         } catch (IOException e) {
-            throw new MomoException(GlobalErrorCode.FILE_IO_ERROR);
+            throw new StorageException(StorageErrorCode.FILE_IO_ERROR);
         }
     }
 
@@ -70,7 +72,7 @@ public class StorageService {
         try (InputStream inputStream = new FileInputStream(file)) {
             return inputStream.readAllBytes();
         } catch (IOException e) {
-            throw new MomoException(GlobalErrorCode.FILE_IO_ERROR);
+            throw new StorageException(StorageErrorCode.FILE_IO_ERROR);
         }
     }
 }

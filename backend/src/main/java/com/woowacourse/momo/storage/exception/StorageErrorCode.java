@@ -1,23 +1,21 @@
-package com.woowacourse.momo.category.exception;
-
-import org.springframework.http.HttpStatus;
+package com.woowacourse.momo.storage.exception;
 
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 
-public enum CategoryErrorCode implements ErrorCode {
-    CATEGORY_NOT_EXIST(HttpStatus.NOT_FOUND.value(), "CATEGORY_001", "존재하지 않는 카테고리입니다."),
+public enum StorageErrorCode implements ErrorCode {
+    FILE_INVALID_EXTENSION(400, "FILE_001", "저장할 수 없는 확장자입니다."),
+    FILE_IO_ERROR(500, "FILE_002", "파일 입출력 에러입니다."),
     ;
 
     private final int statusCode;
     private final String errorCode;
     private final String message;
 
-    CategoryErrorCode(int statusCode, String errorCode, String message) {
+    StorageErrorCode(int statusCode, String errorCode, String message) {
         this.statusCode = statusCode;
         this.errorCode = errorCode;
         this.message = message;
     }
-
 
     @Override
     public int getStatusCode() {
