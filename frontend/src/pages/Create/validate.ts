@@ -37,6 +37,10 @@ const validateDeadlineDate =
     const parsedDeadline = new Date(deadline);
     const now = new Date();
 
+    if (schedules.length === 0) {
+      return parsedDeadline > now;
+    }
+
     schedules.sort((scheduleA, scheduleB) =>
       scheduleA.date.localeCompare(scheduleB.date),
     );
