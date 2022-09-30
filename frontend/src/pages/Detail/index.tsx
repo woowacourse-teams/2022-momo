@@ -29,6 +29,7 @@ function Detail() {
 
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessTokenProvider.get()]);
 
   return (

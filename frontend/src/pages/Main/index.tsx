@@ -39,6 +39,7 @@ function Main() {
 
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessTokenProvider.get()]);
 
   useEffect(() => {
@@ -46,11 +47,6 @@ function Main() {
 
     if (data.hasNextPage) {
       setPageNumber(data.pageNumber + 1);
-    }
-
-    if (data.pageNumber === 0) {
-      setGroups(data.groups);
-      return;
     }
 
     setGroups(prevState => [...prevState, ...data.groups]);

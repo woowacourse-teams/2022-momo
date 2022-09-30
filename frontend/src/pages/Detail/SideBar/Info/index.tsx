@@ -68,7 +68,7 @@ function Info({
             </S.Text>
           </S.Wrapper>
         </div>
-        {isHost && (
+        {isHost && !finished && (
           <S.Wrapper>
             <PencilSVG width={svgSize - 3} onClick={showGroupEditModal} />
           </S.Wrapper>
