@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.exception.MemberErrorCode;
 import com.woowacourse.momo.member.exception.MemberException;
 

@@ -17,7 +17,6 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.google.GoogleConnector;
 import com.woowacourse.momo.auth.support.google.GoogleProvider;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;

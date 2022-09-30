@@ -20,8 +20,7 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.support.google.dto.GoogleTokenResponse;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+    import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @RequiredArgsConstructor

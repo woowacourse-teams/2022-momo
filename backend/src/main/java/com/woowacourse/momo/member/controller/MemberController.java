@@ -16,10 +16,10 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @RequiredArgsConstructor
@@ -43,6 +43,7 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @PatchMapping("/name")
     public ResponseEntity<Void> updateName(@AuthenticationPrincipal Long id,
                                            @RequestBody @Valid ChangeNameRequest request) {

@@ -16,8 +16,6 @@ import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @RequiredArgsConstructor
 public class AuthOptionalInterceptor implements HandlerInterceptor {

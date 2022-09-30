@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorizationExtractor {

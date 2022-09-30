@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.exception.CategoryErrorCode;
 import com.woowacourse.momo.category.exception.CategoryException;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @RequiredArgsConstructor

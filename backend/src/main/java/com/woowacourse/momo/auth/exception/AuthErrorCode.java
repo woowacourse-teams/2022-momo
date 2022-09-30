@@ -3,6 +3,7 @@ package com.woowacourse.momo.auth.exception;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 
 public enum AuthErrorCode implements ErrorCode {
+
     AUTH_EXPIRED_TOKEN(401, "AUTH_001", "토큰의 유효기간이 만료되었습니다."),
     AUTH_INVALID_TOKEN(401, "AUTH_002", "토큰이 유효하지 않습니다."),
     AUTH_REQUIRED_LOGIN(401, "AUTH_003", "로그인이 필요합니다."),

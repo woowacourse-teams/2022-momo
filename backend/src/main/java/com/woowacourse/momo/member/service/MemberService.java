@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
@@ -26,6 +25,7 @@ import com.woowacourse.momo.member.exception.MemberErrorCode;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 

@@ -1,7 +1,5 @@
 package com.woowacourse.momo.global.exception.exception;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

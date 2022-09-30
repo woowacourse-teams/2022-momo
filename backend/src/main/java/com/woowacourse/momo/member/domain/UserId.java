@@ -9,10 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import com.woowacourse.momo.auth.exception.AuthErrorCode;
-import com.woowacourse.momo.auth.exception.AuthException;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.exception.MemberErrorCode;
 import com.woowacourse.momo.member.exception.MemberException;
 

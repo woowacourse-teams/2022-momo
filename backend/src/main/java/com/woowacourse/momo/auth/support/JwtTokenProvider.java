@@ -18,8 +18,6 @@ import io.jsonwebtoken.security.Keys;
 
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Component
 public class JwtTokenProvider {
