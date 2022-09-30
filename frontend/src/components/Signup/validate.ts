@@ -29,7 +29,7 @@ const isValidSignupFormData = ({
   }
 
   if (!isValidPassword) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
+    throw new Error(ERROR_MESSAGE.SIGNUP.SIGNUP_002);
   }
 
   if (!isValidConfirmPassword) {

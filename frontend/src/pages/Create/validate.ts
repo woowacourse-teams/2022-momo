@@ -2,7 +2,6 @@ import { ERROR_MESSAGE } from 'constants/message';
 import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { resetDateToStartOfDay, resetDateToEndOfDay } from 'utils/date';
-import PageError from 'utils/PageError';
 
 const validateName = (name: CreateGroupData['name']) => () => {
   return (
@@ -80,17 +79,14 @@ const generateValidators = ({
     {
       validator: validateName(name),
       errorMessage: ERROR_MESSAGE.CREATE.NAME,
-      targetPageNumber: 1,
     },
     {
       validator: validateCategory(selectedCategory),
       errorMessage: ERROR_MESSAGE.CREATE.CATEGORY,
-      targetPageNumber: 2,
     },
     {
       validator: validateCapacity(capacity),
       errorMessage: ERROR_MESSAGE.CREATE.CAPACITY,
-      targetPageNumber: 3,
     },
     {
       validator: validateDurationDate(
@@ -99,22 +95,18 @@ const generateValidators = ({
         todayInMidnight,
       ),
       errorMessage: ERROR_MESSAGE.CREATE.DURATION,
-      targetPageNumber: 4,
     },
     {
       validator: validateDeadlineDate(deadline, schedules),
       errorMessage: ERROR_MESSAGE.CREATE.DEADLINE,
-      targetPageNumber: 6,
     },
     {
       validator: validateLocation(location),
       errorMessage: ERROR_MESSAGE.CREATE.LOCATION,
-      targetPageNumber: 7,
     },
     {
       validator: validateDescription(description),
       errorMessage: ERROR_MESSAGE.CREATE.DESCRIPTION,
-      targetPageNumber: 8,
     },
   ];
 };
@@ -122,9 +114,9 @@ const generateValidators = ({
 const validateGroupData = (props: CreateGroupData) => {
   const validators = generateValidators(props);
 
-  validators.forEach(({ validator, errorMessage, targetPageNumber }) => {
+  validators.forEach(({ validator, errorMessage }) => {
     if (!validator()) {
-      throw new PageError(errorMessage, targetPageNumber);
+      throw new Error(errorMessage);
     }
   });
 };

@@ -48,8 +48,11 @@ const requestCreateGroup = ({
     .then(response => {
       return response.data.groupId;
     })
-    .catch(() => {
-      throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
+    .catch(error => {
+      if (!error) {
+        throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
+      }
+      throw error;
     });
 };
 
@@ -90,8 +93,11 @@ const requestEditGroup = (
     .then(response => {
       return response.data.groupId;
     })
-    .catch(() => {
-      throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
+    .catch(error => {
+      if (!error) {
+        throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
+      }
+      throw error;
     });
 };
 

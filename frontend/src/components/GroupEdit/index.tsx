@@ -7,11 +7,11 @@ import Modal from 'components/Modal';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useCreateState from 'hooks/useCreateState';
+import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import validateGroupData from 'pages/Create/validate';
 import { groupDetailState, modalState } from 'store/states';
-import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
 import Inputs from './Inputs';
@@ -21,6 +21,7 @@ function GroupEdit() {
 
   const { setOffModal } = useModal();
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const queryClient = useQueryClient();
 
@@ -46,10 +47,11 @@ function GroupEdit() {
     try {
       validateGroupData(groupData);
     } catch (error) {
-      if (!(error instanceof PageError)) return;
+      if (!(error instanceof Error)) {
+        return;
+      }
 
-      alert(error.message);
-
+      setMessage(error.message);
       return;
     }
 
@@ -63,6 +65,7 @@ function GroupEdit() {
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EDIT_REQUEST);
       })
       .catch(error => {
+        handleError(error);
         alert(error.message);
       });
   };

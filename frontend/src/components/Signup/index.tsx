@@ -5,11 +5,11 @@ import { useRecoilValue } from 'recoil';
 import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/Modal';
 import { GUIDE_MESSAGE } from 'constants/message';
+import useHandleError from 'hooks/useHandleError';
 import useInput from 'hooks/useInput';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
-import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 import {
@@ -21,6 +21,7 @@ import {
 function Signup() {
   const modalFlag = useRecoilValue(modalState);
   const { showLoginModal } = useModal();
+  const { handleError } = useHandleError();
 
   const idRef = useRef<HTMLInputElement>(null);
   const {
@@ -75,8 +76,8 @@ function Signup() {
         resetValues();
         showLoginModal();
       })
-      .catch(({ message }) => {
-        alert(showErrorMessage(message));
+      .catch(error => {
+        handleError(error);
       });
   };
 

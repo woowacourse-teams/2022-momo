@@ -14,8 +14,11 @@ const requestUserInfo = () => {
     .then(response => {
       return response.data;
     })
-    .catch(() => {
-      throw new Error(ERROR_MESSAGE.MEMBER.FAILURE_REQUEST);
+    .catch(error => {
+      if (!error) {
+        throw new Error(ERROR_MESSAGE.MEMBER.FAILURE_REQUEST);
+      }
+      throw error;
     });
 };
 

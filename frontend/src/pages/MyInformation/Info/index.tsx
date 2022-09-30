@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { requestChangePassword } from 'apis/request/user';
 import ConfirmPasswordModal from 'components/ConfirmPassword';
 import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import useHandleError from 'hooks/useHandleError';
 import useInput from 'hooks/useInput';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
@@ -27,6 +28,7 @@ function Info() {
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const editPassword = (oldPassword: string, newPassword: string) => () => {
     requestChangePassword(oldPassword, newPassword)
@@ -34,8 +36,11 @@ function Info() {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
         setIsPasswordEditable(false);
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
+      .catch(error => {
+        if (!error) {
+          alert(ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
+        }
+        handleError(error);
       });
   };
 

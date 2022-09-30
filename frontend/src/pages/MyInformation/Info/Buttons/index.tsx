@@ -3,6 +3,7 @@ import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { requestChangeName, requestUserInfo } from 'apis/request/user';
 import { CompleteSVG, PencilSVG } from 'assets/svg';
 import { GUIDE_MESSAGE, ERROR_MESSAGE } from 'constants/message';
+import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
 import { EditableType, LoginState } from 'types/user';
@@ -30,6 +31,7 @@ function Buttons({
 }: InfoButtonsProps) {
   const setModalFlag = useSetRecoilState(modalState);
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const changeElementEditable = (type: EditableType) => () => {
     switch (type) {
@@ -61,8 +63,11 @@ function Buttons({
           setLoginInfo({ ...loginInfo, user: userInfo });
         });
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
+      .catch(error => {
+        if (!error) {
+          alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
+        }
+        handleError(error);
       });
   };
 
