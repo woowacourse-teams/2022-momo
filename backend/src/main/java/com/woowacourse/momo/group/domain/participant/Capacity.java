@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain.participant;
 
-import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_OUT_OF_RANGE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.CAPACITY_CANNOT_BE_OUT_OF_RANGE;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -41,7 +41,7 @@ public class Capacity {
 
     private void validateCapacityIsInRange(int value) {
         if (isOutOfRange(value)) {
-            throw new GroupException(CAPACITY_OUT_OF_RANGE);
+            throw new GroupException(CAPACITY_CANNOT_BE_OUT_OF_RANGE);
         }
     }
 

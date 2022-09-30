@@ -1,6 +1,6 @@
 package com.woowacourse.momo.group.domain.calendar;
 
-import static com.woowacourse.momo.group.exception.GroupErrorCode.DEADLINE_NOT_PAST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DEADLINE_MUST_BE_SET_FROM_NOW_ON;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,7 +42,7 @@ public class Deadline {
 
     private void validateDeadlineIsAfterNow(LocalDateTime value) {
         if (isBeforeThanNow(value)) {
-            throw new GroupException(DEADLINE_NOT_PAST);
+            throw new GroupException(DEADLINE_MUST_BE_SET_FROM_NOW_ON);
         }
     }
 
