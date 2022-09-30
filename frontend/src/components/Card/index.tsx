@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
+import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import { GroupSummary } from 'types/data';
 import { getCategoryImage } from 'utils/category';
@@ -35,7 +36,9 @@ function Card({ group }: CardProps) {
           <S.Left>
             <div>
               <S.Title>{name}</S.Title>
-              <S.HostName>{host.name}</S.HostName>
+              <S.HostName>
+                {host.name ? host.name : GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+              </S.HostName>
             </div>
             <S.Capacity>
               <span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명
