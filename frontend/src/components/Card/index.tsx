@@ -37,7 +37,7 @@ function Card({ group }: CardProps) {
             <div>
               <S.Title>{name}</S.Title>
               <S.HostName>
-                {host.name ? host.name : GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+                {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
               </S.HostName>
             </div>
             <S.Capacity>

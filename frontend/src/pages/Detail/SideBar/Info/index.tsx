@@ -64,7 +64,7 @@ function Info({
           <S.Wrapper>
             <PersonSVG width={svgSize} />
             <S.Text>
-              {host.name ? host.name : GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+              {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
             </S.Text>
           </S.Wrapper>
         </div>

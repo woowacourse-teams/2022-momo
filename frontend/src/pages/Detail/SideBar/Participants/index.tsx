@@ -26,16 +26,14 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
         <S.Wrapper>
           <CrownSVG width={svgSize} />
           <S.HostText>
-            {host.name ? host.name : GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+            {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
           </S.HostText>
         </S.Wrapper>
         {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
             <PersonSVG width={svgSize} />
             <S.Text>
-              {participant.name
-                ? participant.name
-                : GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+              {participant.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
             </S.Text>
           </S.Wrapper>
         ))}
