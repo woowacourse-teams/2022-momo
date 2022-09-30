@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.auth.service.dto.response.OauthLinkResponse;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
@@ -59,12 +60,12 @@ public class OauthService {
         validateResponseStatusIsOk(responseEntity.getStatusCode());
 
         return Optional.ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
+                .orElseThrow(() -> new MomoException(AuthErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_EXIST_BODY));
     }
 
     private void validateResponseStatusIsOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
-            throw new MomoException(GlobalErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
+            throw new MomoException(AuthErrorCode.OAUTH_USERINFO_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
     }
 

@@ -14,12 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.MemberFindService;
 
 @Transactional
@@ -56,7 +58,7 @@ class AuthServiceTest {
 
         assertThatThrownBy(
                 () -> authService.signUp(request)
-        ).isInstanceOf(MomoException.class)
+        ).isInstanceOf(AuthException.class)
                 .hasMessageContaining("이미 가입된 아이디입니다.");
     }
 
@@ -113,7 +115,7 @@ class AuthServiceTest {
         LoginRequest request = new LoginRequest(USER_ID, "wrong123!");
 
         assertThatThrownBy(() -> authService.login(request))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("아이디나 비밀번호가 다릅니다.");
     }
 

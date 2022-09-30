@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
@@ -62,14 +64,14 @@ public class AuthService {
     private void validateUserIsNotExist(UserId userId) {
         Optional<Member> member = memberRepository.findByUserId(userId);
         if (member.isPresent()) {
-            throw new MomoException(GlobalErrorCode.SIGNUP_ALREADY_REGISTER);
+            throw new AuthException(AuthErrorCode.SIGNUP_ALREADY_REGISTER);
         }
     }
 
     public AccessTokenResponse reissueAccessToken(Long memberId) {
         boolean isExistMember = memberRepository.existsById(memberId);
         if (!isExistMember) {
-            throw new MomoException(GlobalErrorCode.AUTH_INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.AUTH_INVALID_TOKEN);
         }
         String accessToken = jwtTokenProvider.createAccessToken(memberId);
         return new AccessTokenResponse(accessToken);

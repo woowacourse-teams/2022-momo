@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.exception.MemberErrorCode;
@@ -53,7 +55,7 @@ public class UserId {
 
     private static void validateUserIdIsValidPattern(String value) {
         if (value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(GlobalErrorCode.SIGNUP_INVALID_ID);
+            throw new MemberException(MemberErrorCode.SIGNUP_INVALID_ID);
         }
     }
 

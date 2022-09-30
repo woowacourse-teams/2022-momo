@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.member.exception.MemberException;
 
 class UserNameTest {
 
@@ -16,7 +17,7 @@ class UserNameTest {
     @ValueSource(strings = {"", " "})
     void nameMustNotBlank(String name) {
         assertThatThrownBy(() -> UserName.from(name))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("사용자의 이름이 빈 값입니다.");
     }
 
@@ -24,7 +25,7 @@ class UserNameTest {
     @Test
     void nameMustBe30OrLess() {
         assertThatThrownBy(() -> UserName.from("a".repeat(31)))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("사용자의 이름이 30자를 넘습니다.");
     }
 }

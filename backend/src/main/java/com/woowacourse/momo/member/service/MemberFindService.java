@@ -37,7 +37,7 @@ public class MemberFindService {
 
     private void validateExistMember(Member member) {
         if (member.isDeleted()) {
-            throw new MomoException(MemberErrorCode.MEMBER_DELETED);
+            throw new MemberException(MemberErrorCode.MEMBER_DELETED);
         }
     }
 }

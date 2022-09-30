@@ -87,7 +87,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("GROUP_001")))
                 .andDo(
                         document("participatenotexistgroup",
                                 preprocessRequest(prettyPrint()),
@@ -110,7 +110,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_002")))
+                .andExpect(jsonPath("$.message", is("MEMBER_002")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),
@@ -133,7 +133,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_016")))
+                .andExpect(jsonPath("$.message", is("GROUP_016")))
                 .andDo(
                         document("participateparticipant",
                                 preprocessRequest(prettyPrint()),
@@ -155,7 +155,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_013")))
+                .andExpect(jsonPath("$.message", is("GROUP_013")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),
@@ -189,7 +189,7 @@ class ParticipateControllerTest {
         mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("GROUP_001")))
                 .andDo(
                         document("findparticipantsnotexistgroup",
                                 preprocessRequest(prettyPrint()),

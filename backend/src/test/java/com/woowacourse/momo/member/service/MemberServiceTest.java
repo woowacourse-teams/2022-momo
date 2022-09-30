@@ -29,6 +29,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
@@ -89,7 +90,7 @@ class MemberServiceTest {
     @Test
     void findByIdNotExist() {
         assertThatThrownBy(() -> memberService.findById(1000L))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
@@ -112,7 +113,7 @@ class MemberServiceTest {
     void updateNameNotExist() {
         ChangeNameRequest request = new ChangeNameRequest("무무");
 
-        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MomoException.class)
+        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MemberException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
@@ -141,7 +142,7 @@ class MemberServiceTest {
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "wrongPassword");
         assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 
@@ -155,7 +156,7 @@ class MemberServiceTest {
         assertAll(
                 () -> assertThat(tokenRepository.findByMemberId(memberId)).isEmpty(),
                 () -> assertThatThrownBy(() -> memberService.findById(memberId))
-                        .isInstanceOf(MomoException.class)
+                        .isInstanceOf(MemberException.class)
                         .hasMessage("탈퇴한 멤버입니다.")
         );
     }
@@ -164,7 +165,7 @@ class MemberServiceTest {
     @Test
     void deleteNotExistMember() {
         assertThatThrownBy(() -> memberService.findById(1000L))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 

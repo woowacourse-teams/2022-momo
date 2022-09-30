@@ -12,6 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.AuthorizationExtractor;
 import com.woowacourse.momo.auth.support.JwtTokenProvider;
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
@@ -47,7 +49,7 @@ public class AuthOptionalInterceptor implements HandlerInterceptor {
 
         String token = AuthorizationExtractor.extract(request);
         if (jwtTokenProvider.validateTokenNotUsable(token)) {
-            throw new MomoException(GlobalErrorCode.AUTH_INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.AUTH_INVALID_TOKEN);
         }
     }
 }

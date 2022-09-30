@@ -149,7 +149,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
     void findNonExistentGroup() {
         모임을_조회한다(hostAccessToken, 0L)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("모임목록중 첫번째 페이지를 조회한다")
