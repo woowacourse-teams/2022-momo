@@ -18,6 +18,7 @@ const GUIDE_MESSAGE = {
     CONFIRM_WITHDRAWAL_REQUEST:
       '정말로 탈퇴하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
     SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴에 성공했어요. 다음에 다시 만나요 😊',
+    WITHDRAWAL_MEMBER: '탈퇴한 회원입니다.',
   },
   GROUP: {
     CONFIRM_CLOSE_REQUEST: '모임 모집을 마감하시겠어요?',
