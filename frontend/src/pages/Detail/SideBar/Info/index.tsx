@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { ClockSVG, LocationSVG, PencilSVG } from 'assets/svg';
 import CategorySVG from 'components/svg/Category';
 import PersonSVG from 'components/svg/Person';
+import { GUIDE_MESSAGE } from 'constants/message';
 import useModal from 'hooks/useModal';
 import { loginState } from 'store/states';
 import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
@@ -62,7 +63,9 @@ function Info({
           </S.Wrapper>
           <S.Wrapper>
             <PersonSVG width={svgSize} />
-            <S.Text>{host.name}</S.Text>
+            <S.Text>
+              {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+            </S.Text>
           </S.Wrapper>
         </div>
         {isHost && (
