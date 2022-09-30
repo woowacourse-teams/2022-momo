@@ -23,9 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
+
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @AutoConfigureMockMvc
@@ -47,12 +50,15 @@ class AuthControllerTest {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private MemberService memberService;
+
     @DisplayName("정상적으로 회원가입이 되는 경우를 테스트한다")
     @Test
     void signUp() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -70,7 +76,7 @@ class AuthControllerTest {
     void signUpWithInvalidUserIdPattern() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa@", PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
@@ -82,7 +88,7 @@ class AuthControllerTest {
     void signUpWithBlankUserId() throws Exception {
         SignUpRequest request = new SignUpRequest("", PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
@@ -94,7 +100,7 @@ class AuthControllerTest {
     void signUpWithBlankPassword() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, "", NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
@@ -106,7 +112,7 @@ class AuthControllerTest {
     void signUpWithInvalidPasswordPattern() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, "woowa", NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
@@ -118,7 +124,7 @@ class AuthControllerTest {
     void signUpWithBlankName() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa", PASSWORD, "");
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
@@ -214,7 +220,7 @@ class AuthControllerTest {
 
     void saveMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
-        authService.signUp(request);
+        memberService.signUp(request);
     }
 
     LoginResponse extractLoginResponse(String userId, String password) {

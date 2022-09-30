@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -75,7 +75,7 @@ class MemberServiceTest {
     @Test
     void findById() {
         SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
-        Long memberId = authService.signUp(request);
+        Long memberId = memberService.signUp(request);
 
         MyInfoResponse response = memberService.findById(memberId);
 
@@ -122,7 +122,7 @@ class MemberServiceTest {
     void updatePassword() {
         String beforePassword = "wooteco1!";
         SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
-        Long memberId = authService.signUp(signUpRequest);
+        Long memberId = memberService.signUp(signUpRequest);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", beforePassword);
         memberService.updatePassword(memberId, changePasswordRequest);
@@ -138,7 +138,7 @@ class MemberServiceTest {
     void updatePasswordWithWrongPassword() {
         String password = "wooteco1!";
         SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
-        Long memberId = authService.signUp(signUpRequest);
+        Long memberId = memberService.signUp(signUpRequest);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "wrongPassword");
         assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
@@ -195,7 +195,7 @@ class MemberServiceTest {
 
     private Long createMember() {
         SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 
     private Group saveGroup() {

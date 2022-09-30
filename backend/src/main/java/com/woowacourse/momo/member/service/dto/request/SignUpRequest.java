@@ -1,4 +1,4 @@
-package com.woowacourse.momo.auth.service.dto.request;
+package com.woowacourse.momo.member.service.dto.request;
 
 import javax.validation.constraints.NotNull;
 

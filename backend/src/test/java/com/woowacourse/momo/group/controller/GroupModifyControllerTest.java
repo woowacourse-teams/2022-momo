@@ -38,7 +38,8 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
@@ -63,6 +64,7 @@ class GroupModifyControllerTest {
     private final ObjectMapper objectMapper;
     private final GroupModifyService groupModifyService;
     private final AuthService authService;
+    private final MemberService memberService;
 
     @DisplayName("그룹이 정상적으로 생성되는 경우를 테스트한다")
     @Test
@@ -185,6 +187,6 @@ class GroupModifyControllerTest {
 
     Long saveMember(String id, String password, String name) {
         SignUpRequest request = new SignUpRequest(id, password, name);
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 }

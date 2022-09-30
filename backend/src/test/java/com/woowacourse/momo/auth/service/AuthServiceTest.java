@@ -16,10 +16,10 @@ import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.MemberFindService;
@@ -39,13 +39,16 @@ class AuthServiceTest {
     private AuthService authService;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private MemberFindService memberFindService;
 
     @DisplayName("회원 가입을 한다")
     @Test
     void signUp() {
         SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
-        Long id = authService.signUp(request);
+        Long id = memberService.signUp(request);
 
         assertThat(id).isNotNull();
     }
@@ -54,10 +57,10 @@ class AuthServiceTest {
     @Test
     void signUpAlreadyExistId() {
         SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
-        authService.signUp(request);
+        memberService.signUp(request);
 
         assertThatThrownBy(
-                () -> authService.signUp(request)
+                () -> memberService.signUp(request)
         ).isInstanceOf(AuthException.class)
                 .hasMessageContaining("이미 가입된 아이디입니다.");
     }
@@ -130,6 +133,6 @@ class AuthServiceTest {
 
     Long createMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 }

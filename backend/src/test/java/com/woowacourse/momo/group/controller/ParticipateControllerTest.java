@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -297,7 +297,7 @@ class ParticipateControllerTest {
 
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 
     String accessToken(String userId) {
