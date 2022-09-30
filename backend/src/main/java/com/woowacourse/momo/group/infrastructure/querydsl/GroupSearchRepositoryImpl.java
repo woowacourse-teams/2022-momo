@@ -79,7 +79,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     public List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
         return queryFactory
-                .select(group.id).distinct()
+                .select(group.id)
                 .from(group)
                 .innerJoin(group.favorites.favorites, favorite)
                 .where(
