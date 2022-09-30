@@ -2,7 +2,6 @@ package com.woowacourse.momo.group.domain;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_CLOSED_EARLY;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.ALREADY_DEADLINE_OVER;
-import static com.woowacourse.momo.group.exception.GroupErrorCode.PARTICIPANT_EXIST;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -116,8 +115,8 @@ public class Group {
     }
 
     public void validateGroupIsProceeding() {
-        validateGroupIsNotClosedEarly();
         validateDeadlineNotOver();
+        validateGroupIsNotClosedEarly();
     }
 
     private void validateGroupIsNotClosedEarly() {
