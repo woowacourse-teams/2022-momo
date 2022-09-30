@@ -77,7 +77,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
-    public List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
+    private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
         return queryFactory
                 .select(group.id)
                 .from(group)
