@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -87,7 +87,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("GROUP_001")))
                 .andDo(
                         document("participatenotexistgroup",
                                 preprocessRequest(prettyPrint()),
@@ -110,7 +110,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("MEMBER_ERROR_002")))
+                .andExpect(jsonPath("$.message", is("MEMBER_002")))
                 .andDo(
                         document("participatenotexistmember",
                                 preprocessRequest(prettyPrint()),
@@ -133,7 +133,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_016")))
+                .andExpect(jsonPath("$.message", is("GROUP_016")))
                 .andDo(
                         document("participateparticipant",
                                 preprocessRequest(prettyPrint()),
@@ -155,7 +155,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_013")))
+                .andExpect(jsonPath("$.message", is("GROUP_013")))
                 .andDo(
                         document("participatefullgroup",
                                 preprocessRequest(prettyPrint()),
@@ -189,7 +189,7 @@ class ParticipateControllerTest {
         mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_ERROR_001")))
+                .andExpect(jsonPath("$.message", is("GROUP_001")))
                 .andDo(
                         document("findparticipantsnotexistgroup",
                                 preprocessRequest(prettyPrint()),
@@ -297,7 +297,7 @@ class ParticipateControllerTest {
 
     Long saveMember(String userId) {
         SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 
     String accessToken(String userId) {

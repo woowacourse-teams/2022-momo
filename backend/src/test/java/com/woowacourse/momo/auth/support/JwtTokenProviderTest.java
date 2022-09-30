@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class JwtTokenProviderTest {
@@ -19,7 +20,7 @@ class JwtTokenProviderTest {
         String accessToken = tokenProvider.createAccessToken(1L);
 
         assertThatThrownBy(() -> tokenProvider.validateTokenNotUsable(accessToken))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(AuthException.class)
                 .hasMessageContaining("토큰의 유효기간이 만료되었습니다.");
     }
 

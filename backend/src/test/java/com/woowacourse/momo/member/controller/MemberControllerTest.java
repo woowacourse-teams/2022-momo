@@ -27,7 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 
@@ -49,6 +50,9 @@ class MemberControllerTest {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    MemberService memberService;
 
     String accessToken;
 
@@ -151,6 +155,6 @@ class MemberControllerTest {
     void signUp() {
         SignUpRequest signUpRequest = new SignUpRequest(ID, PASSWORD, NAME);
 
-        authService.signUp(signUpRequest);
+        memberService.signUp(signUpRequest);
     }
 }

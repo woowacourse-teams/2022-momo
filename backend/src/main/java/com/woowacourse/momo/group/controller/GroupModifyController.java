@@ -50,7 +50,7 @@ public class GroupModifyController {
 
     @PutMapping("/{groupId}/location")
     public ResponseEntity<Void> updateLocation(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
-                                       @RequestBody @Valid LocationUpdateApiRequest request) {
+                                               @RequestBody @Valid LocationUpdateApiRequest request) {
         groupModifyService.updateLocation(memberId, groupId, assembler.groupLocationUpdateRequest(request));
         return ResponseEntity.ok().build();
     }

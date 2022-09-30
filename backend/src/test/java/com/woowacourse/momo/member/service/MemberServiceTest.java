@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -29,6 +29,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
@@ -74,7 +75,7 @@ class MemberServiceTest {
     @Test
     void findById() {
         SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
-        Long memberId = authService.signUp(request);
+        Long memberId = memberService.signUp(request);
 
         MyInfoResponse response = memberService.findById(memberId);
 
@@ -89,7 +90,7 @@ class MemberServiceTest {
     @Test
     void findByIdNotExist() {
         assertThatThrownBy(() -> memberService.findById(1000L))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
@@ -112,7 +113,7 @@ class MemberServiceTest {
     void updateNameNotExist() {
         ChangeNameRequest request = new ChangeNameRequest("무무");
 
-        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MomoException.class)
+        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MemberException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
@@ -121,7 +122,7 @@ class MemberServiceTest {
     void updatePassword() {
         String beforePassword = "wooteco1!";
         SignUpRequest signUpRequest = new SignUpRequest("woowa", beforePassword, "모모");
-        Long memberId = authService.signUp(signUpRequest);
+        Long memberId = memberService.signUp(signUpRequest);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", beforePassword);
         memberService.updatePassword(memberId, changePasswordRequest);
@@ -137,11 +138,11 @@ class MemberServiceTest {
     void updatePasswordWithWrongPassword() {
         String password = "wooteco1!";
         SignUpRequest signUpRequest = new SignUpRequest("woowa", password, "모모");
-        Long memberId = authService.signUp(signUpRequest);
+        Long memberId = memberService.signUp(signUpRequest);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("newPassword123!", "wrongPassword");
         assertThatThrownBy(() -> memberService.updatePassword(memberId, changePasswordRequest))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 
@@ -155,7 +156,7 @@ class MemberServiceTest {
         assertAll(
                 () -> assertThat(tokenRepository.findByMemberId(memberId)).isEmpty(),
                 () -> assertThatThrownBy(() -> memberService.findById(memberId))
-                        .isInstanceOf(MomoException.class)
+                        .isInstanceOf(MemberException.class)
                         .hasMessage("탈퇴한 멤버입니다.")
         );
     }
@@ -164,7 +165,7 @@ class MemberServiceTest {
     @Test
     void deleteNotExistMember() {
         assertThatThrownBy(() -> memberService.findById(1000L))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 
@@ -194,7 +195,7 @@ class MemberServiceTest {
 
     private Long createMember() {
         SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 
     private Group saveGroup() {
