@@ -181,7 +181,7 @@ class GroupSearchControllerTest {
         likeGroup(groupId4, saveMemberId);
 
         mockMvc.perform(MockMvcRequestBuilders.get(
-                                "/api/groups/me/liked?keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                                "/api/groups/me/liked?keyword=모모&excludeFinished=true&orderByDeadline=false&page=0")
                         .header("Authorization", "bearer " + token))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))

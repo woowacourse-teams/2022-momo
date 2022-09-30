@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.Group;
@@ -52,25 +53,34 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     @Override
     public Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable) {
+        List<Long> likedGroupIds = findLikedGroupIds(condition, member, pageable);
+
         List<Group> groups = queryFactory
-                .selectFrom(group)
+                .select(group).distinct()
+                .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .innerJoin(group.favorites.favorites, favorite)
                 .fetchJoin()
-                .where(
-                        group.id.in(findLikedGroupIds(condition, member, pageable))
-                )
+                .where(group.id.in(likedGroupIds))
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.count())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .innerJoin(group.favorites.favorites, favorite)
+                .where(
+                        group.id.in(likedGroupIds)
+                );
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
     private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
         return queryFactory
                 .select(group.id)
                 .from(group)
-                .leftJoin(group.participants.participants, participant)
                 .innerJoin(group.favorites.favorites, favorite)
                 .where(
                         favorite.member.eq(member),
@@ -97,7 +107,16 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return PageableExecutionUtils.getPage(groups, pageable, groups::size);
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.countDistinct())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .where(
+                        mainCondition.get(),
+                        conditionFilter.filterByCondition(condition)
+                );
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
     public List<Group> findParticipatedGroups(Member member) {
