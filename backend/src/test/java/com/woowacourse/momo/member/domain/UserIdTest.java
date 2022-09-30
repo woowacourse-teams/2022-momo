@@ -1,5 +1,6 @@
 package com.woowacourse.momo.member.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
@@ -34,5 +35,12 @@ class UserIdTest {
         assertThatThrownBy(() -> UserId.oauth("id"))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("구글 아이디가 이메일 형식이 아닙니다.");
+    }
+
+    @DisplayName("삭제된 아이디는 빈값을 반환한다")
+    @Test
+    void delete() {
+        UserId userId = UserId.deleted();
+        assertThat(userId.getValue()).isBlank();
     }
 }

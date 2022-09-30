@@ -1,5 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -60,10 +62,9 @@ public class Member {
     }
 
     public void delete() {
-        DeletedMember deletedMember = new DeletedMember();
-        userId = deletedMember.getUserId();
-        password = deletedMember.getPassword();
-        userName = deletedMember.getUserName();
+        userId = UserId.deleted();
+        password = Password.deleted();
+        userName = UserName.deleted();
         deleted = true;
     }
 
@@ -72,7 +73,9 @@ public class Member {
     }
 
     public String getUserId() {
-        return userId.getValue();
+        return Optional.ofNullable(userId)
+                .map(UserId::getValue)
+                .orElse("");
     }
 
     public String getPassword() {
@@ -80,9 +83,8 @@ public class Member {
     }
 
     public String getUserName() {
-        if (deleted) {
-            return SHOWN_DELETED_USER_NAME;
-        }
-        return userName.getValue();
+        return Optional.ofNullable(userName)
+                .map(UserName::getValue)
+                .orElse("");
     }
 }

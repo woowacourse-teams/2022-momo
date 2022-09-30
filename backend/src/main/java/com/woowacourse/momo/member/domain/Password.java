@@ -1,19 +1,18 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Password {
@@ -24,7 +23,7 @@ public class Password {
     private static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_FORMAT);
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String value;
 
     private Password(String value) {
@@ -37,8 +36,8 @@ public class Password {
         return new Password(encoder.encrypt(value));
     }
 
-    public static Password deletedAs(String password) {
-        return new Password(password);
+    public static Password deleted() {
+        return new Password(null);
     }
 
     public Password update(String value, PasswordEncoder encoder) {
@@ -63,5 +62,10 @@ public class Password {
         if (isNotValid(value)) {
             throw new MomoException(GlobalErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
         }
+    }
+
+    public String getValue() {
+        return Optional.ofNullable(value)
+                .orElse("");
     }
 }

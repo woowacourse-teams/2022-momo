@@ -1,5 +1,6 @@
 package com.woowacourse.momo.member.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
@@ -26,5 +27,12 @@ class UserNameTest {
         assertThatThrownBy(() -> UserName.from("a".repeat(31)))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("사용자의 이름이 30자를 넘습니다.");
+    }
+
+    @DisplayName("삭제된 이름은 빈값을 반환한다")
+    @Test
+    void delete() {
+        UserName userName = UserName.deleted();
+        assertThat(userName.getValue()).isBlank();
     }
 }

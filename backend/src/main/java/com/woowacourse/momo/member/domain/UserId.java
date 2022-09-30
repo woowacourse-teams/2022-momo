@@ -1,5 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -21,7 +23,7 @@ public class UserId {
 
     private static final String EMAIL_FORMAT = "@";
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", unique = true)
     private String value;
 
     private UserId(String value) {
@@ -39,8 +41,8 @@ public class UserId {
         return new UserId(value);
     }
 
-    public static UserId deletedAs(String value) {
-        return new UserId(value);
+    public static UserId deleted() {
+        return new UserId(null);
     }
 
     private static void validateUserIdIsNotBlank(String value) {
@@ -59,5 +61,10 @@ public class UserId {
         if (!value.contains(EMAIL_FORMAT)) {
             throw new MomoException(GlobalErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
         }
+    }
+
+    public String getValue() {
+        return Optional.ofNullable(value)
+                .orElse("");
     }
 }
