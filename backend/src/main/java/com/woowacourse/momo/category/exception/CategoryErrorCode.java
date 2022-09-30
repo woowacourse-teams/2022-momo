@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 
 public enum CategoryErrorCode implements ErrorCode {
+
     CATEGORY_NOT_EXIST(HttpStatus.NOT_FOUND.value(), "CATEGORY_001", "존재하지 않는 카테고리입니다."),
     ;
 
@@ -17,7 +18,6 @@ public enum CategoryErrorCode implements ErrorCode {
         this.errorCode = errorCode;
         this.message = message;
     }
-
 
     @Override
     public int getStatusCode() {

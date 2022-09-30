@@ -1,10 +1,9 @@
 package com.woowacourse.momo.member.exception;
 
-import org.springframework.http.HttpStatus;
-
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
 
 public enum MemberErrorCode implements ErrorCode {
+
     MEMBER_NOT_EXIST(400, "MEMBER_001", "멤버가 존재하지 않습니다."),
     MEMBER_DELETED(400, "MEMBER_002", "탈퇴한 멤버입니다."),
     MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP(400, "MEMBER_003", "진행중인 모임이 있어 탈퇴할 수 없습니다."),
