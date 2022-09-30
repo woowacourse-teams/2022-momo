@@ -40,6 +40,7 @@ function DetailSideBar({
       <Info
         id={id}
         host={host}
+        capacity={capacity}
         duration={duration}
         finished={finished}
         location={location}

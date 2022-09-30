@@ -19,13 +19,14 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 import * as S from './index.styled';
 
 interface ControlButtonProps
-  extends Pick<GroupDetailData, 'id' | 'host' | 'finished'> {
+  extends Pick<GroupDetailData, 'id' | 'host' | 'capacity' | 'finished'> {
   participants: GroupParticipants;
 }
 
 function ControlButton({
   id,
   host,
+  capacity,
   finished,
   participants,
 }: ControlButtonProps) {
@@ -127,6 +128,10 @@ function ControlButton({
         참여 취소
       </S.ExitButton>
     );
+  }
+
+  if (participants.length === capacity) {
+    return <S.DisableButton>참여 인원이 가득 찼어요</S.DisableButton>;
   }
 
   return (

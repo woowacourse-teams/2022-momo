@@ -17,7 +17,7 @@ const svgSize = 25;
 interface InfoProps
   extends Pick<
     GroupDetailData,
-    'id' | 'host' | 'duration' | 'finished' | 'location'
+    'id' | 'host' | 'capacity' | 'duration' | 'finished' | 'location'
   > {
   categoryName: CategoryType['name'];
   participants: GroupParticipants;
@@ -26,6 +26,7 @@ interface InfoProps
 function Info({
   id,
   host,
+  capacity,
   duration,
   categoryName,
   finished,
@@ -73,6 +74,7 @@ function Info({
       <ControlButton
         id={id}
         host={host}
+        capacity={capacity}
         finished={finished}
         participants={participants}
       />
