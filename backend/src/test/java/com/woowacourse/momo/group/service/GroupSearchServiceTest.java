@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
+import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,10 +42,12 @@ class GroupSearchServiceTest {
     private final MemberRepository memberRepository;
 
     private Member host;
+    private Member member;
 
     @BeforeEach
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
+        member = memberRepository.save(DUDU.toMember());
     }
 
     @DisplayName("모임을 조회한다")
@@ -113,7 +116,9 @@ class GroupSearchServiceTest {
         @BeforeEach
         void setUp() {
             for (int i = 0; i < PAGE_SIZE + TWO_PAGE_GROUPS; i++) {
-                saveGroup("모모의 스터디", Category.STUDY);
+                Group group = saveGroup("모임 " + i, Category.STUDY);
+                group.like(host);
+                group.like(member);
             }
         }
 
@@ -144,10 +149,24 @@ class GroupSearchServiceTest {
                     () -> assertThat(actual.getGroups()).hasSize(TWO_PAGE_GROUPS)
             );
         }
+
+        @DisplayName("모임 목록중 두번째 페이지를 조회한다")
+        @Test
+        void findLikedGroupsFirstPage() {
+            GroupSearchRequest request = new GroupSearchRequest();
+            request.setPage(0);
+
+            GroupPageResponse actual = groupService.findLikedGroups(request, host.getId());
+
+            assertAll(
+                    () -> assertThat(actual.isHasNextPage()).isTrue(),
+                    () -> assertThat(actual.getGroups()).hasSize(PAGE_SIZE)
+            );
+        }
     }
 
-    private void saveGroup(String name, Category category) {
-        groupRepository.save(MOMO_STUDY.builder()
+    private Group saveGroup(String name, Category category) {
+        return groupRepository.save(MOMO_STUDY.builder()
                 .name(name)
                 .category(category)
                 .toGroup(host));
