@@ -8,8 +8,9 @@ import {
 
 import { requestLikeGroup, requestUnlikeGroup } from 'apis/request/group';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
+import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 import useThrottle from 'hooks/useThrottle';
 import { GroupDetailData } from 'types/data';
@@ -28,6 +29,7 @@ interface LikeButtonProps {
 
 function LikeButton({ like, id, refetch }: LikeButtonProps) {
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
   const throttle = useThrottle();
   const { isLogin } = useAuth();
 
@@ -42,20 +44,29 @@ function LikeButton({ like, id, refetch }: LikeButtonProps) {
     if (like) {
       requestUnlikeGroup(id)
         .then(() => {
+          setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_UNLIKE_GROUP);
           refetch();
         })
-        .catch(() => {
-          setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+        .catch(error => {
+          if (!error) {
+            setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+          }
+
+          handleError(error);
         });
       return;
     }
 
     requestLikeGroup(id)
       .then(() => {
+        setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_LIKE_GROUP);
         refetch();
       })
-      .catch(() => {
-        setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+      .catch(error => {
+        if (!error) {
+          setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+        }
+        handleError(error);
       });
   };
 

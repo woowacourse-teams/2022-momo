@@ -6,7 +6,6 @@ import { requestCreateGroup } from 'apis/request/group';
 import { BROWSER_PATH } from 'constants/path';
 import useCreateState from 'hooks/useCreateState';
 import Navigator from 'pages/Create/Navigator';
-import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
 import {
