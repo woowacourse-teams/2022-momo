@@ -49,6 +49,11 @@ function Main() {
       setPageNumber(data.pageNumber + 1);
     }
 
+    if (data.pageNumber === 0) {
+      setGroups(data.groups);
+      return;
+    }
+
     setGroups(prevState => [...prevState, ...data.groups]);
   }, [data]);
 
