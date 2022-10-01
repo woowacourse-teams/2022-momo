@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 
 interface isValidSignupFormDataProp {
   isValidName: boolean;
@@ -25,15 +25,15 @@ const isValidSignupFormData = ({
   isValidConfirmPassword,
 }: isValidSignupFormDataProp) => {
   if (!isValidName) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
   }
 
   if (!isValidPassword) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.SIGNUP_002);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
   }
 
   if (!isValidConfirmPassword) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
   }
 };
 

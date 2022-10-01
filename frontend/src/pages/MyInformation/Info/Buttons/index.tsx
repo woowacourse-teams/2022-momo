@@ -2,7 +2,7 @@ import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 
 import { requestChangeName, requestUserInfo } from 'apis/request/user';
 import { CompleteSVG, PencilSVG } from 'assets/svg';
-import { GUIDE_MESSAGE, ERROR_MESSAGE } from 'constants/message';
+import { GUIDE_MESSAGE, CLIENT_ERROR_MESSAGE } from 'constants/message';
 import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
@@ -65,7 +65,7 @@ function Buttons({
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
+          alert(CLIENT_ERROR_MESSAGE.MEMBER.FAILURE_NAME_REQUEST);
         }
         handleError(error);
       });

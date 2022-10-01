@@ -1,26 +1,24 @@
-import { ERROR_MESSAGE } from 'constants/message';
+import { SERVER_ERROR_MESSAGE } from 'constants/message';
 import useSnackbar from 'hooks/useSnackbar';
+import { ServerErrorType } from 'types/data';
+import { ObjectKey } from 'types/utils';
 
 const useHandleError = () => {
-  type CustomErrorType = { response: { data: { message: string } } };
-
   const { setMessage } = useSnackbar();
 
-  const handleError = (error: CustomErrorType) => {
-    type ErrorPrefixKey = keyof typeof ERROR_MESSAGE;
-
+  const handleError = (error: ServerErrorType) => {
     const { message } = error.response.data;
     const splitedMessage = message.split('_');
-    const prefix = splitedMessage[0] as ErrorPrefixKey;
+    const prefix = splitedMessage[0] as ObjectKey<typeof SERVER_ERROR_MESSAGE>;
 
     // @ts-ignore
-    if (prefix === 'SERVER' || !ERROR_MESSAGE[prefix][message]) {
-      setMessage(ERROR_MESSAGE.SERVER.UNHANDLED);
+    if (prefix === 'SERVER' || !SERVER_ERROR_MESSAGE[prefix][message]) {
+      setMessage(SERVER_ERROR_MESSAGE.SERVER.UNHANDLED);
       return;
     }
 
     // @ts-ignore
-    setMessage(ERROR_MESSAGE[prefix][message]);
+    setMessage(SERVER_ERROR_MESSAGE[prefix][message]);
   };
   return { handleError };
 };

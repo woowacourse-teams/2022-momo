@@ -8,7 +8,7 @@ import {
 
 import { requestLikeGroup, requestUnlikeGroup } from 'apis/request/group';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
 import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
@@ -49,7 +49,7 @@ function LikeButton({ like, id, refetch }: LikeButtonProps) {
         })
         .catch(error => {
           if (!error) {
-            setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+            setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
           }
 
           handleError(error);
@@ -64,7 +64,7 @@ function LikeButton({ like, id, refetch }: LikeButtonProps) {
       })
       .catch(error => {
         if (!error) {
-          setMessage(ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+          setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
         }
         handleError(error);
       });

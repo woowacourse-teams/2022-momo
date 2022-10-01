@@ -35,8 +35,7 @@ function Header() {
           setAccessToken(accessToken);
           setUserInfo();
         })
-        .catch(error => {
-          handleError(error);
+        .catch(() => {
           resetAuth();
         });
     };
@@ -50,8 +49,7 @@ function Header() {
             user: userInfo,
           });
         })
-        .catch(error => {
-          handleError(error);
+        .catch(() => {
           reissueAccessToken();
         });
     };

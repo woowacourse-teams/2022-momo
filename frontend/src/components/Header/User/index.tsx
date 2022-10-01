@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { requestLogout } from 'apis/request/auth';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 import useClosingState from 'hooks/useClosingState';
@@ -57,7 +57,7 @@ function User() {
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
+          alert(CLIENT_ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
         }
 
         handleError(error);

@@ -9,7 +9,7 @@ import {
   requestCloseGroup,
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
@@ -55,7 +55,7 @@ function ControlButton({
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
         }
         handleError(error);
       });
@@ -72,7 +72,7 @@ function ControlButton({
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+          alert(CLIENT_ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
         }
         handleError(error);
       });
@@ -93,7 +93,7 @@ function ControlButton({
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
         }
         handleError(error);
       });
@@ -109,7 +109,7 @@ function ControlButton({
       })
       .catch(error => {
         if (!error) {
-          alert(ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
         }
         handleError(error);
       });

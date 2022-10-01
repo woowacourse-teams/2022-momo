@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { resetDateToStartOfDay, resetDateToEndOfDay } from 'utils/date';
@@ -78,15 +78,15 @@ const generateValidators = ({
   return [
     {
       validator: validateName(name),
-      errorMessage: ERROR_MESSAGE.CREATE.NAME,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.NAME,
     },
     {
       validator: validateCategory(selectedCategory),
-      errorMessage: ERROR_MESSAGE.CREATE.CATEGORY,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.CATEGORY,
     },
     {
       validator: validateCapacity(capacity),
-      errorMessage: ERROR_MESSAGE.CREATE.CAPACITY,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.CAPACITY,
     },
     {
       validator: validateDurationDate(
@@ -94,19 +94,19 @@ const generateValidators = ({
         endDateInMidnight,
         todayInMidnight,
       ),
-      errorMessage: ERROR_MESSAGE.CREATE.DURATION,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.DURATION,
     },
     {
       validator: validateDeadlineDate(deadline, schedules),
-      errorMessage: ERROR_MESSAGE.CREATE.DEADLINE,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.DEADLINE,
     },
     {
       validator: validateLocation(location),
-      errorMessage: ERROR_MESSAGE.CREATE.LOCATION,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.LOCATION,
     },
     {
       validator: validateDescription(description),
-      errorMessage: ERROR_MESSAGE.CREATE.DESCRIPTION,
+      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.DESCRIPTION,
     },
   ];
 };

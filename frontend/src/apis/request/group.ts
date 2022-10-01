@@ -1,5 +1,5 @@
 import axios from 'apis/axios';
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
 import { GROUP_RULE } from 'constants/rule';
 import {
@@ -50,7 +50,7 @@ const requestCreateGroup = ({
     })
     .catch(error => {
       if (!error) {
-        throw new Error(ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
+        throw new Error(CLIENT_ERROR_MESSAGE.CREATE.FAILURE_REQUEST);
       }
       throw error;
     });
@@ -95,7 +95,7 @@ const requestEditGroup = (
     })
     .catch(error => {
       if (!error) {
-        throw new Error(ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
+        throw new Error(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_EDIT_GROUP);
       }
       throw error;
     });

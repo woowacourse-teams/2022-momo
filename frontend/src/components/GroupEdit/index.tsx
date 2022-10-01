@@ -66,7 +66,6 @@ function GroupEdit() {
       })
       .catch(error => {
         handleError(error);
-        alert(error.message);
       });
   };
 
