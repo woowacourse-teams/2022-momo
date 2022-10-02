@@ -54,7 +54,7 @@ class GroupRepositoryTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        host = memberRepository.save(new Member(UserId.momo("주최자"), password, UserName.from("momo")));
+        host = memberRepository.save(new Member(UserId.momo("모임주최자"), password, UserName.from("momo")));
     }
 
     @DisplayName("스케쥴이 지정된 모임을 저장한다")
