@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -40,12 +39,5 @@ class UserNameTest {
         assertThatThrownBy(() -> UserName.from(name))
                 .isInstanceOf(MemberException.class)
                 .hasMessage("사용자 이름은 1자 이상 20자 이하여야 합니다.");
-    }
-
-    @DisplayName("삭제된 이름은 빈값을 반환한다")
-    @Test
-    void delete() {
-        UserName userName = UserName.deleted();
-        assertThat(userName.getValue()).isBlank();
     }
 }

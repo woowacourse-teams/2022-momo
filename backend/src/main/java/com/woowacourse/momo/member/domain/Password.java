@@ -36,10 +36,6 @@ public class Password {
         return new Password(encoder.encrypt(value));
     }
 
-    public static Password deleted() {
-        return new Password(null);
-    }
-
     public Password update(String value, PasswordEncoder encoder) {
         return Password.encrypt(value, encoder);
     }
@@ -65,7 +61,6 @@ public class Password {
     }
 
     public String getValue() {
-        return Optional.ofNullable(value)
-                .orElse("");
+        return value;
     }
 }

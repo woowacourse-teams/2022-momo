@@ -37,10 +37,6 @@ public class UserName {
         return new UserName(value);
     }
 
-    public static UserName deleted() {
-        return new UserName(null);
-    }
-
     public UserName update(String value) {
         return UserName.from(value);
     }
@@ -59,7 +55,6 @@ public class UserName {
     }
 
     public String getValue() {
-        return Optional.ofNullable(value)
-                .orElse("");
+        return value;
     }
 }

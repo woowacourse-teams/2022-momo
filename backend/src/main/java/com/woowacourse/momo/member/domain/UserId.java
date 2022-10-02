@@ -45,10 +45,6 @@ public class UserId {
         return new UserId(value);
     }
 
-    public static UserId deleted() {
-        return new UserId(null);
-    }
-
     private static void validateLengthInRange(String userId) {
         int length = userId.length();
         if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
@@ -75,7 +71,6 @@ public class UserId {
     }
 
     public String getValue() {
-        return Optional.ofNullable(value)
-                .orElse("");
+        return value;
     }
 }

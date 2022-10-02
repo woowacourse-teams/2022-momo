@@ -62,9 +62,9 @@ public class Member {
     }
 
     public void delete() {
-        userId = UserId.deleted();
-        password = Password.deleted();
-        userName = UserName.deleted();
+        userId = null;
+        password = null;
+        userName = null;
         deleted = true;
     }
 
@@ -79,7 +79,9 @@ public class Member {
     }
 
     public String getPassword() {
-        return password.getValue();
+        return Optional.ofNullable(password)
+                .map(Password::getValue)
+                .orElse("");
     }
 
     public String getUserName() {
