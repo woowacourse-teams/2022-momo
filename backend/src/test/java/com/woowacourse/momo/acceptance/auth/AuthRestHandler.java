@@ -4,8 +4,8 @@ import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.MemberFixture;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthRestHandler extends RestHandler {

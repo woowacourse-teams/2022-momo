@@ -38,7 +38,7 @@ class UserIdTest {
         String id = " ".repeat(length);
         assertThatThrownBy(() -> UserId.momo(id))
                 .isInstanceOf(MemberException.class)
-                .hasMessage("사용자의 아이디가 빈 값입니다.");
+                .hasMessage("사용자의 아이디가 공백입니다.");
     }
 
     @DisplayName("사용자의 아이디가 이메일 형식일 경우 예외가 발생한다")

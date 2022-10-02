@@ -27,7 +27,7 @@ class GroupNameTest {
         String name = " ".repeat(length);
         assertThatThrownBy(() -> new GroupName(name))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("모임의 이름은 빈 값이 될 수 없습니다.");
+                .hasMessage("모임의 이름은 공백이 될 수 없습니다.");
     }
 
     @DisplayName("모임 이름 길이가 정책 범위를 벗어나면 예외가 발생한다")

@@ -16,13 +16,13 @@ import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.member.service.MemberService;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.MemberFindService;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 
 @Transactional
 @SpringBootTest

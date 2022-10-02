@@ -29,7 +29,7 @@ class UserNameTest {
         String name = " ".repeat(length);
         assertThatThrownBy(() -> UserName.from(name))
                 .isInstanceOf(MemberException.class)
-                .hasMessage("사용자의 이름이 빈 값입니다.");
+                .hasMessage("사용자의 이름이 공백입니다.");
     }
 
     @DisplayName("사용자의 이름이 길이 정책을 벗어나면 예외가 발생한다")

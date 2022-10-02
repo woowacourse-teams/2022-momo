@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.woowacourse.momo.category.exception.CategoryException;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class CategoryTest {
 

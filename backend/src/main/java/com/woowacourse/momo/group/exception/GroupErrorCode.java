@@ -20,7 +20,7 @@ public enum GroupErrorCode implements ErrorCode {
     SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME(400, "GROUP_006", "일정의 시작 시간은 종료 시간 이전이어야 합니다."),
     SCHEDULE_MUST_BE_INCLUDED_IN_DURATION(400, "GROUP_007", "일정은 모임 기간에 포함되어야 합니다."),
 
-    NAME_CANNOT_BE_BLANK(400, "GROUP_008", "모임의 이름은 빈 값이 될 수 없습니다."),
+    NAME_CANNOT_BE_BLANK(400, "GROUP_008", "모임의 이름은 공백이 될 수 없습니다."),
 
     CAPACITY_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_009", "모임 내 인원은 1명 이상 99명 이하여야 합니다."),
     CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE(400, "GROUP_010", "참가인원제한은 현재 참가자의 인원수보다 적을 수 없습니다."),

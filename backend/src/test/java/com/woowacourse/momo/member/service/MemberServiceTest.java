@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -32,6 +31,7 @@ import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional

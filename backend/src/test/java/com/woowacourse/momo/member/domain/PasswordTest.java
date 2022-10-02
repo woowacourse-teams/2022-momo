@@ -23,7 +23,7 @@ class PasswordTest {
     void passwordMustNotBlank(String password) {
         assertThatThrownBy(() -> Password.encrypt(password, ENCODER))
                 .isInstanceOf(MomoException.class)
-                .hasMessage("패스워드가 빈 값입니다.");
+                .hasMessage("패스워드가 공백입니다.");
     }
 
     @DisplayName("사용자의 비밀번호는 올바른 패턴 형식이어야 한다")
