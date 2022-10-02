@@ -21,6 +21,8 @@ import com.woowacourse.momo.member.exception.MemberException;
 @Embeddable
 public class UserId {
 
+    private static final int MINIMUM_LENGTH = 4;
+    private static final int MAXIMUM_LENGTH = 50;
     private static final String EMAIL_FORMAT = "@";
 
     @Column(name = "user_id", unique = true)
@@ -31,6 +33,7 @@ public class UserId {
     }
 
     public static UserId momo(String value) {
+        validateLengthInRange(value);
         validateUserIdIsNotBlank(value);
         validateUserIdIsValidPattern(value);
         return new UserId(value);
@@ -38,11 +41,19 @@ public class UserId {
 
     public static UserId oauth(String value) {
         validateUserEmailIsValidPattern(value);
+        validateLengthInRange(value);
         return new UserId(value);
     }
 
     public static UserId deleted() {
         return new UserId(null);
+    }
+
+    private static void validateLengthInRange(String userId) {
+        int length = userId.length();
+        if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
+            throw new MemberException(MemberErrorCode.USER_ID_CANNOT_BE_OUT_OF_RANGE);
+        }
     }
 
     private static void validateUserIdIsNotBlank(String value) {

@@ -17,7 +17,6 @@ class GroupNameTest {
     void construct(int nameLength) {
         String name = "a".repeat(nameLength);
         GroupName groupName = new GroupName(name);
-
         assertThat(groupName.getValue()).isEqualTo(name);
     }
 
