@@ -106,18 +106,16 @@ public class Group {
     }
 
     public void like(Member member) {
-        validateGroupIsProceeding();
         favorites.like(this, member);
     }
 
     public void cancelLike(Member member) {
-        validateGroupIsProceeding();
         favorites.cancel(member);
     }
 
     public void validateGroupIsProceeding() {
-        validateGroupIsNotClosedEarly();
         validateDeadlineNotOver();
+        validateGroupIsNotClosedEarly();
     }
 
     private void validateGroupIsNotClosedEarly() {

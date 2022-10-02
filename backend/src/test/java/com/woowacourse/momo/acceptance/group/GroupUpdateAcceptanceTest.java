@@ -102,7 +102,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
         모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.FORBIDDEN.value())
-                .body("message", Matchers.is("GROUP_ERROR_017"));
+                .body("message", Matchers.is("GROUP_017"));
     }
 
     @DisplayName("비회원이 모임을 수정한다")
@@ -110,7 +110,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     void updateGroupByNonMember() {
         모임을_수정한다(groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .body("message", Matchers.is("AUTH_ERROR_003"));
+                .body("message", Matchers.is("AUTH_003"));
     }
 
     @DisplayName("존재하지 않은 모임을 삭제한다")
@@ -118,7 +118,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     void updateNonExistentGroup() {
         모임을_수정한다(hostAccessToken, 0L, DUDU_STUDY)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("모임을 조기 마감한다")

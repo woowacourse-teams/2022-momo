@@ -61,7 +61,7 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
 
         모임에_참여한다(accessToken, groupId)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_016"));
+                .body("message", Matchers.is("GROUP_016"));
     }
 
     @DisplayName("존재하지 않은 모임에 참여한다")
@@ -69,14 +69,14 @@ class ParticipantAcceptanceTest extends AcceptanceTest {
     void participateToNonExistentGroup() {
         모임에_참여한다(hostAccessToken, 0L)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("비회원이 모임에 참여한다")
     @Test
     void participateByNonMember() {
         모임에_참여한다(groupId).statusCode(HttpStatus.UNAUTHORIZED.value())
-                .body("message", Matchers.is("AUTH_ERROR_003"));
+                .body("message", Matchers.is("AUTH_003"));
     }
 
     @DisplayName("정원이 가득 찬 모임에 참여한다")

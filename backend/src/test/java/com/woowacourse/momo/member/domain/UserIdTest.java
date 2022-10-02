@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.member.exception.MemberException;
 
 class UserIdTest {
 
@@ -17,7 +19,7 @@ class UserIdTest {
     @ValueSource(strings = {"", " "})
     void idMustNotBlank(String id) {
         assertThatThrownBy(() -> UserId.momo(id))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("사용자의 아이디가 빈 값입니다.");
     }
 
@@ -25,7 +27,7 @@ class UserIdTest {
     @Test
     void idMustNotBeInEmail() {
         assertThatThrownBy(() -> UserId.momo("id@woowacourse.com"))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("잘못된 형식의 아이디입니다.");
     }
 
@@ -33,7 +35,7 @@ class UserIdTest {
     @Test
     void googleIdMustBeInEmail() {
         assertThatThrownBy(() -> UserId.oauth("id"))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("구글 아이디가 이메일 형식이 아닙니다.");
     }
 

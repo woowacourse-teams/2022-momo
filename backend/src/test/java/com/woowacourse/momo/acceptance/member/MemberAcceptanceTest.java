@@ -73,7 +73,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         AuthRestHandler.로그인을_한다(MEMBER.getUserId(), MEMBER.getPassword())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("LOGIN_ERROR_001"));
+                .body("message", Matchers.is("MEMBER_012"));
     }
 
     @DisplayName("회원 탈퇴 시 참여한 모임 중 진행중인 모임이 있을 경우 모임에 탈퇴시킨다")
@@ -103,6 +103,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         MemberRestHandler.회원탈퇴를_한다(accessToken)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("MEMBER_ERROR_003"));
+                .body("message", Matchers.is("MEMBER_003"));
     }
 }

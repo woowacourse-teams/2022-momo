@@ -31,6 +31,7 @@ import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
@@ -89,7 +90,7 @@ class ParticipateServiceTest {
         long participantId = 0;
 
         assertThatThrownBy(() -> participateService.participate(groupId, participantId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 

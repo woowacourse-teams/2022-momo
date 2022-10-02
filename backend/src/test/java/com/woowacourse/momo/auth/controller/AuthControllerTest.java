@@ -23,9 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
+
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
 
 @AutoConfigureMockMvc
@@ -47,12 +50,15 @@ class AuthControllerTest {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private MemberService memberService;
+
     @DisplayName("정상적으로 회원가입이 되는 경우를 테스트한다")
     @Test
     void signUp() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -70,11 +76,11 @@ class AuthControllerTest {
     void signUpWithInvalidUserIdPattern() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa@", PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("SIGNUP_ERROR_001")));
+                .andExpect(jsonPath("message", containsString("SIGNUP_001")));
     }
 
     @DisplayName("비어있는 아이디 값으로 회원가입시 400코드가 반환된다")
@@ -82,11 +88,11 @@ class AuthControllerTest {
     void signUpWithBlankUserId() throws Exception {
         SignUpRequest request = new SignUpRequest("", PASSWORD, NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_010")));
+                .andExpect(jsonPath("message", containsString("MEMBER_010")));
     }
 
     @DisplayName("비어있는 비밀번호 값으로 회원가입시 400코드가 반환된다")
@@ -94,11 +100,11 @@ class AuthControllerTest {
     void signUpWithBlankPassword() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, "", NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_007")));
+                .andExpect(jsonPath("message", containsString("MEMBER_007")));
     }
 
     @DisplayName("잘못된 비밀번호 패턴으로 회원가입시 400코드가 반환된다")
@@ -106,11 +112,11 @@ class AuthControllerTest {
     void signUpWithInvalidPasswordPattern() throws Exception {
         SignUpRequest request = new SignUpRequest(USER_ID, "woowa", NAME);
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_008")));
+                .andExpect(jsonPath("message", containsString("MEMBER_008")));
     }
 
     @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
@@ -118,11 +124,11 @@ class AuthControllerTest {
     void signUpWithBlankName() throws Exception {
         SignUpRequest request = new SignUpRequest("woowa", PASSWORD, "");
 
-        mockMvc.perform(post("/api/auth/signup")
+        mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_005")));
+                .andExpect(jsonPath("message", containsString("MEMBER_005")));
     }
 
     @DisplayName("정상적으로 로그인될 시 토큰이 발급된다")
@@ -154,7 +160,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_010")));
+                .andExpect(jsonPath("message", containsString("MEMBER_010")));
     }
 
     @DisplayName("비어있는 비밀번호 형식으로 로그인시 400코드가 반환된다")
@@ -167,7 +173,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
                 ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message", containsString("MEMBER_ERROR_007")));
+                .andExpect(jsonPath("message", containsString("MEMBER_007")));
     }
 
     @DisplayName("리프레시 토큰을 통해 엑세스 토큰을 재발급받는다")
@@ -214,7 +220,7 @@ class AuthControllerTest {
 
     void saveMember(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
-        authService.signUp(request);
+        memberService.signUp(request);
     }
 
     LoginResponse extractLoginResponse(String userId, String password) {

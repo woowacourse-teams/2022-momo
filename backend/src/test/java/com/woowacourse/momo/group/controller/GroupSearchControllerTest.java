@@ -30,7 +30,8 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.MemberService;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupModifyService;
@@ -51,6 +52,7 @@ class GroupSearchControllerTest {
     private final GroupModifyService groupModifyService;
     private final AuthService authService;
     private final LikeService likeService;
+    private final MemberService memberService;
 
     @DisplayName("로그인을 하지 않은 상태로 하나의 그룹을 가져오는 경우를 테스트한다")
     @Test
@@ -181,7 +183,7 @@ class GroupSearchControllerTest {
         likeGroup(groupId4, saveMemberId);
 
         mockMvc.perform(MockMvcRequestBuilders.get(
-                                "/api/groups/me/liked?keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                                "/api/groups/me/liked?keyword=모모&excludeFinished=true&orderByDeadline=false&page=0")
                         .header("Authorization", "bearer " + token))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
@@ -276,7 +278,7 @@ class GroupSearchControllerTest {
 
     Long saveMember(String id, String password, String name) {
         SignUpRequest request = new SignUpRequest(id, password, name);
-        return authService.signUp(request);
+        return memberService.signUp(request);
     }
 
     void likeGroup(Long groupId, Long memberId) {

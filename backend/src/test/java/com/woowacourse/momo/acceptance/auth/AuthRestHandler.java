@@ -4,7 +4,7 @@ import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
-import com.woowacourse.momo.auth.service.dto.request.SignUpRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.fixture.MemberFixture;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -14,7 +14,7 @@ public class AuthRestHandler extends RestHandler {
 
     public static ValidatableResponse 회원가입을_한다(String userId, String password, String name) {
         SignUpRequest request = new SignUpRequest(userId, password, name);
-        return postRequest(request, BASE_URL + "/signup");
+        return postRequest(request, "api/members");
     }
 
     public static ValidatableResponse 회원가입을_한다(MemberFixture memberFixture) {

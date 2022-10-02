@@ -17,10 +17,10 @@ import org.springframework.web.client.RestTemplate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.support.google.dto.GoogleTokenResponse;
 import com.woowacourse.momo.auth.support.google.dto.GoogleUserResponse;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+    import com.woowacourse.momo.global.exception.exception.MomoException;
 
 @Getter
 @RequiredArgsConstructor
@@ -72,14 +72,14 @@ public class GoogleConnector {
         validateResponseStatusOk(responseEntity.getStatusCode());
 
         GoogleTokenResponse response = Optional.ofNullable(responseEntity.getBody())
-                .orElseThrow(() -> new MomoException(GlobalErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_EXIST_BODY));
+                .orElseThrow(() -> new MomoException(AuthErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_EXIST_BODY));
 
         return response.getAccessToken();
     }
 
     private void validateResponseStatusOk(HttpStatus status) {
         if (!status.is2xxSuccessful()) {
-            throw new MomoException(GlobalErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_2XX_STATUS);
+            throw new MomoException(AuthErrorCode.OAUTH_ACCESS_TOKEN_REQUEST_FAILED_BY_NON_2XX_STATUS);
         }
     }
 }
