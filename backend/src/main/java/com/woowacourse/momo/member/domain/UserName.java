@@ -1,7 +1,5 @@
 package com.woowacourse.momo.member.domain;
 
-import java.util.Optional;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 

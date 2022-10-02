@@ -1,6 +1,5 @@
 package com.woowacourse.momo.member.domain;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
