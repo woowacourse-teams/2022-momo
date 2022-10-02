@@ -10,7 +10,7 @@ public enum MemberErrorCode implements ErrorCode {
     MEMBER_WRONG_PASSWORD(400, "MEMBER_004", "비밀번호가 일치하지 않습니다."),
 
     MEMBER_NAME_SHOULD_NOT_BE_BLANK(400, "MEMBER_005", "사용자의 이름이 빈 값입니다."),
-    MEMBER_NAME_MUST_BE_VALID(400, "MEMBER_006", "사용자의 이름이 30자를 넘습니다."),
+    MEMBER_NAME_CANNOT_BE_OUT_OF_RANGE(400, "MEMBER_006", "사용자 이름은 1자 이상 20자 이하여야 합니다."),
 
     MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK(400, "MEMBER_007", "패스워드가 빈 값입니다."),
     MEMBER_PASSWORD_PATTERN_MUST_BE_VALID(400, "MEMBER_008", "패스워드는 영문자와 하나 이상의 숫자, 특수 문자를 갖고 있어야 합니다."),

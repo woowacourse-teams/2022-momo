@@ -131,10 +131,22 @@ class AuthControllerTest {
                 .andExpect(jsonPath("message", containsString("MEMBER_008")));
     }
 
+    @DisplayName("길이 정책을 벗어난 이름 값으로 회원가입시 400코드가 반환된다")
+    @Test
+    void signUpWithNameOutOfLengthRange() throws Exception {
+        SignUpRequest request = new SignUpRequest("woowa", PASSWORD, "a".repeat(21));
+
+        mockMvc.perform(post("/api/members")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", containsString("MEMBER_006")));
+    }
+
     @DisplayName("비어있는 이름 값으로 회원가입시 400코드가 반환된다")
     @Test
     void signUpWithBlankName() throws Exception {
-        SignUpRequest request = new SignUpRequest("woowa", PASSWORD, "");
+        SignUpRequest request = new SignUpRequest("woowa", PASSWORD, " ");
 
         mockMvc.perform(post("/api/members")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

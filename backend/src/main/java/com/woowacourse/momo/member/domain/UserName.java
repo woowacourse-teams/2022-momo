@@ -21,18 +21,19 @@ import com.woowacourse.momo.member.exception.MemberException;
 @Embeddable
 public class UserName {
 
-    private static final int MAXIMUM = 30;
+    private static final int MINIMUM_LENGTH = 1;
+    private static final int MAXIMUM_LENGTH = 20;
 
     @Column(name = "name", length = 36)
     private String value;
 
-    public UserName(String value) {
+    private UserName(String value) {
         this.value = value;
     }
 
     public static UserName from(String value) {
-        validateNameIsNotBlank(value);
         validateNameLengthIsValid(value);
+        validateNameIsNotBlank(value);
         return new UserName(value);
     }
 
@@ -51,8 +52,9 @@ public class UserName {
     }
 
     private static void validateNameLengthIsValid(String value) {
-        if (value.length() > MAXIMUM) {
-            throw new MemberException(MemberErrorCode.MEMBER_NAME_MUST_BE_VALID);
+        int length = value.length();
+        if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
+            throw new MemberException(MemberErrorCode.MEMBER_NAME_CANNOT_BE_OUT_OF_RANGE);
         }
     }
 
