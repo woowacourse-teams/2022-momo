@@ -23,7 +23,7 @@ public class UserId {
     private static final int MAXIMUM_LENGTH = 50;
     private static final String EMAIL_FORMAT = "@";
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "user_id", unique = true, length=50)
     private String value;
 
     private UserId(String value) {

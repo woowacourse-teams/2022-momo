@@ -22,7 +22,7 @@ public class UserName {
     private static final int MINIMUM_LENGTH = 1;
     private static final int MAXIMUM_LENGTH = 20;
 
-    @Column(name = "name", length = 36)
+    @Column(name = "name", length = 20)
     private String value;
 
     private UserName(String value) {
