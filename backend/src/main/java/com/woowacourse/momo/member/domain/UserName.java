@@ -32,8 +32,8 @@ public class UserName {
     }
 
     public static UserName from(String value) {
-        validateNameLengthIsValid(value);
-        validateNameIsNotBlank(value);
+        validateLengthInRange(value);
+        validateNotBlank(value);
         return new UserName(value);
     }
 
@@ -45,16 +45,16 @@ public class UserName {
         return UserName.from(value);
     }
 
-    private static void validateNameIsNotBlank(String value) {
-        if (value.isBlank()) {
-            throw new MemberException(MemberErrorCode.MEMBER_NAME_SHOULD_NOT_BE_BLANK);
-        }
-    }
-
-    private static void validateNameLengthIsValid(String value) {
+    private static void validateLengthInRange(String value) {
         int length = value.length();
         if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
             throw new MemberException(MemberErrorCode.MEMBER_NAME_CANNOT_BE_OUT_OF_RANGE);
+        }
+    }
+
+    private static void validateNotBlank(String value) {
+        if (value.isBlank()) {
+            throw new MemberException(MemberErrorCode.MEMBER_NAME_SHOULD_NOT_BE_BLANK);
         }
     }
 

@@ -22,8 +22,9 @@ class GroupNameTest {
 
     @DisplayName("모임의 이름이 빈값이면 예외가 발생한다")
     @ParameterizedTest
-    @ValueSource(strings = {"", " "})
-    void nameMustNotBlank(String name) {
+    @ValueSource(ints = {1, 50})
+    void nameMustNotBlank(int length) {
+        String name = " ".repeat(length);
         assertThatThrownBy(() -> new GroupName(name))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("모임의 이름은 빈 값이 될 수 없습니다.");
@@ -31,7 +32,7 @@ class GroupNameTest {
 
     @DisplayName("모임 이름 길이가 정책 범위를 벗어나면 예외가 발생한다")
     @ParameterizedTest
-    @ValueSource(ints = {51, 52})
+    @ValueSource(ints = {0, 51})
     void nameLengthOutOfRangeException(int nameLength) {
         String name = "a".repeat(nameLength);
         assertThatThrownBy(() -> new GroupName(name))

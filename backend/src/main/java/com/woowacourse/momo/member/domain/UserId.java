@@ -34,13 +34,13 @@ public class UserId {
 
     public static UserId momo(String value) {
         validateLengthInRange(value);
-        validateUserIdIsNotBlank(value);
-        validateUserIdIsValidPattern(value);
+        validateNotBlank(value);
+        validateNotEmailPattern(value);
         return new UserId(value);
     }
 
     public static UserId oauth(String value) {
-        validateUserEmailIsValidPattern(value);
+        validateEmailPattern(value);
         validateLengthInRange(value);
         return new UserId(value);
     }
@@ -56,21 +56,21 @@ public class UserId {
         }
     }
 
-    private static void validateUserIdIsNotBlank(String value) {
+    private static void validateNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MemberException(MemberErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
+            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
-    private static void validateUserIdIsValidPattern(String value) {
+    private static void validateNotEmailPattern(String value) {
         if (value.contains(EMAIL_FORMAT)) {
             throw new MemberException(MemberErrorCode.SIGNUP_INVALID_ID);
         }
     }
 
-    private static void validateUserEmailIsValidPattern(String value) {
+    private static void validateEmailPattern(String value) {
         if (!value.contains(EMAIL_FORMAT)) {
-            throw new MemberException(MemberErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
+            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_BE_EMAIL_FORMAT);
         }
     }
 

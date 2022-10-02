@@ -28,18 +28,18 @@ public class GroupName {
     private String value;
 
     public GroupName(String value) {
-        validateNameIsNotBlank(value);
-        validateNameLengthIsInRange(value);
+        validateLengthInRange(value);
+        validateNotBlank(value);
         this.value = value;
     }
 
-    private void validateNameIsNotBlank(String value) {
+    private void validateNotBlank(String value) {
         if (value.isBlank()) {
             throw new GroupException(NAME_CANNOT_BE_BLANK);
         }
     }
 
-    private void validateNameLengthIsInRange(String value) {
+    private void validateLengthInRange(String value) {
         if (isNameOutOfRange(value)) {
             throw new GroupException(NAME_CANNOT_BE_OUT_OF_RANGE);
         }
