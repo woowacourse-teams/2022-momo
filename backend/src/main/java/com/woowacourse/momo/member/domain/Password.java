@@ -30,8 +30,7 @@ public class Password {
     }
 
     public static Password encrypt(String value, PasswordEncoder encoder) {
-        validatePasswordIsNotBlank(value);
-        validatePasswordPatternIsValid(value);
+        validatePatternIsValid(value);
         return new Password(encoder.encrypt(value));
     }
 
@@ -47,13 +46,7 @@ public class Password {
         return !PASSWORD_PATTERN.matcher(password).matches();
     }
 
-    private static void validatePasswordIsNotBlank(String value) {
-        if (value.isBlank()) {
-            throw new MemberException(MemberErrorCode.MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK);
-        }
-    }
-
-    private static void validatePasswordPatternIsValid(String value) {
+    private static void validatePatternIsValid(String value) {
         if (isNotValid(value)) {
             throw new MemberException(MemberErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
         }
