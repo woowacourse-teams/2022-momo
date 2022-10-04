@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.controller;
+package com.woowacourse.momo.favorite.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,26 +11,26 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
-import com.woowacourse.momo.group.service.LikeService;
+import com.woowacourse.momo.favorite.service.FavoriteService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/like")
 @RestController
-public class LikeController {
+public class FavoriteController {
 
-    private final LikeService likeService;
+    private final FavoriteService favoriteService;
 
     @Authenticated
     @PostMapping
     public ResponseEntity<Void> like(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        likeService.like(groupId, memberId);
+        favoriteService.like(groupId, memberId);
         return ResponseEntity.ok().build();
     }
 
     @Authenticated
     @DeleteMapping
     public ResponseEntity<Void> leave(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
-        likeService.cancel(groupId, memberId);
+        favoriteService.cancel(groupId, memberId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.favorite.service.FavoriteService;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupModifyService;
-import com.woowacourse.momo.group.service.LikeService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
@@ -47,7 +47,7 @@ class LikeControllerTest {
     private final MockMvc mockMvc;
     private final AuthService authService;
     private final GroupModifyService groupModifyService;
-    private final LikeService likeService;
+    private final FavoriteService favoriteService;
     private final MemberService memberService;
 
     @DisplayName("모임을 찜한다")
@@ -113,6 +113,6 @@ class LikeControllerTest {
     }
 
     void likeMember(Long groupId, Long memberId) {
-        likeService.like(groupId, memberId);
+        favoriteService.like(groupId, memberId);
     }
 }

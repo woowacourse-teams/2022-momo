@@ -29,6 +29,8 @@ import org.springframework.test.context.TestConstructor;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.favorite.domain.Favorite;
+import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.group.domain.Group;
@@ -46,6 +48,7 @@ class GroupSearchRepositoryTest {
     private final GroupRepository groupRepository;
     private final GroupSearchRepository groupSearchRepository;
     private final MemberRepository memberRepository;
+    private final FavoriteRepository favoriteRepository;
 
     private Member host;
     private Group group1;
@@ -61,16 +64,16 @@ class GroupSearchRepositoryTest {
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
         group1 = groupRepository.save(constructGroup("모모의 스터디", host, STUDY, 5, 이틀후_23시_59분까지));
-        group1.like(host);
+        favoriteRepository.save(new Favorite(group1, host));
         group2 = groupRepository.save(constructGroup("모모의 술파티", host, Category.DRINK, 15, 내일_23시_59분까지));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", host, Category.HEALTH, 1, 일주일후_23시_59분까지));
-        group3.like(host);
+        favoriteRepository.save(new Favorite(group3, host));
 
         Member anotherHost = memberRepository.save(DUDU.toMember());
         group4 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 6, 내일_23시_59분까지));
         group5 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지));
         group5.participate(host);
-        group5.like(host);
+        favoriteRepository.save(new Favorite(group5, host));
 
         Group group = constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지);
         GroupFixture.setDeadlinePast(group, 1);

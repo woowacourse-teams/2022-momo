@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.infrastructure.querydsl;
 
+import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
-import static com.woowacourse.momo.group.domain.favorite.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group).distinct()
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.eq(favorite.group))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
@@ -69,9 +69,10 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group.count())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.eq(favorite.group))
                 .where(
-                        group.id.in(likedGroupIds)
+                        favorite.member.eq(member),
+                        conditionFilter.filterByCondition(condition)
                 );
 
         return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
@@ -81,7 +82,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return queryFactory
                 .select(group.id)
                 .from(group)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.eq(favorite.group))
                 .where(
                         favorite.member.eq(member),
                         conditionFilter.filterByCondition(condition)

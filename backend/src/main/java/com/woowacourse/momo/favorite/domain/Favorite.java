@@ -1,6 +1,7 @@
-package com.woowacourse.momo.group.domain.favorite;
+package com.woowacourse.momo.favorite.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,11 +24,11 @@ public class Favorite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -36,7 +37,7 @@ public class Favorite {
         this.member = member;
     }
 
-    public boolean isSameMember(Member other) {
-        return member.isSameUserId(other);
+    public boolean isSameGroup(Group group) {
+        return this.group.equals(group);
     }
 }

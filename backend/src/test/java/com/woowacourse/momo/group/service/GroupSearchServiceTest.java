@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
-import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.favorite.service.FavoriteService;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
@@ -38,16 +38,15 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 class GroupSearchServiceTest {
 
     private final GroupSearchService groupService;
+    private final FavoriteService favoriteService;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
 
     private Member host;
-    private Member member;
 
     @BeforeEach
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
-        member = memberRepository.save(DUDU.toMember());
     }
 
     @DisplayName("모임을 조회한다")
@@ -110,15 +109,13 @@ class GroupSearchServiceTest {
     class PageTest {
 
         private static final int PAGE_SIZE = 12;
-
         private static final int TWO_PAGE_GROUPS = 8;
 
         @BeforeEach
         void setUp() {
             for (int i = 0; i < PAGE_SIZE + TWO_PAGE_GROUPS; i++) {
                 Group group = saveGroup("모임 " + i, Category.STUDY);
-                group.like(host);
-                group.like(member);
+                favoriteService.like(group.getId(), host.getId());
             }
         }
 
@@ -150,7 +147,7 @@ class GroupSearchServiceTest {
             );
         }
 
-        @DisplayName("모임 목록중 첫번째 페이지를 조회한다")
+        @DisplayName("찜한 모임 목록중 첫번째 페이지를 조회한다")
         @Test
         void findLikedGroupsFirstPage() {
             GroupSearchRequest request = new GroupSearchRequest();
@@ -164,7 +161,7 @@ class GroupSearchServiceTest {
             );
         }
 
-        @DisplayName("모임 목록중 두번째 페이지를 조회한다")
+        @DisplayName("찜한 모임 목록중 두번째 페이지를 조회한다")
         @Test
         void findLikedGroupsSecondPage() {
             GroupSearchRequest request = new GroupSearchRequest();

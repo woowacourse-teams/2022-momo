@@ -1,10 +1,12 @@
-package com.woowacourse.momo.group.service;
+package com.woowacourse.momo.favorite.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
+
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -17,6 +19,8 @@ import org.springframework.test.context.TestConstructor;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.favorite.domain.Favorite;
+import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
@@ -26,12 +30,12 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class LikeServiceTest {
+class FavoriteServiceTest {
 
-    private final LikeService likeService;
-    private final GroupFindService groupFindService;
+    private final FavoriteService favoriteService;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
+    private final FavoriteRepository favoriteRepository;
     private final EntityManager entityManager;
 
     private Group group;
@@ -51,11 +55,12 @@ class LikeServiceTest {
         long groupId = group.getId();
         long userId = user.getId();
 
-        likeService.like(groupId, userId);
         synchronize();
 
-        Group findGroup = groupFindService.findGroup(groupId);
-        boolean expected = findGroup.isMemberLiked(user);
+        favoriteService.like(groupId, userId);
+        synchronize();
+
+        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(groupId, userId);
 
         assertThat(expected).isTrue();
     }
@@ -67,11 +72,10 @@ class LikeServiceTest {
         long groupId = group.getId();
         long userId = user.getId();
 
-        likeService.like(groupId, userId);
+        favoriteService.like(groupId, userId);
         synchronize();
 
-        Group findGroup = groupFindService.findGroup(groupId);
-        boolean expected = findGroup.isMemberLiked(user);
+        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(groupId, userId);
 
         assertThat(expected).isTrue();
     }
@@ -82,12 +86,11 @@ class LikeServiceTest {
         long groupId = group.getId();
         long userId = user.getId();
 
-        likeService.like(groupId, userId);
-        likeService.cancel(groupId, userId);
+        favoriteService.like(groupId, userId);
+        favoriteService.cancel(groupId, userId);
         synchronize();
 
-        Group findGroup = groupFindService.findGroup(groupId);
-        boolean expected = findGroup.isMemberLiked(user);
+        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(groupId, userId);
 
         assertThat(expected).isFalse();
     }
@@ -99,12 +102,12 @@ class LikeServiceTest {
         long groupId = group.getId();
         long userId = user.getId();
 
-        likeService.like(groupId, userId);
-        likeService.cancel(groupId, userId);
+        favoriteService.like(groupId, userId);
+        favoriteService.cancel(groupId, userId);
         synchronize();
 
-        Group findGroup = groupFindService.findGroup(groupId);
-        boolean expected = findGroup.isMemberLiked(user);
+        Optional<Favorite> foundGroup = favoriteRepository.findByGroupIdAndMemberId(groupId, userId);
+        boolean expected = foundGroup.isPresent();
 
         assertThat(expected).isFalse();
     }

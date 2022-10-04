@@ -6,21 +6,21 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponseWithLogin(Group group, Member member) {
+    public static GroupResponse groupResponseWithLogin(Group group, boolean isMemberLiked) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), group.isMemberLiked(member), group.getDescription().getValue());
+                locationResponse(group.getLocation()), isMemberLiked, group.getDescription().getValue());
     }
 
     public static GroupResponse groupResponseWithoutLogin(Group group) {
@@ -30,9 +30,9 @@ public class GroupResponseAssembler {
                 locationResponse(group.getLocation()), false, group.getDescription().getValue());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, Member member) {
+    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, List<Favorite> favorites) {
         return groups.stream()
-                .map(group -> GroupResponseAssembler.groupSummaryResponseWithLogin(group, member))
+                .map(group -> GroupResponseAssembler.groupSummaryResponseWithLogin(group, favorites))
                 .collect(Collectors.toList());
     }
 
@@ -42,11 +42,14 @@ public class GroupResponseAssembler {
                 .collect(Collectors.toList());
     }
 
-    public static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, Member member) {
+    private static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, List<Favorite> favorites) {
+        boolean result = favorites.stream()
+                .anyMatch(f -> f.isSameGroup(group));
+
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
                 group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline(), group.isMemberLiked(member));
+                group.getDeadline(), result);
     }
 
     public static GroupSummaryResponse groupSummaryResponseWithoutLogin(Group group) {
