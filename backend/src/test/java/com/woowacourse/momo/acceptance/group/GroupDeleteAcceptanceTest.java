@@ -39,7 +39,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
         모임을_조회한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("주최자가 아닌 회원이 모임을 삭제한다")
@@ -49,7 +49,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
 
         모임을_삭제한다(anotherAccessToken, groupId)
                 .statusCode(HttpStatus.FORBIDDEN.value())
-                .body("message", Matchers.is("GROUP_ERROR_017"));
+                .body("message", Matchers.is("GROUP_017"));
 
         모임을_조회한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.OK.value());
@@ -60,7 +60,7 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     void deleteGroupByNonMember() {
         모임을_삭제한다(groupId)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .body("message", Matchers.is("AUTH_ERROR_003"));
+                .body("message", Matchers.is("AUTH_003"));
 
         모임을_조회한다(hostAccessToken, groupId)
                 .statusCode(HttpStatus.OK.value());
@@ -71,11 +71,11 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
     void deleteNonExistentGroup() {
         모임을_조회한다(hostAccessToken, 0L)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
 
         모임을_삭제한다(hostAccessToken, 0L)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("참여자가 있는 모임을 삭제한다")
@@ -86,10 +86,9 @@ class GroupDeleteAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(participantAccessToken, groupId);
 
         모임을_삭제한다(hostAccessToken, groupId)
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_014"));
+                .statusCode(HttpStatus.NO_CONTENT.value());
 
         모임을_조회한다(hostAccessToken, groupId)
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 }

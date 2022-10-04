@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.member.exception.MemberErrorCode;
+import com.woowacourse.momo.member.exception.MemberException;
 
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
@@ -19,9 +19,11 @@ import com.woowacourse.momo.global.exception.exception.MomoException;
 @Embeddable
 public class UserId {
 
+    private static final int MINIMUM_LENGTH = 4;
+    private static final int MAXIMUM_LENGTH = 50;
     private static final String EMAIL_FORMAT = "@";
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", unique = true, length=50)
     private String value;
 
     private UserId(String value) {
@@ -29,31 +31,44 @@ public class UserId {
     }
 
     public static UserId momo(String value) {
-        validateUserIdIsNotBlank(value);
-        validateUserIdIsValidPattern(value);
+        validateNotBlank(value);
+        validateLengthInRange(value);
+        validateNotEmailPattern(value);
         return new UserId(value);
     }
 
     public static UserId oauth(String value) {
-        validateUserEmailIsValidPattern(value);
+        validateEmailPattern(value);
+        validateLengthInRange(value);
         return new UserId(value);
     }
 
-    private static void validateUserIdIsNotBlank(String value) {
+    private static void validateNotBlank(String value) {
         if (value.isBlank()) {
-            throw new MomoException(GlobalErrorCode.MEMBER_ID_SHOULD_NOT_BE_BLANK);
+            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 
-    private static void validateUserIdIsValidPattern(String value) {
+    private static void validateLengthInRange(String userId) {
+        int length = userId.length();
+        if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
+            throw new MemberException(MemberErrorCode.USER_ID_CANNOT_BE_OUT_OF_RANGE);
+        }
+    }
+
+    private static void validateNotEmailPattern(String value) {
         if (value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(GlobalErrorCode.SIGNUP_INVALID_ID);
+            throw new MemberException(MemberErrorCode.SIGNUP_INVALID_ID);
         }
     }
 
-    private static void validateUserEmailIsValidPattern(String value) {
+    private static void validateEmailPattern(String value) {
         if (!value.contains(EMAIL_FORMAT)) {
-            throw new MomoException(GlobalErrorCode.GOOGLE_ID_SHOULD_BE_IN_EMAIL_FORMAT);
+            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_BE_EMAIL_FORMAT);
         }
+    }
+
+    public String getValue() {
+        return value;
     }
 }

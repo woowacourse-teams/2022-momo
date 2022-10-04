@@ -1,5 +1,7 @@
 package com.woowacourse.momo.member.domain;
 
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -21,6 +23,8 @@ import com.woowacourse.momo.auth.support.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
+
+    private static final String SHOWN_DELETED_USER_NAME = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +49,6 @@ public class Member {
         this.userName = userName;
     }
 
-    public Member(UserId userId, Password password, String userName) {
-        this(userId, password, new UserName(userName));
-    }
-
     public boolean isNotSamePassword(String password) {
         return !this.password.isSame(password);
     }
@@ -62,8 +62,9 @@ public class Member {
     }
 
     public void delete() {
-        password = password.delete();
-        userName = userName.delete();
+        userId = null;
+        password = null;
+        userName = null;
         deleted = true;
     }
 
@@ -72,14 +73,20 @@ public class Member {
     }
 
     public String getUserId() {
-        return userId.getValue();
+        return Optional.ofNullable(userId)
+                .map(UserId::getValue)
+                .orElse("");
     }
 
     public String getPassword() {
-        return password.getValue();
+        return Optional.ofNullable(password)
+                .map(Password::getValue)
+                .orElse("");
     }
 
     public String getUserName() {
-        return userName.getValue();
+        return Optional.ofNullable(userName)
+                .map(UserName::getValue)
+                .orElse("");
     }
 }

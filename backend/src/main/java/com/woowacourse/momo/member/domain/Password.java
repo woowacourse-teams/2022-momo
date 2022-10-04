@@ -6,14 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
-import com.woowacourse.momo.global.exception.exception.MomoException;
+import com.woowacourse.momo.member.exception.MemberErrorCode;
+import com.woowacourse.momo.member.exception.MemberException;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Password {
@@ -23,9 +21,8 @@ public class Password {
      */
     private static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_FORMAT);
-    private static final String GHOST_PASSWORD = "";
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String value;
 
     private Password(String value) {
@@ -33,17 +30,12 @@ public class Password {
     }
 
     public static Password encrypt(String value, PasswordEncoder encoder) {
-        validatePasswordIsNotBlank(value);
-        validatePasswordPatternIsValid(value);
+        validatePatternIsValid(value);
         return new Password(encoder.encrypt(value));
     }
 
     public Password update(String value, PasswordEncoder encoder) {
         return Password.encrypt(value, encoder);
-    }
-
-    public Password delete() {
-        return new Password(GHOST_PASSWORD);
     }
 
     public boolean isSame(String password) {
@@ -54,15 +46,13 @@ public class Password {
         return !PASSWORD_PATTERN.matcher(password).matches();
     }
 
-    private static void validatePasswordIsNotBlank(String value) {
-        if (value.isBlank()) {
-            throw new MomoException(GlobalErrorCode.MEMBER_PASSWORD_SHOULD_NOT_BE_BLANK);
+    private static void validatePatternIsValid(String value) {
+        if (isNotValid(value)) {
+            throw new MemberException(MemberErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
         }
     }
 
-    private static void validatePasswordPatternIsValid(String value) {
-        if (isNotValid(value)) {
-            throw new MomoException(GlobalErrorCode.MEMBER_PASSWORD_PATTERN_MUST_BE_VALID);
-        }
+    public String getValue() {
+        return value;
     }
 }

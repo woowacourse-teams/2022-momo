@@ -25,12 +25,12 @@ import org.springframework.test.context.TestConstructor;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 
@@ -89,7 +89,7 @@ class ParticipateServiceTest {
         long participantId = 0;
 
         assertThatThrownBy(() -> participateService.participate(groupId, participantId))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 
@@ -214,18 +214,33 @@ class ParticipateServiceTest {
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
 
-        @DisplayName("탈퇴한 사용자가 속한 참여자 목록을 조회할 경우 유령 계정이 보여진다")
+        @DisplayName("회원 탈퇴한 주최자의 이름은 빈값으로 대체된다")
         @Test
-        void findParticipantsExistGhost() {
+        void findParticipantsWhenHostDeleted() {
+            group.closeEarly();
+            memberService.deleteById(hostId);
+            synchronize();
+
+            List<String> names = getParticipantNames();
+            assertThat(names).containsExactly("", participant.getUserName());
+        }
+
+        @DisplayName("회원 탈퇴한 참여자의 이름은 빈값으로 대체된다")
+        @Test
+        void findParticipantsWhenParticipantDeleted() {
             group.closeEarly();
             memberService.deleteById(participantId);
             synchronize();
 
-            List<String> names = participateService.findParticipants(groupId)
+            List<String> names = getParticipantNames();
+            assertThat(names).containsExactly(host.getUserName(), "");
+        }
+
+        private List<String> getParticipantNames() {
+            return participateService.findParticipants(groupId)
                     .stream()
                     .map(MemberResponse::getName)
                     .collect(Collectors.toList());
-            assertThat(names).contains("알 수 없음");
         }
     }
 

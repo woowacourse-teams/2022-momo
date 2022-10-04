@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
@@ -166,7 +167,7 @@ class GroupModifyServiceTest {
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
     }
 
-    @DisplayName("주최자 외 참여자가 있을 때 모임을 수정하면 예외가 발생한다")
+    @DisplayName("주최자 외 참여자가 있을 때 모임을 수정할 수 있다")
     @Test
     void updateExistParticipants() {
         long groupId = group.getId();
@@ -175,9 +176,7 @@ class GroupModifyServiceTest {
         group.participate(participant);
 
         GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
-        assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
-                .isInstanceOf(GroupException.class)
-                .hasMessage("해당 모임은 참여자가 존재합니다.");
+        assertDoesNotThrow(() -> groupModifyService.update(hostId, groupId, request));
     }
 
     @DisplayName("모집 마감된 모임을 수정할 경우 예외가 발생한다")
@@ -185,13 +184,12 @@ class GroupModifyServiceTest {
     void updateFinishedRecruitmentGroup() {
         long groupId = group.getId();
         long hostId = host.getId();
-
-        group.participate(participant);
+        group.closeEarly();
 
         GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("해당 모임은 참여자가 존재합니다.");
+                .hasMessage("해당 모임은 조기 마감되어 있습니다.");
     }
 
     @DisplayName("모임 장소를 업데이트한다")
@@ -259,7 +257,7 @@ class GroupModifyServiceTest {
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
     }
 
-    @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제하면 예외가 발생한다")
+    @DisplayName("주최자를 제외하고 참여자가 있을 경우 모임을 삭제할 수 있다")
     @Test
     void deleteExistParticipants() {
         long groupId = group.getId();
@@ -267,9 +265,7 @@ class GroupModifyServiceTest {
 
         participateService.participate(group.getId(), participant.getId());
 
-        assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
-                .isInstanceOf(GroupException.class)
-                .hasMessage("해당 모임은 참여자가 존재합니다.");
+        assertDoesNotThrow(() -> groupModifyService.delete(hostId, groupId));
     }
 
     @DisplayName("모집 마감된 모임을 삭제할 경우 예외가 발생한다")
@@ -277,11 +273,10 @@ class GroupModifyServiceTest {
     void deleteFinishedRecruitmentGroup() {
         long groupId = group.getId();
         long hostId = host.getId();
-
-        group.participate(participant);
+        group.closeEarly();
 
         assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
-                .hasMessage("해당 모임은 참여자가 존재합니다.");
+                .hasMessage("해당 모임은 조기 마감되어 있습니다.");
     }
 }

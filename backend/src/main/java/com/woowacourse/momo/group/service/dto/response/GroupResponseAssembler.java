@@ -20,14 +20,14 @@ public class GroupResponseAssembler {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), group.isMemberLiked(member), group.getDescription());
+                locationResponse(group.getLocation()), group.isMemberLiked(member), group.getDescription().getValue());
     }
 
     public static GroupResponse groupResponseWithoutLogin(Group group) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), false, group.getDescription());
+                locationResponse(group.getLocation()), false, group.getDescription().getValue());
     }
 
     public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, Member member) {

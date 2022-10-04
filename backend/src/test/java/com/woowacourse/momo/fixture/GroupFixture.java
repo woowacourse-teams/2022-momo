@@ -23,7 +23,7 @@ import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.fixture.calendar.DurationFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
-import com.woowacourse.momo.group.controller.dto.request.GroupUpdateApiRequest;
+import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.Location;
@@ -54,7 +54,7 @@ public enum GroupFixture {
     private final List<ScheduleFixture> schedules;
     private final DeadlineFixture deadline;
     private final LocationFixture location;
-    private final String description;
+    private final Description description;
 
     GroupFixture(String name, Category category, Integer capacity, DurationFixture duration,
                  List<ScheduleFixture> schedules, DeadlineFixture deadline, LocationFixture location,
@@ -66,7 +66,7 @@ public enum GroupFixture {
         this.schedules = schedules;
         this.deadline = deadline;
         this.location = location;
-        this.description = description;
+        this.description = new Description(description);
     }
 
     public Long 을_생성한다(String accessToken) {
@@ -146,7 +146,7 @@ public enum GroupFixture {
             this.schedules = group.getSchedules();
             this.deadline = group.getDeadline();
             this.location = group.getLocation();
-            this.description = group.getDescription();
+            this.description = group.getDescription().getValue();
         }
 
         public Builder name(String name) {
@@ -194,7 +194,8 @@ public enum GroupFixture {
         public Group toGroup(Member host) {
             Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
             return new Group(host, new Capacity(capacity), calendar, new GroupName(name), Category.from(category),
-                    new Location(location.getAddress(), location.getBuildingName(), location.getDetail()), description);
+                    new Location(location.getAddress(), location.getBuildingName(), location.getDetail()),
+                    new Description(description));
         }
 
         public GroupRequest toRequest() {
@@ -212,11 +213,6 @@ public enum GroupFixture {
             return new GroupApiRequest(name, category, capacity, duration.toApiRequest(),
                     ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(),
                     location.toApiRequest(), description);
-        }
-
-        public GroupUpdateApiRequest toUpdateApiRequest() {
-            return new GroupUpdateApiRequest(name, category, capacity, duration.toApiRequest(),
-                    ScheduleFixture.toApiRequests(schedules), deadline.toApiRequest(), description);
         }
     }
 }

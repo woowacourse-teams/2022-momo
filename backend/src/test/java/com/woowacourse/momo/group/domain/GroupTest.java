@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
@@ -59,7 +60,7 @@ class GroupTest {
         @DisplayName("조기마감된 모임은 더이상 삭제할 수 없습니다")
         @Test
         void cannotDeleteGroupByClosedEarly() {
-            assertThatThrownBy(group::validateGroupIsDeletable)
+            assertThatThrownBy(group::validateGroupIsProceeding)
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 조기 마감되어 있습니다.");
         }
@@ -120,7 +121,7 @@ class GroupTest {
         @DisplayName("마감기한이 지나버린 모임은 더이상 삭제할 수 없습니다")
         @Test
         void cannotDeleteGroupByDeadlinePassed() {
-            assertThatThrownBy(group::validateGroupIsDeletable)
+            assertThatThrownBy(group::validateGroupIsProceeding)
                     .isInstanceOf(GroupException.class)
                     .hasMessage("해당 모임은 마감기한이 지났습니다.");
         }
@@ -170,20 +171,16 @@ class GroupTest {
             group.participate(DUDU.toMember());
         }
 
-        @DisplayName("참여자가 존재하는 모임은 수정할 수 없습니다")
+        @DisplayName("참여자가 존재하는 모임을 수정할 수 있습니다")
         @Test
         void cannotUpdateGroupByExistParticipants() {
-            assertThatThrownBy(() -> update(group, MOMO_TRAVEL))
-                    .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 참여자가 존재합니다.");
+            assertDoesNotThrow(() -> update(group, MOMO_TRAVEL));
         }
 
-        @DisplayName("참여자가 존재하는 모임은 삭제할 수 없습니다")
+        @DisplayName("참여자가 존재하는 모임을 삭제할 수 있습니다")
         @Test
         void cannotDeleteGroupByExistParticipants() {
-            assertThatThrownBy(group::validateGroupIsDeletable)
-                    .isInstanceOf(GroupException.class)
-                    .hasMessage("해당 모임은 참여자가 존재합니다.");
+            assertDoesNotThrow(group::validateGroupIsProceeding);
         }
     }
 
@@ -198,7 +195,7 @@ class GroupTest {
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
         Location location = fixture.getLocationObject();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         Group group = fixture.toGroup(host);
 
@@ -225,7 +222,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, description);
 
@@ -245,7 +242,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, description);
     }
@@ -364,7 +361,7 @@ class GroupTest {
 
     @DisplayName("참여자가 가득한 모임에 대해, 모집이 마감되었는지 확인한다")
     @ParameterizedTest
-    @CsvSource(value = {"2,true", "3,false"})
+    @CsvSource(value = {"2,false", "3,false"})
     void isFinishedRecruitmentWhenParticipantsFull(int capacity, boolean expected) {
         Group group = MOMO_STUDY.builder()
                 .capacity(capacity)

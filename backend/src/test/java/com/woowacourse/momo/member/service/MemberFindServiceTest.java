@@ -10,11 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.exception.MemberException;
 
 @Transactional
 @SpringBootTest
@@ -27,7 +28,7 @@ class MemberFindServiceTest {
     private MemberRepository memberRepository;
 
     private static final UserId USER_ID = UserId.momo("momo");
-    private static final String USER_NAME = "momo";
+    private static final UserName USER_NAME = UserName.from("모모");
     private static final Password PASSWORD = Password.encrypt("momo123!", new SHA256Encoder());
 
     @DisplayName("회원을 조회한다")
@@ -45,7 +46,7 @@ class MemberFindServiceTest {
     @Test
     void findNotExistMember() {
         assertThatThrownBy(() -> memberFindService.findMember(1000L))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
 
@@ -56,7 +57,7 @@ class MemberFindServiceTest {
         member.delete();
 
         assertThatThrownBy(() -> memberFindService.findMember(member.getId()))
-                .isInstanceOf(MomoException.class)
+                .isInstanceOf(MemberException.class)
                 .hasMessage("탈퇴한 멤버입니다.");
     }
 
@@ -78,7 +79,7 @@ class MemberFindServiceTest {
         Password wrongPassword = Password.encrypt("wrong123!", new SHA256Encoder());
         assertThatThrownBy(
                 () -> memberFindService.findByUserIdAndPassword(USER_ID, wrongPassword)
-        ).isInstanceOf(MomoException.class)
+        ).isInstanceOf(MemberException.class)
                 .hasMessageContaining("아이디나 비밀번호가 다릅니다.");
     }
 }

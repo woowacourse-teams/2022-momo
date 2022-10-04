@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.service.dto.request;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
@@ -43,7 +44,7 @@ public class GroupRequest {
         return location.getLocation();
     }
 
-    public String getDescription() {
-        return description;
+    public Description getDescription() {
+        return new Description(description);
     }
 }

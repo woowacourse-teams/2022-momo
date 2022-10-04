@@ -30,6 +30,6 @@ class GroupCreateAcceptanceTest extends AcceptanceTest {
     void createGroupByNonMember() {
         모임을_생성한다(GROUP)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .body("message", Matchers.is("AUTH_ERROR_003"));
+                .body("message", Matchers.is("AUTH_003"));
     }
 }

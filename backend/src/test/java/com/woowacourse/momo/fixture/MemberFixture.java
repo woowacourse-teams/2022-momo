@@ -41,6 +41,6 @@ public enum MemberFixture {
     }
 
     public Member toMember() {
-        return new Member(UserId.momo(userId), Password.encrypt(password, new SHA256Encoder()), new UserName(name));
+        return new Member(UserId.momo(userId), Password.encrypt(password, new SHA256Encoder()), UserName.from(name));
     }
 }

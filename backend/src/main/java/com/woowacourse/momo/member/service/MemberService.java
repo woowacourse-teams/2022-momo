@@ -1,6 +1,7 @@
 package com.woowacourse.momo.member.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -9,14 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
+import com.woowacourse.momo.auth.exception.AuthErrorCode;
+import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.domain.Password;
+import com.woowacourse.momo.member.domain.UserId;
+import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.exception.MemberErrorCode;
+import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
@@ -25,10 +34,31 @@ import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 @Service
 public class MemberService {
 
+    private final MemberRepository memberRepository;
     private final MemberFindService memberFindService;
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final TokenRepository tokenRepository;
+
+    @Transactional
+    public Long signUp(SignUpRequest request) {
+        UserId userId = UserId.momo(request.getUserId());
+        UserName userName = UserName.from(request.getName());
+        Password password = Password.encrypt(request.getPassword(), passwordEncoder);
+        Member member = new Member(userId, password, userName);
+
+        validateUserIsNotExist(userId);
+        Member savedMember = memberRepository.save(member);
+
+        return savedMember.getId();
+    }
+
+    private void validateUserIsNotExist(UserId userId) {
+        Optional<Member> member = memberRepository.findByUserId(userId);
+        if (member.isPresent()) {
+            throw new AuthException(AuthErrorCode.SIGNUP_ALREADY_REGISTER);
+        }
+    }
 
     public MyInfoResponse findById(Long id) {
         Member member = memberFindService.findMember(id);
@@ -55,7 +85,7 @@ public class MemberService {
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {
         if (isHost(member, groups)) {
-            throw new MomoException(GlobalErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
+            throw new MomoException(MemberErrorCode.MEMBER_DELETED_EXIST_IN_PROGRESS_GROUP);
         }
     }
 
@@ -82,7 +112,7 @@ public class MemberService {
     private void confirmPassword(Member member, String password) {
         String encryptedPassword = passwordEncoder.encrypt(password);
         if (member.isNotSamePassword(encryptedPassword)) {
-            throw new MomoException(GlobalErrorCode.MEMBER_WRONG_PASSWORD);
+            throw new MemberException(MemberErrorCode.MEMBER_WRONG_PASSWORD);
         }
     }
 }

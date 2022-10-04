@@ -73,7 +73,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
                             .body("location.address", is(updatedGroup.getLocation().getAddress()))
                             .body("location.buildingName", is(updatedGroup.getLocation().getBuildingName()))
                             .body("location.detail", is(updatedGroup.getLocation().getDetail()))
-                            .body("description", is(updatedGroup.getDescription()));
+                            .body("description", is(updatedGroup.getDescription().getValue()));
                 },
                 () -> {
                     List<ScheduleResponse> schedules = response.extract()
@@ -102,7 +102,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
 
         모임을_수정한다(anotherAccessToken, groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.FORBIDDEN.value())
-                .body("message", Matchers.is("GROUP_ERROR_017"));
+                .body("message", Matchers.is("GROUP_017"));
     }
 
     @DisplayName("비회원이 모임을 수정한다")
@@ -110,7 +110,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     void updateGroupByNonMember() {
         모임을_수정한다(groupId, DUDU_STUDY)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .body("message", Matchers.is("AUTH_ERROR_003"));
+                .body("message", Matchers.is("AUTH_003"));
     }
 
     @DisplayName("존재하지 않은 모임을 삭제한다")
@@ -118,7 +118,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
     void updateNonExistentGroup() {
         모임을_수정한다(hostAccessToken, 0L, DUDU_STUDY)
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.is("GROUP_ERROR_001"));
+                .body("message", Matchers.is("GROUP_001"));
     }
 
     @DisplayName("모임을 조기 마감한다")
@@ -140,8 +140,7 @@ class GroupUpdateAcceptanceTest extends AcceptanceTest {
         모임에_참여한다(participantAccessToken, groupId);
 
         모임을_수정한다(hostAccessToken, groupId, DUDU_STUDY)
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("GROUP_ERROR_014"));
+                .statusCode(HttpStatus.OK.value());
     }
 
     @DisplayName("모임의 장소를 수정한다")
