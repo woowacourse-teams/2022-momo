@@ -17,25 +17,32 @@ public class ControllerAdvice {
 
     @ExceptionHandler(MomoException.class)
     public ResponseEntity<ExceptionResponse> handleException(MomoException e) {
-        return ResponseEntity.status(e.getStatusCode()).body(ExceptionResponse.from(e.getErrorCode()));
+        int statusCode = e.getStatusCode();
+        ExceptionResponse response = ExceptionResponse.from(e.getErrorCode());
+
+        return ResponseEntity.status(statusCode).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity.badRequest()
-                .body(ExceptionResponse.from(GlobalErrorCode.VALIDATION_ERROR.getErrorCode()));
+        return convert(GlobalErrorCode.VALIDATION_ERROR);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ExceptionResponse> unhandledApiException(NoHandlerFoundException exception) {
-        ErrorCode e = GlobalErrorCode.UNHANDLED_API_ERROR;
-        return ResponseEntity.status(e.getStatusCode()).body(ExceptionResponse.from(e.getErrorCode()));
+    public ResponseEntity<ExceptionResponse> unhandledApiException(NoHandlerFoundException e) {
+        return convert(GlobalErrorCode.UNHANDLED_API_ERROR);
     }
 
     @UnhandledErrorLogging
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleAnyException(Exception e) {
-        return ResponseEntity.internalServerError()
-                .body(ExceptionResponse.from(GlobalErrorCode.INTERNAL_SERVER_ERROR.getErrorCode()));
+        return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+    private ResponseEntity<ExceptionResponse> convert(ErrorCode errorCode) {
+        int statusCode = errorCode.getStatusCode();
+        ExceptionResponse response = ExceptionResponse.from(errorCode.getErrorCode());
+
+        return ResponseEntity.status(statusCode).body(response);
     }
 }
