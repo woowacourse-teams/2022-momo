@@ -33,7 +33,7 @@ class UserNameTest {
 
     @DisplayName("사용자의 이름이 길이 정책을 벗어나면 예외가 발생한다")
     @ParameterizedTest
-    @ValueSource(ints = {0, 21})
+    @ValueSource(ints = {21})
     void lengthOutOfRangeException(int length) {
         String name = "a".repeat(length);
         assertThatThrownBy(() -> UserName.from(name))

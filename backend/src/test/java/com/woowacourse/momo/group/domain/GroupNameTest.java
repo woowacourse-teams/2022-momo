@@ -32,7 +32,7 @@ class GroupNameTest {
 
     @DisplayName("모임 이름 길이가 정책 범위를 벗어나면 예외가 발생한다")
     @ParameterizedTest
-    @ValueSource(ints = {0, 51})
+    @ValueSource(ints = {51})
     void nameLengthOutOfRangeException(int nameLength) {
         String name = "a".repeat(nameLength);
         assertThatThrownBy(() -> new GroupName(name))

@@ -31,8 +31,8 @@ public class UserId {
     }
 
     public static UserId momo(String value) {
-        validateLengthInRange(value);
         validateNotBlank(value);
+        validateLengthInRange(value);
         validateNotEmailPattern(value);
         return new UserId(value);
     }
@@ -43,16 +43,16 @@ public class UserId {
         return new UserId(value);
     }
 
+    private static void validateNotBlank(String value) {
+        if (value.isBlank()) {
+            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_NOT_BE_BLANK);
+        }
+    }
+
     private static void validateLengthInRange(String userId) {
         int length = userId.length();
         if (length < MINIMUM_LENGTH || MAXIMUM_LENGTH < length) {
             throw new MemberException(MemberErrorCode.USER_ID_CANNOT_BE_OUT_OF_RANGE);
-        }
-    }
-
-    private static void validateNotBlank(String value) {
-        if (value.isBlank()) {
-            throw new MemberException(MemberErrorCode.USER_ID_SHOULD_NOT_BE_BLANK);
         }
     }
 

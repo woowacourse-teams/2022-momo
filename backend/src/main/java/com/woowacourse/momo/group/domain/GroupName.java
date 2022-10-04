@@ -28,8 +28,8 @@ public class GroupName {
     private String value;
 
     public GroupName(String value) {
-        validateLengthInRange(value);
         validateNotBlank(value);
+        validateLengthInRange(value);
         this.value = value;
     }
 
