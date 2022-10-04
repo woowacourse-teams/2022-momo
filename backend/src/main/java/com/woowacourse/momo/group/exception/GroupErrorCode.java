@@ -20,7 +20,7 @@ public enum GroupErrorCode implements ErrorCode {
     SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME(400, "GROUP_006", "일정의 시작 시간은 종료 시간 이전이어야 합니다."),
     SCHEDULE_MUST_BE_INCLUDED_IN_DURATION(400, "GROUP_007", "일정은 모임 기간에 포함되어야 합니다."),
 
-    NAME_CANNOT_BE_BLANK(400, "GROUP_008", "모임의 이름은 빈 값이 될 수 없습니다."),
+    NAME_CANNOT_BE_BLANK(400, "GROUP_008", "모임의 이름은 공백이 될 수 없습니다."),
 
     CAPACITY_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_009", "모임 내 인원은 1명 이상 99명 이하여야 합니다."),
     CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS_SIZE(400, "GROUP_010", "참가인원제한은 현재 참가자의 인원수보다 적을 수 없습니다."),
@@ -38,6 +38,9 @@ public enum GroupErrorCode implements ErrorCode {
 
     MEMBER_ALREADY_LIKE(400, "GROUP_019", "이미 찜한 모임입니다."),
     MEMBER_NOT_YET_LIKE(403, "GROUP_020", "찜하지 않은 모임입니다."),
+
+    NAME_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_021", "모임의 이름은 1자 이상 50자 이하여야 합니다."),
+    DESCRIPTION_CANNOT_BE_OUT_OF_RANGE(400, "GROUP_022", "모임의 설명은 1000자 이하여야 합니다.")
     ;
 
     private final int statusCode;

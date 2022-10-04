@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.woowacourse.momo.auth.exception.AuthException;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 
 class JwtTokenProviderTest {
 

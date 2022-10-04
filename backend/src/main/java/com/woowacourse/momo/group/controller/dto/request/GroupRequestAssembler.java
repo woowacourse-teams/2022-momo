@@ -36,7 +36,6 @@ public class GroupRequestAssembler {
         return new LocationRequest(request.getAddress(), request.getBuildingName(), request.getBuildingName());
     }
 
-
     private DurationRequest durationRequest(DurationApiRequest request) {
         return new DurationRequest(request.getStart(), request.getEnd());
     }

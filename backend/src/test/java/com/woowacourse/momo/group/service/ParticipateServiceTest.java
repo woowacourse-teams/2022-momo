@@ -25,7 +25,6 @@ import org.springframework.test.context.TestConstructor;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.exception.GroupException;

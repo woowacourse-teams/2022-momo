@@ -3,6 +3,7 @@ package com.woowacourse.momo.group.service.dto.request;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
@@ -37,7 +38,7 @@ public class GroupUpdateRequest {
         return new Calendar(deadline.getDeadline(), duration.getDuration(), schedules.getSchedules());
     }
 
-    public String getDescription() {
-        return description;
+    public Description getDescription() {
+        return new Description(description);
     }
 }

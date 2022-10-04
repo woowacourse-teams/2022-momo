@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.service.AuthService;
-import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -32,6 +31,7 @@ import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
 import com.woowacourse.momo.member.service.dto.request.ChangePasswordRequest;
+import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional
@@ -68,7 +68,7 @@ class MemberServiceTest {
     @BeforeEach
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
-        savedHost = memberRepository.save(new Member(UserId.momo("주최자"), password, UserName.from("momo")));
+        savedHost = memberRepository.save(new Member(UserId.momo("모임주최자"), password, UserName.from("momo")));
     }
 
     @DisplayName("회원 정보를 조회한다")

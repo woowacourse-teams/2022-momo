@@ -121,7 +121,7 @@ class GroupFindAcceptanceTest extends AcceptanceTest {
                             .body("location.address", is(group.getLocation().getAddress()))
                             .body("location.buildingName", is(group.getLocation().getBuildingName()))
                             .body("location.detail", is(group.getLocation().getDetail()))
-                            .body("description", is(group.getDescription()))
+                            .body("description", is(group.getDescription().getValue()))
                             .body("like", is(like));
                 },
                 () -> {

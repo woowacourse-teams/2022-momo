@@ -14,7 +14,6 @@ import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 import java.util.List;
 import java.util.stream.Stream;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -196,7 +195,7 @@ class GroupTest {
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
         Location location = fixture.getLocationObject();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         Group group = fixture.toGroup(host);
 
@@ -223,7 +222,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, description);
 
@@ -243,7 +242,7 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
-        String description = fixture.getDescription();
+        Description description = fixture.getDescription();
 
         group.update(capacity, calendar, name, category, description);
     }

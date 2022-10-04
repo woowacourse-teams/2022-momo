@@ -33,7 +33,6 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.DeadlineFixture;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
-import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
