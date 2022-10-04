@@ -1,0 +1,10 @@
+export { default as CategoryImage1 } from './1.webp';
+export { default as CategoryImage2 } from './2.webp';
+export { default as CategoryImage3 } from './3.webp';
+export { default as CategoryImage4 } from './4.webp';
+export { default as CategoryImage5 } from './5.webp';
+export { default as CategoryImage6 } from './6.webp';
+export { default as CategoryImage7 } from './7.webp';
+export { default as CategoryImage8 } from './8.webp';
+export { default as CategoryImage9 } from './9.webp';
+export { default as CategoryImage10 } from './10.webp';

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="모두 모여라" />
+    <title>Momo</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="modal"></div>
+    <div id="snackbar"></div>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%=htmlWebpackPlugin.options.KAKAO_MAP_KEY%>&libraries=services"></script>
+    <script>
+      if (
+        !window.location.port &&
+        typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object'
+      ) {
+        __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+      }
+    </script>
+  </body>
+</html>
