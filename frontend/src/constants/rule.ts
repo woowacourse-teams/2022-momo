@@ -16,6 +16,10 @@ const GROUP_RULE = {
 };
 
 const MEMBER_RULE = {
+  ID: {
+    MIN_LENGTH: 4,
+    MAX_LENGTH: 50,
+  },
   NAME: {
     MIN_LENGTH: 2,
     MAX_LENGTH: 30,
