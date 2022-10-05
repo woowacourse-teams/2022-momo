@@ -1,5 +1,5 @@
 import axios from 'apis/axios';
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
 import { UserProfile } from 'types/user';
 import { accessTokenProvider } from 'utils/token';
@@ -14,8 +14,11 @@ const requestUserInfo = () => {
     .then(response => {
       return response.data;
     })
-    .catch(() => {
-      throw new Error(ERROR_MESSAGE.MEMBER.FAILURE_REQUEST);
+    .catch(error => {
+      if (!error) {
+        throw new Error(CLIENT_ERROR_MESSAGE.MEMBER.FAILURE_REQUEST);
+      }
+      throw error;
     });
 };
 

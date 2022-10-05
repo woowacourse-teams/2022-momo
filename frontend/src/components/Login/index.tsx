@@ -10,10 +10,10 @@ import Modal from 'components/Modal';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
+import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
-import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
@@ -24,6 +24,7 @@ function Login() {
   const { setOffModal, showSignupModal } = useModal();
 
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const queryClient = useQueryClient();
 
@@ -51,8 +52,8 @@ function Login() {
 
         setOffModal();
       })
-      .catch(({ message }) => {
-        alert(showErrorMessage(message));
+      .catch(error => {
+        handleError(error);
       });
   };
 
@@ -61,8 +62,8 @@ function Login() {
       .then(oauthLink => {
         window.location.assign(oauthLink);
       })
-      .catch(({ message }) => {
-        alert(showErrorMessage(message));
+      .catch(error => {
+        handleError(error);
       });
   };
 

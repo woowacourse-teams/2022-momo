@@ -1,4 +1,4 @@
-import { GROUP_RULE } from './rule';
+import { GROUP_RULE, MEMBER_RULE } from './rule';
 
 const GUIDE_MESSAGE = {
   AUTH: {
@@ -27,25 +27,23 @@ const GUIDE_MESSAGE = {
     CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
     SUCCESS_EXIT_REQUEST: '참여 취소에 성공했어요.',
     SUCCESS_EDIT_REQUEST: '모임 정보 수정에 성공했어요.',
+    SUCCESS_LIKE_GROUP: '찜한 모임에 추가했어요.',
+    SUCCESS_UNLIKE_GROUP: '찜한 목록에서 삭제했어요.',
   },
 };
 
-const ERROR_MESSAGE = {
+const CLIENT_ERROR_MESSAGE = {
   SIGNUP: {
-    INVALID_ID: '잘못된 형식의 아이디입니다.',
     INVALID_NICKNAME: '올바르지 않은 닉네임입니다.',
     INVALID_PASSWORD: '잘못된 형식의 비밀번호입니다.',
     INVALID_CONFIRMPASSWORD: '비밀번호 확인이 맞지 않습니다.',
-    DUPLICATED_ID: '중복된 아이디입니다.',
   },
   AUTH: {
     NOT_EXIST_ID: '존재하지 않는 아이디입니다.',
     INCORRECT_PASSWORD: '비밀번호가 일치하지 않습니다.',
-    FAILURE_LOGIN_REQUEST: '로그인에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_SIGNUP_REQUEST:
-      '회원가입에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_LOGOUT_REQUEST:
-      '로그아웃에 실패했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_LOGIN_REQUEST: '로그인에 실패했어요. ',
+    FAILURE_SIGNUP_REQUEST: '회원가입에 실패했어요. ',
+    FAILURE_LOGOUT_REQUEST: '로그아웃에 실패했어요. ',
   },
   CREATE: {
     NAME: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
@@ -57,38 +55,89 @@ const ERROR_MESSAGE = {
     DEADLINE: '마감 날짜가 잘못 입력되었어요.',
     LOCATION: `장소는 ${GROUP_RULE.LOCATION.MAX_LENGTH}자 이내여야 해요.`,
     DESCRIPTION: `설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자 이내여야 해요.`,
-    FAILURE_REQUEST:
-      '모임을 생성하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_REQUEST: '모임을 생성하는 중 에러가 발생했어요. ',
   },
   DELETE: {
-    FAILURE_REQUEST:
-      '모임을 삭제하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_REQUEST: '모임을 삭제하는 중 에러가 발생했어요. ',
   },
   MEMBER: {
     FAILURE_CONFIRM_PASSWORD: '비밀번호 확인이 일치하지 않아요.',
-    FAILURE_REQUEST:
-      '유저 정보를 불러오는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_REQUEST: '유저 정보를 불러오는 중 에러가 발생했어요. ',
     FAILURE_CONFIRM_PASSWORD_REQUEST:
-      '비밀번호를 확인하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_NAME_REQUEST:
-      '닉네임을 변경하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_PASSWORD_REQUEST:
-      '비밀번호를 변경하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_WITHDRAWAL_REQUEST:
-      '회원 탈퇴 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+      '비밀번호를 확인하는 중 에러가 발생했어요. ',
+    FAILURE_NAME_REQUEST: '닉네임을 변경하는 중 에러가 발생했어요. ',
+    FAILURE_PASSWORD_REQUEST: '비밀번호를 변경하는 중 에러가 발생했어요. ',
+    FAILURE_WITHDRAWAL_REQUEST: '회원 탈퇴 중 에러가 발생했어요. ',
   },
   GROUP: {
-    FAILURE_CLOSE_GROUP:
-      '모임 모집을 마감하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_JOIN_GROUP:
-      '모임에 참여하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_EXIT_GROUP:
-      '모임 참여를 취소하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_EDIT_GROUP:
-      '모임 정보를 수정하는 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    FAILURE_LIKE_GROUP:
-      '모임을 찜하던 중 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    FAILURE_CLOSE_GROUP: '모임 모집을 마감하는 중 에러가 발생했어요. ',
+    FAILURE_JOIN_GROUP: '모임에 참여하는 중 에러가 발생했어요. ',
+    FAILURE_EXIT_GROUP: '모임 참여를 취소하는 중 에러가 발생했어요. ',
+    FAILURE_EDIT_GROUP: '모임 정보를 수정하는 중 에러가 발생했어요. ',
+    FAILURE_LIKE_GROUP: '모임을 찜하던 중 에러가 발생했어요. ',
   },
 };
 
-export { GUIDE_MESSAGE, ERROR_MESSAGE };
+const SERVER_ERROR_MESSAGE = {
+  SIGNUP: {
+    SIGNUP_001: '잘못된 형식의 아이디입니다.',
+    SIGNUP_002: '잘못된 형식의 비밀번호입니다.',
+    SIGNUP_003: '중복된 아이디입니다.',
+  },
+  AUTH: {
+    AUTH_001: '토큰의 유효기간이 만료되었습니다. 새로운 토큰을 요청합니다.',
+    AUTH_002: '유효하지 않은 토큰입니다. 다시 로그인해주세요.',
+    AUTH_003: '로그인이 필요합니다.',
+    AUTH_004: '모임의 수정과 삭제는 주최자만 가능합니다.',
+  },
+  OAUTH: {
+    OAUTH_001:
+      '구글 서버와 통신 중 오류가 발생했어요. 잠시 후에 다시 시도해주세요.',
+  },
+  LOGIN: {
+    LOGIN_001: '아이디 또는 비밀번호가 잘못되었어요.',
+  },
+  MEMBER: {
+    MEMBER_001: '존재하지 않는 회원이에요.',
+    MEMBER_002: '탈퇴한 회원이에요.',
+    MEMBER_003: '현재 진행중인 모임이 있어 탈퇴할 수 없어요.',
+    MEMBER_004: '비밀번호가 일치하지 않아요.',
+    MEMBER_005: '이름이 비어있어요.',
+    MEMBER_006: `이름이 ${MEMBER_RULE.NAME.MAX_LENGTH}자를 넘어요.`,
+    MEMBER_007: '비밀번호가 비어있어요.',
+    MEMBER_008: '비밀번호가 형식에 맞지 않아요.',
+    MEMBER_010: '아이디가 비어있어요.',
+    MEMBER_011: '구글 아이디가 이메일 형식에 맞지 않아요.',
+    MEMBER_012: '아이디나 비밀번호가 맞지 않아요.',
+  },
+  GROUP: {
+    GROUP_001: '존재하지 않는 모임이에요.',
+    GROUP_002: '마감시간은 지금 시점 이후로 설정해주세요.',
+    GROUP_003: '모임 진행 시작 날짜는 종료일자 이전이어야 해요.',
+    GROUP_004: '시작 날짜와 종료 날짜는 과거일 수 없어요.',
+    GROUP_005: '마감 날짜는 시작 날짜 이전으로 설정해주세요.',
+    GROUP_006: '일정의 시작 시간은 종료 시간 이전이어야 합니다.',
+    GROUP_007: '일정은 모임 기간에만 등록할 수 있어요.',
+    GROUP_008: '모임의 이름은 빈 값이 될 수 없습니다.',
+    GROUP_009: `모집 인원은 ${GROUP_RULE.CAPACITY.MIN}명 이상 ${GROUP_RULE.CAPACITY.MAX}명 이하여야 해요.`,
+    GROUP_010: '모집 인원은 현재 참가자 수보다 적을 수 없어요.',
+    GROUP_011: '모임이 조기 마감되었어요.',
+    GROUP_012: '모임이 마감되었어요.',
+    GROUP_013: '모집 인원이 가득 찼어요.',
+    GROUP_014: '참여자가 존재하는 모임이에요.',
+    GROUP_015: '모임의 주최자는 참여 상태를 변경할 수 없어요.',
+    GROUP_016: '이미 참여중인 모임이에요.',
+    GROUP_017: '모임의 주최자만 접근할 수 있어요.',
+    GROUP_018: '해당 모임에 참여하지 않았어요.',
+    GROUP_019: '이미 찜한 모임이에요.',
+    GROUP_020: '찜하지 않은 모임이에요.',
+  },
+  CATEGORY: {
+    CATEGORY_001: '존재하지 않는 카테고리에요.',
+  },
+  SERVER: {
+    UNHANDLED: '알 수 없는 에러가 발생하였어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+  },
+};
+
+export { GUIDE_MESSAGE, CLIENT_ERROR_MESSAGE, SERVER_ERROR_MESSAGE };

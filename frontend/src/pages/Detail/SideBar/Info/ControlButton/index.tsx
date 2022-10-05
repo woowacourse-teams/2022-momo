@@ -9,8 +9,9 @@ import {
   requestCloseGroup,
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
@@ -34,6 +35,7 @@ function ControlButton({
 
   const { showLoginModal } = useModal();
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const navigate = useNavigate();
 
@@ -51,8 +53,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+        }
+        handleError(error);
       });
   };
 
@@ -65,8 +70,11 @@ function ControlButton({
 
         navigate(BROWSER_PATH.BASE);
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+        }
+        handleError(error);
       });
   };
 
@@ -83,8 +91,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
+        }
+        handleError(error);
       });
   };
 
@@ -96,8 +107,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
+        }
+        handleError(error);
       });
   };
 

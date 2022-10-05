@@ -7,14 +7,16 @@ import { Loading } from 'components/Animation';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
+import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
-import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 
 function Auth() {
   const { setAuth, setLogin } = useAuth();
+
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -32,8 +34,8 @@ function Auth() {
 
         navigate(BROWSER_PATH.BASE);
       })
-      .catch(({ message }) => {
-        alert(showErrorMessage(message));
+      .catch(error => {
+        handleError(error);
 
         navigate(BROWSER_PATH.BASE);
       });

@@ -6,6 +6,7 @@ import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
+import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import { getLoginType } from 'utils/user';
 
@@ -23,6 +24,7 @@ function Header() {
   } = useAuth();
 
   const { showSignupModal, showLoginModal } = useModal();
+  const { handleError } = useHandleError();
 
   useEffect(() => {
     if (!accessToken && !refreshToken) return;

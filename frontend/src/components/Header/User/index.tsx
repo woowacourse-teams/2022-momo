@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { requestLogout } from 'apis/request/auth';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 import useClosingState from 'hooks/useClosingState';
+import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 
 import * as S from './index.styled';
@@ -22,6 +23,7 @@ function User() {
   });
 
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -53,8 +55,12 @@ function User() {
 
         navigate(BROWSER_PATH.BASE);
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.AUTH.FAILURE_LOGOUT_REQUEST);
+        }
+
+        handleError(error);
       });
   };
 
