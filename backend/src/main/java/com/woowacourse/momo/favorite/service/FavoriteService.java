@@ -13,24 +13,43 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
+import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
+import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.member.exception.MemberErrorCode;
+import com.woowacourse.momo.member.exception.MemberException;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class FavoriteService {
 
-    private final MemberFindService memberFindService;
+    private final GroupSearchRepository groupSearchRepository;
+    private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public void like(Long groupId, Long memberId) {
-        Member member = memberFindService.findMember(memberId);
-
+        validateExistGroup(groupId);
+        validateExistMember(memberId);
         validateMemberNotYetLike(groupId, memberId);
 
         Favorite favorite = new Favorite(groupId, memberId);
         favoriteRepository.save(favorite);
+    }
+
+    private void validateExistGroup(Long groupId) {
+        boolean result = groupSearchRepository.existsById(groupId);
+        if (!result) {
+            throw new GroupException(NOT_EXIST);
+        }
+    }
+
+    private void validateExistMember(Long memberId) {
+        boolean result = memberRepository.existsById(memberId);
+        if (!result) {
+            throw new MemberException(MemberErrorCode.MEMBER_NOT_EXIST);
+        }
     }
 
     private void validateMemberNotYetLike(Long groupId, Long memberId) {

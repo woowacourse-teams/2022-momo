@@ -9,4 +9,6 @@ import com.woowacourse.momo.group.domain.Group;
 public interface GroupSearchRepository extends Repository<Group, Long>, GroupSearchRepositoryCustom {
 
     Optional<Group> findById(Long id);
+
+    boolean existsById(Long id);
 }
