@@ -4,28 +4,35 @@ import useThrottle from 'hooks/useThrottle';
 
 import { Step1, Step2, Step3, Step4, Step5 } from './Steps';
 
+const scrollHeightByPage = {
+  1: 300,
+  2: 1000,
+  3: 1800,
+  4: 2500,
+};
+
 function Landing() {
   const [showedPageNumbers, setShowedPageNumbers] = useState<number[]>([1]);
 
   const throttledScrollEvent = useThrottle(() => {
     const scrollHeight = window.scrollY;
 
-    if (scrollHeight < 300) {
+    if (scrollHeight < scrollHeightByPage[1]) {
       setShowedPageNumbers([1]);
       return;
     }
 
-    if (scrollHeight < 1000) {
+    if (scrollHeight < scrollHeightByPage[2]) {
       setShowedPageNumbers([1, 2]);
       return;
     }
 
-    if (scrollHeight < 1800) {
+    if (scrollHeight < scrollHeightByPage[3]) {
       setShowedPageNumbers([1, 2, 3]);
       return;
     }
 
-    if (scrollHeight < 2500) {
+    if (scrollHeight < scrollHeightByPage[4]) {
       setShowedPageNumbers([1, 2, 3, 4]);
       return;
     }

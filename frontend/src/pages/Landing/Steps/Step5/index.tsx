@@ -18,18 +18,18 @@ function Step5({ show }: { show: boolean }) {
   return (
     <Container>
       <S.IconBox>
-        <BeanSVG />
-        <BeanSVG />
-        <BeanSVG />
+        {[...Array(3)].map(() => (
+          <BeanSVG />
+        ))}
       </S.IconBox>
-      <S.HeadingWrapper>
+      <S.HeadingContainer>
         <S.DescriptionHeading className={show ? 'show' : ''}>
           한 눈에 참여하는 모임 서비스
         </S.DescriptionHeading>
         <S.TitleHeading className={show ? 'show' : ''}>
           모두 모여라, 모모
         </S.TitleHeading>
-      </S.HeadingWrapper>
+      </S.HeadingContainer>
       <S.Button
         type="button"
         className={show ? 'show' : ''}

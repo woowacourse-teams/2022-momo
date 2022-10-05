@@ -56,9 +56,9 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const HeadingWrapper = styled.div`
+const HeadingContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   place-items: center;
   gap: 1rem;
 
@@ -146,7 +146,7 @@ const Image = styled.img<{ width: string }>`
 
 export {
   Container,
-  HeadingWrapper,
+  HeadingContainer,
   LeftHeadingWrapper,
   RightHeadingWrapper,
   Heading,

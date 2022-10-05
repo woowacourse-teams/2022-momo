@@ -15,7 +15,7 @@ import {
 
 import {
   Container,
-  HeadingWrapper,
+  HeadingContainer,
   LeftHeading,
   LeftHeadingWrapper,
   RightHeading,
@@ -26,7 +26,7 @@ import * as S from './index.styled';
 function Step1({ show }: { show: boolean }) {
   return (
     <Container>
-      <HeadingWrapper>
+      <HeadingContainer>
         <LeftHeadingWrapper>
           <LeftHeading className={show ? 'show' : ''}>
             다양한 <p>카테고리</p>에서
@@ -37,7 +37,7 @@ function Step1({ show }: { show: boolean }) {
             원하는 모임을 찾아보세요.
           </RightHeading>
         </RightHeadingWrapper>
-      </HeadingWrapper>
+      </HeadingContainer>
       <S.IconBox className={show ? 'show' : ''}>
         <StudySVG />
         <MogackoSVG />

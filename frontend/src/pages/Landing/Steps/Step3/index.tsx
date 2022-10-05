@@ -4,7 +4,7 @@ import DescImage from 'assets/landing/three.webp';
 
 import {
   Container,
-  HeadingWrapper,
+  HeadingContainer,
   Image,
   LeftHeading,
   LeftHeadingWrapper,
@@ -15,7 +15,7 @@ import {
 function Step3({ show }: { show: boolean }) {
   return (
     <Container>
-      <HeadingWrapper>
+      <HeadingContainer>
         <LeftHeadingWrapper>
           <LeftHeading className={show ? 'show' : ''}>
             원하는 모임이 생기셨나요?
@@ -26,7 +26,7 @@ function Step3({ show }: { show: boolean }) {
             모임에 <p>참여</p>해보세요!
           </RightHeading>
         </RightHeadingWrapper>
-      </HeadingWrapper>
+      </HeadingContainer>
       <Image src={DescImage} width="50rem" className={show ? 'show' : ''} />
     </Container>
   );

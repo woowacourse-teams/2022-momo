@@ -6,7 +6,7 @@ import DescImage3 from 'assets/landing/two_3.webp';
 
 import {
   Container,
-  HeadingWrapper,
+  HeadingContainer,
   Image,
   LeftHeading,
   LeftHeadingWrapper,
@@ -15,10 +15,25 @@ import {
 } from '../../@shared/index.styled';
 import * as S from './index.styled';
 
+const images = [
+  {
+    imageSrc: DescImage1,
+    width: '20rem',
+  },
+  {
+    imageSrc: DescImage2,
+    width: '30rem',
+  },
+  {
+    imageSrc: DescImage3,
+    width: '35rem',
+  },
+];
+
 function Step2({ show }: { show: boolean }) {
   return (
     <Container>
-      <HeadingWrapper>
+      <HeadingContainer>
         <LeftHeadingWrapper>
           <LeftHeading className={show ? 'show' : ''}>
             각 <p>단계</p>별로 따라가다 보면
@@ -29,11 +44,15 @@ function Step2({ show }: { show: boolean }) {
             쉽게 모임을 만들 수 있어요.
           </RightHeading>
         </RightHeadingWrapper>
-      </HeadingWrapper>
+      </HeadingContainer>
       <S.ImageBox>
-        <Image src={DescImage1} width="20rem" className={show ? 'show' : ''} />
-        <Image src={DescImage2} width="30rem" className={show ? 'show' : ''} />
-        <Image src={DescImage3} width="35rem" className={show ? 'show' : ''} />
+        {images.map(image => (
+          <Image
+            src={image.imageSrc}
+            width={image.width}
+            className={show ? 'show' : ''}
+          />
+        ))}
       </S.ImageBox>
     </Container>
   );

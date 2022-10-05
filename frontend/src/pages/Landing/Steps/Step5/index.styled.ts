@@ -91,7 +91,7 @@ const IconBox = styled.div`
   }
 `;
 
-const HeadingWrapper = styled.div`
+const HeadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -153,4 +153,4 @@ const Button = styled.button`
   `}
 `;
 
-export { IconBox, HeadingWrapper, DescriptionHeading, TitleHeading, Button };
+export { IconBox, HeadingContainer, DescriptionHeading, TitleHeading, Button };
