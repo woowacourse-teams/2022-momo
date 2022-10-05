@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { useQueryClient } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
@@ -14,11 +15,17 @@ import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
+import { prevLocationProvider } from 'utils/location';
 
 import * as S from './index.styled';
 
 function Login() {
+  const queryClient = useQueryClient();
+
   const { setAuth, setLogin } = useAuth();
+
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal, showSignupModal } = useModal();
@@ -26,10 +33,7 @@ function Login() {
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
-  const queryClient = useQueryClient();
-
-  const userIdRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
 
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,6 +64,8 @@ function Login() {
   const googleLogin = () => {
     requestGoogleOauthToken()
       .then(oauthLink => {
+        prevLocationProvider.set(location.pathname);
+
         window.location.assign(oauthLink);
       })
       .catch(error => {
