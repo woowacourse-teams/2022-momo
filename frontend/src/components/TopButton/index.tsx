@@ -6,14 +6,12 @@ import useThrottle from 'hooks/useThrottle';
 import * as S from './index.styled';
 
 function TopButton() {
-  const throttle = useThrottle();
-
-  const scrollToTop = () => {
-    throttle(() => window.scroll({ top: 0, behavior: 'smooth' }), 800);
-  };
+  const throttledScrollToTop = useThrottle(() => {
+    window.scroll({ top: 0, behavior: 'smooth' });
+  }, 800);
 
   return (
-    <S.Button type="button" onClick={scrollToTop}>
+    <S.Button type="button" onClick={throttledScrollToTop}>
       <TopArrowSVG />
     </S.Button>
   );
