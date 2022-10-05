@@ -11,13 +11,11 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     boolean existsByGroupIdAndMemberId(Long groupId, Long memberId);
 
     @Query("SELECT f FROM Favorite f "
-            + "JOIN FETCH f.group g "
             + "JOIN FETCH f.member m "
-            + "WHERE g.id = :groupId AND m.id = :memberId")
+            + "WHERE f.id = :groupId AND m.id = :memberId")
     Optional<Favorite> findByGroupIdAndMemberId(Long groupId, Long memberId);
 
     @Query("SELECT f FROM Favorite f "
-            + "JOIN FETCH f.group g "
             + "WHERE f.member.id = :memberId")
     List<Favorite> findAllByMemberId(Long memberId);
 }

@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
-import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
 
@@ -24,17 +22,15 @@ import com.woowacourse.momo.member.service.MemberFindService;
 public class FavoriteService {
 
     private final MemberFindService memberFindService;
-    private final GroupFindService groupFindService;
     private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public void like(Long groupId, Long memberId) {
-        Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
 
         validateMemberNotYetLike(groupId, memberId);
 
-        Favorite favorite = new Favorite(group, member);
+        Favorite favorite = new Favorite(groupId, member);
         favoriteRepository.save(favorite);
     }
 

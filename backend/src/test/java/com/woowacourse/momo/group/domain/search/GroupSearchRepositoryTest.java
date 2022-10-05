@@ -64,16 +64,16 @@ class GroupSearchRepositoryTest {
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
         group1 = groupRepository.save(constructGroup("모모의 스터디", host, STUDY, 5, 이틀후_23시_59분까지));
-        favoriteRepository.save(new Favorite(group1, host));
+        favoriteRepository.save(new Favorite(group1.getId(), host));
         group2 = groupRepository.save(constructGroup("모모의 술파티", host, Category.DRINK, 15, 내일_23시_59분까지));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", host, Category.HEALTH, 1, 일주일후_23시_59분까지));
-        favoriteRepository.save(new Favorite(group3, host));
+        favoriteRepository.save(new Favorite(group3.getId(), host));
 
         Member anotherHost = memberRepository.save(DUDU.toMember());
         group4 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 6, 내일_23시_59분까지));
         group5 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지));
         group5.participate(host);
-        favoriteRepository.save(new Favorite(group5, host));
+        favoriteRepository.save(new Favorite(group5.getId(), host));
 
         Group group = constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지);
         GroupFixture.setDeadlinePast(group, 1);

@@ -44,7 +44,7 @@ public class GroupResponseAssembler {
 
     private static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, List<Favorite> favorites) {
         boolean result = favorites.stream()
-                .anyMatch(f -> f.isSameGroup(group));
+                .anyMatch(f -> f.isSameGroup(group.getId()));
 
         return new GroupSummaryResponse(group.getId(), group.getName(),
                 MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),

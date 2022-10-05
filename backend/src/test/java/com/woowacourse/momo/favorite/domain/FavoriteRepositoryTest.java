@@ -19,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Repository;
 
-import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -38,8 +37,8 @@ class FavoriteRepositoryTest {
     private FavoriteRepository favoriteRepository;
 
     Member member;
-    Group studyGroup;
-    Group travelGroup;
+    Long studyGroupId;
+    Long travelGroupId;
     Favorite studyGroupFavorite;
     Favorite travelGroupFavorite;
 
@@ -47,19 +46,19 @@ class FavoriteRepositoryTest {
     void setUp() {
         member = memberRepository.save(MOMO.toMember());
 
-        studyGroup = groupRepository.save(MOMO_STUDY.toGroup(member));
-        travelGroup = groupRepository.save(MOMO_TRAVEL.toGroup(member));
+        studyGroupId = groupRepository.save(MOMO_STUDY.toGroup(member)).getId();
+        travelGroupId = groupRepository.save(MOMO_TRAVEL.toGroup(member)).getId();
 
-        studyGroupFavorite = new Favorite(studyGroup, member);
+        studyGroupFavorite = new Favorite(studyGroupId, member);
         favoriteRepository.save(studyGroupFavorite);
-        travelGroupFavorite = new Favorite(travelGroup, member);
+        travelGroupFavorite = new Favorite(travelGroupId, member);
         favoriteRepository.save(travelGroupFavorite);
     }
 
     @DisplayName("찜하기 데이터의 유무를 확인한다")
     @Test
     void existsByGroupIdAndMemberId() {
-        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(studyGroup.getId(), member.getId());
+        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(studyGroupId, member.getId());
 
         assertThat(expected).isTrue();
     }
@@ -67,14 +66,13 @@ class FavoriteRepositoryTest {
     @DisplayName("찜하기 데이터를 조회한다")
     @Test
     void findByGroupIdAndMemberId() {
-        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroup.getId(),
-                member.getId());
+        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroupId, member.getId());
 
         assertThat(expected).isPresent();
         assertThat(expected.get()).isEqualTo(studyGroupFavorite);
     }
 
-    @DisplayName("")
+    @DisplayName("회원 Id를 통해 모든 찜하기 데이터를 조회한다")
     @Test
     void findAllByMemberId() {
         List<Favorite> expected = favoriteRepository.findAllByMemberId(member.getId());

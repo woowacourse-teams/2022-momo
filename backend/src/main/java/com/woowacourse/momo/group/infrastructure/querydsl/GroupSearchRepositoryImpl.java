@@ -59,7 +59,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group).distinct()
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(favorite).on(group.eq(favorite.group))
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
@@ -69,7 +69,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group.count())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(favorite).on(group.eq(favorite.group))
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
                         favorite.member.eq(member),
                         conditionFilter.filterByCondition(condition)
@@ -82,7 +82,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return queryFactory
                 .select(group.id)
                 .from(group)
-                .innerJoin(favorite).on(group.eq(favorite.group))
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
                         favorite.member.eq(member),
                         conditionFilter.filterByCondition(condition)
