@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.controller;
+package com.woowacourse.momo.favorite.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -39,7 +39,7 @@ import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class LikeControllerTest {
+class FavoriteControllerTest {
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/like";

@@ -1,11 +1,11 @@
-package com.woowacourse.momo.acceptance.like;
+package com.woowacourse.momo.acceptance.favorite;
 
 import io.restassured.response.ValidatableResponse;
 
 import com.woowacourse.momo.acceptance.RestHandler;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class LikeRestHandler extends RestHandler {
+public class FavoriteRestHandler extends RestHandler {
 
     private static final String BASE_URL = "/api/groups";
     private static final String RESOURCE = "/like";
