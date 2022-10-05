@@ -12,7 +12,6 @@ import { QUERY_KEY } from 'constants/key';
 import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useHandleError from 'hooks/useHandleError';
-import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
@@ -33,7 +32,6 @@ function ControlButton({
 }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
 
-  const { showLoginModal } = useModal();
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
@@ -80,8 +78,7 @@ function ControlButton({
 
   const joinGroup = () => {
     if (!isLogin) {
-      alert(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
-      showLoginModal();
+      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
 
       return;
     }
