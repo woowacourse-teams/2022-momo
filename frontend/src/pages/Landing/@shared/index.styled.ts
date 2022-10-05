@@ -139,8 +139,7 @@ const Image = styled.img<{ width: string }>`
   opacity: 0;
 
   &.show {
-    animation: ${ImageAnimation} 1.5s;
-    animation-fill-mode: forwards;
+    animation: ${ImageAnimation} 1.5s forwards;
   }
 `;
 
