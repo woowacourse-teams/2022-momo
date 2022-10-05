@@ -9,7 +9,7 @@ import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
  */
 
 const requestSignup = (userData: User) => {
-  return axios.post(API_PATH.SIGNUP, userData);
+  return axios.post(API_PATH.MEMBERS, userData);
 };
 
 const requestLogin = (userData: Omit<User, 'name'>) => {

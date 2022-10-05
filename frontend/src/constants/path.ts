@@ -17,7 +17,6 @@ const API_PATH = {
   PARTICIPANTS: '/participants',
   CLOSE: '/close',
   LIKE: '/like',
-  SIGNUP: '/members',
   LOGIN: '/auth/login',
   GOOGLE_LOGIN: '/auth/oauth2/google/login',
   LOGOUT: '/auth/logout',
