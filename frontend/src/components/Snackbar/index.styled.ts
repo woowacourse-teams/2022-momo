@@ -37,7 +37,6 @@ const Container = styled.div`
   position: fixed;
   left: 50%;
   bottom: 2rem;
-  transform: translate3d(-50%, 0, 0);
 
   width: fit-content;
   max-width: 40rem;
@@ -49,13 +48,12 @@ const Container = styled.div`
   z-index: 2147483647;
 
   ${({ theme: { colors } }) => `
-    background: ${colors.black001}bb;
-    color: ${colors.white001};
-    filter: drop-shadow(4px 4px 4px ${colors.gray001});
+    background: ${colors.yellow001}cc;
+    color: ${colors.black002};
   `}
 
   ${({ animationTime }: { animationTime: number }) => css`
-    animation: ${show} ${animationTime}ms;
+    animation: ${show} ${animationTime}ms forwards;
 
     &.close {
       animation: ${close} ${animationTime}ms;
