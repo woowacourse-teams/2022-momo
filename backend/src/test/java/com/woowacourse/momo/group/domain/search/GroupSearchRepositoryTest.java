@@ -64,16 +64,16 @@ class GroupSearchRepositoryTest {
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
         group1 = groupRepository.save(constructGroup("모모의 스터디", host, STUDY, 5, 이틀후_23시_59분까지));
-        favoriteRepository.save(new Favorite(group1.getId(), host));
+        favoriteRepository.save(new Favorite(group1.getId(), host.getId()));
         group2 = groupRepository.save(constructGroup("모모의 술파티", host, Category.DRINK, 15, 내일_23시_59분까지));
         group3 = groupRepository.save(constructGroup("모모의 헬스클럽", host, Category.HEALTH, 1, 일주일후_23시_59분까지));
-        favoriteRepository.save(new Favorite(group3.getId(), host));
+        favoriteRepository.save(new Favorite(group3.getId(), host.getId()));
 
         Member anotherHost = memberRepository.save(DUDU.toMember());
         group4 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 6, 내일_23시_59분까지));
         group5 = groupRepository.save(constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지));
         group5.participate(host);
-        favoriteRepository.save(new Favorite(group5.getId(), host));
+        favoriteRepository.save(new Favorite(group5.getId(), host.getId()));
 
         Group group = constructGroup("두두의 스터디", anotherHost, STUDY, 10, 이틀후_23시_59분까지);
         GroupFixture.setDeadlinePast(group, 1);
@@ -131,7 +131,7 @@ class GroupSearchRepositoryTest {
     void findLikedGroups() {
         GroupSearchRequest request = new GroupSearchRequest();
 
-        List<Group> actual = groupSearchRepository.findLikedGroups(request.toFindCondition(), host, pageable)
+        List<Group> actual = groupSearchRepository.findLikedGroups(request.toFindCondition(), host.getId(), pageable)
                 .getContent();
 
         assertThat(actual).usingRecursiveComparison()

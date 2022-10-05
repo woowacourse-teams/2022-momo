@@ -2,6 +2,7 @@ package com.woowacourse.momo.favorite.service;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_ALREADY_LIKE;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_NOT_YET_LIKE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.NOT_EXIST;
 
 import java.util.Optional;
 
@@ -13,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.member.domain.Member;
-import com.woowacourse.momo.member.service.MemberFindService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,7 +29,7 @@ public class FavoriteService {
 
         validateMemberNotYetLike(groupId, memberId);
 
-        Favorite favorite = new Favorite(groupId, member);
+        Favorite favorite = new Favorite(groupId, memberId);
         favoriteRepository.save(favorite);
     }
 

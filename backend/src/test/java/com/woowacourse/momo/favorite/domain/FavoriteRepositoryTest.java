@@ -36,7 +36,7 @@ class FavoriteRepositoryTest {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
-    Member member;
+    Long memberId;
     Long studyGroupId;
     Long travelGroupId;
     Favorite studyGroupFavorite;
@@ -44,21 +44,22 @@ class FavoriteRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(MOMO.toMember());
+        Member member = memberRepository.save(MOMO.toMember());
+        memberId = member.getId();
 
         studyGroupId = groupRepository.save(MOMO_STUDY.toGroup(member)).getId();
         travelGroupId = groupRepository.save(MOMO_TRAVEL.toGroup(member)).getId();
 
-        studyGroupFavorite = new Favorite(studyGroupId, member);
+        studyGroupFavorite = new Favorite(studyGroupId, memberId);
         favoriteRepository.save(studyGroupFavorite);
-        travelGroupFavorite = new Favorite(travelGroupId, member);
+        travelGroupFavorite = new Favorite(travelGroupId, memberId);
         favoriteRepository.save(travelGroupFavorite);
     }
 
     @DisplayName("찜하기 데이터의 유무를 확인한다")
     @Test
     void existsByGroupIdAndMemberId() {
-        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(studyGroupId, member.getId());
+        boolean expected = favoriteRepository.existsByGroupIdAndMemberId(studyGroupId, memberId);
 
         assertThat(expected).isTrue();
     }
@@ -66,7 +67,7 @@ class FavoriteRepositoryTest {
     @DisplayName("찜하기 데이터를 조회한다")
     @Test
     void findByGroupIdAndMemberId() {
-        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroupId, member.getId());
+        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroupId, memberId);
 
         assertThat(expected).isPresent();
         assertThat(expected.get()).isEqualTo(studyGroupFavorite);
@@ -75,7 +76,7 @@ class FavoriteRepositoryTest {
     @DisplayName("회원 Id를 통해 모든 찜하기 데이터를 조회한다")
     @Test
     void findAllByMemberId() {
-        List<Favorite> expected = favoriteRepository.findAllByMemberId(member.getId());
+        List<Favorite> expected = favoriteRepository.findAllByMemberId(memberId);
 
         assertThat(expected).contains(studyGroupFavorite, travelGroupFavorite);
     }

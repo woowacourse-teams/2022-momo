@@ -2,18 +2,13 @@ package com.woowacourse.momo.favorite.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import com.woowacourse.momo.member.domain.Member;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,13 +22,12 @@ public class Favorite {
     @Column(name = "group_id")
     private Long groupId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id")
+    private Long memberId;
 
-    public Favorite(Long groupId, Member member) {
+    public Favorite(Long groupId, Long memberId) {
         this.groupId = groupId;
-        this.member = member;
+        this.memberId = memberId;
     }
 
     public boolean isSameGroup(Long groupId) {

@@ -88,8 +88,7 @@ public class GroupSearchService {
 
     public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), member, pageable);
+        Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), memberId, pageable);
         List<Group> groupsOfPage = groups.getContent();
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,

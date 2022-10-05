@@ -17,12 +17,16 @@ import com.woowacourse.momo.member.domain.Member;
 
 class FavoriteTest {
 
-    private static final Member member = MOMO.toMember();
+    private Long memberId;
     private Long studyGroupId;
     private Long travelGroupId;
 
     @BeforeEach
     void setUp() {
+        Member member = MOMO.toMember();
+        setMemberId(member, 1L);
+        memberId = member.getId();
+
         Group studyGroup = MOMO_STUDY.toGroup(member);
         setGroupId(studyGroup, 1L);
         studyGroupId = studyGroup.getId();
@@ -35,7 +39,7 @@ class FavoriteTest {
     @DisplayName("동일한 모임이면 True를 반환한다")
     @Test
     void isSameGroup() {
-        Favorite favorite = new Favorite(studyGroupId, member);
+        Favorite favorite = new Favorite(studyGroupId, memberId);
         boolean actual = favorite.isSameGroup(studyGroupId);
 
         assertThat(actual).isTrue();
@@ -44,7 +48,7 @@ class FavoriteTest {
     @DisplayName("동일한 모임이 아닐 경우 False를 반환한다")
     @Test
     void isNotSameGroup() {
-        Favorite favorite = new Favorite(studyGroupId, member);
+        Favorite favorite = new Favorite(studyGroupId, memberId);
         boolean actual = favorite.isSameGroup(travelGroupId);
 
         assertThat(actual).isFalse();
@@ -55,6 +59,16 @@ class FavoriteTest {
             Field fieldId = Group.class.getDeclaredField("id");
             fieldId.setAccessible(true);
             fieldId.set(group, groupId);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("해당하는 필드를 찾을 수 없습니다.");
+        }
+    }
+
+    void setMemberId(Member member, Long memberId) {
+        try {
+            Field fieldId = Member.class.getDeclaredField("id");
+            fieldId.setAccessible(true);
+            fieldId.set(member, memberId);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("해당하는 필드를 찾을 수 없습니다.");
         }
