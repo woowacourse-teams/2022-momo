@@ -13,6 +13,7 @@ import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
+import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -39,6 +40,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final TokenRepository tokenRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
@@ -71,6 +73,7 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
         leaveProgressingGroup(member);
         tokenRepository.deleteByMemberId(member.getId());
+        favoriteRepository.deleteAllByMemberId(id);
         member.delete();
     }
 

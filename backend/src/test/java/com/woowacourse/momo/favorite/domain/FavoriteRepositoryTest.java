@@ -73,11 +73,29 @@ class FavoriteRepositoryTest {
         assertThat(expected.get()).isEqualTo(studyGroupFavorite);
     }
 
-    @DisplayName("회원 Id를 통해 모든 찜하기 데이터를 조회한다")
+    @DisplayName("회원 id를 통해 모든 찜하기 데이터를 조회한다")
     @Test
     void findAllByMemberId() {
         List<Favorite> expected = favoriteRepository.findAllByMemberId(memberId);
 
         assertThat(expected).contains(studyGroupFavorite, travelGroupFavorite);
+    }
+
+    @DisplayName("모임 id를 통해 연관된 모든 찜하기 정보를 삭제한다")
+    @Test
+    void deleteAllByGroupId() {
+        favoriteRepository.deleteAllByGroupId(studyGroupId);
+
+        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroupId, memberId);
+        assertThat(expected).isEmpty();
+    }
+
+    @DisplayName("회원 id를 통해 연관된 모든 찜하기 정보를 삭제한다")
+    @Test
+    void deleteAllByMemberId() {
+        favoriteRepository.deleteAllByMemberId(memberId);
+
+        Optional<Favorite> expected = favoriteRepository.findByGroupIdAndMemberId(studyGroupId, memberId);
+        assertThat(expected).isEmpty();
     }
 }

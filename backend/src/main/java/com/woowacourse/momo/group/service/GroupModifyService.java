@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
@@ -33,6 +34,7 @@ public class GroupModifyService {
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest request) {
@@ -73,6 +75,7 @@ public class GroupModifyService {
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
+            favoriteRepository.deleteAllByGroupId(groupId);
             groupRepository.deleteById(groupId);
         });
     }
