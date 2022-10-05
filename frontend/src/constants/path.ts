@@ -5,6 +5,7 @@ const BROWSER_PATH = {
   MY_INFORMATION: '/me',
   MY_GROUP: '/me/group',
   OAUTH_GOOGLE: '/auth/google',
+  LANDING: '/landing',
 };
 
 const API_PATH = {

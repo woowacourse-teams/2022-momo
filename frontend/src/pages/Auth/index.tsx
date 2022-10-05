@@ -14,6 +14,7 @@ import * as S from './index.styled';
 
 function Auth() {
   const { setAuth, setLogin } = useAuth();
+
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 

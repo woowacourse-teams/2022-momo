@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
+import { BROWSER_PATH } from 'constants/path';
 import useCategory from 'hooks/useCategory';
 import { CategoryType, GroupList } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
@@ -36,6 +38,18 @@ function Main() {
       suspense: true,
     },
   );
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isVisitedUser = localStorage.getItem('visited');
+
+    if (!isVisitedUser) {
+      navigate(BROWSER_PATH.LANDING);
+    }
+
+    localStorage.setItem('visited', 'true');
+  }, [navigate]);
 
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);

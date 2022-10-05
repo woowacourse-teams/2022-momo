@@ -74,4 +74,10 @@ export type GroupParticipants = Omit<UserProfile, 'userId'>[];
 
 export type SelectableGroup = 'participated' | 'hosted' | 'liked';
 
-export type ServerErrorType = { response: { data: { message: string } } };
+export type ServerErrorType = {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+};

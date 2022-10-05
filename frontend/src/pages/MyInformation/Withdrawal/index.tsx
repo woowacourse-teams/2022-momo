@@ -11,6 +11,7 @@ import * as S from './index.styled';
 
 function Withdrawal() {
   const { resetAuth } = useAuth();
+
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 

@@ -30,6 +30,7 @@ function Buttons({
   setLoginInfo,
 }: InfoButtonsProps) {
   const setModalFlag = useSetRecoilState(modalState);
+
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 

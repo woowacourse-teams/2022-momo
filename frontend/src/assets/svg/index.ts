@@ -10,3 +10,14 @@ export { ReactComponent as LocationSVG } from './location.svg';
 export { ReactComponent as PencilSVG } from './pencil.svg';
 export { ReactComponent as PersonSVG } from './person.svg';
 export { ReactComponent as TopArrowSVG } from './top_arrow.svg';
+
+export { ReactComponent as StudySVG } from './category/study.svg';
+export { ReactComponent as MogackoSVG } from './category/mogacko.svg';
+export { ReactComponent as SicsaSVG } from './category/sicsa.svg';
+export { ReactComponent as CafeSVG } from './category/cafe.svg';
+export { ReactComponent as DrinkSVG } from './category/drink.svg';
+export { ReactComponent as ExerciseSVG } from './category/exercise.svg';
+export { ReactComponent as GameSVG } from './category/game.svg';
+export { ReactComponent as TravelSVG } from './category/travel.svg';
+export { ReactComponent as CultureSVG } from './category/culture.svg';
+export { ReactComponent as GuitarSVG } from './category/guitar.svg';
