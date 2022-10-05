@@ -19,7 +19,7 @@ const groupTypes: { type: SelectableGroup; name: string }[] = [
 ];
 
 function MyGroup() {
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [pageNumber, setPageNumber] = useState(0);
   const [groups, setGroups] = useState<GroupList['groups']>([]);

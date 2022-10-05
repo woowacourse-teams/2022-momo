@@ -24,7 +24,7 @@ function Main() {
   const { getCategoryDescription } = useCategory();
   const queryClient = useQueryClient();
 
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
