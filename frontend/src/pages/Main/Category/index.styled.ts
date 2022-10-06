@@ -136,17 +136,6 @@ const Button = styled.button`
   `}
 `;
 
-// ${({ theme: { colors } }) => `
-// background: ${colors.gray005};
-// color: ${colors.black002};
-
-// &:hover,
-// &.select {
-//   -webkit-box-shadow : 0px 0px 10px 5px ${colors.yellow002}77;
-//   -moz-box-shadow : 0px 0px 10px 5px ${colors.yellow002}77;
-// }
-// `}
-
 export {
   Container,
   Box,

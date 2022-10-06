@@ -18,7 +18,7 @@ const Input = styled.input`
   border: none;
   border-radius: 0;
 
-  padding: 0 0 0.5rem 0;
+  padding-bottom: 0.5rem;
   margin-right: 1rem;
 
   transition: border 0.3s;

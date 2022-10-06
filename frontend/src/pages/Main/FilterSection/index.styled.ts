@@ -3,12 +3,8 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   position: fixed;
   top: 4rem;
-  left: 0;
-  right: 0;
 
   width: 100%;
-
-  margin: 0 auto;
 
   z-index: 998;
 

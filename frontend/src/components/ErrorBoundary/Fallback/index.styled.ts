@@ -27,7 +27,7 @@ const RefreshButton = styled.button`
   ${({ theme: { colors } }) => `
     background: ${colors.green001};
     
-    :hover {
+    &:hover {
       background: ${colors.green002};
     }
   `}
