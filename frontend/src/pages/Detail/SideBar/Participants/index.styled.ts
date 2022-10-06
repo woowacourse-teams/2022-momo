@@ -10,21 +10,21 @@ const Container = styled.div`
   border: 1px solid ${({ theme: { colors } }) => colors.gray002};
   border-radius: 10px;
 
-  padding: 2rem 0;
+  padding: 1.5rem;
 `;
 
-const Header = styled.p`
-  text-align: center;
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 
-  color: ${({ theme: { colors } }) => colors.black002};
+  h2 {
+    color: ${({ theme: { colors } }) => colors.black002};
 
-  font-size: 1.6rem;
-  font-weight: 700;
+    font-size: 1rem;
+  }
 `;
 
 const Summary = styled.div`
-  text-align: center;
-
   font-size: 1rem;
 
   ${({ theme: { colors } }) => `
@@ -37,30 +37,50 @@ const Summary = styled.div`
 `;
 
 const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1rem;
+  column-gap: 0.5rem;
 `;
 
-const Wrapper = styled.div`
+const Participant = styled.div`
   display: flex;
   align-items: center;
-
-  min-height: 2rem;
-
-  padding: 0 2rem;
+  gap: 0.5rem;
 `;
 
-const Text = styled.span`
-  color: ${({ theme: { colors } }) => colors.black002};
+const SVGWrapper = styled.div<{ isHost?: boolean }>`
+  width: fit-content;
+  height: fit-content;
 
-  margin-left: 1rem;
+  background: ${({ theme: { colors }, isHost = false }) =>
+    isHost ? colors.yellow001 : colors.gray005};
 
-  font-weight: 600;
+  border-radius: 50%;
+  padding: 0.3rem;
 `;
 
-const HostText = styled(Text)`
-  color: ${({ theme: { colors } }) => colors.yellow001};
+const Name = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  max-width: 5rem;
 `;
 
-export { Container, Header, Summary, Box, Wrapper, Text, HostText };
+const Button = styled.button<{ reverse?: boolean }>`
+  background: none;
+
+  transform: ${({ reverse = false }) => (reverse ? 'rotate(180deg)' : '')};
+`;
+
+export {
+  Container,
+  HeaderContainer,
+  Summary,
+  Box,
+  Participant,
+  SVGWrapper,
+  Name,
+  Button,
+};
