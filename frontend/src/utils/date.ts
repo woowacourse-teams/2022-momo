@@ -19,7 +19,7 @@ const convertRemainTime = (deadline: string) => {
   const secGap = Math.floor((gap / oneSecond) % 60);
 
   if (dayGap > 0) return `${dayGap}일`;
-  if (hourGap > 0) return `${hourGap}시간${minGap !== 0 ? ` ${minGap}분` : ''}`;
+  if (hourGap > 0) return `${hourGap}시간`;
   if (minGap > 0) return `${minGap}분`;
 
   return `${secGap}초`;
