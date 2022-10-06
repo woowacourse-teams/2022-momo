@@ -46,6 +46,6 @@ public class Capacity {
     }
 
     private static boolean isOutOfRange(int capacity) {
-        return (MINIMUM > capacity) || (capacity > MAXIMUM);
+        return MINIMUM > capacity || capacity > MAXIMUM;
     }
 }
