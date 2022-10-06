@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,6 @@ import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.exception.AuthErrorCode;
 import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
-import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.service.GroupFindService;
@@ -22,6 +22,7 @@ import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.event.MemberDeleteEvent;
 import com.woowacourse.momo.member.exception.MemberErrorCode;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
@@ -40,7 +41,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final TokenRepository tokenRepository;
-    private final FavoriteRepository favoriteRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
@@ -73,7 +74,7 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
         leaveProgressingGroup(member);
         tokenRepository.deleteByMemberId(member.getId());
-        favoriteRepository.deleteAllByMemberId(id);
+        applicationEventPublisher.publishEvent(new MemberDeleteEvent(this, id));
         member.delete();
     }
 
