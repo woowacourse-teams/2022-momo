@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+import { MagnifyingGlassSVG } from 'assets/svg';
+
 import * as S from './index.styled';
 
 interface SearchFormProps {
@@ -19,8 +21,8 @@ function SearchForm({ search }: SearchFormProps) {
 
   return (
     <S.Form onSubmit={searchWithPreventSubmitEvent}>
+      <MagnifyingGlassSVG />
       <S.Input type="text" ref={inputRef} />
-      <S.Button type="submit">🔎</S.Button>
     </S.Form>
   );
 }
