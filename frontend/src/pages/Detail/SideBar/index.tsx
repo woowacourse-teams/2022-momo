@@ -1,53 +1,27 @@
-import { useQuery } from 'react-query';
+import { GroupDetailData, GroupParticipants } from 'types/data';
 
-import { requestGroupParticipants } from 'apis/request/group';
-import { QUERY_KEY } from 'constants/key';
-import { CategoryType, GroupDetailData, GroupParticipants } from 'types/data';
-
-import Calendar from './Calendar';
 import * as S from './index.styled';
-import Info from './Info';
 import Participants from './Participants';
+import Schedule from './Schedule';
 
 interface DetailSideBarProps
-  extends Omit<
+  extends Pick<
     GroupDetailData,
-    'name' | 'categoryId' | 'deadline' | 'description' | 'like'
+    'host' | 'capacity' | 'duration' | 'schedules'
   > {
-  categoryName: CategoryType['name'];
+  participants: GroupParticipants;
 }
 
 function DetailSideBar({
-  id,
   host,
   capacity,
   duration,
   schedules,
-  finished,
-  location,
-  categoryName,
+  participants,
 }: DetailSideBarProps) {
-  const { data: participants } = useQuery<GroupParticipants>(
-    `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
-    () => requestGroupParticipants(id),
-    { staleTime: Infinity },
-  );
-
-  if (!participants) return <></>;
-
   return (
     <S.Container>
-      <Info
-        id={id}
-        host={host}
-        capacity={capacity}
-        duration={duration}
-        finished={finished}
-        location={location}
-        categoryName={categoryName}
-        participants={participants}
-      />
-      <Calendar schedules={schedules} />
+      <Schedule duration={duration} schedules={schedules} />
       <Participants
         host={host}
         capacity={capacity}

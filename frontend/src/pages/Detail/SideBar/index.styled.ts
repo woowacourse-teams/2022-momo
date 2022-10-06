@@ -4,8 +4,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  top: 6rem;
 
+  width: 20rem;
   height: fit-content;
 `;
 
