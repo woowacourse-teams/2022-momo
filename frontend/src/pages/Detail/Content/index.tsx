@@ -1,36 +1,32 @@
+import { LocationSVG } from 'assets/svg';
 import useKakaoMap from 'hooks/useKakaoMap';
 import { GroupDetailData } from 'types/data';
-import { getCategoryImage } from 'utils/category';
-import { convertDeadlineToRemainTime } from 'utils/date';
+import { processLocation } from 'utils/location';
 
 import * as S from './index.styled';
 
 function DetailContent({
-  name,
-  deadline,
-  finished,
-  categoryId,
   location,
   description,
-}: Pick<
-  GroupDetailData,
-  'name' | 'deadline' | 'finished' | 'categoryId' | 'location' | 'description'
->) {
+}: Pick<GroupDetailData, 'location' | 'description'>) {
   useKakaoMap(location);
 
   return (
     <S.Container>
-      <S.TitleWrapper imgSrc={getCategoryImage(categoryId)}>
-        <S.Title>{name}</S.Title>
-      </S.TitleWrapper>
-      <S.DescriptionContainer>
-        <S.Duration>
-          ⏳ 모집{' '}
-          {finished ? '마감 완료' : convertDeadlineToRemainTime(deadline)}
-        </S.Duration>
-        {description && <S.Description>{description}</S.Description>}
-        {location.address && <S.LocationMap id="map" />}
-      </S.DescriptionContainer>
+      <S.Description>{description || '(설명이 없어요.)'}</S.Description>
+      {location.address ? (
+        <S.LocationContainer>
+          <S.Location>
+            <LocationSVG width={25} />
+            {processLocation(location)}
+          </S.Location>
+          <S.MapWrapper>
+            <S.Map id="map" />
+          </S.MapWrapper>
+        </S.LocationContainer>
+      ) : (
+        <S.Description>(정해진 장소가 없어요.)</S.Description>
+      )}
     </S.Container>
   );
 }

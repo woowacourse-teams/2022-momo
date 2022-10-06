@@ -1,77 +1,17 @@
 import styled from '@emotion/styled';
 
+import { DescriptionBox } from '../@shared/index.styled';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  height: fit-content;
-
-  border: 1px solid ${({ theme: { colors } }) => colors.gray002};
-  border-radius: 10px;
-`;
-
-const TitleWrapper = styled.div<{ imgSrc: string }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 1rem;
-
-  min-height: 300px;
-
-  background: ${({ theme: { filter }, imgSrc }) =>
-    `linear-gradient(${filter.darken001}, ${filter.darken001}), url(${imgSrc})`};
-  background-size: cover;
-  background-position: center;
-
-  border-radius: 10px 10px 0 0;
-`;
-
-const DescriptionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-
-  padding: 1.25rem;
-`;
-
-const Hashtag = styled.p`
-  color: ${({ theme: { colors } }) => colors.yellow001};
-
-  font-weight: 700;
-`;
-
-const Title = styled.h2`
-  color: ${({ theme: { colors } }) => colors.white001};
-
-  font-size: 2rem;
-  font-weight: 900;
-`;
-
-const DescriptionBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  width: 70%;
-  max-width: 46.875rem;
-
-  border: 1px solid ${({ theme: { colors } }) => colors.gray002};
-  border-radius: 10px;
-
-  padding: 15px;
-`;
-
-const Duration = styled(DescriptionBox)`
-  align-items: center;
-
-  color: ${({ theme: { colors } }) => colors.red003};
-
-  font-weight: 700;
 `;
 
 const Description = styled(DescriptionBox)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
 
   line-height: 2rem;
@@ -80,18 +20,33 @@ const Description = styled(DescriptionBox)`
   color: ${({ theme: { colors } }) => colors.black002};
 `;
 
-const LocationMap = styled.div`
-  width: 32rem;
-  height: 32rem;
+const LocationContainer = styled(DescriptionBox)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 `;
 
-export {
-  Container,
-  TitleWrapper,
-  DescriptionContainer,
-  Hashtag,
-  Title,
-  Duration,
-  Description,
-  LocationMap,
-};
+const Location = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-left: 0.5rem;
+`;
+
+const MapWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+`;
+
+const Map = styled.div`
+  width: 37rem;
+  height: 25rem;
+
+  border-radius: 10px;
+`;
+
+export { Container, Description, LocationContainer, Location, MapWrapper, Map };
