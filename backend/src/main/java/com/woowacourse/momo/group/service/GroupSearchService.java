@@ -22,6 +22,7 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.service.MemberFindService;
+import com.woowacourse.momo.member.service.MemberValidateService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +32,7 @@ public class GroupSearchService {
     private static final int DEFAULT_PAGE_SIZE = 12;
 
     private final MemberFindService memberFindService;
+    private final MemberValidateService memberValidateService;
     private final GroupFindService groupFindService;
     private final GroupSearchRepository groupSearchRepository;
     private final FavoriteRepository favoriteRepository;
@@ -40,6 +42,7 @@ public class GroupSearchService {
         if (memberId == null) {
             return GroupResponseAssembler.groupResponseWithoutLogin(group);
         }
+        memberValidateService.validateExistMember(memberId);
         Optional<Favorite> favorite = favoriteRepository.findByGroupIdAndMemberId(groupId, memberId);
         return GroupResponseAssembler.groupResponseWithLogin(group, favorite.isPresent());
     }
@@ -58,6 +61,7 @@ public class GroupSearchService {
             return GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
         }
 
+        memberValidateService.validateExistMember(memberId);
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         return GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, favorites);
     }
@@ -87,6 +91,7 @@ public class GroupSearchService {
     }
 
     public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
+        memberValidateService.validateExistMember(memberId);
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), memberId, pageable);
         List<Group> groupsOfPage = groups.getContent();
