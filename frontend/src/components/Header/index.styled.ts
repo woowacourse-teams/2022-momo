@@ -18,7 +18,7 @@ const Container = styled.div`
   padding: 0.5rem 2rem;
 
   ${({ theme: { colors } }) => `
-    background: linear-gradient(90deg, ${colors.blue001}cc 0%, ${colors.green002}cc 100%);
+    background: linear-gradient(90deg, ${colors.blue001} 0%, ${colors.green002} 100%);
   `}
 `;
 

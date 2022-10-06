@@ -8,11 +8,9 @@ interface SearchSectionProps {
 
 function SearchSection({ search }: SearchSectionProps) {
   return (
-    <S.Container>
-      <S.Background />
-      <S.Heading>지금 바로 검색해보세요!</S.Heading>
+    <S.Wrapper>
       <SearchForm search={search} />
-    </S.Container>
+    </S.Wrapper>
   );
 }
 
