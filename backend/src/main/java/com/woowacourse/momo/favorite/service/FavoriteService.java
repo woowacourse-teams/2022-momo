@@ -2,7 +2,6 @@ package com.woowacourse.momo.favorite.service;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_ALREADY_LIKE;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_NOT_YET_LIKE;
-import static com.woowacourse.momo.group.exception.GroupErrorCode.NOT_EXIST;
 
 import java.util.Optional;
 
@@ -13,43 +12,27 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
-import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
-import com.woowacourse.momo.member.domain.MemberRepository;
-import com.woowacourse.momo.member.exception.MemberErrorCode;
-import com.woowacourse.momo.member.exception.MemberException;
+import com.woowacourse.momo.group.service.GroupValidateService;
+import com.woowacourse.momo.member.service.MemberValidateService;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class FavoriteService {
 
-    private final GroupSearchRepository groupSearchRepository;
-    private final MemberRepository memberRepository;
+    private final GroupValidateService groupValidateService;
+    private final MemberValidateService memberValidateService;
     private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public void like(Long groupId, Long memberId) {
-        validateExistGroup(groupId);
-        validateExistMember(memberId);
+        groupValidateService.validateExistGroup(groupId);
+        memberValidateService.validateExistMember(memberId);
         validateMemberNotYetLike(groupId, memberId);
 
         Favorite favorite = new Favorite(groupId, memberId);
         favoriteRepository.save(favorite);
-    }
-
-    private void validateExistGroup(Long groupId) {
-        boolean result = groupSearchRepository.existsById(groupId);
-        if (!result) {
-            throw new GroupException(NOT_EXIST);
-        }
-    }
-
-    private void validateExistMember(Long memberId) {
-        boolean result = memberRepository.existsById(memberId);
-        if (!result) {
-            throw new MemberException(MemberErrorCode.MEMBER_NOT_EXIST);
-        }
     }
 
     private void validateMemberNotYetLike(Long groupId, Long memberId) {
