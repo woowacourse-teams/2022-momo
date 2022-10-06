@@ -13,7 +13,7 @@ import com.woowacourse.momo.group.exception.GroupException;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class GroupValidateService {
+public class GroupValidator {
 
     private final GroupSearchRepository groupSearchRepository;
 

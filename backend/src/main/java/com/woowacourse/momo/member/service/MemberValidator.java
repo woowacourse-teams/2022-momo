@@ -12,7 +12,7 @@ import com.woowacourse.momo.member.exception.MemberException;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class MemberValidateService {
+public class MemberValidator {
 
     private final MemberRepository memberRepository;
 
