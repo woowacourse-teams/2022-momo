@@ -3,7 +3,10 @@ package com.woowacourse.momo.favorite.domain;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 public interface FavoriteRepository extends Repository<Favorite, Long> {
 
@@ -17,7 +20,11 @@ public interface FavoriteRepository extends Repository<Favorite, Long> {
 
     void delete(Favorite favorite);
 
-    void deleteAllByGroupId(Long groupId);
+    @Modifying
+    @Query("delete from Favorite where groupId = :groupId")
+    void deleteAllByGroupId(@Param("groupId") Long groupId);
 
-    void deleteAllByMemberId(Long memberId);
+    @Modifying
+    @Query("delete from Favorite where memberId = :memberId")
+    void deleteAllByMemberId(@Param("memberId") Long memberId);
 }
