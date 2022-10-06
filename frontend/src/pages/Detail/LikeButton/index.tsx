@@ -1,13 +1,10 @@
 import { memo } from 'react';
 
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { requestLikeGroup, requestUnlikeGroup } from 'apis/request/group';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
+import { QUERY_KEY } from 'constants/key';
 import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
 import useHandleError from 'hooks/useHandleError';
@@ -22,16 +19,18 @@ const likeDelay = 1000;
 interface LikeButtonProps {
   like: GroupDetailData['like'];
   id: number;
-  refetch: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
-  ) => Promise<QueryObserverResult<GroupDetailData, unknown>>;
 }
 
-function LikeButton({ like, id, refetch }: LikeButtonProps) {
+function LikeButton({ like, id }: LikeButtonProps) {
   const { isLogin } = useAuth();
 
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
+
+  const queryClient = useQueryClient();
+  const refetch = () => {
+    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
+  };
 
   const toggleLiked = () => {
     if (!isLogin) {
