@@ -31,8 +31,8 @@ public class Capacity {
         this.value = value;
     }
 
-    public boolean isSame(int numberOfPeople) {
-        return value == numberOfPeople;
+    public boolean isEqualOrOver(int numberOfPeople) {
+        return value <= numberOfPeople;
     }
 
     public boolean isSmallThan(int numberOfPeople) {
