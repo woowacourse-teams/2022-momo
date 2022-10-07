@@ -94,7 +94,7 @@ class FavoriteControllerTest {
     }
 
     Long saveMember(String userId) {
-        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
+        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", userId);
         return memberService.signUp(request);
     }
 
