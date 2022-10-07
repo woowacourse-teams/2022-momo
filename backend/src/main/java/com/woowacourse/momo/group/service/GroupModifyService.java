@@ -82,8 +82,9 @@ public class GroupModifyService {
     }
 
     private void ifMemberIsHost(Long hostId, Long groupId, BiConsumer<Member, Group> consumer) {
-        Group group = groupFindService.findGroup(groupId);
         Member host = memberFindService.findMember(hostId);
+        Group group = groupFindService.findGroup(groupId);
+
         validateMemberIsHost(group, host);
 
         consumer.accept(host, group);

@@ -28,7 +28,7 @@ import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
 @RestController
-public class GroupModifyController {
+public class  GroupModifyController {
 
     private final GroupRequestAssembler assembler;
     private final GroupModifyService groupModifyService;
