@@ -1,7 +1,6 @@
 package com.woowacourse.momo.member.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -48,18 +47,24 @@ public class MemberService {
         UserId userId = UserId.momo(request.getUserId());
         UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = new Member(userId, password, userName);
+        validateUserIsNotDuplicated(userId);
+        validateUserNameNotDuplicated(userName);
 
-        validateUserIsNotExist(userId);
+        Member member = new Member(userId, password, userName);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
     }
 
-    private void validateUserIsNotExist(UserId userId) {
-        Optional<Member> member = memberRepository.findByUserId(userId);
-        if (member.isPresent()) {
-            throw new AuthException(AuthErrorCode.SIGNUP_ALREADY_REGISTER);
+    private void validateUserIsNotDuplicated(UserId userId) {
+        if (memberRepository.existsByUserId(userId)) {
+            throw new AuthException(AuthErrorCode.SIGNUP_USER_ID_DUPLICATED);
+        }
+    }
+
+    private void validateUserNameNotDuplicated(UserName userName) {
+        if (memberRepository.existsByUserName(userName)) {
+            throw new AuthException(AuthErrorCode.SIGNUP_USER_NAME_DUPLICATED);
         }
     }
 
