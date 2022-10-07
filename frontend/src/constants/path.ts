@@ -5,6 +5,7 @@ const BROWSER_PATH = {
   MY_INFORMATION: '/me',
   MY_GROUP: '/me/group',
   OAUTH_GOOGLE: '/auth/google',
+  LANDING: '/landing',
 };
 
 const API_PATH = {
@@ -16,7 +17,6 @@ const API_PATH = {
   PARTICIPANTS: '/participants',
   CLOSE: '/close',
   LIKE: '/like',
-  SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
   GOOGLE_LOGIN: '/auth/oauth2/google/login',
   LOGOUT: '/auth/logout',

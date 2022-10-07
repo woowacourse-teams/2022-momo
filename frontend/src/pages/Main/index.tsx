@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
+import { BROWSER_PATH } from 'constants/path';
 import useCategory from 'hooks/useCategory';
 import { CategoryType, GroupList } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
@@ -22,7 +24,7 @@ function Main() {
   const { getCategoryDescription } = useCategory();
   const queryClient = useQueryClient();
 
-  const [isExcludeFinished, setIsExcludeFinished] = useState(false);
+  const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
@@ -37,8 +39,21 @@ function Main() {
     },
   );
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isVisitedUser = localStorage.getItem('visited');
+
+    if (!isVisitedUser) {
+      navigate(BROWSER_PATH.LANDING);
+    }
+
+    localStorage.setItem('visited', 'true');
+  }, [navigate]);
+
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessTokenProvider.get()]);
 
   useEffect(() => {

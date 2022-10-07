@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { CalendarSVG, ClockSVG } from 'assets/svg';
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
 import { convertToISOString } from 'utils/date';
@@ -49,12 +49,12 @@ function CalendarEditor({
 
   const addSchedule = () => {
     if (startTime >= endTime) {
-      alert(ERROR_MESSAGE.CREATE.SCHEDULE_TIME);
+      alert(CLIENT_ERROR_MESSAGE.CREATE.SCHEDULE_TIME);
       return;
     }
 
     if (selectedDate < duration.start || selectedDate > duration.end) {
-      alert(ERROR_MESSAGE.CREATE.SCHEDULE_DAY);
+      alert(CLIENT_ERROR_MESSAGE.CREATE.SCHEDULE_DAY);
     }
 
     const schedule = {

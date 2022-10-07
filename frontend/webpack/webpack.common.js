@@ -1,6 +1,4 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const BundleAnalyzerPlugin =
-//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path = require('path');
 
@@ -51,6 +49,5 @@ module.exports = {
         },
       ],
     }),
-    // new BundleAnalyzerPlugin(),
   ],
 };

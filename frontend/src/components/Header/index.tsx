@@ -6,6 +6,7 @@ import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
+import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import { getLoginType } from 'utils/user';
 
@@ -23,6 +24,7 @@ function Header() {
   } = useAuth();
 
   const { showSignupModal, showLoginModal } = useModal();
+  const { handleError } = useHandleError();
 
   useEffect(() => {
     if (!accessToken && !refreshToken) return;
@@ -31,24 +33,35 @@ function Header() {
       requestReissueAccessToken()
         .then(accessToken => {
           setAccessToken(accessToken);
+          setUserInfo();
         })
         .catch(() => {
           resetAuth();
         });
     };
 
-    requestUserInfo()
-      .then(userInfo => {
-        setLoginInfo({
-          isLogin: true,
-          loginType: getLoginType(userInfo.userId),
-          user: userInfo,
+    const setUserInfo = () => {
+      requestUserInfo()
+        .then(userInfo => {
+          setLoginInfo({
+            isLogin: true,
+            loginType: getLoginType(userInfo.userId),
+            user: userInfo,
+          });
+        })
+        .catch(() => {
+          reissueAccessToken();
         });
-      })
-      .catch(() => {
-        reissueAccessToken();
-      });
-  }, [accessToken, setAccessToken, refreshToken, setLoginInfo]);
+    };
+
+    if (accessToken) {
+      setUserInfo();
+      return;
+    }
+
+    reissueAccessToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <S.Container>

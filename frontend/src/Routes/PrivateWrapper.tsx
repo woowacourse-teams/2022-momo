@@ -13,7 +13,7 @@ function PrivateWrapper() {
 
   useEffect(() => {
     if (!isLogin) {
-      navigate(BROWSER_PATH.BASE);
+      navigate(BROWSER_PATH.BASE, { replace: true });
     }
   }, [isLogin, navigate]);
 

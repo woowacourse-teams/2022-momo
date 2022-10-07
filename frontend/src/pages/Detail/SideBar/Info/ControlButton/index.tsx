@@ -9,9 +9,9 @@ import {
   requestCloseGroup,
 } from 'apis/request/group';
 import { QUERY_KEY } from 'constants/key';
-import { ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
-import useModal from 'hooks/useModal';
+import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
@@ -19,20 +19,21 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 import * as S from './index.styled';
 
 interface ControlButtonProps
-  extends Pick<GroupDetailData, 'id' | 'host' | 'finished'> {
+  extends Pick<GroupDetailData, 'id' | 'host' | 'capacity' | 'finished'> {
   participants: GroupParticipants;
 }
 
 function ControlButton({
   id,
   host,
+  capacity,
   finished,
   participants,
 }: ControlButtonProps) {
   const { isLogin, user } = useRecoilValue(loginState);
 
-  const { showLoginModal } = useModal();
   const { setMessage } = useSnackbar();
+  const { handleError } = useHandleError();
 
   const navigate = useNavigate();
 
@@ -50,8 +51,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_CLOSE_GROUP);
+        }
+        handleError(error);
       });
   };
 
@@ -64,15 +68,17 @@ function ControlButton({
 
         navigate(BROWSER_PATH.BASE);
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+        }
+        handleError(error);
       });
   };
 
   const joinGroup = () => {
     if (!isLogin) {
-      alert(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
-      showLoginModal();
+      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
 
       return;
     }
@@ -82,8 +88,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_JOIN_GROUP);
+        }
+        handleError(error);
       });
   };
 
@@ -95,8 +104,11 @@ function ControlButton({
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
         refetch();
       })
-      .catch(() => {
-        alert(ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
+      .catch(error => {
+        if (!error) {
+          alert(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_EXIT_GROUP);
+        }
+        handleError(error);
       });
   };
 
@@ -127,6 +139,10 @@ function ControlButton({
         참여 취소
       </S.ExitButton>
     );
+  }
+
+  if (participants.length === capacity) {
+    return <S.DisableButton>참여 인원이 가득 찼어요</S.DisableButton>;
   }
 
   return (

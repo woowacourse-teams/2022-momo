@@ -1,24 +1,24 @@
 const accessTokenProvider = {
   get: () => {
-    return sessionStorage.getItem('accessToken') ?? '';
+    return localStorage.getItem('accessToken') ?? '';
   },
   set: (accessToken: string) => {
-    sessionStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('accessToken', accessToken);
   },
   remove: () => {
-    sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('accessToken');
   },
 };
 
 const refreshTokenProvider = {
   get: () => {
-    return sessionStorage.getItem('refreshToken') ?? '';
+    return localStorage.getItem('refreshToken') ?? '';
   },
   set: (refreshToken: string) => {
-    sessionStorage.setItem('refreshToken', refreshToken);
+    localStorage.setItem('refreshToken', refreshToken);
   },
   remove: () => {
-    sessionStorage.removeItem('refreshToken');
+    localStorage.removeItem('refreshToken');
   },
 };
 
