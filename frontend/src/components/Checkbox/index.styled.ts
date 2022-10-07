@@ -4,6 +4,10 @@ const Label = styled.label`
   display: flex;
   gap: 0.5rem;
 
+  width: fit-content;
+
+  padding: 0.5rem 0;
+
   cursor: pointer;
 
   -webkit-user-select: none;

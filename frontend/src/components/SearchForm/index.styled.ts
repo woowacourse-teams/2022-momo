@@ -2,39 +2,35 @@ import styled from '@emotion/styled';
 
 const Form = styled.form`
   display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
 
-  width: 37rem;
+  width: 100%;
   height: 2.5rem;
-
-  filter: drop-shadow(0 0 4px ${({ theme: { colors } }) => colors.gray001});
 `;
 
 const Input = styled.input`
-  width: 85%;
+  width: 100%;
+
+  background: none;
 
   border: none;
-  border-radius: 10px 0 0 10px;
+  border-radius: 0;
 
-  padding: 0 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 1rem;
 
-  &:focus {
-    border: none;
-  }
-`;
-
-const Button = styled.button`
-  width: 15%;
-
-  border: none;
-  border-radius: 0 10px 10px 0;
-
-  font-size: 1rem;
-  font-weight: 700;
+  transition: border 0.3s;
 
   ${({ theme: { colors } }) => `
-    background: ${colors.yellow001};
-    color: ${colors.white001};
+    border-bottom: 1px solid ${colors.gray001};
+
+    &:focus {
+      border: none;
+      border-bottom: 1px solid ${colors.green002};
+    }
   `}
 `;
 
-export { Form, Input, Button };
+export { Form, Input };

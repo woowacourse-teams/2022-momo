@@ -2,13 +2,15 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
 
-  width: 21.875rem;
-  height: 18.75rem;
+  width: 100%;
+  height: 7rem;
 
-  border: 1px solid ${({ theme: { colors } }) => colors.gray002};
-  border-radius: 20px;
+  border-top: 1px solid ${({ theme: { colors } }) => colors.gray002};
+
+  transition: transform 0.2s;
 
   filter: ${({ finished }: { finished: boolean }) =>
     finished ? `contrast(50%) grayscale(100%)` : ''};
@@ -21,21 +23,24 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-  width: 100%;
-  height: 170%;
+  width: 25%;
+  height: 70%;
 
-  border-radius: 20px 20px 0 0;
+  border-radius: 20px;
 
   background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
   background-size: cover;
   background-position: center;
+
+  margin: auto;
+  margin-left: 1rem;
 `;
 
 const Description = styled.div`
   display: flex;
   justify-content: space-between;
 
-  height: 100%;
+  width: 70%;
   line-height: 1.4em;
 
   padding: 1rem;
@@ -47,6 +52,7 @@ const Left = styled.div`
   justify-content: space-between;
 
   width: 50%;
+  height: 100%;
 `;
 
 const Right = styled.div`
@@ -94,10 +100,8 @@ const Hashtag = styled.div`
 `;
 
 const Deadline = styled.div`
-  text-align: right;
-
   min-width: 40%;
-  max-width: 80%;
+  max-width: 90%;
 
   color: ${({ theme: { colors } }) => colors.red003};
 

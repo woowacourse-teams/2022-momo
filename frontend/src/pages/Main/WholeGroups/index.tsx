@@ -8,48 +8,28 @@ import {
 
 import { Loading } from 'components/Animation';
 import Card from 'components/Card';
-import Checkbox from 'components/Checkbox';
 import NoResult from 'components/NoResult';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { GroupList } from 'types/data';
 
 import * as S from './index.styled';
 
-interface RecommendGroupsProps {
-  description: string;
+interface WholeGroupsProps {
   isFetching: boolean;
   data: GroupList | undefined;
   refetch: (
     options?: (RefetchOptions & RefetchQueryFilters<GroupList>) | undefined,
   ) => Promise<QueryObserverResult<GroupList, unknown>>;
   groups: GroupList['groups'];
-  isExcludeFinished: boolean;
-  toggleIsExcludeFinished: () => void;
 }
 
-function RecommendGroups({
-  description,
-  isFetching,
-  data,
-  refetch,
-  groups,
-  isExcludeFinished,
-  toggleIsExcludeFinished,
-}: RecommendGroupsProps) {
+function WholeGroups({ isFetching, data, refetch, groups }: WholeGroupsProps) {
   const target = useRef<HTMLDivElement>(null);
 
   useInfiniteScroll(target, isFetching, data, refetch, groups);
 
   return (
     <S.Container>
-      <S.HeadingContainer>
-        <S.Heading>{groups.length > 0 ? description : ''}</S.Heading>
-        <Checkbox
-          description="마감된 모임 제외"
-          checked={isExcludeFinished}
-          toggleChecked={toggleIsExcludeFinished}
-        />
-      </S.HeadingContainer>
       {groups.length > 0 ? (
         <>
           <S.GroupListBox>
@@ -75,4 +55,4 @@ function RecommendGroups({
   );
 }
 
-export default RecommendGroups;
+export default WholeGroups;
