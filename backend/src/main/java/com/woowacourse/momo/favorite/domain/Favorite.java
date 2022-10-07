@@ -19,10 +19,10 @@ public class Favorite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "group_id")
+    @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = false)
     private Long memberId;
 
     public Favorite(Long groupId, Long memberId) {
