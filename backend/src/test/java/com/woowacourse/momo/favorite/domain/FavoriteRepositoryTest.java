@@ -13,30 +13,29 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.TestConstructor;
+
+import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(classes = Repository.class))
 class FavoriteRepositoryTest {
 
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private FavoriteRepository favoriteRepository;
+    private final GroupRepository groupRepository;
+    private final MemberRepository memberRepository;
+    private final FavoriteRepository favoriteRepository;
 
     Member member;
     Group studyGroup;
