@@ -1,16 +1,13 @@
 package com.woowacourse.momo.group.event;
 
-import org.springframework.context.ApplicationEvent;
-
 import lombok.Getter;
 
 @Getter
-public class GroupDeleteEvent extends ApplicationEvent {
+public class GroupDeleteEvent {
 
     private final Long id;
 
-    public GroupDeleteEvent(Object source, Long id) {
-        super(source);
+    public GroupDeleteEvent(Long id) {
         this.id = id;
     }
 }

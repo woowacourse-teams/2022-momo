@@ -1,16 +1,13 @@
 package com.woowacourse.momo.member.event;
 
-import org.springframework.context.ApplicationEvent;
-
 import lombok.Getter;
 
 @Getter
-public class MemberDeleteEvent extends ApplicationEvent {
+public class MemberDeleteEvent {
 
     private final Long id;
 
-    public MemberDeleteEvent(Object source, Long id) {
-        super(source);
+    public MemberDeleteEvent(Long id) {
         this.id = id;
     }
 }

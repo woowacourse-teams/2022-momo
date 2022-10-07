@@ -74,7 +74,7 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
         leaveProgressingGroup(member);
         tokenRepository.deleteByMemberId(member.getId());
-        applicationEventPublisher.publishEvent(new MemberDeleteEvent(this, id));
+        applicationEventPublisher.publishEvent(new MemberDeleteEvent(id));
         member.delete();
     }
 

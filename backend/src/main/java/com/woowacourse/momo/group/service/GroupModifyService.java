@@ -76,7 +76,7 @@ public class GroupModifyService {
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
-            applicationEventPublisher.publishEvent(new GroupDeleteEvent(this, groupId));
+            applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
             groupRepository.deleteById(groupId);
         });
     }
