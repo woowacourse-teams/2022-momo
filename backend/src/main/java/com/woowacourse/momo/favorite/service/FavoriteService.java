@@ -3,8 +3,6 @@ package com.woowacourse.momo.favorite.service;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_ALREADY_LIKE;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_NOT_YET_LIKE;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,11 +42,9 @@ public class FavoriteService {
 
     @Transactional
     public void cancel(Long groupId, Long memberId) {
-        Optional<Favorite> favorite = favoriteRepository.findByGroupIdAndMemberId(groupId, memberId);
-        if (favorite.isEmpty()) {
-            throw new GroupException(MEMBER_NOT_YET_LIKE);
-        }
+        Favorite favorite = favoriteRepository.findByGroupIdAndMemberId(groupId, memberId)
+                .orElseThrow(() -> new GroupException(MEMBER_NOT_YET_LIKE));
 
-        favoriteRepository.delete(favorite.get());
+        favoriteRepository.delete(favorite);
     }
 }
