@@ -1,7 +1,5 @@
 package com.woowacourse.momo.member.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +18,10 @@ public class MemberValidator {
     private final MemberRepository memberRepository;
 
     public void validateExistMember(Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
-        if (member.isEmpty() || member.get().isDeleted()) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXIST));
+
+        if (member.isDeleted()) {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_EXIST);
         }
     }
