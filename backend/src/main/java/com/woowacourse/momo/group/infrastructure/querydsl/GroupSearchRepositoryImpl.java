@@ -1,7 +1,7 @@
 package com.woowacourse.momo.group.infrastructure.querydsl;
 
+import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
-import static com.woowacourse.momo.group.domain.favorite.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 
 import java.util.LinkedList;
@@ -52,14 +52,14 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     }
 
     @Override
-    public Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable) {
-        List<Long> likedGroupIds = findLikedGroupIds(condition, member, pageable);
+    public Page<Group> findLikedGroups(SearchCondition condition, Long memberId, Pageable pageable) {
+        List<Long> likedGroupIds = findLikedGroupIds(condition, memberId, pageable);
 
         List<Group> groups = queryFactory
                 .select(group).distinct()
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
@@ -69,21 +69,22 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group.count())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
-                        group.id.in(likedGroupIds)
+                        favorite.memberId.eq(memberId),
+                        conditionFilter.filterByCondition(condition)
                 );
 
         return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
-    private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
+    private List<Long> findLikedGroupIds(SearchCondition condition, Long memberId, Pageable pageable) {
         return queryFactory
                 .select(group.id)
                 .from(group)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
-                        favorite.member.eq(member),
+                        favorite.memberId.eq(memberId),
                         conditionFilter.filterByCondition(condition)
                 )
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))

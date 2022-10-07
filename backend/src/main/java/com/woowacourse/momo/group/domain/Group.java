@@ -25,7 +25,6 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.group.domain.favorite.Favorites;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.domain.participant.Participants;
 import com.woowacourse.momo.group.exception.GroupException;
@@ -43,9 +42,6 @@ public class Group {
 
     @Embedded
     private Participants participants;
-
-    @Embedded
-    private Favorites favorites;
 
     @Embedded
     private Calendar calendar;
@@ -68,7 +64,6 @@ public class Group {
     public Group(Member host, Capacity capacity, Calendar calendar, GroupName name, Category category,
                  Location location, Description description) {
         this.participants = new Participants(host, capacity);
-        this.favorites = new Favorites();
         this.calendar = calendar;
         this.name = name;
         this.category = category;
@@ -105,14 +100,6 @@ public class Group {
         participants.remove(participant);
     }
 
-    public void like(Member member) {
-        favorites.like(this, member);
-    }
-
-    public void cancelLike(Member member) {
-        favorites.cancel(member);
-    }
-
     public void validateGroupIsProceeding() {
         validateDeadlineNotOver();
         validateGroupIsNotClosedEarly();
@@ -140,10 +127,6 @@ public class Group {
 
     public boolean isFinishedRecruitment() {
         return closedEarly || calendar.isDeadlineOver();
-    }
-
-    public boolean isMemberLiked(Member member) {
-        return favorites.hasMember(member);
     }
 
     public Member getHost() {

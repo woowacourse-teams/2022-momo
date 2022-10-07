@@ -4,6 +4,7 @@ import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_
 
 import java.util.function.BiConsumer;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
@@ -33,6 +35,7 @@ public class GroupModifyService {
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest request) {
@@ -73,6 +76,7 @@ public class GroupModifyService {
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
+            applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
             groupRepository.deleteById(groupId);
         });
     }

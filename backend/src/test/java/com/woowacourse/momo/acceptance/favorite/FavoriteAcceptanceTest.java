@@ -1,7 +1,7 @@
-package com.woowacourse.momo.acceptance.like;
+package com.woowacourse.momo.acceptance.favorite;
 
-import static com.woowacourse.momo.acceptance.like.LikeRestHandler.모임을_찜을_취소한다;
-import static com.woowacourse.momo.acceptance.like.LikeRestHandler.모임을_찜한다;
+import static com.woowacourse.momo.acceptance.favorite.FavoriteRestHandler.모임을_찜을_취소한다;
+import static com.woowacourse.momo.acceptance.favorite.FavoriteRestHandler.모임을_찜한다;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.MemberFixture;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class LikeAcceptanceTest extends AcceptanceTest {
+public class FavoriteAcceptanceTest extends AcceptanceTest {
 
     private static final MemberFixture HOST = MemberFixture.DUDU;
     private static final GroupFixture GROUP = GroupFixture.DUDU_STUDY;
