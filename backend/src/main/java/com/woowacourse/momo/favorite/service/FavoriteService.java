@@ -36,8 +36,8 @@ public class FavoriteService {
     }
 
     private void validateMemberNotYetLike(Long groupId, Long memberId) {
-        boolean result = favoriteRepository.existsByGroupIdAndMemberId(groupId, memberId);
-        if (result) {
+        boolean isExist = favoriteRepository.existsByGroupIdAndMemberId(groupId, memberId);
+        if (isExist) {
             throw new GroupException(MEMBER_ALREADY_LIKE);
         }
     }

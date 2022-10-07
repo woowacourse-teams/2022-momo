@@ -18,8 +18,8 @@ public class GroupValidator {
     private final GroupSearchRepository groupSearchRepository;
 
     public void validateExistGroup(Long groupId) {
-        boolean result = groupSearchRepository.existsById(groupId);
-        if (!result) {
+        boolean isExist = groupSearchRepository.existsById(groupId);
+        if (!isExist) {
             throw new GroupException(NOT_EXIST);
         }
     }
