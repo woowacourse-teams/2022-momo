@@ -6,7 +6,6 @@ import { requestCreateGroup } from 'apis/request/group';
 import { BROWSER_PATH } from 'constants/path';
 import useCreateState from 'hooks/useCreateState';
 import Navigator from 'pages/Create/Navigator';
-import PageError from 'utils/PageError';
 
 import * as S from './index.styled';
 import {
@@ -92,11 +91,10 @@ function Create() {
     try {
       validateGroupData(groupData);
     } catch (error) {
-      if (!(error instanceof PageError)) return;
-
-      alert(error.message);
-
-      return;
+      if (error instanceof Error) {
+        alert(error.message);
+        return;
+      }
     }
 
     requestCreateGroup(groupData)

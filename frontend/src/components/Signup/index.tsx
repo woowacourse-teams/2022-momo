@@ -4,16 +4,16 @@ import { useRecoilValue } from 'recoil';
 
 import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/Modal';
-import { GUIDE_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import useHandleError from 'hooks/useHandleError';
 import useInput from 'hooks/useInput';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
-import { showErrorMessage } from 'utils/errorController';
 
 import * as S from './index.styled';
 import {
-  checkValidNickname,
+  checkValidName,
   checkValidPassword,
   isValidSignupFormData,
 } from './validate';
@@ -21,6 +21,7 @@ import {
 function Signup() {
   const modalFlag = useRecoilValue(modalState);
   const { showLoginModal } = useModal();
+  const { handleError } = useHandleError();
 
   const idRef = useRef<HTMLInputElement>(null);
   const {
@@ -56,18 +57,28 @@ function Signup() {
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!idRef.current) {
+      setMessage(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID);
+      return;
+    }
+
+    const inputId = idRef.current.value;
+
     try {
       isValidSignupFormData({
+        inputId,
         isValidName,
         isValidPassword,
         isValidConfirmPassword,
       });
-    } catch ({ message }) {
-      alert(message);
-      return;
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message);
+        return;
+      }
 
-    if (!idRef.current) return;
+      setMessage(CLIENT_ERROR_MESSAGE.UNHANDLED);
+    }
 
     requestSignup({ userId: idRef.current.value, password, name })
       .then(() => {
@@ -75,8 +86,8 @@ function Signup() {
         resetValues();
         showLoginModal();
       })
-      .catch(({ message }) => {
-        alert(showErrorMessage(message));
+      .catch(error => {
+        handleError(error);
       });
   };
 
@@ -88,7 +99,7 @@ function Signup() {
   }, [password, confirmPassword, isValidPassword]);
 
   useEffect(() => {
-    setIsValidName(name.length === 0 || checkValidNickname(name));
+    setIsValidName(name.length === 0 || checkValidName(name));
   }, [name]);
 
   return (
@@ -104,7 +115,7 @@ function Signup() {
             닉네임
             <S.Input type="text" value={name} onChange={setName} required />
             <S.InfoMessage isValid={isValidName}>
-              닉네임은 1~6자 사이여야 해요.
+              닉네임은 1~30자 사이여야 해요.
             </S.InfoMessage>
           </S.Label>
           <S.Label>

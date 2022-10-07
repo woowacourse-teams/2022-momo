@@ -1,5 +1,6 @@
 import { CrownSVG } from 'assets/svg';
 import PersonSVG from 'components/svg/Person';
+import { GUIDE_MESSAGE } from 'constants/message';
 import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
@@ -24,12 +25,16 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
       <S.Box>
         <S.Wrapper>
           <CrownSVG width={svgSize} />
-          <S.HostText>{host.name}</S.HostText>
+          <S.HostText>
+            {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+          </S.HostText>
         </S.Wrapper>
         {participantsWithoutHost.map(participant => (
           <S.Wrapper key={participant.id}>
             <PersonSVG width={svgSize} />
-            <S.Text>{participant.name}</S.Text>
+            <S.Text>
+              {participant.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
+            </S.Text>
           </S.Wrapper>
         ))}
       </S.Box>

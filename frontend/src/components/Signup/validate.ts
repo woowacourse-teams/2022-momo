@@ -1,6 +1,8 @@
-import { ERROR_MESSAGE } from 'constants/message';
+import { CLIENT_ERROR_MESSAGE } from 'constants/message';
+import { MEMBER_RULE } from 'constants/rule';
 
 interface isValidSignupFormDataProp {
+  inputId: string;
   isValidName: boolean;
   isValidPassword: boolean;
   isValidConfirmPassword: boolean;
@@ -9,8 +11,18 @@ interface isValidSignupFormDataProp {
 const passwordRegExp =
   '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$';
 
-const checkValidNickname = (nickname: string) => {
-  return nickname.length <= 6 && nickname.length >= 1;
+const checkValidId = (inputId: string) => {
+  return (
+    inputId.length >= MEMBER_RULE.ID.MIN_LENGTH &&
+    inputId.length <= MEMBER_RULE.ID.MAX_LENGTH
+  );
+};
+
+const checkValidName = (name: string) => {
+  return (
+    name.length >= MEMBER_RULE.NAME.MIN_LENGTH &&
+    name.length <= MEMBER_RULE.NAME.MAX_LENGTH
+  );
 };
 
 const checkValidPassword = (password: string) => {
@@ -20,21 +32,31 @@ const checkValidPassword = (password: string) => {
 };
 
 const isValidSignupFormData = ({
+  inputId,
   isValidName,
   isValidPassword,
   isValidConfirmPassword,
 }: isValidSignupFormDataProp) => {
+  if (!checkValidId(inputId)) {
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID);
+  }
+
   if (!isValidName) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_NICKNAME);
   }
 
   if (!isValidPassword) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_PASSWORD);
   }
 
   if (!isValidConfirmPassword) {
-    throw new Error(ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
   }
 };
 
-export { checkValidNickname, checkValidPassword, isValidSignupFormData };
+export {
+  checkValidId,
+  checkValidName,
+  checkValidPassword,
+  isValidSignupFormData,
+};

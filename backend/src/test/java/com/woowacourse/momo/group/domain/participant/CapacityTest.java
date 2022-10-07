@@ -34,17 +34,18 @@ class CapacityTest {
                 .hasMessage("모임 내 인원은 1명 이상 99명 이하여야 합니다.");
     }
 
-    @DisplayName("주어진 값과 동일한지 확인한다")
+    @DisplayName("주어진 값 이상인지 확인한다")
     @ParameterizedTest
     @MethodSource("provideIsFullArguments")
     void isSame(int num, boolean expected) {
         Capacity capacity = new Capacity(1);
 
-        assertThat(capacity.isSame(num)).isEqualTo(expected);
+        assertThat(capacity.isEqualOrOver(num)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideIsFullArguments() {
         return Stream.of(
+                Arguments.of(2, Boolean.TRUE),
                 Arguments.of(1, Boolean.TRUE),
                 Arguments.of(0, Boolean.FALSE)
         );

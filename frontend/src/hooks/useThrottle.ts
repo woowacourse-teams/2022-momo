@@ -1,19 +1,19 @@
-let timer = false;
+const useThrottle = (func: Function, wait: number): (() => void) => {
+  let waiting = false;
 
-const useThrottle = () => {
-  const throttle = (callbackFunc: () => void, delay: number) => {
-    if (timer) return;
+  function throttledFunc() {
+    if (waiting) return;
 
-    timer = true;
-
-    callbackFunc();
+    // eslint-disable-next-line prefer-rest-params
+    func.apply(typeof func, arguments);
+    waiting = true;
 
     setTimeout(() => {
-      timer = false;
-    }, delay);
-  };
+      waiting = false;
+    }, wait);
+  }
 
-  return throttle;
+  return throttledFunc;
 };
 
 export default useThrottle;

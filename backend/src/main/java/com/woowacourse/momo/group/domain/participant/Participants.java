@@ -120,7 +120,7 @@ public class Participants {
     }
 
     public boolean isFull() {
-        return capacity.isSame(getSize());
+        return capacity.isEqualOrOver(getSize());
     }
 
     public boolean isHost(Member member) {

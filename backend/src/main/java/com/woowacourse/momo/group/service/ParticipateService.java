@@ -22,7 +22,7 @@ public class ParticipateService {
     private final GroupFindService groupFindService;
 
     @Transactional
-    public void participate(Long groupId, Long memberId) {
+    public synchronized void participate(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
 

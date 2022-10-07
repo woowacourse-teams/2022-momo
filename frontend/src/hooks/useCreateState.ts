@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { ArrElement } from 'types/utils';
-import { isEqualObject } from 'utils/compare';
+import { isEqualObject } from 'utils/object';
 
 import useInput from './useInput';
 

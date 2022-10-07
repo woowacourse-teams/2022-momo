@@ -21,7 +21,7 @@ function Snackbar({ children }: SnackbarProps) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       close();
-    }, snackbarAnimationTime * 2);
+    }, snackbarAnimationTime * 3);
 
     return () => clearTimeout(timeout);
   }, [children, close]);

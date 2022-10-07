@@ -6,6 +6,7 @@ import {
   NotFound,
   Auth,
   MyGroup,
+  Landing,
 } from 'pages';
 import { Route, Routes as BrowserRoutes } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ function Routes() {
       <Route path={BROWSER_PATH.DETAIL}>
         <Route path=":id" element={<Detail />} />
       </Route>
+      <Route path={BROWSER_PATH.LANDING} element={<Landing />} />
       <Route element={<PrivateWrapper />}>
         <Route path={BROWSER_PATH.CREATE} element={<Create />} />
         <Route path={BROWSER_PATH.MY_INFORMATION} element={<MyInformation />} />
