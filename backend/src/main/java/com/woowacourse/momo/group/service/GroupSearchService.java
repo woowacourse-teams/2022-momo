@@ -38,7 +38,7 @@ public class GroupSearchService {
     private final FavoriteRepository favoriteRepository;
 
     public GroupResponse findGroup(Long groupId, Long memberId) {
-        Group group = groupFindService.findGroup(groupId);
+        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
         if (memberId == null) {
             return GroupResponseAssembler.groupResponseWithoutLogin(group);
         }
