@@ -21,7 +21,8 @@ public enum MemberErrorCode implements ErrorCode {
 
     SIGNUP_INVALID_ID(400, "SIGNUP_001", "잘못된 형식의 아이디입니다."),
     SIGNUP_INVALID_PASSWORD(400, "SIGNUP_002", "잘못된 형식의 비밀번호입니다."),
-    SIGNUP_ALREADY_REGISTER(400, "SIGNUP_003", "이미 가입된 아이디입니다."),
+    SIGNUP_USER_ID_DUPLICATED(400, "SIGNUP_003", "이미 가입된 아이디입니다."),
+    SIGNUP_USER_NAME_DUPLICATED(400, "SIGNUP_004", "이미 가입된 이름입니다."),
     ;
 
     private final int statusCode;

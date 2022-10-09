@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
-import com.woowacourse.momo.auth.exception.AuthErrorCode;
-import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
@@ -47,7 +45,7 @@ public class MemberService {
         UserId userId = UserId.momo(request.getUserId());
         UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        validateUserIsNotDuplicated(userId);
+        validateUserIdIsNotDuplicated(userId);
         validateUserNameNotDuplicated(userName);
 
         Member member = new Member(userId, password, userName);
@@ -56,15 +54,15 @@ public class MemberService {
         return savedMember.getId();
     }
 
-    private void validateUserIsNotDuplicated(UserId userId) {
+    private void validateUserIdIsNotDuplicated(UserId userId) {
         if (memberRepository.existsByUserId(userId)) {
-            throw new AuthException(AuthErrorCode.SIGNUP_USER_ID_DUPLICATED);
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_ID_DUPLICATED);
         }
     }
 
     private void validateUserNameNotDuplicated(UserName userName) {
         if (memberRepository.existsByUserName(userName)) {
-            throw new AuthException(AuthErrorCode.SIGNUP_USER_NAME_DUPLICATED);
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_NAME_DUPLICATED);
         }
     }
 

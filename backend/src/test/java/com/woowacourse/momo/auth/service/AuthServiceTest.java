@@ -8,13 +8,14 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.Token;
 import com.woowacourse.momo.auth.domain.TokenRepository;
-import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.auth.service.dto.response.AccessTokenResponse;
 import com.woowacourse.momo.auth.service.dto.response.LoginResponse;
@@ -25,6 +26,8 @@ import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 
 @Transactional
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @SpringBootTest
 class AuthServiceTest {
 
@@ -32,38 +35,10 @@ class AuthServiceTest {
     private static final String PASSWORD = "wooteco1!";
     private static final String NAME = "모모";
 
-    @Autowired
-    private TokenRepository tokenRepository;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private MemberFindService memberFindService;
-
-    @DisplayName("회원 가입을 한다")
-    @Test
-    void signUp() {
-        SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
-        Long id = memberService.signUp(request);
-
-        assertThat(id).isNotNull();
-    }
-
-    @DisplayName("이미 존재하는 아이디로 회원 가입을 하는 경우 실패한다")
-    @Test
-    void signUpAlreadyExistId() {
-        SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, NAME);
-        memberService.signUp(request);
-
-        assertThatThrownBy(
-                () -> memberService.signUp(request)
-        ).isInstanceOf(AuthException.class)
-                .hasMessageContaining("이미 가입된 아이디입니다.");
-    }
+    private final TokenRepository tokenRepository;
+    private final AuthService authService;
+    private final MemberService memberService;
+    private final MemberFindService memberFindService;
 
     @DisplayName("로그인을 성공한다")
     @Test

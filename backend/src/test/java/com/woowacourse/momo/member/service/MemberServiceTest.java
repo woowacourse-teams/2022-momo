@@ -10,13 +10,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
+
 import com.woowacourse.momo.auth.domain.TokenRepository;
-import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.auth.support.SHA256Encoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
@@ -35,32 +37,18 @@ import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 import com.woowacourse.momo.member.service.dto.response.MyInfoResponse;
 
 @Transactional
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@RequiredArgsConstructor
 @SpringBootTest
 class MemberServiceTest {
 
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private MemberFindService memberFindService;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    private GroupFindService groupFindService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenRepository tokenRepository;
+    private final MemberService memberService;
+    private final MemberFindService memberFindService;
+    private final MemberRepository memberRepository;
+    private final GroupRepository groupRepository;
+    private final GroupFindService groupFindService;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenRepository tokenRepository;
 
     private Password password;
     private Member savedHost;
@@ -69,6 +57,47 @@ class MemberServiceTest {
     void setUp() {
         password = Password.encrypt("momo123!", new SHA256Encoder());
         savedHost = memberRepository.save(new Member(UserId.momo("모임주최자"), password, UserName.from("momo")));
+    }
+
+    @Nested
+    class SignUpTest {
+
+        private static final String USER_ID = "woowa";
+        private static final String PASSWORD = "wooteco1!";
+        private static final String USER_NAME = "모모";
+
+        @DisplayName("회원 가입을 한다")
+        @Test
+        void signUp() {
+            SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, USER_NAME);
+            Long id = memberService.signUp(request);
+
+            assertThat(id).isNotNull();
+        }
+
+        @DisplayName("이미 존재하는 아이디로 회원 가입을 하는 경우 실패한다")
+        @Test
+        void signUpDuplicatedUserid() {
+            SignUpRequest request = new SignUpRequest(USER_ID, PASSWORD, USER_NAME);
+            memberService.signUp(request);
+
+            SignUpRequest newRequest = new SignUpRequest(USER_ID, PASSWORD, "new" + USER_NAME);
+            assertThatThrownBy(() -> memberService.signUp(newRequest))
+                    .isInstanceOf(MemberException.class)
+                    .hasMessageContaining("이미 가입된 아이디입니다.");
+        }
+
+        @DisplayName("이미 존재하는 이름으로 회원 가입을 하는 경우 실패한다")
+        @Test
+        void signUpDuplicatedName() {
+            SignUpRequest request = new SignUpRequest("woowa", "wooteco1!", "모모");
+            memberService.signUp(request);
+
+            SignUpRequest newRequest = new SignUpRequest("new" + USER_ID, PASSWORD, USER_NAME);
+            assertThatThrownBy(() -> memberService.signUp(newRequest))
+                    .isInstanceOf(MemberException.class)
+                    .hasMessageContaining("이미 가입된 이름입니다.");
+        }
     }
 
     @DisplayName("회원 정보를 조회한다")
