@@ -90,11 +90,8 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
-
         Group group = constructGroup(host, List.of(이틀후_10시부터_12시까지, 일주일후_10시부터_12시까지));
         Group savedGroup = groupRepository.save(group);
-
-        synchronize();
 
         Optional<Group> foundGroup = groupSearchRepository.findById(savedGroup.getId());
 
@@ -142,7 +139,6 @@ class GroupRepositoryTest {
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
-        synchronize();
 
         Optional<Group> foundGroup = groupSearchRepository.findById(savedGroup.getId());
 
