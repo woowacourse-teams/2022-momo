@@ -46,7 +46,7 @@ public class MemberService {
         UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
         validateUserIdIsNotDuplicated(userId);
-        validateUserNameNotDuplicated(userName);
+        validateUserNameIsNotDuplicated(userName);
 
         Member member = new Member(userId, password, userName);
         Member savedMember = memberRepository.save(member);
@@ -60,7 +60,7 @@ public class MemberService {
         }
     }
 
-    private void validateUserNameNotDuplicated(UserName userName) {
+    private void validateUserNameIsNotDuplicated(UserName userName) {
         if (memberRepository.existsByUserName(userName)) {
             throw new MemberException(MemberErrorCode.SIGNUP_USER_NAME_DUPLICATED);
         }
