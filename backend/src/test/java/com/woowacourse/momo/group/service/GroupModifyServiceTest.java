@@ -8,8 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
+import static com.woowacourse.momo.fixture.MemberFixture.GUGU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.내일_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -24,12 +29,15 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.fixture.GroupFixture;
+import com.woowacourse.momo.fixture.calendar.DurationFixture;
+import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
-import com.woowacourse.momo.group.domain.GroupRepository;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
+import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -41,23 +49,26 @@ class GroupModifyServiceTest {
 
     private final GroupModifyService groupModifyService;
     private final GroupSearchService groupSearchService;
-    private final GroupRepository groupRepository;
     private final GroupSearchRepository groupSearchRepository;
     private final MemberRepository memberRepository;
-    private final ParticipateService participateService;
     private final EntityManager entityManager;
 
     private Group group;
     private Member host;
-    private Member participant;
+    private Member participant1;
+    private Member participant2;
 
     @BeforeEach
     void setUp() {
         host = memberRepository.save(MOMO.toMember());
-        group = groupRepository.save(MOMO_STUDY.toGroup(host));
+        GroupIdResponse groupIdResponse = groupModifyService.create(host.getId(), MOMO_STUDY.toRequest());
+        group = groupSearchRepository.findById(groupIdResponse.getGroupId()).orElseThrow();
 
-        participant = memberRepository.save(DUDU.toMember());
-        synchronize();
+        participant1 = memberRepository.save(DUDU.toMember());
+        participant2 = memberRepository.save(GUGU.toMember());
+
+        group.participate(participant1);
+        group.participate(participant2);
     }
 
     @DisplayName("모임을 생성한다")
@@ -67,31 +78,42 @@ class GroupModifyServiceTest {
         long groupId = groupModifyService.create(host.getId(), request)
                 .getGroupId();
 
-        synchronize();
         Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
-        Group expected = MOMO_STUDY.toGroup(host);
+        Group expectedGroup = MOMO_STUDY.toGroup(host);
+        List<Schedule> expectedSchedules = MOMO_STUDY.getSchedules1();
+
         assertAll(
                 () -> assertThat(actual.getId()).isEqualTo(groupId),
-                () -> assertThat(actual.getName()).isEqualTo(expected.getName()),
-                () -> assertThat(actual.getCategory()).isEqualTo(expected.getCategory()),
-                () -> assertThat(actual.getCapacity()).isEqualTo(expected.getCapacity()),
-                () -> assertThat(actual.getLocation()).isEqualTo(expected.getLocation()),
-                () -> assertThat(actual.getDescription()).isEqualTo(expected.getDescription()),
-                () -> assertThat(actual.getDeadline()).isEqualTo(expected.getDeadline()),
-                () -> assertThat(actual.getDuration()).isEqualTo(expected.getDuration()),
+                () -> assertThat(actual.getName()).isEqualTo(expectedGroup.getName()),
+                () -> assertThat(actual.getCategory()).isEqualTo(expectedGroup.getCategory()),
+                () -> assertThat(actual.getCapacity()).isEqualTo(expectedGroup.getCapacity()),
+                () -> assertThat(actual.getLocation()).isEqualTo(expectedGroup.getLocation()),
+                () -> assertThat(actual.getDescription()).isEqualTo(expectedGroup.getDescription()),
+                () -> assertThat(actual.getDeadline()).isEqualTo(expectedGroup.getDeadline()),
+                () -> assertThat(actual.getDuration()).isEqualTo(expectedGroup.getDuration()),
                 () -> {
-                    assertThat(actual.getSchedules()).hasSize(expected.getSchedules().size());
+                    assertThat(actual.getSchedules()).hasSize(expectedSchedules.size());
 
-                    for (int i = 0; i < expected.getSchedules().size(); i++) {
+                    for (int i = 0; i < 2; i++) {
                         assertThat(actual.getSchedules().get(i)).usingRecursiveComparison()
-                                .ignoringFields("id")
-                                .isEqualTo(expected.getSchedules().get(i));
+                                .ignoringFields("id", "group")
+                                .isEqualTo(expectedSchedules.get(i));
                     }
                 }
         );
+    }
+
+    @DisplayName("생성 시, 일정들이 기간 내에 속해있지 않을 경우 예외가 발생한다")
+    @Test
+    void validateSchedulesAreInDurationWhenCreate() {
+        GroupRequest request = constructGroupRequest(List.of(이틀후_10시부터_12시까지), 내일_하루동안);
+
+        assertThatThrownBy(() -> groupModifyService.create(host.getId(), request))
+                .isInstanceOf(GroupException.class)
+                .hasMessage(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION.getMessage());
     }
 
     @DisplayName("유효하지 않은 카테고리로 모임을 생성하면 예외가 발생한다")
@@ -117,7 +139,6 @@ class GroupModifyServiceTest {
         GroupRequest request = target.toRequest();
         groupModifyService.update(host.getId(), groupId, request);
 
-        synchronize();
         Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
@@ -160,7 +181,7 @@ class GroupModifyServiceTest {
     @Test
     void updateMemberIsNotHost() {
         long groupId = group.getId();
-        long participantId = participant.getId();
+        long participantId = participant1.getId();
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupModifyService.update(participantId, groupId, request))
@@ -173,8 +194,6 @@ class GroupModifyServiceTest {
     void updateExistParticipants() {
         long groupId = group.getId();
         long hostId = host.getId();
-
-        group.participate(participant);
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertDoesNotThrow(() -> groupModifyService.update(hostId, groupId, request));
@@ -200,7 +219,6 @@ class GroupModifyServiceTest {
         long hostId = host.getId();
 
         groupModifyService.closeEarly(hostId, groupId);
-        synchronize();
 
         boolean actual = groupSearchService.findGroup(groupId, null).isFinished();
         assertThat(actual).isTrue();
@@ -210,7 +228,7 @@ class GroupModifyServiceTest {
     @Test
     void closeEarlyMemberIsNotHost() {
         long groupId = group.getId();
-        long participantId = participant.getId();
+        long participantId = participant1.getId();
 
         assertThatThrownBy(() -> groupModifyService.closeEarly(participantId, groupId))
                 .isInstanceOf(GroupException.class)
@@ -224,7 +242,6 @@ class GroupModifyServiceTest {
         long hostId = host.getId();
 
         groupModifyService.delete(hostId, groupId);
-        synchronize();
 
         assertThatThrownBy(() -> groupSearchService.findGroup(groupId, null))
                 .isInstanceOf(GroupException.class)
@@ -235,7 +252,7 @@ class GroupModifyServiceTest {
     @Test
     void deleteNotHost() {
         long groupId = group.getId();
-        long participantId = participant.getId();
+        long participantId = participant1.getId();
 
         assertThatThrownBy(() -> groupModifyService.delete(participantId, groupId))
                 .isInstanceOf(GroupException.class)
@@ -247,8 +264,6 @@ class GroupModifyServiceTest {
     void deleteExistParticipants() {
         long groupId = group.getId();
         long hostId = host.getId();
-
-        participateService.participate(group.getId(), participant.getId());
 
         assertDoesNotThrow(() -> groupModifyService.delete(hostId, groupId));
     }
@@ -265,8 +280,10 @@ class GroupModifyServiceTest {
                 .hasMessage("해당 모임은 조기 마감되어 있습니다.");
     }
 
-    void synchronize() {
-        entityManager.flush();
-        entityManager.clear();
+    private GroupRequest constructGroupRequest(List<ScheduleFixture> schedules, DurationFixture duration) {
+        return MOMO_STUDY.builder()
+                .schedules(schedules)
+                .duration(duration)
+                .toRequest();
     }
 }
