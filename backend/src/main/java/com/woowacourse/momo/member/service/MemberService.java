@@ -1,7 +1,6 @@
 package com.woowacourse.momo.member.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
-import com.woowacourse.momo.auth.exception.AuthErrorCode;
-import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
@@ -48,18 +45,24 @@ public class MemberService {
         UserId userId = UserId.momo(request.getUserId());
         UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = new Member(userId, password, userName);
+        validateUserIdIsNotDuplicated(userId);
+        validateUserNameIsNotDuplicated(userName);
 
-        validateUserIsNotExist(userId);
+        Member member = new Member(userId, password, userName);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
     }
 
-    private void validateUserIsNotExist(UserId userId) {
-        Optional<Member> member = memberRepository.findByUserId(userId);
-        if (member.isPresent()) {
-            throw new AuthException(AuthErrorCode.SIGNUP_ALREADY_REGISTER);
+    private void validateUserIdIsNotDuplicated(UserId userId) {
+        if (memberRepository.existsByUserId(userId)) {
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_ID_DUPLICATED);
+        }
+    }
+
+    private void validateUserNameIsNotDuplicated(UserName userName) {
+        if (memberRepository.existsByUserName(userName)) {
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_NAME_DUPLICATED);
         }
     }
 

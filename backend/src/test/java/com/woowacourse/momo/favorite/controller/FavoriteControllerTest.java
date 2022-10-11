@@ -53,9 +53,9 @@ class FavoriteControllerTest {
     @DisplayName("모임을 찜한다")
     @Test
     void like() throws Exception {
-        Long hostId = saveMember("host");
+        Long hostId = saveMember("host", "host");
         Long groupId = saveGroup(hostId);
-        Long memberId = saveMember("member");
+        Long memberId = saveMember("member", "member");
         String accessToken = accessToken("member");
 
         mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
@@ -74,9 +74,9 @@ class FavoriteControllerTest {
     @DisplayName("모임을 찜하기를 취소한다")
     @Test
     void cancelLike() throws Exception {
-        Long hostId = saveMember("host");
+        Long hostId = saveMember("host", "host");
         Long groupId = saveGroup(hostId);
-        Long memberId = saveMember("member");
+        Long memberId = saveMember("member", "member");
         likeMember(groupId, memberId);
         String accessToken = accessToken("member");
 
@@ -93,8 +93,8 @@ class FavoriteControllerTest {
                 );
     }
 
-    Long saveMember(String userId) {
-        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
+    Long saveMember(String userId, String userName) {
+        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", userName);
         return memberService.signUp(request);
     }
 
