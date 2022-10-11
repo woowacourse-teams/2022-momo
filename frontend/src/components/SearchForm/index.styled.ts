@@ -4,10 +4,14 @@ const Form = styled.form`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 1rem;
+  gap: 0.5rem;
 
   width: 100%;
   height: 2.5rem;
+
+  svg {
+    min-width: 35px;
+  }
 `;
 
 const Input = styled.input`
@@ -19,7 +23,7 @@ const Input = styled.input`
   border-radius: 0;
 
   padding-bottom: 0.5rem;
-  margin-right: 1rem;
+  margin: 0 0.5rem;
 
   transition: border 0.3s;
 
