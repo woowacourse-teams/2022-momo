@@ -1,7 +1,9 @@
 package com.woowacourse.momo.group.service;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_HOST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,6 +19,9 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Duration;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.ScheduleRepository;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
@@ -34,16 +39,36 @@ public class GroupModifyService {
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
+    private final ScheduleRepository scheduleRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest request) {
         Member host = memberFindService.findMember(memberId);
+        validateSchedulesAreInDuration(request.getSchedules(), request.getDuration());
+
         Group group = new Group(host, request.getCapacity(), request.getCalendar(), request.getName(),
                 request.getCategory(), request.getLocation(), request.getDescription());
         Group savedGroup = groupRepository.save(group);
+        saveSchedules(request, savedGroup);
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);
+    }
+
+    private void saveSchedules(GroupRequest request, Group group) {
+        List<Schedule> schedules = request.getSchedules();
+        for (Schedule schedule : schedules) {
+            group.addSchedule(schedule);
+        }
+    }
+
+    private void validateSchedulesAreInDuration(List<Schedule> schedules, Duration duration) {
+        boolean hasOutOfDuration = schedules.stream()
+                .anyMatch(schedule -> schedule.isOutOfDuration(duration));
+
+        if (hasOutOfDuration) {
+            throw new GroupException(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION);
+        }
     }
 
     @Transactional

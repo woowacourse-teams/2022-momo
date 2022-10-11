@@ -12,6 +12,8 @@ import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,7 @@ class GroupModifyServiceTest {
     private final GroupSearchRepository groupSearchRepository;
     private final MemberRepository memberRepository;
     private final ParticipateService participateService;
+    private final EntityManager entityManager;
 
     private Group group;
     private Member host;
@@ -54,6 +57,7 @@ class GroupModifyServiceTest {
         group = groupRepository.save(MOMO_STUDY.toGroup(host));
 
         participant = memberRepository.save(DUDU.toMember());
+        synchronize();
     }
 
     @DisplayName("모임을 생성한다")
@@ -63,6 +67,7 @@ class GroupModifyServiceTest {
         long groupId = groupModifyService.create(host.getId(), request)
                 .getGroupId();
 
+        synchronize();
         Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
@@ -112,6 +117,7 @@ class GroupModifyServiceTest {
         GroupRequest request = target.toRequest();
         groupModifyService.update(host.getId(), groupId, request);
 
+        synchronize();
         Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
@@ -194,6 +200,7 @@ class GroupModifyServiceTest {
         long hostId = host.getId();
 
         groupModifyService.closeEarly(hostId, groupId);
+        synchronize();
 
         boolean actual = groupSearchService.findGroup(groupId, null).isFinished();
         assertThat(actual).isTrue();
@@ -217,6 +224,7 @@ class GroupModifyServiceTest {
         long hostId = host.getId();
 
         groupModifyService.delete(hostId, groupId);
+        synchronize();
 
         assertThatThrownBy(() -> groupSearchService.findGroup(groupId, null))
                 .isInstanceOf(GroupException.class)
@@ -255,5 +263,10 @@ class GroupModifyServiceTest {
         assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 조기 마감되어 있습니다.");
+    }
+
+    void synchronize() {
+        entityManager.flush();
+        entityManager.clear();
     }
 }

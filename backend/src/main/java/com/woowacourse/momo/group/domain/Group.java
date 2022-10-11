@@ -75,7 +75,7 @@ public class Group {
                        Location location, Description description) {
         validateGroupIsProceeding();
         this.participants.updateCapacity(capacity);
-        this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
+        this.calendar.update(calendar.getDeadline(), calendar.getDuration());
         this.name = name;
         this.category = category;
         this.location = location;
@@ -114,6 +114,11 @@ public class Group {
         }
     }
 
+    public void addSchedule(Schedule schedule) {
+        schedule.assignGroup(this);
+        calendar.addSchedule(schedule);
+    }
+
     public boolean isHost(Member member) {
         return participants.isHost(member);
     }
@@ -139,7 +144,7 @@ public class Group {
     }
 
     public List<Schedule> getSchedules() {
-        return calendar.getSchedules().getValue();
+        return calendar.getSchedules();
     }
 
     public Duration getDuration() {
