@@ -4,6 +4,8 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  font-size: 1rem;
 `;
 
 const Button = styled.button<{ reverse?: boolean }>`

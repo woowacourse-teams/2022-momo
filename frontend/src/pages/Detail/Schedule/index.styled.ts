@@ -34,7 +34,7 @@ const Header = styled.div`
   section {
     overflow-x: hidden;
 
-    min-width: 70%;
+    width: 100%;
   }
 
   h2 {
@@ -44,9 +44,10 @@ const Header = styled.div`
     color: ${({ theme: { colors } }) => colors.black002};
 
     line-height: 1.5rem;
-    font-size: 1rem;
 
     animation: ${HeaderAnimation} linear 15s infinite;
+
+    font-size: 0.9rem;
 
     ::-webkit-scrollbar {
       display: none;
@@ -55,9 +56,6 @@ const Header = styled.div`
 `;
 
 const SVGBox = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
   width: fit-content;
 
   svg {
@@ -70,6 +68,16 @@ const SVGBox = styled.div`
 
       border-radius: 50%;
     }
+
+    ${({
+      theme: {
+        breakpoints: { md },
+      },
+    }) => `
+      @media only screen and (max-width: ${md}px) {
+        width: 1rem;
+      }
+    `}
   }
 `;
 

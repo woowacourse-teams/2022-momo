@@ -3,19 +3,20 @@ import useKakaoMap from 'hooks/useKakaoMap';
 import { GroupDetailData } from 'types/data';
 import { processLocation } from 'utils/location';
 
+import Description from '../Description';
 import * as S from './index.styled';
 
-function DetailContent({
-  location,
-  description,
-}: Pick<GroupDetailData, 'location' | 'description'>) {
+interface LocationProps {
+  location: GroupDetailData['location'];
+}
+
+function Location({ location }: LocationProps) {
   useKakaoMap(location);
 
   return (
-    <S.Container>
-      <S.Description>{description || '(설명이 없어요.)'}</S.Description>
+    <>
       {location.address ? (
-        <S.LocationContainer>
+        <Description type="location">
           <S.Location>
             <LocationSVG width={25} />
             {processLocation(location)}
@@ -23,12 +24,12 @@ function DetailContent({
           <S.MapWrapper>
             <S.Map id="map" />
           </S.MapWrapper>
-        </S.LocationContainer>
+        </Description>
       ) : (
-        <S.Description>(정해진 장소가 없어요.)</S.Description>
+        <Description type="location" />
       )}
-    </S.Container>
+    </>
   );
 }
 
-export default DetailContent;
+export default Location;

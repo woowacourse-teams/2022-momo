@@ -7,7 +7,7 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-const svgSize = 25;
+const svgSize = 20;
 const unit = 5;
 
 interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {

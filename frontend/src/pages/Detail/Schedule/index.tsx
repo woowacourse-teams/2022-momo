@@ -27,8 +27,11 @@ function Schedule({
           <h2>{parsedDurationDate(duration)}</h2>
         </section>
         <S.SVGBox>
-          <ListSVG onClick={changeSelected('list')} />
-          <CalendarSVG onClick={changeSelected('calendar')} />
+          {selected === 'calendar' ? (
+            <ListSVG onClick={changeSelected('list')} />
+          ) : (
+            <CalendarSVG onClick={changeSelected('calendar')} />
+          )}
         </S.SVGBox>
       </S.Header>
       <hr />

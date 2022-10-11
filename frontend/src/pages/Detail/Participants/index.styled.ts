@@ -41,12 +41,24 @@ const Box = styled.div`
   grid-template-columns: repeat(2, 1fr);
   row-gap: 1rem;
   column-gap: 0.5rem;
+
+  ${({
+    theme: {
+      breakpoints: { lg },
+    },
+  }) => `
+    @media only screen and (max-width: ${lg}px) {
+      grid-template-columns: 1fr;
+    }
+  `}
 `;
 
 const Participant = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  width: fit-content;
 `;
 
 const SVGWrapper = styled.div<{ isHost?: boolean }>`
@@ -66,6 +78,8 @@ const Name = styled.div`
   white-space: nowrap;
 
   max-width: 5rem;
+
+  font-size: 0.9rem;
 `;
 
 const Button = styled.button<{ reverse?: boolean }>`
