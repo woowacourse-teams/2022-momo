@@ -6,14 +6,14 @@ import { parsedSchedule } from 'utils/date';
 
 import * as S from './index.styled';
 
-const unit = 3;
+const cutLine = 3;
 
 function List({ schedules }: Pick<GroupDetailData, 'schedules'>) {
-  const initSchedules = schedules.slice(0, unit);
-  const [showingSchedules, setShowingSchedules] = useState(initSchedules);
+  const previewingSchedules = schedules.slice(0, cutLine);
+  const [showingSchedules, setShowingSchedules] = useState(previewingSchedules);
 
   const showSomeSchedules = () => {
-    setShowingSchedules(initSchedules);
+    setShowingSchedules(previewingSchedules);
   };
 
   const showAllSchedules = () => {
@@ -25,12 +25,12 @@ function List({ schedules }: Pick<GroupDetailData, 'schedules'>) {
       {showingSchedules.map((schedule, idx) => (
         <div key={idx}>· {parsedSchedule(schedule)}</div>
       ))}
-      {showingSchedules.length > unit ? (
+      {showingSchedules.length > cutLine ? (
         <S.Button type="button" onClick={showSomeSchedules} reverse={true}>
           <ArrowSVG />
         </S.Button>
       ) : (
-        schedules.length > unit && (
+        schedules.length > cutLine && (
           <S.Button type="button" onClick={showAllSchedules}>
             <ArrowSVG />
           </S.Button>
