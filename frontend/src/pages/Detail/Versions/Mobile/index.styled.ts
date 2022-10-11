@@ -38,8 +38,6 @@ const TitleContainer = styled.div`
   width: 100%;
 `;
 
-const SubMenu = styled.div``;
-
 const ContentContainer = styled(BasicContainer)`
   padding-top: 12rem;
 `;
@@ -55,7 +53,6 @@ export {
   StickyContainer,
   Header,
   TitleContainer,
-  SubMenu,
   ContentContainer,
   ControlContainer,
 };

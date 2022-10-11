@@ -39,9 +39,9 @@ function Mobile({ id, data, participants }: MobileProps) {
                 ?.name || ''}
             </Category>
           </S.TitleContainer>
-          <S.SubMenu>
+          <div>
             <LikeButton id={id} like={data.like} />
-          </S.SubMenu>
+          </div>
         </S.Header>
       </S.StickyContainer>
       <S.ContentContainer>
