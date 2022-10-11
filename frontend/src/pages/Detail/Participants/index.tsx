@@ -17,17 +17,17 @@ interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {
 function Participants({ host, capacity, participants }: ParticipantsProps) {
   const participantsWithoutHost = participants.slice(1);
 
-  const initParticipants = participantsWithoutHost.slice(0, unit);
+  const previewingParticipants = participantsWithoutHost.slice(0, unit);
   const [showingParticipants, setShowingParticipants] =
     useState<GroupParticipants>([]);
 
   useEffect(() => {
-    setShowingParticipants(initParticipants);
+    setShowingParticipants(previewingParticipants);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
 
   const showSomeParticipants = () => {
-    setShowingParticipants(initParticipants);
+    setShowingParticipants(previewingParticipants);
   };
 
   const showAllParticipants = () => {
