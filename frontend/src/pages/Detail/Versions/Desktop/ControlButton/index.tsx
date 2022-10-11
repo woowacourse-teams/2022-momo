@@ -39,7 +39,6 @@ function ControlButton({
 
   const queryClient = useQueryClient();
   const refetch = () => {
-    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
     queryClient.invalidateQueries(`${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`);
   };
 
@@ -141,13 +140,13 @@ function ControlButton({
     );
   }
 
-  if (participants.length === capacity) {
+  if (participants.length >= capacity) {
     return <S.DisableButton>참여 인원이 가득 찼어요</S.DisableButton>;
   }
 
   return (
     <S.JoinButton type="button" onClick={joinGroup}>
-      참여 신청
+      참여하기
     </S.JoinButton>
   );
 }
