@@ -132,6 +132,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     }
 
     private static ConstructorExpression<GroupSummaryRepositoryResponse> makeProjections() {
+        int host = 1;
         return Projections.constructor(GroupSummaryRepositoryResponse.class,
                 group.id,
                 group.name.value,
@@ -139,7 +140,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 member.userName.value,
                 group.category,
                 group.participants.capacity.value,
-                participant.count().intValue().add(1),
+                participant.count().intValue().add(host),
                 group.closedEarly,
                 group.calendar.deadline.value
         );
