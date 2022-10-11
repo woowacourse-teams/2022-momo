@@ -1,5 +1,6 @@
 package com.woowacourse.momo.group.service.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,8 @@ import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
+import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,33 +33,40 @@ public class GroupResponseAssembler {
                 locationResponse(group.getLocation()), false, group.getDescription().getValue());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, List<Favorite> favorites) {
-        return groups.stream()
-                .map(group -> GroupResponseAssembler.groupSummaryResponseWithLogin(group, favorites))
+    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(
+            List<GroupSummaryRepositoryResponse> responses, List<Favorite> favorites) {
+        return responses.stream()
+                .map(response -> GroupResponseAssembler.groupSummaryResponseWithLogin(response, favorites))
                 .collect(Collectors.toList());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithoutLogin(List<Group> groups) {
-        return groups.stream()
+    public static List<GroupSummaryResponse> groupSummaryResponsesWithoutLogin(
+            List<GroupSummaryRepositoryResponse> responses) {
+        return responses.stream()
                 .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
                 .collect(Collectors.toList());
     }
 
-    private static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, List<Favorite> favorites) {
-        boolean result = favorites.stream()
-                .anyMatch(f -> f.isSameGroup(group.getId()));
+    private static GroupSummaryResponse groupSummaryResponseWithLogin(GroupSummaryRepositoryResponse response,
+                                                                      List<Favorite> favorites) {
+        boolean isFavorite = favorites.stream()
+                .anyMatch(f -> f.isSameGroup(response.getGroupId()));
 
-        return new GroupSummaryResponse(group.getId(), group.getName(),
-                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline(), result);
+        return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
+                new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
+                response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
+                response.getDeadline(), isFavorite);
     }
 
-    public static GroupSummaryResponse groupSummaryResponseWithoutLogin(Group group) {
-        return new GroupSummaryResponse(group.getId(), group.getName(),
-                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline(), false);
+    public static GroupSummaryResponse groupSummaryResponseWithoutLogin(GroupSummaryRepositoryResponse response) {
+        return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
+                new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
+                response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
+                response.getDeadline(), false);
+    }
+
+    private static boolean isFinished(GroupSummaryRepositoryResponse response) {
+        return response.isClosedEarly() || response.getDeadline().isBefore(LocalDateTime.now());
     }
 
     public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses,

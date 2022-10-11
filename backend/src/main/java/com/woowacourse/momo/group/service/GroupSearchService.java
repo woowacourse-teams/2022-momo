@@ -15,6 +15,7 @@ import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
+import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
 import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponse;
@@ -50,14 +51,16 @@ public class GroupSearchService {
 
     public GroupPageResponse findGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupSearchRepository.findGroups(request.toFindCondition(), pageable);
-        List<Group> groupsOfPage = groups.getContent();
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(request.toFindCondition(),
+                pageable);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
         List<GroupSummaryResponse> summaries = getGroupSummaryResponses(groupsOfPage, memberId);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    private List<GroupSummaryResponse> getGroupSummaryResponses(List<Group> groupsOfPage, Long memberId) {
+    private List<GroupSummaryResponse> getGroupSummaryResponses(List<GroupSummaryRepositoryResponse> groupsOfPage,
+                                                                Long memberId) {
         if (memberId == null) {
             return GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
         }
@@ -70,8 +73,9 @@ public class GroupSearchService {
     public GroupPageResponse findParticipatedGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupSearchRepository.findParticipatedGroups(request.toFindCondition(), member, pageable);
-        List<Group> groupsOfPage = groups.getContent();
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findParticipatedGroups(
+                request.toFindCondition(), member, pageable);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
                 favorites);
@@ -82,8 +86,9 @@ public class GroupSearchService {
     public GroupPageResponse findHostedGroups(GroupSearchRequest request, Long memberId) {
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
         Member member = memberFindService.findMember(memberId);
-        Page<Group> groups = groupSearchRepository.findHostedGroups(request.toFindCondition(), member, pageable);
-        List<Group> groupsOfPage = groups.getContent();
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findHostedGroups(request.toFindCondition(),
+                member, pageable);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
                 favorites);
@@ -94,8 +99,9 @@ public class GroupSearchService {
     public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
         memberValidator.validateExistMember(memberId);
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<Group> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(), memberId, pageable);
-        List<Group> groupsOfPage = groups.getContent();
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(),
+                memberId, pageable);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
                 favorites);
