@@ -8,7 +8,7 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 import * as S from './index.styled';
 
 const svgSize = 20;
-const unit = 5;
+const cutLine = 5;
 
 interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {
   participants: GroupParticipants;
@@ -17,7 +17,7 @@ interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {
 function Participants({ host, capacity, participants }: ParticipantsProps) {
   const participantsWithoutHost = participants.slice(1);
 
-  const previewingParticipants = participantsWithoutHost.slice(0, unit);
+  const previewingParticipants = participantsWithoutHost.slice(0, cutLine);
   const [showingParticipants, setShowingParticipants] =
     useState<GroupParticipants>([]);
 
@@ -64,12 +64,12 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
             ),
         )}
       </S.Box>
-      {showingParticipants.length > unit ? (
+      {showingParticipants.length > cutLine ? (
         <S.Button type="button" onClick={showSomeParticipants} reverse={true}>
           <ArrowSVG />
         </S.Button>
       ) : (
-        participantsWithoutHost.length > unit && (
+        participantsWithoutHost.length > cutLine && (
           <S.Button type="button" onClick={showAllParticipants}>
             <ArrowSVG />
           </S.Button>
