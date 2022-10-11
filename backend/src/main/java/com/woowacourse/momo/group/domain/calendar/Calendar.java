@@ -21,7 +21,7 @@ import com.woowacourse.momo.group.exception.GroupException;
 @Embeddable
 public class Calendar {
 
-    @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.PERSIST)
     private final List<Schedule> schedules = new ArrayList<>();
 
     @Embedded

@@ -23,6 +23,7 @@ import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.ScheduleRepository;
 import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -40,6 +41,7 @@ public class GroupModifyService {
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ParticipantRepository participantRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -97,6 +99,8 @@ public class GroupModifyService {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
             applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
+            scheduleRepository.deleteAllByGroupId(groupId);
+            participantRepository.deleteAllByGroupId(groupId);
             groupRepository.deleteById(groupId);
         });
     }
