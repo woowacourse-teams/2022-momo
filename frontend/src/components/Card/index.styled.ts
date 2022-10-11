@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem;
 
   width: 100%;
   height: 7rem;
@@ -33,7 +33,7 @@ const Image = styled.div`
   background-position: center;
 
   margin: auto;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 `;
 
 const Description = styled.div`
@@ -43,7 +43,7 @@ const Description = styled.div`
   width: 70%;
   line-height: 1.4em;
 
-  padding: 1rem;
+  padding: 1rem 3%;
 `;
 
 const Left = styled.div`
@@ -51,7 +51,7 @@ const Left = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 50%;
+  width: 60%;
   height: 100%;
 `;
 
@@ -61,7 +61,7 @@ const Right = styled.div`
   justify-content: space-between;
   align-items: flex-end;
 
-  width: 50%;
+  width: 40%;
   height: 100%;
 `;
 
@@ -79,10 +79,17 @@ const Title = styled.div`
 `;
 
 const HostName = styled.div`
+  display: -webkit-box;
   color: ${({ theme: { colors } }) => colors.gray001};
 
-  font-weight: 500;
-  font-size: 1.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+
+  font-weight: 100;
+  font-size: 1rem;
 `;
 
 const HashtagBox = styled.div`
@@ -110,6 +117,8 @@ const Deadline = styled.div`
 `;
 
 const Capacity = styled.div`
+  font-size: 1rem;
+
   ${({ theme: { colors } }) => `
     color: ${colors.gray001};
 
