@@ -14,6 +14,7 @@ interface FilterSectionProps {
   resetSelectedCategoryId: () => void;
   isExcludeFinished: boolean;
   toggleIsExcludeFinished: () => void;
+  children?: React.ReactNode;
 }
 
 function FilterSection({
@@ -23,6 +24,7 @@ function FilterSection({
   resetSelectedCategoryId,
   isExcludeFinished,
   toggleIsExcludeFinished,
+  children,
 }: FilterSectionProps) {
   return (
     <S.Container>
@@ -35,6 +37,7 @@ function FilterSection({
             resetSelectedCategoryId={resetSelectedCategoryId}
           />
         </ErrorBoundary>
+        {children}
         <Checkbox
           description="마감된 모임 제외"
           checked={isExcludeFinished}

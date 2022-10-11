@@ -4,25 +4,32 @@ import { useQuery } from 'react-query';
 
 import { requestJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
-import SearchForm from 'components/SearchForm';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
-import { GroupList, SelectableGroup } from 'types/data';
+import FilterSection from 'pages/Main/FilterSection';
+import theme from 'styles/theme';
+import { CategoryType, GroupList, SelectableGroup } from 'types/data';
 
 import CardList from './CardList';
 import * as S from './index.styled';
 
-const groupTypes: { type: SelectableGroup; name: string }[] = [
-  { type: 'participated', name: '내가 참여한 모임' },
-  { type: 'hosted', name: '내가 주최한 모임' },
-  { type: 'liked', name: '내가 찜한 모임' },
-];
+const groupTypes: { type: SelectableGroup; name: string; shortName: string }[] =
+  [
+    { type: 'participated', name: '내가 참여한 모임', shortName: '참여' },
+    { type: 'hosted', name: '내가 주최한 모임', shortName: '주최' },
+    { type: 'liked', name: '내가 찜한 모임', shortName: '찜' },
+  ];
+
+const invalidCategoryId = -1;
 
 function MyGroup() {
   const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
-  const [pageNumber, setPageNumber] = useState(0);
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState(invalidCategoryId);
+
   const [groups, setGroups] = useState<GroupList['groups']>([]);
+  const [pageNumber, setPageNumber] = useState(0);
   const [selectedGroupType, setSelectedGroupType] =
     useState<SelectableGroup>('participated');
 
@@ -33,6 +40,7 @@ function MyGroup() {
       pageNumber,
       isExcludeFinished,
       keyword,
+      selectedCategoryId,
     ),
     {
       suspense: true,
@@ -72,22 +80,45 @@ function MyGroup() {
     refetch();
   };
 
+  const selectCategory = (id: CategoryType['id']) => async () => {
+    await setSelectedCategoryId(id);
+    await setPageNumber(0);
+    refetch();
+  };
+
+  const resetSelectedCategoryId = () => {
+    selectCategory(invalidCategoryId)();
+  };
+
   return (
     <>
-      <S.SearchWrapper>
-        <SearchForm search={search} />
-      </S.SearchWrapper>
-      <S.GroupTypeBox>
-        {groupTypes.map(({ type, name }) => (
-          <S.Button
-            key={type}
-            className={selectedGroupType === type ? 'selected' : ''}
-            onClick={changeSelectedGroupType(type)}
-          >
-            {name}
-          </S.Button>
-        ))}
-      </S.GroupTypeBox>
+      <FilterSection
+        search={search}
+        selectedCategoryId={selectedCategoryId}
+        selectCategory={selectCategory}
+        resetSelectedCategoryId={resetSelectedCategoryId}
+        isExcludeFinished={isExcludeFinished}
+        toggleIsExcludeFinished={toggleIsExcludeFinished}
+      >
+        <S.GroupTypeBox>
+          {groupTypes.map(({ type, name, shortName }) => (
+            <S.Button
+              key={type}
+              className={selectedGroupType === type ? 'selected' : ''}
+              onClick={changeSelectedGroupType(type)}
+            >
+              <S.Check
+                className={selectedGroupType === type ? 'selected' : ''}
+              />
+              <p>
+                {document.body.clientWidth > theme.breakpoints.md
+                  ? name
+                  : shortName}
+              </p>
+            </S.Button>
+          ))}
+        </S.GroupTypeBox>
+      </FilterSection>
       <S.Content>
         <ErrorBoundary>
           <CardList
@@ -95,8 +126,6 @@ function MyGroup() {
             data={data}
             refetch={refetch}
             groups={groups}
-            isExcludeFinished={isExcludeFinished}
-            toggleIsExcludeFinished={toggleIsExcludeFinished}
           />
         </ErrorBoundary>
       </S.Content>
