@@ -3,7 +3,8 @@ import Lottie from 'lottie-react';
 import loading from 'assets/lottie/loading.json';
 
 const style = {
-  width: '10rem',
+  width: '20%',
+  maxHeight: '5rem',
 };
 
 function Loading() {
