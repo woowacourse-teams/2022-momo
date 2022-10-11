@@ -6,6 +6,8 @@ import { processLocation } from 'utils/location';
 import Description from '../Description';
 import * as S from './index.styled';
 
+const svgSize = 25;
+
 interface LocationProps {
   location: GroupDetailData['location'];
 }
@@ -18,7 +20,7 @@ function Location({ location }: LocationProps) {
       {location.address ? (
         <Description type="location">
           <S.Location>
-            <LocationSVG width={25} />
+            <LocationSVG width={svgSize} />
             {processLocation(location)}
           </S.Location>
           <S.MapWrapper>
