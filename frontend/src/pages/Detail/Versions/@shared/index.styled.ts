@@ -42,7 +42,7 @@ const Title = styled.h2`
       font-size: 1.1rem;
     }
 
-    @media only screen and (min-width: ${md}px) and (max-width: ${lg}px) {
+    @media only screen and (min-width: ${md + 1}px) and (max-width: ${lg}px) {
       font-size: 1.5rem;
     }
 
