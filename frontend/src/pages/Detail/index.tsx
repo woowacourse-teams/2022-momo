@@ -10,6 +10,7 @@ import {
 import { QUERY_KEY } from 'constants/key';
 import useRecoilQuery from 'hooks/useRecoilQuery';
 import { groupDetailState } from 'store/states';
+import theme from 'styles/theme';
 import { GroupParticipants } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 
@@ -40,7 +41,7 @@ function Detail() {
 
   if (!participants) return <></>;
 
-  if (document.body.clientWidth > 768) {
+  if (document.body.clientWidth > theme.breakpoints.md) {
     return <Desktop id={Number(id)} data={data} participants={participants} />;
   }
 
