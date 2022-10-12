@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.domain.calendar;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_BEFORE_DEADLINE;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.DURATION_MUST_BE_SET_CONTAIN_SCHEDULE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class Calendar {
 
     public void update(Deadline deadline, Duration duration) {
         validateDeadlineIsNotAfterDurationStart(duration, deadline);
+        validateDurationIsNotOutOfSchedules(duration);
         this.duration = duration;
         this.deadline = deadline;
     }
@@ -53,6 +55,15 @@ public class Calendar {
     private void validateDeadlineIsNotAfterDurationStart(Duration duration, Deadline deadline) {
         if (duration.isStartBeforeDeadline(deadline)) {
             throw new GroupException(DURATION_MUST_BE_SET_BEFORE_DEADLINE);
+        }
+    }
+
+    private void validateDurationIsNotOutOfSchedules(Duration duration) {
+        boolean hasOutOfSchedule = schedules.stream()
+                .anyMatch(schedule -> schedule.isOutOfDuration(duration));
+
+        if (hasOutOfSchedule) {
+            throw new GroupException(DURATION_MUST_BE_SET_CONTAIN_SCHEDULE);
         }
     }
 }

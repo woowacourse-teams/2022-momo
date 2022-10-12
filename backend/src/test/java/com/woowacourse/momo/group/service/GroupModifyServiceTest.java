@@ -229,7 +229,9 @@ class GroupModifyServiceTest {
         long groupId = group.getId();
         long hostId = host.getId();
 
-        GroupRequest request = DUDU_STUDY.toRequest();
+        GroupRequest request = constructGroupRequest()
+                .name("모모의 스프링 스터디")
+                .toRequest();
         assertDoesNotThrow(() -> groupModifyService.update(hostId, groupId, request));
     }
 
