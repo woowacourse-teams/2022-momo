@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.domain.participant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.GUGU;
@@ -45,7 +46,8 @@ class ParticipantRepositoryTest {
     Member member1;
     Member member2;
     Member member3;
-    Group group;
+    Group group1;
+    Group group2;
 
     @BeforeEach
     void setUp() {
@@ -53,19 +55,37 @@ class ParticipantRepositoryTest {
         member2 = memberRepository.save(DUDU.toMember());
         member3 = memberRepository.save(GUGU.toMember());
 
-        group = groupRepository.save(MOMO_STUDY.toGroup(member1));
-        group.participate(member2);
-        group.participate(member3);
+        group1 = groupRepository.save(MOMO_STUDY.toGroup(member1));
+        group2 = groupRepository.save(DUDU_STUDY.toGroup(member1));
+        group1.participate(member2);
+        group1.participate(member3);
+        group2.participate(member3);
     }
 
     @DisplayName("모임 ID를 통해 연관된 참여자를 모두 삭제한다")
     @Test
     void deleteAllByGroupId() {
-        participantRepository.deleteAllByGroupId(group.getId());
+        participantRepository.deleteAllByGroupId(group1.getId());
 
         synchronize();
 
-        Optional<Group> foundGroup = groupSearchRepository.findById(group.getId());
+        Optional<Group> foundGroup = groupSearchRepository.findById(group1.getId());
+        assertThat(foundGroup).isPresent();
+
+        List<Member> expected = foundGroup.get().getParticipants();
+
+        int onlyHost = 1;
+        assertThat(expected).hasSize(onlyHost);
+    }
+
+    @DisplayName("모임 ID를 통해 연관된 참여자를 모두 삭제한다")
+    @Test
+    void deleteAllByMemberId() {
+        participantRepository.deleteAllByMemberId(member3.getId());
+
+        synchronize();
+
+        Optional<Group> foundGroup = groupSearchRepository.findById(member2.getId());
         assertThat(foundGroup).isPresent();
 
         List<Member> expected = foundGroup.get().getParticipants();

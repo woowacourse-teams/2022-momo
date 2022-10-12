@@ -8,6 +8,10 @@ import org.springframework.data.repository.query.Param;
 public interface ParticipantRepository extends Repository<Participant, Long> {
 
     @Modifying
-    @Query("delete from Participant where group.id = :groupId")
+    @Query("delete from Participant p where p.group.id = :groupId")
     void deleteAllByGroupId(@Param("groupId") Long groupId);
+
+    @Modifying
+    @Query("delete from Participant p where p.member.id = :memberId")
+    void deleteAllByMemberId(@Param("memberId") Long memberId);
 }

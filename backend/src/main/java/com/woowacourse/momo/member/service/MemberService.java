@@ -13,6 +13,7 @@ import com.woowacourse.momo.auth.domain.TokenRepository;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
@@ -38,6 +39,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final TokenRepository tokenRepository;
+    private final ParticipantRepository participantRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -87,8 +89,8 @@ public class MemberService {
                 .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
-        // 성능 개선 필요
-        progressingGroups.forEach(group -> group.remove(member));
+
+        participantRepository.deleteAllByMemberId(member.getId());
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {
