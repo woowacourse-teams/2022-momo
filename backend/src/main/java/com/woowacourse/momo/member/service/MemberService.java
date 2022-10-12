@@ -90,7 +90,7 @@ public class MemberService {
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
 
-        participantRepository.deleteAllByMemberId(member.getId());
+        participantRepository.deleteAllByMemberIdInGroups(member.getId(), progressingGroups);
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {

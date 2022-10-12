@@ -66,7 +66,6 @@ class ParticipantRepositoryTest {
     @Test
     void deleteAllByGroupId() {
         participantRepository.deleteAllByGroupId(group1.getId());
-
         synchronize();
 
         Optional<Group> foundGroup = groupSearchRepository.findById(group1.getId());
@@ -78,14 +77,13 @@ class ParticipantRepositoryTest {
         assertThat(expected).hasSize(onlyHost);
     }
 
-    @DisplayName("모임 ID를 통해 연관된 참여자를 모두 삭제한다")
+    @DisplayName("회원 ID와 모임 리스트에 연관된 참여자를 모두 삭제한다")
     @Test
-    void deleteAllByMemberId() {
-        participantRepository.deleteAllByMemberId(member3.getId());
-
+    void deleteAllByMemberIdInGroups() {
+        participantRepository.deleteAllByMemberIdInGroups(member3.getId(), List.of(group1, group2));
         synchronize();
 
-        Optional<Group> foundGroup = groupSearchRepository.findById(member2.getId());
+        Optional<Group> foundGroup = groupSearchRepository.findById(group2.getId());
         assertThat(foundGroup).isPresent();
 
         List<Member> expected = foundGroup.get().getParticipants();
