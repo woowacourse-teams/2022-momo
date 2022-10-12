@@ -15,8 +15,6 @@ import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.일주일후
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.일주일후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
 
-import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
-import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
@@ -222,9 +221,10 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
+        Location location = fixture.getLocationObject();
         Description description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, description);
+        group.update(capacity, calendar, name, category, location, description);
 
         assertAll(
                 () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
@@ -242,21 +242,10 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
+        Location location = fixture.getLocationObject();
         Description description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, description);
-    }
-
-    @DisplayName("모임 장소를 수정한다")
-    @Test
-    void updateLocation() {
-        Member host = MOMO.toMember();
-        Group group = MOMO_STUDY.toGroup(host);
-        Location location = 선릉캠퍼스.toLocation();
-
-        group.updateLocation(location);
-
-        assertThat(group.getLocation()).isEqualTo(location);
+        group.update(capacity, calendar, name, category, location, description);
     }
 
     @DisplayName("모임 모집을 조기마감한다")

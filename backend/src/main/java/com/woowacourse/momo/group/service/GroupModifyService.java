@@ -15,13 +15,12 @@ import com.woowacourse.momo.group.domain.Description;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
+import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupIdResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
@@ -48,23 +47,19 @@ public class GroupModifyService {
     }
 
     @Transactional
-    public void update(Long hostId, Long groupId, GroupUpdateRequest request) {
+    public void update(Long hostId, Long groupId, GroupRequest request) {
         ifMemberIsHost(hostId, groupId, (host, group) -> updateGroup(group, request));
     }
 
-    private void updateGroup(Group group, GroupUpdateRequest request) {
+    private void updateGroup(Group group, GroupRequest request) {
         GroupName groupName = request.getName();
         Category category = request.getCategory();
         Capacity capacity = request.getCapacity();
         Calendar calendar = request.getCalendar();
+        Location location = request.getLocation();
         Description description = request.getDescription();
 
-        group.update(capacity, calendar, groupName, category, description);
-    }
-
-    @Transactional
-    public void updateLocation(Long hostId, Long groupId, LocationRequest request) {
-        ifMemberIsHost(hostId, groupId, (host, group) -> group.updateLocation(request.getLocation()));
+        group.update(capacity, calendar, groupName, category, location, description);
     }
 
     @Transactional

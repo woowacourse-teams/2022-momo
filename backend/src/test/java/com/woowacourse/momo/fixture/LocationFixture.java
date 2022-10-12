@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import com.woowacourse.momo.group.controller.dto.request.LocationApiRequest;
-import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 
@@ -16,6 +15,7 @@ public enum LocationFixture {
     잠실캠퍼스("서울 송파구 올림픽로 35다길 42", "루터회관", "13층"),
     선릉캠퍼스("서울 강남구 테헤란로 411", "성담빌딩", "14층"),
     잠실역_스타벅스("서울 송파구 올림픽로 289", "시그마타워", "1층"),
+    선릉역_스타벅스("서울 강남구 테헤란로 334", "LG화재빌딩", "1층"),
     ;
 
     private final String address;
@@ -32,9 +32,5 @@ public enum LocationFixture {
 
     public LocationApiRequest toApiRequest() {
         return new LocationApiRequest(address, buildingName, detail);
-    }
-
-    public LocationUpdateApiRequest toUpdateApiRequest() {
-        return new LocationUpdateApiRequest(address, buildingName, detail);
     }
 }

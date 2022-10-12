@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
-import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
@@ -23,16 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.fixture.LocationFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
-import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
-import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 
@@ -114,7 +109,7 @@ class GroupModifyServiceTest {
         GroupFixture target = DUDU_STUDY;
 
         long groupId = this.group.getId();
-        GroupUpdateRequest request = target.toUpdateRequest();
+        GroupRequest request = target.toRequest();
         groupModifyService.update(host.getId(), groupId, request);
 
         Optional<Group> group = groupSearchRepository.findById(groupId);
@@ -149,7 +144,7 @@ class GroupModifyServiceTest {
         long groupId = 1000;
         long hostId = host.getId();
 
-        GroupUpdateRequest request = MOMO_STUDY.toUpdateRequest();
+        GroupRequest request = MOMO_STUDY.toRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
@@ -161,7 +156,7 @@ class GroupModifyServiceTest {
         long groupId = group.getId();
         long participantId = participant.getId();
 
-        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
+        GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupModifyService.update(participantId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임의 주최자가 아닙니다.");
@@ -175,7 +170,7 @@ class GroupModifyServiceTest {
 
         group.participate(participant);
 
-        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
+        GroupRequest request = DUDU_STUDY.toRequest();
         assertDoesNotThrow(() -> groupModifyService.update(hostId, groupId, request));
     }
 
@@ -186,28 +181,10 @@ class GroupModifyServiceTest {
         long hostId = host.getId();
         group.closeEarly();
 
-        GroupUpdateRequest request = DUDU_STUDY.toUpdateRequest();
+        GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 조기 마감되어 있습니다.");
-    }
-
-    @DisplayName("모임 장소를 업데이트한다")
-    @Test
-    void updateLocation() {
-        LocationFixture target = 선릉캠퍼스;
-
-        long groupId = this.group.getId();
-        LocationRequest request = target.toRequest();
-        groupModifyService.updateLocation(host.getId(), groupId, request);
-
-        Optional<Group> group = groupSearchRepository.findById(groupId);
-        assertThat(group).isPresent();
-
-        Location actual = group.get().getLocation();
-        Location expected = target.toLocation();
-        assertThat(actual)
-                .isEqualTo(expected);
     }
 
     @DisplayName("모임을 조기 마감한다")

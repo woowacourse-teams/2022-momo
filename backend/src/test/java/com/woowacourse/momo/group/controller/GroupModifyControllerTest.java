@@ -41,7 +41,6 @@ import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.controller.dto.request.GroupApiRequest;
-import com.woowacourse.momo.group.controller.dto.request.LocationUpdateApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.service.GroupModifyService;
@@ -105,28 +104,6 @@ class GroupModifyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(
                         document("groupupdate",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint())
-                        )
-                );
-    }
-
-    @DisplayName("그룹 장소가 정상적으로 수정되는 경우를 테스트한다")
-    @Test
-    void groupUpdateLocationTest() throws Exception {
-        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
-        String accessToken = accessToken("woowa", "wooteco1!");
-        Long savedGroupId = saveGroup("모모의 스터디", saveMemberId, Category.STUDY);
-        LocationUpdateApiRequest request = 잠실캠퍼스.toUpdateApiRequest();
-
-        mockMvc.perform(put("/api/groups/" + savedGroupId + "/location")
-                        .header("Authorization", "bearer " + accessToken)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request))
-                )
-                .andExpect(status().isOk())
-                .andDo(
-                        document("grouplocationupdate",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
