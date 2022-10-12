@@ -3,7 +3,6 @@ package com.woowacourse.momo.group.service;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_HOST;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -96,26 +95,25 @@ public class GroupModifyService {
 
     private void updateSchedules(Group group, List<Schedule> newSchedules) {
         List<Schedule> presentSchedules = group.getSchedules();
-        List<Long> toBeDeletedIds = presentSchedules.stream()
-                .map(Schedule::getId)
+        List<Schedule> toBeDeletedSchedules = presentSchedules.stream()
+                .filter(schedule -> notContainSchedules(newSchedules, schedule))
                 .collect(Collectors.toList());
-        List<Schedule> toBeSavedIds = new ArrayList<>(List.copyOf(newSchedules));
 
-        for (Schedule presentSchedule : presentSchedules) {
-            for (Schedule newSchedule : newSchedules) {
-                if (presentSchedule.equalsDateTime(newSchedule)) {
-                    toBeSavedIds.remove(newSchedule);
-                    toBeDeletedIds.remove(presentSchedule.getId());
-                }
-            }
-        }
+        List<Schedule> toBeSavedSchedules = newSchedules.stream()
+                .filter(schedule -> notContainSchedules(presentSchedules, schedule))
+                .collect(Collectors.toList());
 
-        reflectSchedules(group, toBeDeletedIds, toBeSavedIds);
+        reflectSchedules(group, toBeDeletedSchedules, toBeSavedSchedules);
     }
 
-    private void reflectSchedules(Group group, List<Long> toBeDeletedIds, List<Schedule> toBeSavedIds) {
-        if (!toBeDeletedIds.isEmpty()) {
-            scheduleRepository.deleteAllInScheduleIds(toBeDeletedIds);
+    private boolean notContainSchedules(List<Schedule> schedules, Schedule schedule) {
+        return schedules.stream()
+                .noneMatch(schedule::equalsDateTime);
+    }
+
+    private void reflectSchedules(Group group, List<Schedule> toBeDeletedSchedules, List<Schedule> toBeSavedIds) {
+        if (!toBeDeletedSchedules.isEmpty()) {
+            scheduleRepository.deleteAllInSchedules(toBeDeletedSchedules);
         }
 
         for (Schedule schedule : toBeSavedIds) {

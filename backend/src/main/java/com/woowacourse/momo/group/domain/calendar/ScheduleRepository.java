@@ -14,6 +14,6 @@ public interface ScheduleRepository extends Repository<Schedule, Long> {
     void deleteAllByGroupId(@Param("groupId") Long groupId);
 
     @Modifying
-    @Query("delete from Schedule where id in (:ids)")
-    void deleteAllInScheduleIds(@Param("ids") List<Long> ids);
+    @Query("delete from Schedule s where s in (:schedules)")
+    void deleteAllInSchedules(@Param("schedules") List<Schedule> schedules);
 }

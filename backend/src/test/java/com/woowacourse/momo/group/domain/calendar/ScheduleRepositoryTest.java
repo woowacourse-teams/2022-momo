@@ -76,7 +76,7 @@ class ScheduleRepositoryTest {
     @DisplayName("입력받은 Id의 일정을 모두 삭제한다")
     @Test
     void deleteAllInScheduleIds() {
-        scheduleRepository.deleteAllInScheduleIds(List.of(schedule1.getId(), schedule2.getId()));
+        scheduleRepository.deleteAllInSchedules(List.of(schedule1, schedule2));
 
         Optional<Group> foundGroup = groupSearchRepository.findById(group.getId());
         assertThat(foundGroup).isPresent();
