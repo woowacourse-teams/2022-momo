@@ -11,7 +11,9 @@ import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.GUGU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.내일_하루동안;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.내일_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.일주일후_10시부터_12시까지;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
 import java.util.List;
@@ -28,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.fixture.GroupFixture.Builder;
+import com.woowacourse.momo.fixture.LocationFixture;
 import com.woowacourse.momo.fixture.GroupFixture;
 import com.woowacourse.momo.fixture.calendar.DurationFixture;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
@@ -69,6 +73,7 @@ class GroupModifyServiceTest {
 
         group.participate(participant1);
         group.participate(participant2);
+        synchronize();
     }
 
     @DisplayName("모임을 생성한다")
@@ -109,7 +114,10 @@ class GroupModifyServiceTest {
     @DisplayName("생성 시, 일정들이 기간 내에 속해있지 않을 경우 예외가 발생한다")
     @Test
     void validateSchedulesAreInDurationWhenCreate() {
-        GroupRequest request = constructGroupRequest(List.of(이틀후_10시부터_12시까지), 내일_하루동안);
+        GroupRequest request = constructGroupRequest()
+                .schedules(List.of(이틀후_10시부터_12시까지))
+                .duration(내일_하루동안)
+                .toRequest();
 
         assertThatThrownBy(() -> groupModifyService.create(host.getId(), request))
                 .isInstanceOf(GroupException.class)
@@ -130,20 +138,46 @@ class GroupModifyServiceTest {
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
 
-    @DisplayName("모임을 수정한다")
+    @DisplayName("모임 일정을 수정한다")
     @Test
-    void update() {
-        GroupFixture target = DUDU_STUDY;
-
+    void updateSchedules() {
         long groupId = this.group.getId();
+
+        Builder target = constructGroupRequest()
+                .schedules(List.of(내일_10시부터_12시까지, 일주일후_10시부터_12시까지));
         GroupRequest request = target.toRequest();
+
         groupModifyService.update(host.getId(), groupId, request);
+        synchronize();
 
         Optional<Group> group = groupSearchRepository.findById(groupId);
         assertThat(group).isPresent();
 
         Group actual = group.get();
-        Group expected = target.toGroup(host);
+        Group expected = target.toGroupWithSchedule(host);
+        assertGroup(groupId, actual, expected);
+    }
+
+    @DisplayName("모임 이름을 수정한다")
+    @Test
+    void updateName() {
+        long groupId = this.group.getId();
+        Builder target = constructGroupRequest()
+                .name("모모의 스프링 스터디");
+        GroupRequest request = target.toRequest();
+
+        groupModifyService.update(host.getId(), groupId, request);
+        synchronize();
+
+        Optional<Group> group = groupSearchRepository.findById(groupId);
+        assertThat(group).isPresent();
+
+        Group actual = group.get();
+        Group expected = target.toGroupWithSchedule(host);
+        assertGroup(groupId, actual, expected);
+    }
+
+    void assertGroup(long groupId, Group actual, Group expected) {
         assertAll(
                 () -> assertThat(actual.getId()).isEqualTo(groupId),
                 () -> assertThat(actual.getName()).isEqualTo(expected.getName()),
@@ -158,7 +192,7 @@ class GroupModifyServiceTest {
 
                     for (int i = 0; i < expected.getSchedules().size(); i++) {
                         assertThat(actual.getSchedules().get(i)).usingRecursiveComparison()
-                                .ignoringFields("id")
+                                .ignoringFields("id", "group")
                                 .isEqualTo(expected.getSchedules().get(i));
                     }
                 }
@@ -204,7 +238,7 @@ class GroupModifyServiceTest {
     void updateFinishedRecruitmentGroup() {
         long groupId = group.getId();
         long hostId = host.getId();
-        group.closeEarly();
+        groupModifyService.closeEarly(hostId, groupId);
 
         GroupRequest request = DUDU_STUDY.toRequest();
         assertThatThrownBy(() -> groupModifyService.update(hostId, groupId, request))
@@ -273,17 +307,19 @@ class GroupModifyServiceTest {
     void deleteFinishedRecruitmentGroup() {
         long groupId = group.getId();
         long hostId = host.getId();
-        group.closeEarly();
+        groupModifyService.closeEarly(hostId, groupId);
 
         assertThatThrownBy(() -> groupModifyService.delete(hostId, groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("해당 모임은 조기 마감되어 있습니다.");
     }
 
-    private GroupRequest constructGroupRequest(List<ScheduleFixture> schedules, DurationFixture duration) {
-        return MOMO_STUDY.builder()
-                .schedules(schedules)
-                .duration(duration)
-                .toRequest();
+    void synchronize() {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    Builder constructGroupRequest() {
+        return MOMO_STUDY.builder();
     }
 }

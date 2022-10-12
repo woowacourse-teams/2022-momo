@@ -3,8 +3,10 @@ package com.woowacourse.momo.group.service;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_HOST;
 import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -75,7 +77,10 @@ public class GroupModifyService {
 
     @Transactional
     public void update(Long hostId, Long groupId, GroupRequest request) {
-        ifMemberIsHost(hostId, groupId, (host, group) -> updateGroup(group, request));
+        ifMemberIsHost(hostId, groupId, (host, group) -> {
+            updateGroup(group, request);
+            updateSchedules(group, request.getSchedules());
+        });
     }
 
     private void updateGroup(Group group, GroupRequest request) {
@@ -87,6 +92,35 @@ public class GroupModifyService {
         Description description = request.getDescription();
 
         group.update(capacity, calendar, groupName, category, location, description);
+    }
+
+    private void updateSchedules(Group group, List<Schedule> newSchedules) {
+        List<Schedule> presentSchedules = group.getSchedules();
+        List<Long> toBeDeletedIds = presentSchedules.stream()
+                .map(Schedule::getId)
+                .collect(Collectors.toList());
+        List<Schedule> toBeSavedIds = new ArrayList<>(List.copyOf(newSchedules));
+
+        for (Schedule presentSchedule : presentSchedules) {
+            for (Schedule newSchedule : newSchedules) {
+                if (presentSchedule.equalsDateTime(newSchedule)) {
+                    toBeSavedIds.remove(newSchedule);
+                    toBeDeletedIds.remove(presentSchedule.getId());
+                }
+            }
+        }
+
+        reflectSchedules(group, toBeDeletedIds, toBeSavedIds);
+    }
+
+    private void reflectSchedules(Group group, List<Long> toBeDeletedIds, List<Schedule> toBeSavedIds) {
+        if (!toBeDeletedIds.isEmpty()) {
+            scheduleRepository.deleteAllInScheduleIds(toBeDeletedIds);
+        }
+
+        for (Schedule schedule : toBeSavedIds) {
+            group.addSchedule(schedule);
+        }
     }
 
     @Transactional

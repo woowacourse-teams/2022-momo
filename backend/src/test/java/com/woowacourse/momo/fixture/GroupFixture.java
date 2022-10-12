@@ -202,6 +202,20 @@ public enum GroupFixture {
                     new Description(description));
         }
 
+        public Group toGroupWithSchedule(Member host) {
+            Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration());
+            Group group = new Group(host, new Capacity(capacity), calendar, new GroupName(name),
+                    Category.from(category),
+                    new Location(location.getAddress(), location.getBuildingName(), location.getDetail()),
+                    new Description(description));
+
+            for (Schedule schedule : toSchedules(schedules)) {
+                group.addSchedule(schedule);
+            }
+            return group;
+        }
+
+
         public GroupRequest toRequest() {
             return new GroupRequest(name, category, capacity, duration.toRequest(),
                     ScheduleFixture.toRequests(schedules), deadline.toRequest(),

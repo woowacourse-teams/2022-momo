@@ -58,6 +58,7 @@ class ScheduleRepositoryTest {
         schedule2 = 이틀후_10시부터_12시까지.toSchedule();
         group.addSchedule(schedule1);
         group.addSchedule(schedule2);
+        synchronize();
     }
 
     @DisplayName("모임 ID를 통해 연관된 일정을 모두 삭제한다")
@@ -65,7 +66,17 @@ class ScheduleRepositoryTest {
     void deleteAllByGroupId() {
         scheduleRepository.deleteAllByGroupId(group.getId());
 
-        synchronize();
+        Optional<Group> foundGroup = groupSearchRepository.findById(group.getId());
+        assertThat(foundGroup).isPresent();
+
+        List<Schedule> expected = foundGroup.get().getSchedules();
+        assertThat(expected).isEmpty();
+    }
+
+    @DisplayName("입력받은 Id의 일정을 모두 삭제한다")
+    @Test
+    void deleteAllInScheduleIds() {
+        scheduleRepository.deleteAllInScheduleIds(List.of(schedule1.getId(), schedule2.getId()));
 
         Optional<Group> foundGroup = groupSearchRepository.findById(group.getId());
         assertThat(foundGroup).isPresent();

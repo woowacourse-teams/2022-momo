@@ -63,4 +63,10 @@ public class Schedule {
             throw new GroupException(SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME);
         }
     }
+
+    public boolean equalsDateTime(Schedule schedule) {
+        return date.equals(schedule.date) &&
+                startTime.equals(schedule.startTime) &&
+                endTime.equals(schedule.endTime);
+    }
 }
