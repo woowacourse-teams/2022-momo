@@ -72,17 +72,14 @@ public class Group {
     }
 
     public void update(Capacity capacity, Calendar calendar, GroupName name, Category category,
-                       Description description) {
+                       Location location, Description description) {
         validateGroupIsProceeding();
         this.participants.updateCapacity(capacity);
         this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
         this.name = name;
         this.category = category;
-        this.description = description;
-    }
-
-    public void updateLocation(Location location) {
         this.location = location;
+        this.description = description;
     }
 
     public void closeEarly() {

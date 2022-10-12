@@ -1,5 +1,6 @@
 package com.woowacourse.momo.fixture;
 
+import static com.woowacourse.momo.fixture.LocationFixture.선릉역_스타벅스;
 import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.LocationFixture.잠실역_스타벅스;
 import static com.woowacourse.momo.fixture.LocationFixture.잠실캠퍼스;
@@ -32,7 +33,6 @@ import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.member.domain.Member;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -44,7 +44,7 @@ public enum GroupFixture {
     MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분까지, 선릉캠퍼스, "점심 먹고 선릉 나들이~!!"),
     DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
-            내일_23시_59분까지, 잠실캠퍼스, "두두랑 함께 공부해요!!"),
+            내일_23시_59분까지, 선릉역_스타벅스, "두두랑 함께 공부해요!!"),
     DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분까지, 잠실역_스타벅스, "두두가 쏘는 커피~ 선착순 1명!!");
 
@@ -118,10 +118,6 @@ public enum GroupFixture {
 
     public GroupRequest toRequest() {
         return builder().toRequest();
-    }
-
-    public GroupUpdateRequest toUpdateRequest() {
-        return builder().toUpdateRequest();
     }
 
     public GroupApiRequest toApiRequest() {
@@ -203,11 +199,6 @@ public enum GroupFixture {
             return new GroupRequest(name, category, capacity, duration.toRequest(),
                     ScheduleFixture.toRequests(schedules), deadline.toRequest(),
                     location.toRequest(), description);
-        }
-
-        public GroupUpdateRequest toUpdateRequest() {
-            return new GroupUpdateRequest(name, category, capacity, duration.toRequest(),
-                    ScheduleFixture.toRequests(schedules), deadline.toRequest(), description);
         }
 
         public GroupApiRequest toApiRequest() {
