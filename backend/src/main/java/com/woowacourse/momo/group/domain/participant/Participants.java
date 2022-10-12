@@ -37,7 +37,7 @@ public class Participants {
     @JoinColumn(name = "host_id")
     private Member host;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private final List<Participant> participants = new ArrayList<>();
 
     @Embedded

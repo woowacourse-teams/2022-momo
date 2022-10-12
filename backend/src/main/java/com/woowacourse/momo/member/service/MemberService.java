@@ -87,6 +87,7 @@ public class MemberService {
                 .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
+        // 성능 개선 필요
         progressingGroups.forEach(group -> group.remove(member));
     }
 
