@@ -80,13 +80,14 @@ const Title = styled.div`
 
 const HostName = styled.div`
   display: -webkit-box;
-  color: ${({ theme: { colors } }) => colors.gray001};
 
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+
+  color: ${({ theme: { colors } }) => colors.gray001};
 
   font-weight: 100;
   font-size: 1rem;

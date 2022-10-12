@@ -42,7 +42,7 @@ function CardList({ isFetching, data, refetch, groups }: CardListProps) {
         <NoResult>
           아직 모임이 없어요 ・゜・(ノД`)
           <br />
-          새로운 모임을 찾아보는건 어떨까요?
+          새로운 모임을 찾아보는 건 어떨까요?
         </NoResult>
       )}
       {isFetching && (
