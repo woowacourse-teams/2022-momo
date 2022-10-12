@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface ScheduleRepository extends Repository<Schedule, Long> {
 
     @Modifying
-    @Query("delete from Schedule where group.id = :groupId")
+    @Query("delete from Schedule s where s.group.id = :groupId")
     void deleteAllByGroupId(@Param("groupId") Long groupId);
 
     @Modifying
