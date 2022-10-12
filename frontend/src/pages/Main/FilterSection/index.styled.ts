@@ -21,7 +21,7 @@ const ContentContainer = styled.div`
   width: 94%;
 
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 3%;
 
   ${({ theme: { breakpoints } }) => `
     max-width: ${breakpoints.md}px;

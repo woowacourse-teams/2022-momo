@@ -77,7 +77,7 @@ const FloatingLeftButton = styled.div`
 
 const FloatingRightButton = styled.div`
   position: absolute;
-  right: 5%;
+  right: 35px;
 
   width: 0;
 

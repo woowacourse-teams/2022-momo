@@ -47,7 +47,7 @@ function Card({ group }: CardProps) {
           <S.Right>
             <div>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</div>
             <S.Capacity>
-              <span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명
+              <span>{numOfParticipant}</span>명 / <span>{capacity}</span>명
             </S.Capacity>
           </S.Right>
         </S.Description>

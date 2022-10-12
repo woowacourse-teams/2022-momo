@@ -9,13 +9,33 @@ const NoResultContainer = styled.div`
 
   width: 100%;
 
-  margin-top: 5rem;
+  margin-top: 2rem;
 `;
 
 const NoResultDescription = styled.h3`
-  line-height: 2.5rem;
+  ${({
+    theme: {
+      breakpoints: { md, lg },
+    },
+  }) => `
+    @media only screen and (max-width: ${md}px) {
+      line-height: 1.5rem;
 
-  font-size: 1.3rem;
+      font-size: 1rem;
+    }
+
+    @media only screen and (min-width: ${md + 1}px) and (max-width: ${lg}px) {
+      line-height: 2rem;
+
+      font-size: 1.1rem;
+    }
+
+    @media only screen and (min-width: ${lg}px) {
+      line-height: 2.5rem;
+
+      font-size: 1.3rem;
+    }
+  `}
 `;
 
 export { NoResultContainer, NoResultDescription };
