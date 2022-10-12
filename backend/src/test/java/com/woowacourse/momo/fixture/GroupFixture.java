@@ -7,6 +7,7 @@ import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.삼일후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
@@ -38,7 +39,7 @@ import com.woowacourse.momo.member.domain.Member;
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지, 삼일후_10시부터_12시까지),
             내일_23시_59분까지, 잠실캠퍼스, "같이 공부해요!!"),
     MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분까지, 선릉캠퍼스, "점심 먹고 선릉 나들이~!!"),

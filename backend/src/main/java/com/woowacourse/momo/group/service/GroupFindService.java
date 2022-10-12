@@ -26,6 +26,11 @@ public class GroupFindService {
                 .orElseThrow(() -> new GroupException(NOT_EXIST));
     }
 
+    public Group findByIdWithHostAndSchedule(Long id) {
+        return groupSearchRepository.findByIdWithHostAndSchedule(id)
+                .orElseThrow(() -> new GroupException(NOT_EXIST));
+    }
+
     public List<Group> findParticipatedGroups(Member member) {
         return groupSearchRepository.findParticipatedGroups(member);
     }

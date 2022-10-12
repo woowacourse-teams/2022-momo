@@ -1,6 +1,7 @@
 package com.woowacourse.momo.fixture.calendar;
 
 import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.내일;
+import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.삼일후;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.이틀후;
 import static com.woowacourse.momo.fixture.calendar.datetime.DateFixture.일주일후;
 import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._10시_00분;
@@ -25,6 +26,7 @@ public enum ScheduleFixture {
 
     내일_10시부터_12시까지(내일, _10시_00분, _12시_00분),
     이틀후_10시부터_12시까지(이틀후, _10시_00분, _12시_00분),
+    삼일후_10시부터_12시까지(삼일후, _10시_00분, _12시_00분),
     일주일후_10시부터_12시까지(일주일후, _10시_00분, _12시_00분),
     ;
 
