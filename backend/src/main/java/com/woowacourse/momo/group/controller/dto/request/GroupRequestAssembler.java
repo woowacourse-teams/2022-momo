@@ -33,7 +33,7 @@ public class GroupRequestAssembler {
     }
 
     public LocationRequest groupLocationUpdateRequest(LocationUpdateApiRequest request) {
-        return new LocationRequest(request.getAddress(), request.getBuildingName(), request.getBuildingName());
+        return new LocationRequest(request.getAddress(), request.getBuildingName(), request.getDetail());
     }
 
     private DurationRequest durationRequest(DurationApiRequest request) {
