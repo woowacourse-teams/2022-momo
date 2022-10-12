@@ -31,10 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.fixture.GroupFixture.Builder;
-import com.woowacourse.momo.fixture.LocationFixture;
-import com.woowacourse.momo.fixture.GroupFixture;
-import com.woowacourse.momo.fixture.calendar.DurationFixture;
-import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.calendar.Schedule;

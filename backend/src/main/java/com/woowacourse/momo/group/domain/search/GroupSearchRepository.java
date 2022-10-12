@@ -11,10 +11,10 @@ public interface GroupSearchRepository extends Repository<Group, Long>, GroupSea
 
     Optional<Group> findById(Long id);
 
-    @Query("SELECT g FROM Group g "
-            + "JOIN FETCH g.calendar.schedules.value "
-            + "JOIN FETCH g.participants.host "
-            + "WHERE g.id = :id")
+    @Query("select g from Group g "
+            + "left join fetch g.calendar.schedules "
+            + "join fetch g.participants.host "
+            + "where g.id = :id")
     Optional<Group> findByIdWithHostAndSchedule(Long id);
 
     boolean existsById(Long id);

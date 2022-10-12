@@ -7,10 +7,8 @@ import static com.woowacourse.momo.fixture.LocationFixture.잠실캠퍼스;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.내일부터_일주일동안;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.내일_10시부터_12시까지;
-import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.삼일후_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
@@ -214,7 +212,6 @@ public enum GroupFixture {
             }
             return group;
         }
-
 
         public GroupRequest toRequest() {
             return new GroupRequest(name, category, capacity, duration.toRequest(),
