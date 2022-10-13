@@ -146,6 +146,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         );
     }
 
+    @Override
     public List<Group> findParticipatedGroups(Member member) {
         return queryFactory
                 .select(group).distinct()

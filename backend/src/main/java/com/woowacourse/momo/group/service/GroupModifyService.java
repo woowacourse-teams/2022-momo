@@ -1,8 +1,11 @@
 package com.woowacourse.momo.group.service;
 
 import static com.woowacourse.momo.group.exception.GroupErrorCode.MEMBER_IS_NOT_HOST;
+import static com.woowacourse.momo.group.exception.GroupErrorCode.SCHEDULE_MUST_BE_INCLUDED_IN_DURATION;
 
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,11 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.GroupRepository;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
+import com.woowacourse.momo.group.domain.calendar.Duration;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
+import com.woowacourse.momo.group.domain.calendar.ScheduleRepository;
 import com.woowacourse.momo.group.domain.participant.Capacity;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -34,21 +41,45 @@ public class GroupModifyService {
     private final MemberFindService memberFindService;
     private final GroupFindService groupFindService;
     private final GroupRepository groupRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final ParticipantRepository participantRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public GroupIdResponse create(Long memberId, GroupRequest request) {
         Member host = memberFindService.findMember(memberId);
+        validateSchedulesAreInDuration(request.getSchedules(), request.getDuration());
+
         Group group = new Group(host, request.getCapacity(), request.getCalendar(), request.getName(),
                 request.getCategory(), request.getLocation(), request.getDescription());
         Group savedGroup = groupRepository.save(group);
+        saveSchedules(request, savedGroup);
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);
     }
 
+    private void saveSchedules(GroupRequest request, Group group) {
+        List<Schedule> schedules = request.getSchedules();
+        for (Schedule schedule : schedules) {
+            group.addSchedule(schedule);
+        }
+    }
+
+    private void validateSchedulesAreInDuration(List<Schedule> schedules, Duration duration) {
+        boolean hasOutOfDuration = schedules.stream()
+                .anyMatch(schedule -> schedule.isOutOfDuration(duration));
+
+        if (hasOutOfDuration) {
+            throw new GroupException(SCHEDULE_MUST_BE_INCLUDED_IN_DURATION);
+        }
+    }
+
     @Transactional
     public void update(Long hostId, Long groupId, GroupRequest request) {
-        ifMemberIsHost(hostId, groupId, (host, group) -> updateGroup(group, request));
+        ifMemberIsHost(hostId, groupId, (host, group) -> {
+            updateGroup(group, request);
+            updateSchedules(group, request.getSchedules());
+        });
     }
 
     private void updateGroup(Group group, GroupRequest request) {
@@ -62,6 +93,34 @@ public class GroupModifyService {
         group.update(capacity, calendar, groupName, category, location, description);
     }
 
+    private void updateSchedules(Group group, List<Schedule> newSchedules) {
+        List<Schedule> presentSchedules = group.getSchedules();
+        List<Schedule> toBeDeletedSchedules = presentSchedules.stream()
+                .filter(schedule -> notContainSchedules(newSchedules, schedule))
+                .collect(Collectors.toList());
+
+        List<Schedule> toBeSavedSchedules = newSchedules.stream()
+                .filter(schedule -> notContainSchedules(presentSchedules, schedule))
+                .collect(Collectors.toList());
+
+        reflectSchedules(group, toBeDeletedSchedules, toBeSavedSchedules);
+    }
+
+    private boolean notContainSchedules(List<Schedule> schedules, Schedule schedule) {
+        return schedules.stream()
+                .noneMatch(schedule::equalsDateTime);
+    }
+
+    private void reflectSchedules(Group group, List<Schedule> toBeDeletedSchedules, List<Schedule> toBeSavedIds) {
+        if (!toBeDeletedSchedules.isEmpty()) {
+            scheduleRepository.deleteAllInSchedules(toBeDeletedSchedules);
+        }
+
+        for (Schedule schedule : toBeSavedIds) {
+            group.addSchedule(schedule);
+        }
+    }
+
     @Transactional
     public void closeEarly(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> group.closeEarly());
@@ -72,6 +131,8 @@ public class GroupModifyService {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
             applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
+            scheduleRepository.deleteAllByGroupId(groupId);
+            participantRepository.deleteAllByGroupId(groupId);
             groupRepository.deleteById(groupId);
         });
     }
