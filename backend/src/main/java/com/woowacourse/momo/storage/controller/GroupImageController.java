@@ -3,6 +3,7 @@ package com.woowacourse.momo.storage.controller;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,16 @@ public class GroupImageController {
     private final GroupImageService groupImageService;
 
     @PostMapping
-    public ResponseEntity<Void> imageUpdate(
+    public ResponseEntity<Void> update(
             @PathVariable Long groupId, @AuthenticationPrincipal Long memberId, MultipartFile multipartFile
     ) {
         String fullPathOfSavedImage = groupImageService.update(memberId, groupId, multipartFile);
         return ResponseEntity.created(URI.create(fullPathOfSavedImage)).build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> init(@PathVariable Long groupId, @AuthenticationPrincipal Long memberId) {
+        groupImageService.init(memberId, groupId);
+        return ResponseEntity.noContent().build();
     }
 }

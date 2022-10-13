@@ -68,8 +68,8 @@ class GroupImageServiceTest {
 
     @DisplayName("모임 기본 이미지 정보를 저장한다")
     @Test
-    void init() {
-        groupImageService.init(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
+    void save() {
+        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
 
         Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
 
@@ -81,14 +81,14 @@ class GroupImageServiceTest {
         );
     }
 
-    @DisplayName("모임 이미지 정보를 수정한다.")
+    @DisplayName("모임 이미지 정보를 수정한다")
     @Test
     void update() {
         String expected = "https://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
-        groupImageService.init(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
+        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
         String actual = groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
 
         Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
@@ -111,14 +111,30 @@ class GroupImageServiceTest {
                 .hasMessage("모임의 이미지 정보가 존재하지 않습니다.");
     }
 
-    @DisplayName("모임 이미지를 저장할 때 주최자가 아니면 예외가 발생한다")
+    @DisplayName("모임 이미지를 수정할 때 주최자가 아니면 예외가 발생한다")
     @Test
-    void saveMemberIsNotHost() {
+    void updateMemberIsNotHost() {
         Member member = memberRepository.save(new Member(UserId.momo("member"), password, UserName.from("momo")));
 
         assertThatThrownBy(() -> groupImageService.update(member.getId(), savedGroup.getId(), IMAGE))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("모임의 주최자가 아닙니다.");
+    }
+
+    @DisplayName("모임의 이미지를 기본 이미지로 초기화한다")
+    @Test
+    void init() {
+        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
+
+        groupImageService.init(savedHost.getId(), savedGroup.getId());
+
+        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        String expected = savedGroup.getCategory().getDefaultImageName();
+        assertThat(groupImage).isPresent();
+        assertAll(
+                () -> assertThat(groupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
+                () -> assertThat(groupImage.get().getImageName()).isEqualTo(expected)
+        );
     }
 
     private Group saveGroup() {

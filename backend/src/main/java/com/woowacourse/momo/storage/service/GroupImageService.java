@@ -32,7 +32,7 @@ public class GroupImageService {
     private final ImageProvider imageProvider;
 
     @Transactional
-    public void init(Long groupId, String defaultImageName) {
+    public void save(Long groupId, String defaultImageName) {
         GroupImage groupImage = new GroupImage(groupId, defaultImageName);
 
         groupImageRepository.save(groupImage);
@@ -40,9 +40,7 @@ public class GroupImageService {
 
     @Transactional
     public String update(Long memberId, Long groupId, MultipartFile multipartFile) {
-        Member member = memberFindService.findMember(memberId);
-        Group group = groupFindService.findGroup(groupId);
-        validateMemberIsHost(member, group);
+        validateMemberIsHost(memberId, groupId);
 
         String fullPathOfSavedImage = imageConnector.requestImageSave(imageProvider.getSavedGroupPath(), multipartFile);
         String savedImageName = parseSavedImageName(fullPathOfSavedImage);
@@ -51,7 +49,19 @@ public class GroupImageService {
         return fullPathOfSavedImage;
     }
 
-    private void validateMemberIsHost(Member member, Group group) {
+    @Transactional
+    public void init(Long memberId, Long groupId) {
+        validateMemberIsHost(memberId, groupId);
+
+        Group group = groupFindService.findGroup(groupId);
+        String defaultImageName = group.getCategory().getDefaultImageName();
+
+        updateGroupImage(groupId, defaultImageName);
+    }
+
+    private void validateMemberIsHost(Long memberId, Long groupId) {
+        Member member = memberFindService.findMember(memberId);
+        Group group = groupFindService.findGroup(groupId);
         if (group.isNotHost(member)) {
             throw new MomoException(GroupImageErrorCode.MEMBER_IS_NOT_HOST);
         }

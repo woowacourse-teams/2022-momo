@@ -16,6 +16,6 @@ public class GroupImageCreateEventListener {
 
     @EventListener
     public void createGroupImage(GroupCreateEvent event) {
-        groupImageService.init(event.getGroupId(), event.getCategory().getDefaultImageName());
+        groupImageService.save(event.getGroupId(), event.getCategory().getDefaultImageName());
     }
 }
