@@ -177,7 +177,7 @@ const useCreateState = (): CreateStateReturnValues => {
     buildingName: CreateGroupData['location']['buildingName'],
     detail?: CreateGroupData['location']['detail'],
   ) => {
-    if (typeof detail === 'string' && detail.length === 0) {
+    if (typeof detail === 'string') {
       setLocation({ address, buildingName, detail });
       return;
     }
