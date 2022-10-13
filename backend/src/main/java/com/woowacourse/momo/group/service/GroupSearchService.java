@@ -2,6 +2,7 @@ package com.woowacourse.momo.group.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.favorite.domain.FavoriteRepository;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
+import com.woowacourse.momo.group.domain.search.SearchCondition;
 import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
 import com.woowacourse.momo.group.service.dto.request.GroupSearchRequest;
 import com.woowacourse.momo.group.service.dto.response.GroupPageResponse;
@@ -75,40 +77,33 @@ public class GroupSearchService {
     }
 
     public GroupPageResponse findParticipatedGroups(GroupSearchRequest request, Long memberId) {
-        memberValidator.validateExistMember(memberId);
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findParticipatedGroups(
-                request.toFindCondition(), memberId, pageable);
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
-        List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
-                favorites);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+        return findGroupsRelatedMember(request, memberId, (searchCondition, pageable) ->
+                groupSearchRepository.findParticipatedGroups(searchCondition, memberId, pageable));
     }
 
     public GroupPageResponse findHostedGroups(GroupSearchRequest request, Long memberId) {
-        memberValidator.validateExistMember(memberId);
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findHostedGroups(request.toFindCondition(),
-                memberId, pageable);
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
-        List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
-                favorites);
-
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+        return findGroupsRelatedMember(request, memberId, (searchCondition, pageable) ->
+                groupSearchRepository.findHostedGroups(searchCondition, memberId, pageable));
     }
 
     public GroupPageResponse findLikedGroups(GroupSearchRequest request, Long memberId) {
+        return findGroupsRelatedMember(request, memberId, (searchCondition, pageable) ->
+                groupSearchRepository.findLikedGroups(searchCondition, memberId, pageable));
+    }
+
+    private GroupPageResponse findGroupsRelatedMember(
+            GroupSearchRequest request, Long memberId,
+            BiFunction<SearchCondition, Pageable, Page<GroupSummaryRepositoryResponse>> function) {
+
         memberValidator.validateExistMember(memberId);
+
         Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findLikedGroups(request.toFindCondition(),
-                memberId, pageable);
+        Page<GroupSummaryRepositoryResponse> groups = function.apply(request.toFindCondition(), pageable);
         List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage,
-                favorites);
+        List<GroupSummaryResponse> summaries =
+                GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, favorites);
 
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
