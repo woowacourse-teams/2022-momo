@@ -32,9 +32,9 @@ public class ImageConnector {
     private final String pathKey;
     private final String fileKey;
 
-    public ImageConnector(@Value("${image.api-request-url}") String requestUrl,
-                          @Value("${image.saved-path-key}") String pathKey,
-                          @Value("${image.saved-file-key}") String fileKey) {
+    public ImageConnector(@Value("${image.api.request-url}") String requestUrl,
+                          @Value("${image.api.path-key}") String pathKey,
+                          @Value("${image.api.file-key}") String fileKey) {
         this.requestUrl = requestUrl;
         this.pathKey = pathKey;
         this.fileKey = fileKey;
