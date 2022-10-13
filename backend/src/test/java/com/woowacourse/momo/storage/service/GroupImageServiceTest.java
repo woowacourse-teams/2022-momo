@@ -31,6 +31,7 @@ import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
+import com.woowacourse.momo.storage.exception.GroupImageException;
 import com.woowacourse.momo.storage.support.ImageConnector;
 
 @Transactional
@@ -65,7 +66,7 @@ class GroupImageServiceTest {
         savedGroup = saveGroup();
     }
 
-    @DisplayName("기본 이미지 정보를 저장한다")
+    @DisplayName("모임 기본 이미지 정보를 저장한다")
     @Test
     void init() {
         groupImageService.init(savedGroup);
@@ -80,14 +81,15 @@ class GroupImageServiceTest {
         );
     }
 
-    @DisplayName("이미지 정보를 저장한다")
+    @DisplayName("모임 이미지 정보를 수정한다.")
     @Test
-    void save() {
+    void update() {
         String expected = "https://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
-        String actual = groupImageService.save(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
+        groupImageService.init(savedGroup);
+        String actual = groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
 
         Optional<GroupImage> groupImage = groupImageRepository.findByGroup(savedGroup);
         assertThat(groupImage).isPresent();
@@ -97,27 +99,26 @@ class GroupImageServiceTest {
         );
     }
 
-    @DisplayName("이미지를 저장할 때 주최자가 아니면 예외가 발생한다")
+    @DisplayName("모임 이미지 정보를 수정할 때 이전에 저장된 이미지 정보가 없으면 예외가 발생한다")
+    @Test
+    void updateGroupImageIsNotExist() {
+        String expected = "https://image.moyeora.site/group/saved/imageName.png";
+        BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
+                .willReturn(expected);
+
+        assertThatThrownBy(() -> groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE))
+                .isInstanceOf(GroupImageException.class)
+                .hasMessage("모임의 이미지 정보가 존재하지 않습니다.");
+    }
+
+    @DisplayName("모임 이미지를 저장할 때 주최자가 아니면 예외가 발생한다")
     @Test
     void saveMemberIsNotHost() {
         Member member = memberRepository.save(new Member(UserId.momo("member"), password, UserName.from("momo")));
 
-        assertThatThrownBy(() -> groupImageService.save(member.getId(), savedGroup.getId(), IMAGE))
+        assertThatThrownBy(() -> groupImageService.update(member.getId(), savedGroup.getId(), IMAGE))
                 .isInstanceOf(MomoException.class)
                 .hasMessage("모임의 주최자가 아닙니다.");
-    }
-
-    @DisplayName("이미지 정보를 삭제한다")
-    @Test
-    void delete() {
-        BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
-                .willReturn("https://image.moyeora.site/group/saved/imageName.png");
-        groupImageService.save(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
-
-        groupImageService.delete(savedGroup);
-
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroup(savedGroup);
-        assertThat(groupImage).isEmpty();
     }
 
     private Group saveGroup() {

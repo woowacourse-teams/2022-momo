@@ -16,16 +16,16 @@ import com.woowacourse.momo.storage.service.GroupImageService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/groups/{groupId}/thumnail")
+@RequestMapping("/api/groups/{groupId}/thumbnail")
 public class GroupImageController {
 
     private final GroupImageService groupImageService;
 
     @PostMapping
-    public ResponseEntity<Void> imageSave(
+    public ResponseEntity<Void> imageUpdate(
             @PathVariable Long groupId, @AuthenticationPrincipal Long memberId, MultipartFile multipartFile
     ) {
-        String fullPathOfSavedImage = groupImageService.save(memberId, groupId, multipartFile);
+        String fullPathOfSavedImage = groupImageService.update(memberId, groupId, multipartFile);
         return ResponseEntity.created(URI.create(fullPathOfSavedImage)).build();
     }
 }

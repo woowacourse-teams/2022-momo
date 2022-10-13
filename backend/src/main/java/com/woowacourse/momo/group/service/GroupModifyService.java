@@ -133,7 +133,7 @@ public class GroupModifyService {
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
-            applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
+            applicationEventPublisher.publishEvent(new GroupDeleteEvent(group, groupId));
             scheduleRepository.deleteAllByGroupId(groupId);
             participantRepository.deleteAllByGroupId(groupId);
             groupRepository.deleteById(groupId);

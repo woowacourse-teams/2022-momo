@@ -1,5 +1,7 @@
 package com.woowacourse.momo.storage.service;
 
+import static com.woowacourse.momo.storage.exception.GroupImageErrorCode.GROUP_IMAGE_IS_NOT_EXIST;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +16,7 @@ import com.woowacourse.momo.member.service.MemberFindService;
 import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
 import com.woowacourse.momo.storage.exception.GroupImageErrorCode;
+import com.woowacourse.momo.storage.exception.GroupImageException;
 import com.woowacourse.momo.storage.support.ImageConnector;
 import com.woowacourse.momo.storage.support.ImageProvider;
 
@@ -38,7 +41,7 @@ public class GroupImageService {
     }
 
     @Transactional
-    public String save(Long memberId, Long groupId, MultipartFile multipartFile) {
+    public String update(Long memberId, Long groupId, MultipartFile multipartFile) {
         Member member = memberFindService.findMember(memberId);
         Group group = groupFindService.findGroup(groupId);
         validateMemberIsHost(member, group);
@@ -46,8 +49,7 @@ public class GroupImageService {
         String fullPathOfSavedImage = imageConnector.requestImageSave(imageProvider.getSavedGroupPath(), multipartFile);
         String savedImageName = parseSavedImageName(fullPathOfSavedImage);
 
-        GroupImage groupImage = new GroupImage(group, savedImageName);
-        groupImageRepository.save(groupImage);
+        updateGroupImage(group, savedImageName);
         return fullPathOfSavedImage;
     }
 
@@ -63,8 +65,9 @@ public class GroupImageService {
         return fullPathOfSavedImage.substring(startIndexImageName);
     }
 
-    @Transactional
-    public void delete(Group group) {
-        groupImageRepository.deleteByGroup(group);
+    private void updateGroupImage(Group group, String savedImageName) {
+        GroupImage existedGroupImage = groupImageRepository.findByGroup(group)
+                        .orElseThrow(() -> new GroupImageException(GROUP_IMAGE_IS_NOT_EXIST));
+        existedGroupImage.update(savedImageName);
     }
 }

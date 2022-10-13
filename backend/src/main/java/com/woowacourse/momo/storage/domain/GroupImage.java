@@ -32,4 +32,8 @@ public class GroupImage {
         this.group = group;
         this.imageName = imageName;
     }
+
+    public void update(String imageName) {
+        this.imageName = imageName;
+    }
 }
