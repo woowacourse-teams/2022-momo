@@ -1,23 +1,39 @@
 import styled from '@emotion/styled';
 
-import { Input as BasicInput } from '../@shared/styled';
+import { Input as BasicInput } from 'pages/Create/Steps/@shared/styled';
 
-const Content = styled.div`
+const Content = styled.div<{ isEdit: boolean }>`
   display: flex;
-  gap: 4rem;
 
   max-width: 56rem;
-  height: 27rem;
+  height: fit-content;
+
+  ${({
+    theme: {
+      breakpoints: { md },
+    },
+    isEdit,
+  }) =>
+    isEdit
+      ? `
+        @media only screen and (max-width: ${md}px) {
+          flex-direction: column;
+          align-items: center;
+        }
+      `
+      : ''}
 `;
 
 const Left = styled.div`
-  max-width: 22rem;
+  max-width: 20rem;
+  height: 25rem;
 `;
 
 const Right = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
 `;
 
@@ -39,18 +55,20 @@ const TimeContainer = styled.span`
   align-items: center;
   gap: 1rem;
 
-  width: 50%;
+  width: 100%;
 `;
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 
-  width: 100%;
-  min-height: 32px;
+  width: fit-content;
 `;
 
 const Text = styled.span`
+  white-space: nowrap;
+
   color: ${({ theme: { colors } }) => colors.black002};
 
   margin-left: 1rem;
@@ -97,22 +115,44 @@ const DayBox = styled.div`
   `}
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{ isEdit: boolean }>`
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+
+  ${({
+    theme: {
+      breakpoints: { md },
+    },
+    isEdit,
+  }) =>
+    isEdit
+      ? `
+        @media only screen and (max-width: ${md}px) {
+          display: grid;
+          grid-template-columns: 3fr 1fr;
+          place-items: center;
+        }
+      `
+      : ''}
 `;
 
 const Input = styled(BasicInput)`
-  width: 10rem;
+  width: 9rem;
   height: 3rem;
+
+  font-size: 1rem;
 `;
 
 const ControlButton = styled.button`
-  width: 26rem;
+  width: 100%;
+  max-width: 23rem;
   height: 3rem;
 
   background: ${({ theme: { colors } }) => colors.white001};
+
+  border-radius: 4px;
 `;
 
 const AddButton = styled(ControlButton)`

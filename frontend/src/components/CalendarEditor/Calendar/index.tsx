@@ -27,7 +27,7 @@ function Calendar({
       schedules={schedules}
       selectDate={selectDate}
       selectedDate={selectedDate}
-      size="large"
+      size="medium"
     />
   );
 }

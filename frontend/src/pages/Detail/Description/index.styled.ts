@@ -14,8 +14,16 @@ const Container = styled(DescriptionBox)`
   color: ${({ theme: { colors } }) => colors.black002};
 `;
 
+const DescriptionContainer = styled(Container)`
+  justify-content: flex-start;
+
+  height: 20rem;
+
+  overflow-y: scroll;
+`;
+
 const LocationContainer = styled(Container)`
   gap: 1rem;
 `;
 
-export { Container, LocationContainer };
+export { DescriptionContainer, LocationContainer };

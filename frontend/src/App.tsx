@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import ErrorBoundary from 'components/ErrorBoundary';
-import GroupEditModal from 'components/GroupEdit';
 import Loading from 'components/Loading';
 import LoginModal from 'components/Login';
 import ScrollToTop from 'components/ScrollToTop';
@@ -30,7 +29,6 @@ function App() {
             <PageLayout>
               <SignupModal />
               <LoginModal />
-              <GroupEditModal />
               <ErrorBoundary>
                 <Suspense fallback={<Loading />}>
                   <Routes />

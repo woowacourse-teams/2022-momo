@@ -9,7 +9,9 @@ function Description({ type, children }: DescriptionProps) {
   return (
     <>
       {type === 'detail' ? (
-        <S.Container>{children || '(설명이 없어요.)'}</S.Container>
+        <S.DescriptionContainer>
+          {children || '(설명이 없어요.)'}
+        </S.DescriptionContainer>
       ) : (
         <S.LocationContainer>
           {children || '(정해진 장소가 없어요.)'}

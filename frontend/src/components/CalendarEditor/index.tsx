@@ -6,12 +6,13 @@ import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
 import { convertToISOString } from 'utils/date';
 
-import Calendar from '../../pages/Create/Steps/Step5/Calendar';
-import * as S from '../../pages/Create/Steps/Step5/index.styled';
+import Calendar from './Calendar';
+import * as S from './index.styled';
 
-const svgSize = 32;
+const svgSize = 20;
 
 interface CalendarEditorProps {
+  type?: 'create' | 'edit';
   useScheduleState: () => {
     schedules: CreateGroupData['schedules'];
     setSchedules: (schedule: ScheduleType) => void;
@@ -25,6 +26,7 @@ interface CalendarEditorProps {
 }
 
 function CalendarEditor({
+  type = 'create',
   useScheduleState,
   duration,
   pressEnterToNext = () => {},
@@ -87,7 +89,7 @@ function CalendarEditor({
   };
 
   return (
-    <S.Content>
+    <S.Content isEdit={type === 'edit'}>
       <S.Left>
         <Calendar
           duration={duration}
@@ -120,7 +122,7 @@ function CalendarEditor({
             </S.Wrapper>
           </S.TimeContainer>
         </S.Container>
-        <S.InputWrapper>
+        <S.InputWrapper isEdit={type === 'edit'}>
           <S.Input
             type="time"
             value={startTime}

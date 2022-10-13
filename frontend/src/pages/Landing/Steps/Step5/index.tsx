@@ -18,8 +18,8 @@ function Step5({ show }: { show: boolean }) {
   return (
     <Container>
       <S.IconBox>
-        {[...Array(3)].map(() => (
-          <BeanSVG />
+        {[...Array(3)].map((_, idx) => (
+          <BeanSVG key={idx} />
         ))}
       </S.IconBox>
       <S.HeadingContainer>

@@ -21,10 +21,6 @@ const useModal = () => {
     setModalFlag('confirmPassword');
   };
 
-  const showGroupEditModal = () => {
-    setModalFlag('groupEdit');
-  };
-
   const showPostcodeModal = () => {
     setModalFlag('postcode');
   };
@@ -34,7 +30,6 @@ const useModal = () => {
     showSignupModal,
     showLoginModal,
     showConfirmPasswordModal,
-    showGroupEditModal,
     showPostcodeModal,
   };
 };

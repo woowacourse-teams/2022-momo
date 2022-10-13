@@ -4,6 +4,10 @@ import { useRecoilValue } from 'recoil';
 
 import { PencilSVG } from 'assets/svg';
 import useCategory from 'hooks/useCategory';
+import Description from 'pages/Detail/Description';
+import Location from 'pages/Detail/Location';
+import Participants from 'pages/Detail/Participants';
+import Schedule from 'pages/Detail/Schedule';
 import {
   Category,
   Duration,
@@ -17,8 +21,6 @@ import ControlButton from '../ControlButton';
 import LikeButton from '../LikeButton';
 import EditMode from './EditMode';
 import * as S from './index.styled';
-import Left from './Left';
-import SideBar from './SideBar';
 
 const svgSize = 20;
 
@@ -49,30 +51,45 @@ function Content({ id, data, participants }: ContentProps) {
   }
 
   return (
-    <S.Container>
+    <>
       <S.StickyContainer>
         <S.Header>
           <S.TitleContainer>
-            <Category>
-              {categories.find(category => category.id === data.categoryId)
-                ?.name || ''}
-            </Category>
-            <Title>{data.name}</Title>
             <Duration>
               모집{' '}
               {data.finished
                 ? '마감 완료'
                 : convertDeadlineToRemainTime(data.deadline)}
             </Duration>
+            <Title>{data.name}</Title>
+            <Category>
+              {categories.find(category => category.id === data.categoryId)
+                ?.name || ''}
+            </Category>
           </S.TitleContainer>
-          {user?.id === data.host.id && !data.finished && (
-            <PencilSVG
-              width={svgSize}
-              height={svgSize}
-              onClick={showEditMode}
-            />
-          )}
+          <S.SideMenu>
+            <LikeButton id={id} like={data.like} />
+            {user?.id === data.host.id && !data.finished && (
+              <PencilSVG
+                width={svgSize}
+                height={svgSize}
+                onClick={showEditMode}
+              />
+            )}
+          </S.SideMenu>
         </S.Header>
+      </S.StickyContainer>
+      <S.ContentContainer>
+        <Description type="detail">{data.description}</Description>
+        <Schedule duration={data.duration} schedules={data.schedules} />
+        <Location location={data.location} />
+        <Participants
+          host={data.host}
+          capacity={data.capacity}
+          participants={participants}
+        />
+      </S.ContentContainer>
+      <S.ControlContainer>
         <ControlButton
           id={id}
           host={data.host}
@@ -80,19 +97,8 @@ function Content({ id, data, participants }: ContentProps) {
           finished={data.finished}
           participants={participants}
         />
-      </S.StickyContainer>
-      <S.ContentContainer>
-        <Left location={data.location} description={data.description} />
-        <SideBar
-          host={data.host}
-          capacity={data.capacity}
-          duration={data.duration}
-          schedules={data.schedules}
-          participants={participants}
-        />
-        <LikeButton id={id} like={data.like} />
-      </S.ContentContainer>
-    </S.Container>
+      </S.ControlContainer>
+    </>
   );
 }
 

@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 
 import Portal from 'components/Portal';
+import { SNACKBAR_ANIMATION_TIME } from 'constants/rule';
 import useClosingState from 'hooks/useClosingState';
 import useSnackbar from 'hooks/useSnackbar';
 
 import * as S from './index.styled';
-
-const snackbarAnimationTime = 500;
 
 interface SnackbarProps {
   children: string;
@@ -14,14 +13,14 @@ interface SnackbarProps {
 
 function Snackbar({ children }: SnackbarProps) {
   const { resetSnackbar } = useSnackbar();
-  const { isClosing, close } = useClosingState(snackbarAnimationTime, () => {
+  const { isClosing, close } = useClosingState(SNACKBAR_ANIMATION_TIME, () => {
     resetSnackbar();
   });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       close();
-    }, snackbarAnimationTime * 3);
+    }, SNACKBAR_ANIMATION_TIME * 3);
 
     return () => clearTimeout(timeout);
   }, [children, close]);
@@ -29,7 +28,7 @@ function Snackbar({ children }: SnackbarProps) {
   return (
     <Portal to="snackbar">
       <S.Container
-        animationTime={snackbarAnimationTime}
+        animationTime={SNACKBAR_ANIMATION_TIME}
         className={isClosing ? 'close' : ''}
       >
         {children}

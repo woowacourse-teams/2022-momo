@@ -32,10 +32,17 @@ const Header = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 0.5rem;
 
   width: 100%;
+`;
+
+const SideMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  height: fit-content;
 `;
 
 const ContentContainer = styled(BasicContainer)`
@@ -53,6 +60,7 @@ export {
   StickyContainer,
   Header,
   TitleContainer,
+  SideMenu,
   ContentContainer,
   ControlContainer,
 };

@@ -3,7 +3,48 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 2rem;
+
+  padding: 0 1rem 1rem;
 `;
 
-export { Container };
+const BasicContainer = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+
+  width: 47rem;
+`;
+
+const StickyContainer = styled(BasicContainer)`
+  align-items: center;
+
+  position: fixed;
+  top: 9rem;
+
+  background: ${({ theme: { colors } }) => colors.white001};
+
+  z-index: 9;
+`;
+
+const ContentContainer = styled(BasicContainer)`
+  padding-top: 14rem;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 25rem;
+
+  margin: 1rem 0;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+`;
+
+export { Container, StickyContainer, ContentContainer, Header, TitleContainer };
