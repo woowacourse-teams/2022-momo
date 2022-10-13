@@ -23,11 +23,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
 import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
-import com.woowacourse.momo.member.domain.Member;
 
 @Repository
 public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
@@ -46,15 +44,15 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     }
 
     @Override
-    public Page<GroupSummaryRepositoryResponse> findHostedGroups(SearchCondition condition, Member member,
+    public Page<GroupSummaryRepositoryResponse> findHostedGroups(SearchCondition condition, Long memberId,
                                                                  Pageable pageable) {
-        return findGroups(condition, pageable, () -> isHost(member));
+        return findGroups(condition, pageable, () -> isHost(memberId));
     }
 
     @Override
-    public Page<GroupSummaryRepositoryResponse> findParticipatedGroups(SearchCondition condition, Member member,
+    public Page<GroupSummaryRepositoryResponse> findParticipatedGroups(SearchCondition condition, Long memberId,
                                                                        Pageable pageable) {
-        return findGroups(condition, pageable, () -> isParticipated(member));
+        return findGroups(condition, pageable, () -> isParticipated(memberId));
     }
 
     @Override
@@ -146,22 +144,12 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         );
     }
 
-    @Override
-    public List<Group> findParticipatedGroups(Member member) {
-        return queryFactory
-                .select(group).distinct()
-                .from(group)
-                .leftJoin(group.participants.participants, participant)
-                .where(isParticipated(member))
-                .fetch();
+    private BooleanExpression isHost(Long memberId) {
+        return group.participants.host.id.eq(memberId);
     }
 
-    private BooleanExpression isHost(Member member) {
-        return group.participants.host.eq(member);
-    }
-
-    private BooleanExpression isParticipated(Member member) {
-        return isHost(member).or(participant.member.eq(member));
+    private BooleanExpression isParticipated(Long memberId) {
+        return isHost(memberId).or(participant.member.id.eq(memberId));
     }
 
     private List<OrderSpecifier<?>> orderByDeadlineAsc(boolean orderByDeadline) {

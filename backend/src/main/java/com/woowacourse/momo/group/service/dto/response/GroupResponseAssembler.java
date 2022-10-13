@@ -19,50 +19,51 @@ import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponseWithLogin(Group group, boolean isMemberLiked) {
+    public static GroupResponse groupResponse(Group group, boolean isMemberLiked) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
                 locationResponse(group.getLocation()), isMemberLiked, group.getDescription().getValue());
     }
 
-    public static GroupResponse groupResponseWithoutLogin(Group group) {
-        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
-                group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
-                scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), false, group.getDescription().getValue());
+    public static GroupResponse groupResponse(Group group) {
+        return groupResponse(group, false);
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(
-            List<GroupSummaryRepositoryResponse> responses, List<Favorite> favorites) {
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<GroupSummaryRepositoryResponse> responses,
+                                                                   List<Favorite> favorites) {
         return responses.stream()
-                .map(response -> GroupResponseAssembler.groupSummaryResponseWithLogin(response, favorites))
+                .map(response -> GroupResponseAssembler.groupSummaryResponse(response, favorites))
                 .collect(Collectors.toList());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithoutLogin(
-            List<GroupSummaryRepositoryResponse> responses) {
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response,
+                                                             List<Favorite> favorites) {
+        boolean isFavorite = anyFavoriteMatches(response, favorites);
+        return groupSummaryResponse(response, isFavorite);
+    }
+
+    private static boolean anyFavoriteMatches(GroupSummaryRepositoryResponse response,
+                                              List<Favorite> favorites) {
+        return favorites.stream()
+                .anyMatch(favorite -> favorite.isSameGroup(response.getGroupId()));
+    }
+
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<GroupSummaryRepositoryResponse> responses) {
         return responses.stream()
-                .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
     }
 
-    private static GroupSummaryResponse groupSummaryResponseWithLogin(GroupSummaryRepositoryResponse response,
-                                                                      List<Favorite> favorites) {
-        boolean isFavorite = favorites.stream()
-                .anyMatch(f -> f.isSameGroup(response.getGroupId()));
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response) {
+        return groupSummaryResponse(response, false);
+    }
 
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response, boolean isFavorite) {
         return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
                 new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
                 response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
                 response.getDeadline(), isFavorite);
-    }
-
-    public static GroupSummaryResponse groupSummaryResponseWithoutLogin(GroupSummaryRepositoryResponse response) {
-        return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
-                new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
-                response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
-                response.getDeadline(), false);
     }
 
     private static boolean isFinished(GroupSummaryRepositoryResponse response) {

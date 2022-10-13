@@ -111,7 +111,7 @@ class GroupSearchRepositoryTest {
         GroupSearchRequest request = new GroupSearchRequest();
 
         List<GroupSummaryRepositoryResponse> actual = groupSearchRepository.findParticipatedGroups(
-                request.toFindCondition(), host, pageable).getContent();
+                request.toFindCondition(), host.getId(), pageable).getContent();
 
         assertThatComparingGroupId(actual, group5, group3, group2, group1);
     }
@@ -122,7 +122,7 @@ class GroupSearchRepositoryTest {
         GroupSearchRequest request = new GroupSearchRequest();
 
         List<GroupSummaryRepositoryResponse> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(),
-                host, pageable).getContent();
+                host.getId(), pageable).getContent();
 
         assertThatComparingGroupId(actual, group3, group2, group1);
     }
@@ -257,7 +257,7 @@ class GroupSearchRepositoryTest {
                 .build();
 
         List<GroupSummaryRepositoryResponse> actual = groupSearchRepository.findParticipatedGroups(
-                        request.toFindCondition(), host, pageable)
+                        request.toFindCondition(), host.getId(), pageable)
                 .getContent();
 
         assertThatComparingGroupId(actual, group5);
@@ -273,7 +273,7 @@ class GroupSearchRepositoryTest {
                 .build();
 
         List<GroupSummaryRepositoryResponse> actual = groupSearchRepository.findHostedGroups(request.toFindCondition(),
-                        host, pageable)
+                        host.getId(), pageable)
                 .getContent();
 
         assertThatComparingGroupId(actual, group2, group1, group3);
