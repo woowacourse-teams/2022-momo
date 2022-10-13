@@ -14,8 +14,8 @@ import theme from 'styles/theme';
 import { GroupParticipants } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 
-import Desktop from './Versions/Desktop';
-import Mobile from './Versions/Mobile';
+import Desktop from './versions/Desktop';
+import Mobile from './versions/Mobile';
 
 function Detail() {
   const { id } = useParams();
