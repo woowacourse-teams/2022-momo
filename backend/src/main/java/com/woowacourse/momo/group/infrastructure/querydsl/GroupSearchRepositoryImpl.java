@@ -23,7 +23,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
 import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
@@ -144,15 +143,6 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 group.closedEarly,
                 group.calendar.deadline.value
         );
-    }
-
-    public List<Group> findParticipatedGroups(Member member) {
-        return queryFactory
-                .select(group).distinct()
-                .from(group)
-                .leftJoin(group.participants.participants, participant)
-                .where(isParticipated(member))
-                .fetch();
     }
 
     private BooleanExpression isHost(Member member) {
