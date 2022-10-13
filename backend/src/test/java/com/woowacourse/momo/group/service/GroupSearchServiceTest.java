@@ -87,7 +87,7 @@ class GroupSearchServiceTest {
     @Test
     void findById() {
         GroupResponse actual = groupSearchService.findGroup(group1.getId());
-        GroupResponse expected = GroupResponseAssembler.groupResponseWithoutLogin(group1);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(group1);
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);

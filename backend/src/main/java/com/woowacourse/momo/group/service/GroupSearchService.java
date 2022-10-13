@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import org.springframework.data.domain.Page;
@@ -37,43 +36,31 @@ public class GroupSearchService {
     private final GroupSearchRepository groupSearchRepository;
     private final FavoriteRepository favoriteRepository;
 
-    public GroupResponse findGroup(Long groupId, Long memberId) {
-        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        memberValidator.validateExistMember(memberId);
-        Optional<Favorite> favorite = favoriteRepository.findByGroupIdAndMemberId(groupId, memberId);
-        return GroupResponseAssembler.groupResponseWithLogin(group, favorite.isPresent());
-    }
-
     public GroupResponse findGroup(Long groupId) {
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        return GroupResponseAssembler.groupResponseWithoutLogin(group);
+        return GroupResponseAssembler.groupResponse(group);
     }
 
-    public GroupPageResponse findGroups(GroupSearchRequest request, Long memberId) {
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(request.toFindCondition(),
-                pageable);
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = getGroupSummaryResponses(groupsOfPage, memberId);
+    public GroupResponse findGroup(Long groupId, Long memberId) {
+        memberValidator.validateExistMember(memberId);
+        boolean favoriteChecked = favoriteRepository.existsByGroupIdAndMemberId(groupId, memberId);
 
-        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
+        return GroupResponseAssembler.groupResponse(group, favoriteChecked);
     }
 
     public GroupPageResponse findGroups(GroupSearchRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(request.toFindCondition(),
-                pageable);
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
-        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
+        SearchCondition searchCondition = request.toFindCondition();
+        Pageable pageable = defaultPageable(request);
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(searchCondition, pageable);
 
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    private List<GroupSummaryResponse> getGroupSummaryResponses(List<GroupSummaryRepositoryResponse> groupsOfPage,
-                                                                Long memberId) {
-        memberValidator.validateExistMember(memberId);
-        List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
-        return GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, favorites);
+    public GroupPageResponse findGroups(GroupSearchRequest request, Long memberId) {
+        return findGroupsRelatedMember(request, memberId, groupSearchRepository::findGroups);
     }
 
     public GroupPageResponse findParticipatedGroups(GroupSearchRequest request, Long memberId) {
@@ -96,15 +83,18 @@ public class GroupSearchService {
             BiFunction<SearchCondition, Pageable, Page<GroupSummaryRepositoryResponse>> function) {
 
         memberValidator.validateExistMember(memberId);
-
-        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
-        Page<GroupSummaryRepositoryResponse> groups = function.apply(request.toFindCondition(), pageable);
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
-
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
-        List<GroupSummaryResponse> summaries =
-                GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, favorites);
 
+        SearchCondition searchCondition = request.toFindCondition();
+        Pageable pageable = defaultPageable(request);
+        Page<GroupSummaryRepositoryResponse> groups = function.apply(searchCondition, pageable);
+
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage, favorites);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
+    private Pageable defaultPageable(GroupSearchRequest request) {
+        return PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
     }
 }
