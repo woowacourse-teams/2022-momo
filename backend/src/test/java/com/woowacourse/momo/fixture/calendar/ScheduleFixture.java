@@ -9,7 +9,6 @@ import static com.woowacourse.momo.fixture.calendar.datetime.TimeFixture._12시_
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,6 @@ import com.woowacourse.momo.fixture.calendar.datetime.DateFixture;
 import com.woowacourse.momo.fixture.calendar.datetime.TimeFixture;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.group.domain.calendar.Schedules;
 import com.woowacourse.momo.group.service.dto.request.calendar.ScheduleRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.SchedulesRequest;
 
@@ -44,18 +42,14 @@ public enum ScheduleFixture {
         return new Schedule(date.toDate(), startTime.toTime(), endTime.toTime());
     }
 
-    public static Schedules toSchedules(ScheduleFixture... schedules) {
+    public static List<Schedule> toSchedules(ScheduleFixture... schedules) {
         return toSchedules(List.of(schedules));
     }
 
-    public static Schedules toSchedules(List<ScheduleFixture> schedules) {
-        return new Schedules(schedules.stream()
+    public static List<Schedule> toSchedules(List<ScheduleFixture> schedules) {
+        return schedules.stream()
                 .map(ScheduleFixture::toSchedule)
-                .collect(Collectors.toUnmodifiableList()));
-    }
-
-    public static Schedules emptySchedules() {
-        return new Schedules(Collections.emptyList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public static SchedulesRequest toRequests(List<ScheduleFixture> schedules) {

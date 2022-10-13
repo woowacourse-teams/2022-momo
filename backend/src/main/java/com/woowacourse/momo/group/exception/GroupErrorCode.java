@@ -16,6 +16,7 @@ public enum GroupErrorCode implements ErrorCode {
     DURATION_START_DATE_MUST_BE_BEFORE_END_DATE(400, "GROUP_003", "기간의 시작일은 종료일 이전이어야 합니다."),
     DURATION_MUST_BE_SET_FROM_NOW_ON(400, "GROUP_004", "시작일과 종료일은 과거일 수 없습니다."),
     DURATION_MUST_BE_SET_BEFORE_DEADLINE(400, "GROUP_005", "마감시간이 시작 일자 이후일 수 없습니다."),
+    DURATION_MUST_BE_SET_CONTAIN_SCHEDULE(400, "GROUP_023", "기간은 모든 일정을 포함하는 기간이어야 합니다."),
 
     SCHEDULE_START_TIME_MUST_BE_BEFORE_END_TIME(400, "GROUP_006", "일정의 시작 시간은 종료 시간 이전이어야 합니다."),
     SCHEDULE_MUST_BE_INCLUDED_IN_DURATION(400, "GROUP_007", "일정은 모임 기간에 포함되어야 합니다."),

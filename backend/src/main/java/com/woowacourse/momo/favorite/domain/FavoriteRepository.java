@@ -21,10 +21,10 @@ public interface FavoriteRepository extends Repository<Favorite, Long> {
     void delete(Favorite favorite);
 
     @Modifying
-    @Query("delete from Favorite where groupId = :groupId")
+    @Query("delete from Favorite f where f.groupId = :groupId")
     void deleteAllByGroupId(@Param("groupId") Long groupId);
 
     @Modifying
-    @Query("delete from Favorite where memberId = :memberId")
+    @Query("delete from Favorite f where f.memberId = :memberId")
     void deleteAllByMemberId(@Param("memberId") Long memberId);
 }
