@@ -38,6 +38,14 @@ const TitleContainer = styled.div`
   width: 100%;
 `;
 
+const SideMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  height: fit-content;
+`;
+
 const ContentContainer = styled(BasicContainer)`
   padding-top: 12rem;
 `;
@@ -53,6 +61,7 @@ export {
   StickyContainer,
   Header,
   TitleContainer,
+  SideMenu,
   ContentContainer,
   ControlContainer,
 };
