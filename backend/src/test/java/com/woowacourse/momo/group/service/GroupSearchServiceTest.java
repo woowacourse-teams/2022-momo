@@ -86,7 +86,7 @@ class GroupSearchServiceTest {
     @DisplayName("모임을 조회한다")
     @Test
     void findById() {
-        GroupResponse actual = groupSearchService.findGroup(group1.getId(), null);
+        GroupResponse actual = groupSearchService.findGroup(group1.getId());
         GroupResponse expected = GroupResponseAssembler.groupResponseWithoutLogin(group1);
 
         assertThat(actual).usingRecursiveComparison()
@@ -107,7 +107,7 @@ class GroupSearchServiceTest {
         GroupSearchRequest request = new GroupSearchRequest();
         request.setPage(0);
 
-        GroupPageResponse actual = groupSearchService.findGroups(request, null);
+        GroupPageResponse actual = groupSearchService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(6);
     }
@@ -119,7 +119,7 @@ class GroupSearchServiceTest {
         request.setKeyword("모모");
         request.setPage(0);
 
-        GroupPageResponse actual = groupSearchService.findGroups(request, null);
+        GroupPageResponse actual = groupSearchService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(3);
     }
@@ -131,7 +131,7 @@ class GroupSearchServiceTest {
         request.setCategory(Category.STUDY.getId());
         request.setPage(0);
 
-        GroupPageResponse actual = groupSearchService.findGroups(request, null);
+        GroupPageResponse actual = groupSearchService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(4);
     }
@@ -192,7 +192,7 @@ class GroupSearchServiceTest {
             GroupSearchRequest request = new GroupSearchRequest();
             request.setPage(0);
 
-            GroupPageResponse actual = groupSearchService.findGroups(request, null);
+            GroupPageResponse actual = groupSearchService.findGroups(request);
 
             assertAll(
                     () -> assertThat(actual.isHasNextPage()).isTrue(),
@@ -206,7 +206,7 @@ class GroupSearchServiceTest {
             GroupSearchRequest request = new GroupSearchRequest();
             request.setPage(1);
 
-            GroupPageResponse actual = groupSearchService.findGroups(request, null);
+            GroupPageResponse actual = groupSearchService.findGroups(request);
 
             assertAll(
                     () -> assertThat(actual.isHasNextPage()).isFalse(),

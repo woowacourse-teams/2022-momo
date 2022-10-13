@@ -195,7 +195,7 @@ class GroupModifyServiceTest {
 
         groupModifyService.closeEarly(hostId, groupId);
 
-        boolean actual = groupSearchService.findGroup(groupId, null).isFinished();
+        boolean actual = groupSearchService.findGroup(groupId).isFinished();
         assertThat(actual).isTrue();
     }
 

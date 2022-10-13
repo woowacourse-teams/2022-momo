@@ -25,9 +25,6 @@ public class AuthConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new AuthInterceptor(jwtTokenProvider))
                 .addPathPatterns("/api/**");
 
-        registry.addInterceptor(new AuthOptionalInterceptor(jwtTokenProvider))
-                .addPathPatterns("/api/**");
-
         registry.addInterceptor(new RefreshTokenAuthInterceptor(jwtTokenProvider, tokenRepository))
                 .addPathPatterns("/api/auth/reissueAccessToken");
     }
@@ -41,6 +38,5 @@ public class AuthConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new TokenResolver(jwtTokenProvider));
-        resolvers.add(new TokenOptionalResolver(jwtTokenProvider));
     }
 }

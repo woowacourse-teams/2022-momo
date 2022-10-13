@@ -40,13 +40,14 @@ public class GroupSearchService {
 
     public GroupResponse findGroup(Long groupId, Long memberId) {
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        if (memberId == null) {
-            return GroupResponseAssembler.groupResponseWithoutLogin(group);
-        }
-
         memberValidator.validateExistMember(memberId);
         Optional<Favorite> favorite = favoriteRepository.findByGroupIdAndMemberId(groupId, memberId);
         return GroupResponseAssembler.groupResponseWithLogin(group, favorite.isPresent());
+    }
+
+    public GroupResponse findGroup(Long groupId) {
+        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
+        return GroupResponseAssembler.groupResponseWithoutLogin(group);
     }
 
     public GroupPageResponse findGroups(GroupSearchRequest request, Long memberId) {
@@ -59,12 +60,18 @@ public class GroupSearchService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
+    public GroupPageResponse findGroups(GroupSearchRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+        Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(request.toFindCondition(),
+                pageable);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+        List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
+
+        return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
+    }
+
     private List<GroupSummaryResponse> getGroupSummaryResponses(List<GroupSummaryRepositoryResponse> groupsOfPage,
                                                                 Long memberId) {
-        if (memberId == null) {
-            return GroupResponseAssembler.groupSummaryResponsesWithoutLogin(groupsOfPage);
-        }
-
         memberValidator.validateExistMember(memberId);
         List<Favorite> favorites = favoriteRepository.findAllByMemberId(memberId);
         return GroupResponseAssembler.groupSummaryResponsesWithLogin(groupsOfPage, favorites);
