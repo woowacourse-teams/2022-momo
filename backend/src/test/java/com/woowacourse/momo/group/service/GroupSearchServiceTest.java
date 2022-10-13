@@ -96,7 +96,7 @@ class GroupSearchServiceTest {
     @DisplayName("존재하지 않는 모임을 조회할 수 없다")
     @Test
     void findByIdWithNotExistGroupId() {
-        assertThatThrownBy(() -> groupSearchService.findGroup(0L, null))
+        assertThatThrownBy(() -> groupSearchService.findGroup(0L))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }

@@ -218,7 +218,7 @@ class GroupModifyServiceTest {
 
         groupModifyService.delete(hostId, groupId);
 
-        assertThatThrownBy(() -> groupSearchService.findGroup(groupId, null))
+        assertThatThrownBy(() -> groupSearchService.findGroup(groupId))
                 .isInstanceOf(GroupException.class)
                 .hasMessage("존재하지 않는 모임입니다.");
     }
