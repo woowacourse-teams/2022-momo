@@ -75,7 +75,6 @@ const LeftHeadingWrapper = styled.div`
 
 const RightHeadingWrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
 
   width: 100%;
 `;

@@ -32,7 +32,6 @@ const Header = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 0.5rem;
 
   width: 100%;

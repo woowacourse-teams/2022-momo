@@ -9,7 +9,7 @@ import CalendarEditor from 'components/CalendarEditor';
 import Postcode from 'components/Postcode';
 import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
-import { GROUP_RULE } from 'constants/rule';
+import { GROUP_RULE, SNACKBAR_ANIMATION_TIME } from 'constants/rule';
 import useCategory from 'hooks/useCategory';
 import useCreateState from 'hooks/useCreateState';
 import useHandleError from 'hooks/useHandleError';
@@ -114,7 +114,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
         setTimeout(() => {
           finishEditMode();
           window.location.reload();
-        }, 500);
+        }, SNACKBAR_ANIMATION_TIME);
       })
       .catch(error => {
         handleError(error);

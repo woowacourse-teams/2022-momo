@@ -26,8 +26,6 @@ const Title = styled(Input)`
 const Deadline = styled(Input)`
   width: fit-content;
 
-  font-size: 1rem;
-
   ${({
     theme: {
       breakpoints: { md },
@@ -48,14 +46,10 @@ const ContentContainer = styled.div`
 `;
 
 const Description = styled.textarea`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
   resize: vertical;
 
-  line-height: 2rem;
+  height: 5rem;
+  line-height: 1.5rem;
 
   border-radius: 10px;
   padding: 1rem;

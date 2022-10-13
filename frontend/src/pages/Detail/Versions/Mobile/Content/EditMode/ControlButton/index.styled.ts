@@ -4,8 +4,6 @@ const Container = styled.div`
   position: sticky;
   bottom: 0;
 
-  /* width: 100%; */
-
   z-index: 100;
 `;
 

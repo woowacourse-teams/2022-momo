@@ -49,10 +49,6 @@ const Arrow = styled.div`
   cursor: pointer;
 `;
 
-const LeftArrow = styled(Arrow)`
-  justify-content: flex-start;
-`;
-
 const RightArrow = styled(Arrow)`
   justify-content: flex-end;
 `;
@@ -124,7 +120,7 @@ const Date = styled(DayColor)`
 export {
   Container,
   Navigator,
-  LeftArrow,
+  Arrow,
   RightArrow,
   Content,
   DayColor,

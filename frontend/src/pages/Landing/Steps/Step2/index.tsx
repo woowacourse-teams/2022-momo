@@ -51,6 +51,7 @@ function Step2({ show }: { show: boolean }) {
             src={image.imageSrc}
             width={image.width}
             className={show ? 'show' : ''}
+            key={image.imageSrc}
           />
         ))}
       </S.ImageBox>
