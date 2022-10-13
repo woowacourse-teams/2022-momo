@@ -16,6 +16,6 @@ public class GroupImageDeleteEventListener {
 
     @EventListener
     public void deleteGroupImage(GroupDeleteEvent event) {
-        groupImageRepository.deleteByGroup(event.getGroup());
+        groupImageRepository.deleteByGroupId(event.getId());
     }
 }

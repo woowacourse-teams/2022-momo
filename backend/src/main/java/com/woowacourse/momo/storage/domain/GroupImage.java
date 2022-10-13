@@ -5,13 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import com.woowacourse.momo.group.domain.Group;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,14 +19,14 @@ public class GroupImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Group group;
+    @Column(name = "group_id", nullable = false)
+    private Long groupId;
 
     @Column
     private String imageName;
 
-    public GroupImage(Group group, String imageName) {
-        this.group = group;
+    public GroupImage(Long groupId, String imageName) {
+        this.groupId = groupId;
         this.imageName = imageName;
     }
 

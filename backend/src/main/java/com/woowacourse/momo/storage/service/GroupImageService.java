@@ -32,10 +32,8 @@ public class GroupImageService {
     private final ImageProvider imageProvider;
 
     @Transactional
-    public void init(Group group) {
-        String defaultImageName = group.getCategory()
-                .getDefaultImageName();
-        GroupImage groupImage = new GroupImage(group, defaultImageName);
+    public void init(Long groupId, String defaultImageName) {
+        GroupImage groupImage = new GroupImage(groupId, defaultImageName);
 
         groupImageRepository.save(groupImage);
     }
@@ -49,7 +47,7 @@ public class GroupImageService {
         String fullPathOfSavedImage = imageConnector.requestImageSave(imageProvider.getSavedGroupPath(), multipartFile);
         String savedImageName = parseSavedImageName(fullPathOfSavedImage);
 
-        updateGroupImage(group, savedImageName);
+        updateGroupImage(groupId, savedImageName);
         return fullPathOfSavedImage;
     }
 
@@ -65,8 +63,8 @@ public class GroupImageService {
         return fullPathOfSavedImage.substring(startIndexImageName);
     }
 
-    private void updateGroupImage(Group group, String savedImageName) {
-        GroupImage existedGroupImage = groupImageRepository.findByGroup(group)
+    private void updateGroupImage(Long groupId, String savedImageName) {
+        GroupImage existedGroupImage = groupImageRepository.findByGroupId(groupId)
                         .orElseThrow(() -> new GroupImageException(GROUP_IMAGE_IS_NOT_EXIST));
         existedGroupImage.update(savedImageName);
     }

@@ -69,14 +69,14 @@ class GroupImageServiceTest {
     @DisplayName("모임 기본 이미지 정보를 저장한다")
     @Test
     void init() {
-        groupImageService.init(savedGroup);
+        groupImageService.init(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
 
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroup(savedGroup);
+        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
 
         String imageName = savedGroup.getCategory().getDefaultImageName();
         assertThat(groupImage).isPresent();
         assertAll(
-                () -> assertThat(groupImage.get().getGroup()).isEqualTo(savedGroup),
+                () -> assertThat(groupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
                 () -> assertThat(groupImage.get().getImageName()).isEqualTo(imageName)
         );
     }
@@ -88,10 +88,10 @@ class GroupImageServiceTest {
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
-        groupImageService.init(savedGroup);
+        groupImageService.init(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
         String actual = groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
 
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroup(savedGroup);
+        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
         assertThat(groupImage).isPresent();
         assertAll(
                 () -> assertThat(actual).isEqualTo(expected),

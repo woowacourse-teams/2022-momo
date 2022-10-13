@@ -2,14 +2,16 @@ package com.woowacourse.momo.group.event;
 
 import lombok.Getter;
 
-import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.category.domain.Category;
 
 @Getter
 public class GroupCreateEvent {
 
-    private final Group group;
+    private final Long groupId;
+    private final Category category;
 
-    public GroupCreateEvent(Group group) {
-        this.group = group;
+    public GroupCreateEvent(Long groupId, Category category) {
+        this.groupId = groupId;
+        this.category = category;
     }
 }

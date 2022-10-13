@@ -56,7 +56,7 @@ public class GroupModifyService {
         Group savedGroup = groupRepository.save(group);
         saveSchedules(request, savedGroup);
 
-        applicationEventPublisher.publishEvent(new GroupCreateEvent(group));
+        applicationEventPublisher.publishEvent(new GroupCreateEvent(group.getId(), group.getCategory()));
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);
     }
@@ -133,7 +133,7 @@ public class GroupModifyService {
     public void delete(Long hostId, Long groupId) {
         ifMemberIsHost(hostId, groupId, (host, group) -> {
             group.validateGroupIsProceeding();
-            applicationEventPublisher.publishEvent(new GroupDeleteEvent(group, groupId));
+            applicationEventPublisher.publishEvent(new GroupDeleteEvent(groupId));
             scheduleRepository.deleteAllByGroupId(groupId);
             participantRepository.deleteAllByGroupId(groupId);
             groupRepository.deleteById(groupId);
