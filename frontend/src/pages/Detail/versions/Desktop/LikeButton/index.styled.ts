@@ -23,7 +23,7 @@ const Button = styled.button`
 
   z-index: 998;
 
-  & > svg {
+  svg {
     animation: 0.5s ease-in-out ${bbyong} 1;
   }
 

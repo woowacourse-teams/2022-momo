@@ -76,7 +76,7 @@ const Dropdown = styled.div`
     background: ${colors.white001};
     filter: drop-shadow(0 0 1.5px ${colors.gray001});
 
-    > div:not(:last-child) {
+    div:not(:last-child) {
       border-bottom: 1px solid ${colors.gray003};
     }
   `}

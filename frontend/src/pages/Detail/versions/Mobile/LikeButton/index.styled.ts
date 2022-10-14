@@ -16,7 +16,7 @@ const Button = styled.button`
 
   padding: 0;
 
-  & > svg {
+  svg {
     animation: 0.5s ease-in-out ${bbyong} 1;
   }
 

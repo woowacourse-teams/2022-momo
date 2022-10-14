@@ -42,7 +42,7 @@ const LiveBean = styled.div`
 
   animation: 1.5s ${kongKong} ease-out infinite alternate;
 
-  > svg {
+  svg {
     width: 5rem;
     height: 5rem;
   }
