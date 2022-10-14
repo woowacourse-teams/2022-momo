@@ -33,14 +33,19 @@ const kongKong = keyframes`
 
 const Box = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const LiveBean = styled.div`
   position: relative;
-
   bottom: 0;
 
   animation: 1.5s ${kongKong} ease-out infinite alternate;
+
+  > svg {
+    width: 5rem;
+    height: 5rem;
+  }
 
   &.reverse {
     animation: 1.5s ${kongKong} ease-out infinite alternate-reverse;
