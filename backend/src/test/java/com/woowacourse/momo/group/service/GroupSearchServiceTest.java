@@ -88,7 +88,7 @@ class GroupSearchServiceTest {
     @DisplayName("모임을 조회한다")
     @Test
     void findById() {
-        String imageUrl = imageProvider.generateImageUrl(group1.getCategory().getDefaultImageName(), true);
+        String imageUrl = imageProvider.generateGroupImageUrl(group1.getCategory().getDefaultImageName(), true);
 
         GroupResponse actual = groupSearchService.findGroup(group1.getId());
         GroupResponse expected = GroupResponseAssembler.groupResponse(group1, imageUrl);

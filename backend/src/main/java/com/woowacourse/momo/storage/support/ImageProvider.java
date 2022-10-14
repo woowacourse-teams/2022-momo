@@ -10,25 +10,32 @@ import lombok.Getter;
 public class ImageProvider {
 
     private final String imageServerDomain;
+    private final String defaultCategoryPath;
     private final String defaultGroupPath;
     private final String savedGroupPath;
 
     public ImageProvider(@Value("${image.server.domain}") String imageServerDomain,
+                         @Value("${image.saved-image-path.default-category}") String defaultCategoryPath,
                          @Value("${image.saved-image-path.default-group}") String defaultGroupPath,
                          @Value("${image.saved-image-path.saved-group}") String savedGroupPath) {
         this.imageServerDomain = imageServerDomain;
+        this.defaultCategoryPath = defaultCategoryPath;
         this.defaultGroupPath = defaultGroupPath;
         this.savedGroupPath = savedGroupPath;
     }
 
-    public String generateImageUrl(String imageName, boolean defaultImage) {
-        return imageServerDomain + getPath(defaultImage) + "/" + imageName;
+    public String generateGroupImageUrl(String imageName, boolean defaultImage) {
+        return imageServerDomain + getGroupPath(defaultImage) + "/" + imageName;
     }
 
-    private String getPath(boolean defaultImage) {
+    private String getGroupPath(boolean defaultImage) {
         if (defaultImage) {
             return defaultGroupPath;
         }
         return savedGroupPath;
+    }
+
+    public String generateCategoryImageUrl(String imageName) {
+        return imageServerDomain + defaultCategoryPath + "/" + imageName;
     }
 }
