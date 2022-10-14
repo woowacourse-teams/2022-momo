@@ -12,7 +12,11 @@ spring:
   web.resources.add-mappings: false
 
 management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
   endpoints:
     web:
       exposure:
-        include: health, info, prometheus
+        include: prometheus,info,metrics,threaddump
