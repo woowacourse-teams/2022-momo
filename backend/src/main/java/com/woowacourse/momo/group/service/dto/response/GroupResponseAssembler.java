@@ -64,7 +64,7 @@ public class GroupResponseAssembler {
         return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
                 new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
                 response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
-                response.getDeadline(), isFavorite);
+                response.getDeadline(), isFavorite, response.getImageName());
     }
 
     private static boolean isFinished(GroupSummaryRepositoryResponse response) {
