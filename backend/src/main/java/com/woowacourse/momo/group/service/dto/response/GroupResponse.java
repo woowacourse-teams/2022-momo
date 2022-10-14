@@ -26,4 +26,5 @@ public class GroupResponse {
     private LocationResponse location;
     private boolean like;
     private String description;
+    private String imageUrl;
 }

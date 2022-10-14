@@ -1,6 +1,7 @@
 package com.woowacourse.momo.group.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import org.springframework.data.domain.Page;
@@ -23,6 +24,8 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.service.MemberValidator;
+import com.woowacourse.momo.storage.domain.GroupImageRepository;
+import com.woowacourse.momo.storage.support.ImageProvider;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -35,10 +38,21 @@ public class GroupSearchService {
     private final GroupFindService groupFindService;
     private final GroupSearchRepository groupSearchRepository;
     private final FavoriteRepository favoriteRepository;
+    private final GroupImageRepository groupImageRepository;
+    private final ImageProvider imageProvider;
 
     public GroupResponse findGroup(Long groupId) {
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        return GroupResponseAssembler.groupResponse(group);
+        String imageUrl = getImageUrl(group);
+        return GroupResponseAssembler.groupResponse(group, imageUrl);
+    }
+
+    private String getImageUrl(Group group) {
+        Optional<String> imageName = groupImageRepository.findImageNameByGroupId(group.getId());
+        if (imageName.isPresent()) {
+            return imageProvider.generateImageUrl(imageName.get(), false);
+        }
+        return imageProvider.generateImageUrl(group.getCategory().getDefaultImageName(), true);
     }
 
     public GroupResponse findGroup(Long groupId, Long memberId) {
@@ -46,7 +60,8 @@ public class GroupSearchService {
         boolean favoriteChecked = favoriteRepository.existsByGroupIdAndMemberId(groupId, memberId);
 
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        return GroupResponseAssembler.groupResponse(group, favoriteChecked);
+        String imageUrl = getImageUrl(group);
+        return GroupResponseAssembler.groupResponse(group, imageUrl, favoriteChecked);
     }
 
     public GroupPageResponse findGroups(GroupSearchRequest request) {

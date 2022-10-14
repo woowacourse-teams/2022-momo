@@ -28,13 +28,16 @@ public class ImageConnector {
 
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
+    private final String address;
     private final String requestUrl;
     private final String pathKey;
     private final String fileKey;
 
-    public ImageConnector(@Value("${image.api.request-url}") String requestUrl,
+    public ImageConnector(@Value("${image.server.address}") String address,
+                          @Value("${image.api.request-url}") String requestUrl,
                           @Value("${image.api.path-key}") String pathKey,
                           @Value("${image.api.file-key}") String fileKey) {
+        this.address = address;
         this.requestUrl = requestUrl;
         this.pathKey = pathKey;
         this.fileKey = fileKey;
@@ -92,7 +95,7 @@ public class ImageConnector {
 
     private ResponseEntity<Void> saveImage(HttpEntity<MultiValueMap<String, Object>> request) {
         try {
-            return REST_TEMPLATE.postForEntity(requestUrl, request, Void.class);
+            return REST_TEMPLATE.postForEntity(address + requestUrl, request, Void.class);
         } catch (HttpClientErrorException e) {
             throw new GroupImageException(GroupImageErrorCode.RESPONSE_IS_4XX);
         } catch (HttpServerErrorException e) {

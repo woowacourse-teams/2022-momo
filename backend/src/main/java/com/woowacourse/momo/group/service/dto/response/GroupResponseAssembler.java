@@ -19,15 +19,16 @@ import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponse(Group group, boolean isMemberLiked) {
+    public static GroupResponse groupResponse(Group group, String imageUrl, boolean isMemberLiked) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), isMemberLiked, group.getDescription().getValue());
+                locationResponse(group.getLocation()), isMemberLiked, group.getDescription().getValue(),
+                imageUrl);
     }
 
-    public static GroupResponse groupResponse(Group group) {
-        return groupResponse(group, false);
+    public static GroupResponse groupResponse(Group group, String imageUrl) {
+        return groupResponse(group, imageUrl, false);
     }
 
     public static List<GroupSummaryResponse> groupSummaryResponses(List<GroupSummaryRepositoryResponse> responses,
