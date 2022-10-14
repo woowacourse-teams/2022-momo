@@ -19,4 +19,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus,info,metrics,threaddump
+        include: health, info, prometheus
