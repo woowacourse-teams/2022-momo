@@ -13,20 +13,6 @@ require('dotenv').config({
 
 module.exports = merge(common, {
   mode: 'production',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: {
-          loader: 'esbuild-loader',
-          options: {
-            loader: 'tsx',
-            target: 'es2015',
-          },
-        },
-      },
-    ],
-  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'public/index.html',

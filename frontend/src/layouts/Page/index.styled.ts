@@ -6,9 +6,9 @@ const PageContainer = styled.div`
 `;
 
 const Content = styled.div`
-  height: calc(100% - 4rem);
+  height: calc(100% - 64px);
 
-  padding-top: 4rem;
+  padding-top: 64px;
 `;
 
 export { PageContainer, Content };

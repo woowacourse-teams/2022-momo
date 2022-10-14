@@ -107,12 +107,14 @@ const requestJoinedGroups =
     pageNumber: number,
     excludeFinished: boolean,
     keyword: string,
+    categoryId: CategoryType['id'],
   ) =>
   () => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
       keyword,
+      category: categoryId,
     };
 
     const baseUrl =

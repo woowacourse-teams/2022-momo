@@ -1,4 +1,4 @@
-import { GroupDetailData } from 'types/data';
+import { GroupDetailData, ScheduleType } from 'types/data';
 
 const oneSecond = 1000;
 const oneMinute = oneSecond * 60;
@@ -19,7 +19,7 @@ const convertRemainTime = (deadline: string) => {
   const secGap = Math.floor((gap / oneSecond) % 60);
 
   if (dayGap > 0) return `${dayGap}일`;
-  if (hourGap > 0) return `${hourGap}시간${minGap !== 0 ? ` ${minGap}분` : ''}`;
+  if (hourGap > 0) return `${hourGap}시간`;
   if (minGap > 0) return `${minGap}분`;
 
   return `${secGap}초`;
@@ -106,6 +106,14 @@ const parsedTime = (time: string) => {
   return Number(minute) === 0 ? `${hour}시` : `${hour}시 ${minute}분`;
 };
 
+const parsedSchedule = (schedule: ScheduleType) => {
+  const [year, month, date] = schedule.date.split('-');
+  const startTime = parsedTime(schedule.startTime);
+  const endTime = parsedTime(schedule.endTime);
+
+  return `${year}년 ${month}월 ${date}일 ${startTime} ~ ${endTime}`;
+};
+
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
@@ -116,4 +124,5 @@ export {
   resetDateToEndOfDay,
   parsedDurationDate,
   parsedTime,
+  parsedSchedule,
 };

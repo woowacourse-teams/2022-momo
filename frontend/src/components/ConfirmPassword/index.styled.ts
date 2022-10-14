@@ -4,6 +4,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 90%;
 `;
 
 const Title = styled.h3`
@@ -11,12 +12,12 @@ const Title = styled.h3`
 `;
 
 const Input = styled.input`
-  width: 20rem;
+  width: 100%;
   height: 2rem;
 `;
 
 const Button = styled.button`
-  width: 20rem;
+  width: 100%;
   height: 3rem;
 
   border-radius: 5px;

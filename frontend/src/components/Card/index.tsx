@@ -40,15 +40,15 @@ function Card({ group }: CardProps) {
                 {host.name || GUIDE_MESSAGE.MEMBER.WITHDRAWAL_MEMBER}
               </S.HostName>
             </div>
-            <S.Capacity>
-              <span>{numOfParticipant}</span>명 / 최대 <span>{capacity}</span>명
-            </S.Capacity>
-          </S.Left>
-          <S.Right>
             <S.Deadline>
               {finished ? '마감 완료' : convertDeadlineToRemainTime(deadline)}
             </S.Deadline>
+          </S.Left>
+          <S.Right>
             <div>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</div>
+            <S.Capacity>
+              <span>{numOfParticipant}</span>명 / <span>{capacity}</span>명
+            </S.Capacity>
           </S.Right>
         </S.Description>
       </S.Container>

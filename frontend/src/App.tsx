@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import ErrorBoundary from 'components/ErrorBoundary';
-import GroupEditModal from 'components/GroupEdit';
 import Loading from 'components/Loading';
 import LoginModal from 'components/Login';
 import ScrollToTop from 'components/ScrollToTop';
@@ -17,7 +16,13 @@ import theme from 'styles/theme';
 
 import Routes from './Routes';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
@@ -28,10 +33,9 @@ function App() {
           <Router>
             <ScrollToTop />
             <PageLayout>
-              <SignupModal />
-              <LoginModal />
-              <GroupEditModal />
               <ErrorBoundary>
+                <SignupModal />
+                <LoginModal />
                 <Suspense fallback={<Loading />}>
                   <Routes />
                 </Suspense>

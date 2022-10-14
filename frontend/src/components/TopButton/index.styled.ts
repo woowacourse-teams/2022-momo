@@ -16,8 +16,8 @@ const Button = styled.button`
   right: 1rem;
   bottom: 1rem;
 
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 56px;
+  height: 56px;
 
   border-radius: 50%;
 
@@ -27,10 +27,19 @@ const Button = styled.button`
     outline: none;
   }
 
-  ${({ theme: { colors } }) => `
+  ${({
+    theme: {
+      colors,
+      breakpoints: { md },
+    },
+  }) => `
     filter: drop-shadow(0 0 2px ${colors.gray001});
 
     background: ${colors.white001};
+
+    @media only screen and (max-width: ${md}px) {
+      bottom: 80px;
+    }
   `}
 `;
 

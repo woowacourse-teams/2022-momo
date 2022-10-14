@@ -5,23 +5,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import { BROWSER_PATH } from 'constants/path';
-import useCategory from 'hooks/useCategory';
 import { CategoryType, GroupList } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 
-import Category from './Category';
+import FilterSection from './FilterSection';
 import * as S from './index.styled';
-import RecommendGroups from './RecommendGroups';
-import SearchSection from './SearchSection';
+import WholeGroups from './WholeGroups';
 
 const invalidCategoryId = -1;
 
 function Main() {
-  const { getCategoryDescription } = useCategory();
   const queryClient = useQueryClient();
 
   const [isExcludeFinished, setIsExcludeFinished] = useState(true);
@@ -95,28 +91,25 @@ function Main() {
 
   return (
     <>
-      <SearchSection search={search} />
-      <ErrorBoundary fallbackUI={<CategoryFallback />}>
-        <Category
-          selectedCategoryId={selectedCategoryId}
-          selectCategory={selectCategory}
-          resetSelectedCategoryId={resetSelectedCategoryId}
-        />
-      </ErrorBoundary>
+      <FilterSection
+        search={search}
+        selectedCategoryId={selectedCategoryId}
+        selectCategory={selectCategory}
+        resetSelectedCategoryId={resetSelectedCategoryId}
+        isExcludeFinished={isExcludeFinished}
+        toggleIsExcludeFinished={toggleIsExcludeFinished}
+      />
       <S.Content>
         <ErrorBoundary>
-          <RecommendGroups
-            description={getCategoryDescription(selectedCategoryId)}
+          <WholeGroups
             isFetching={isFetching}
             data={data}
             refetch={refetch}
             groups={groups}
-            isExcludeFinished={isExcludeFinished}
-            toggleIsExcludeFinished={toggleIsExcludeFinished}
           />
         </ErrorBoundary>
+        <TopButton />
       </S.Content>
-      <TopButton />
     </>
   );
 }
