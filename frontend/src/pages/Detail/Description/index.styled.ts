@@ -17,7 +17,7 @@ const Container = styled(DescriptionBox)`
 const DescriptionContainer = styled(Container)`
   justify-content: flex-start;
 
-  height: 20rem;
+  max-height: 20rem;
 
   overflow-y: scroll;
 `;

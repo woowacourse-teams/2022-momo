@@ -12,30 +12,17 @@ const bbyong = keyframes`
 `;
 
 const Button = styled.button`
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  background: none;
 
-  width: 3.5rem;
-  height: 3.5rem;
+  padding: 0;
 
-  border-radius: 50%;
-
-  z-index: 998;
-
-  & > svg {
+  svg {
     animation: 0.5s ease-in-out ${bbyong} 1;
   }
 
   &:focus {
     outline: none;
   }
-
-  ${({ theme: { colors } }) => `
-    filter: drop-shadow(0 0 2px ${colors.gray001});
-
-    background: ${colors.white001};
-  `}
 `;
 
 export { Button };

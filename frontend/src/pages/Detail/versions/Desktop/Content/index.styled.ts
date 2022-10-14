@@ -45,6 +45,8 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+
+  width: 90%;
 `;
 
 export { Container, StickyContainer, ContentContainer, Header, TitleContainer };

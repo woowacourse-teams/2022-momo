@@ -9,7 +9,7 @@ const HeaderAnimation = keyframes`
   }
 
   to {
-    transform: translateX(-140%);
+    transform: translateX(-130%);
   }
 `;
 

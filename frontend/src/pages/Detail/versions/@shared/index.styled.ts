@@ -31,7 +31,15 @@ const Category = styled.div`
 `;
 
 const Title = styled.h2`
+  overflow-x: scroll;
+  white-space: nowrap;
+
+  width: 100%;
   line-height: 2rem;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   ${({
     theme: {

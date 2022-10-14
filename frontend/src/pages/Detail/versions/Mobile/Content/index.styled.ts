@@ -34,13 +34,13 @@ const TitleContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
 
-  width: 100%;
+  width: 85%;
 `;
 
 const SideMenu = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   height: fit-content;
 `;

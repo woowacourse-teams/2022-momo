@@ -38,7 +38,7 @@ const ButtonAnimation = keyframes`
 const IconBox = styled.div`
   display: flex;
 
-  > svg {
+  svg {
     height: fit-content;
 
     animation: ${BbyongBbyong} 4.3s infinite;
