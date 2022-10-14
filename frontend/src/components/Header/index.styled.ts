@@ -10,7 +10,7 @@ const Container = styled.div`
   z-index: 999;
 
   width: 100%;
-  height: 4rem;
+  height: 64px;
 
   backdrop-filter: saturate(150%) blur(5px);
 
@@ -25,23 +25,36 @@ const Container = styled.div`
 const Logo = styled.div`
   color: ${({ theme: { colors } }) => colors.white001};
 
-  font-size: 2.5rem;
+  font-size: 40px;
   font-weight: 900;
 `;
 
 const Nav = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-
-  color: ${({ theme: { colors } }) => colors.black002};
+  gap: 2rem;
 
   font-size: 1.1rem;
   font-weight: 700;
 
-  div {
-    cursor: pointer;
-  }
+  ${({
+    theme: {
+      colors,
+      breakpoints: { md },
+    },
+  }) => `
+    color: ${colors.black002};
+
+    svg {
+      @media only screen and (max-width: ${md}px) {
+        display: none;
+      }
+  
+      fill: ${colors.white001};
+      
+      cursor: pointer;
+    }
+  `}
 `;
 
 export { Container, Logo, Nav };

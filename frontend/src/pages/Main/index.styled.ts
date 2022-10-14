@@ -5,6 +5,7 @@ const Content = styled.div`
 
   margin: 2rem auto;
   padding-top: 10rem;
+  padding-bottom: 3rem;
 `;
 
 export { Content };

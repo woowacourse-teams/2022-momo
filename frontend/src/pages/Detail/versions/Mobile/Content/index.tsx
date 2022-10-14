@@ -51,7 +51,7 @@ function Content({ id, data, participants }: ContentProps) {
   }
 
   return (
-    <>
+    <S.Wrapper>
       <S.StickyContainer>
         <S.Header>
           <S.TitleContainer>
@@ -98,7 +98,7 @@ function Content({ id, data, participants }: ContentProps) {
           participants={participants}
         />
       </S.ControlContainer>
-    </>
+    </S.Wrapper>
   );
 }
 

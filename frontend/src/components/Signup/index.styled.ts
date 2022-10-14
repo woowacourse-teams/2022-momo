@@ -8,6 +8,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 90%;
 `;
 
 const Title = styled.h3`
@@ -27,7 +28,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 20rem;
+  width: 100%;
   height: 2rem;
 `;
 

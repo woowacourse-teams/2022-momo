@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
 
+import Footer from 'components/Footer';
 import Header from 'components/Header';
 import Snackbar from 'components/Snackbar';
 import { snackbarState } from 'store/states';
@@ -18,6 +19,7 @@ function Page({ children }: PageProps) {
       <Header />
       <S.Content>{children}</S.Content>
       {isShowing && <Snackbar>{message}</Snackbar>}
+      <Footer />
     </S.PageContainer>
   );
 }

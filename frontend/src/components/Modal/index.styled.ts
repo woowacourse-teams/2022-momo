@@ -72,12 +72,24 @@ const Content = styled.div`
   justify-content: center;
   align-items: center;
 
+  width: 95%;
+  max-width: 30rem;
+
   border-radius: 16px;
   padding: 5rem;
 
-  ${({ theme: { colors } }) => `
+  ${({
+    theme: {
+      colors,
+      breakpoints: { md },
+    },
+  }) => `
     background: ${colors.white001};
     filter: drop-shadow(0 0 4px ${colors.gray001});
+
+    @media only screen and (max-width: ${md}px) {
+      padding: 2rem 0;
+    }
   `}
 
   ${({ animationTime }: { animationTime: number }) => css`
