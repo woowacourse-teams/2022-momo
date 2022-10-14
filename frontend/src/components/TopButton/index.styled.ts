@@ -16,8 +16,8 @@ const Button = styled.button`
   right: 1rem;
   bottom: 1rem;
 
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 56px;
+  height: 56px;
 
   border-radius: 50%;
 
@@ -38,7 +38,7 @@ const Button = styled.button`
     background: ${colors.white001};
 
     @media only screen and (max-width: ${md}px) {
-      bottom: 5rem;
+      bottom: 80px;
     }
   `}
 `;
