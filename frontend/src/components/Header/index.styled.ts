@@ -32,16 +32,29 @@ const Logo = styled.div`
 const Nav = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-
-  color: ${({ theme: { colors } }) => colors.black002};
+  gap: 2rem;
 
   font-size: 1.1rem;
   font-weight: 700;
 
-  div {
-    cursor: pointer;
-  }
+  ${({
+    theme: {
+      colors,
+      breakpoints: { md },
+    },
+  }) => `
+    color: ${colors.black002};
+
+    svg {
+      @media only screen and (max-width: ${md}px) {
+        display: none;
+      }
+  
+      fill: ${colors.white001};
+      
+      cursor: pointer;
+    }
+  `}
 `;
 
 export { Container, Logo, Nav };

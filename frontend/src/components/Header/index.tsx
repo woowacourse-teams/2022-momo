@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { requestReissueAccessToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
+import { CreateSVG, SignInSVG, SignUpSVG } from 'assets/svg';
 import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
@@ -63,21 +64,23 @@ function Header() {
 
   return (
     <S.Container>
-      <NavLink to={BROWSER_PATH.BASE}>
+      <a href={BROWSER_PATH.BASE}>
         <S.Logo>
           <Logo />
         </S.Logo>
-      </NavLink>
+      </a>
       <S.Nav>
         {isLogin ? (
           <>
-            <NavLink to={BROWSER_PATH.CREATE}>모임 생성</NavLink>
+            <NavLink to={BROWSER_PATH.CREATE}>
+              <CreateSVG />
+            </NavLink>
             <User />
           </>
         ) : (
           <>
-            <div onClick={showSignupModal}>회원가입</div>
-            <div onClick={showLoginModal}>로그인</div>
+            <SignUpSVG onClick={showSignupModal} />
+            <SignInSVG onClick={showLoginModal} />
           </>
         )}
       </S.Nav>
