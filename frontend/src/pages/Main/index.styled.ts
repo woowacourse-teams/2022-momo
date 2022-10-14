@@ -4,8 +4,7 @@ const Content = styled.div`
   width: 100%;
 
   margin: 2rem auto;
-  padding-top: 10rem;
-  padding-bottom: 3rem;
+  padding: 10rem 0 3rem;
 `;
 
 export { Content };

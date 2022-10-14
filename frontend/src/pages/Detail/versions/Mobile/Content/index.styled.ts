@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Wrapper = styled.div`
+const Container = styled.div`
   padding-bottom: 60px;
 `;
 
@@ -61,7 +61,7 @@ const ControlContainer = styled.div`
 `;
 
 export {
-  Wrapper,
+  Container,
   StickyContainer,
   Header,
   TitleContainer,
