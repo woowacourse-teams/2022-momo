@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+const Wrapper = styled.div`
+  padding-bottom: 60px;
+`;
+
 const BasicContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,12 +55,13 @@ const ContentContainer = styled(BasicContainer)`
 
 const ControlContainer = styled.div`
   position: sticky;
-  bottom: 0;
+  bottom: 60px;
 
   z-index: 100;
 `;
 
 export {
+  Wrapper,
   StickyContainer,
   Header,
   TitleContainer,
