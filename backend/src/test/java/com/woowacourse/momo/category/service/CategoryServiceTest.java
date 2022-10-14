@@ -33,7 +33,7 @@ class CategoryServiceTest {
         List<CategoryResponse> expected = Arrays.stream(Category.values())
                 .map(category ->
                         CategoryResponseAssembler.categoryResponse(
-                                category, imageProvider.generateCategoryImageUrl(category.getDefaultImageName())
+                                category, imageProvider.generateCategoryImageUrl(category.getIconName())
                         )
                 )
                 .collect(Collectors.toList());
