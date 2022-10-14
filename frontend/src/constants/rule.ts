@@ -21,8 +21,8 @@ const MEMBER_RULE = {
     MAX_LENGTH: 50,
   },
   NAME: {
-    MIN_LENGTH: 2,
-    MAX_LENGTH: 30,
+    MIN_LENGTH: 1,
+    MAX_LENGTH: 20,
   },
 };
 

@@ -119,7 +119,7 @@ const Button = styled.button`
   p {
     width: 5rem;
 
-    margin-top: 3.5rem;
+    margin-top: 56px;
   }
 
   svg {

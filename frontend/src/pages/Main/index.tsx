@@ -108,8 +108,8 @@ function Main() {
             groups={groups}
           />
         </ErrorBoundary>
+        <TopButton />
       </S.Content>
-      <TopButton />
     </>
   );
 }

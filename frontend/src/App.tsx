@@ -16,7 +16,13 @@ import theme from 'styles/theme';
 
 import Routes from './Routes';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
@@ -26,15 +32,15 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <ScrollToTop />
-            <ErrorBoundary>
-              <PageLayout>
+            <PageLayout>
+              <ErrorBoundary>
                 <SignupModal />
                 <LoginModal />
                 <Suspense fallback={<Loading />}>
                   <Routes />
                 </Suspense>
-              </PageLayout>
-            </ErrorBoundary>
+              </ErrorBoundary>
+            </PageLayout>
           </Router>
         </QueryClientProvider>
       </RecoilRoot>
