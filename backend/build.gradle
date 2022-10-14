@@ -31,6 +31,9 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	implementation 'com.querydsl:querydsl-apt:5.0.0'
 
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

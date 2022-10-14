@@ -10,3 +10,13 @@ spring:
 
   mvc.throw-exception-if-no-handler-found: true
   web.resources.add-mappings: false
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
