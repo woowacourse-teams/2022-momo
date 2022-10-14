@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import { requestReissueAccessToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import NavLink from 'components/NavLink';
@@ -23,6 +25,7 @@ function Header() {
   } = useAuth();
 
   const { showSignupModal, showLoginModal } = useModal();
+  const { key } = useLocation();
 
   useEffect(() => {
     if (!accessToken && !refreshToken) return;
@@ -59,7 +62,7 @@ function Header() {
 
     reissueAccessToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [key]);
 
   return (
     <S.Container>
