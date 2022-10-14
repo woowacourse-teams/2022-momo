@@ -10,7 +10,7 @@ const Container = styled.div`
   z-index: 999;
 
   width: 100%;
-  height: 4rem;
+  height: 64px;
 
   backdrop-filter: saturate(150%) blur(5px);
 
