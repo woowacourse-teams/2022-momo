@@ -1,7 +1,7 @@
-import axios from 'apis/axios';
+import { axios, axiosWithAccessToken, axiosWithRefreshToken } from 'apis/axios';
 import { API_PATH, BROWSER_PATH } from 'constants/path';
-import { Token, User } from 'types/user';
-import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
+import { OAuth, Token, User } from 'types/user';
+import { makeUrl } from 'utils/url';
 
 /**
  * auth.ts 함수의 이름 규칙은 아래 문서를 참고해주세요.
@@ -20,9 +20,7 @@ const requestGoogleOauthToken = () => {
   const redirectUrl = `${window.location.origin}${BROWSER_PATH.OAUTH_GOOGLE}`;
 
   return axios
-    .get<{ oauthLink: string }>(
-      `${API_PATH.GOOGLE_LOGIN}?redirectUrl=${redirectUrl}`,
-    )
+    .get<OAuth>(makeUrl(API_PATH.GOOGLE_LOGIN, { redirectUrl }))
     .then(res => res.data.oauthLink);
 };
 
@@ -30,35 +28,17 @@ const requestGoogleLogin = (code: string) => {
   const redirectUrl = `${window.location.origin}${BROWSER_PATH.OAUTH_GOOGLE}`;
 
   return axios
-    .get<Token>(
-      `${API_PATH.GOOGLE_LOGIN}?redirectUrl=${redirectUrl}&code=${code}`,
-    )
+    .get<Token>(makeUrl(API_PATH.GOOGLE_LOGIN, { redirectUrl, code }))
     .then(res => res.data);
 };
 
 const requestLogout = () => {
-  return axios.post(
-    API_PATH.LOGOUT,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    },
-  );
+  return axiosWithAccessToken.post(API_PATH.LOGOUT);
 };
 
 const requestReissueAccessToken = () => {
-  return axios
-    .post<{ accessToken: string }>(
-      API_PATH.REFRESH_ACCESS_TOKEN,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${refreshTokenProvider.get()}`,
-        },
-      },
-    )
+  return axiosWithRefreshToken
+    .post<Pick<Token, 'accessToken'>>(API_PATH.REFRESH_ACCESS_TOKEN)
     .then(res => res.data.accessToken);
 };
 

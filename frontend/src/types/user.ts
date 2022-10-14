@@ -17,6 +17,10 @@ export interface LoginState {
 export type LoginType = 'basic' | 'oauth';
 export type EditableType = 'name' | 'password';
 
+export interface OAuth {
+  oauthLink: string;
+}
+
 export interface Token {
   accessToken: string;
   refreshToken: string;
