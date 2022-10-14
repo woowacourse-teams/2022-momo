@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { requestReissueAccessToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import { CreateSVG, SignInSVG, SignUpSVG } from 'assets/svg';
-import NavLink from 'components/NavLink';
 import Logo from 'components/svg/Logo';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
@@ -72,9 +73,9 @@ function Header() {
       <S.Nav>
         {isLogin ? (
           <>
-            <NavLink to={BROWSER_PATH.CREATE}>
+            <Link to={BROWSER_PATH.CREATE}>
               <CreateSVG />
-            </NavLink>
+            </Link>
             <User />
           </>
         ) : (

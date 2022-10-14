@@ -26,15 +26,15 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Router>
             <ScrollToTop />
-            <ErrorBoundary>
-              <PageLayout>
+            <PageLayout>
+              <ErrorBoundary>
                 <SignupModal />
                 <LoginModal />
                 <Suspense fallback={<Loading />}>
                   <Routes />
                 </Suspense>
-              </PageLayout>
-            </ErrorBoundary>
+              </ErrorBoundary>
+            </PageLayout>
           </Router>
         </QueryClientProvider>
       </RecoilRoot>

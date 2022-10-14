@@ -73,6 +73,7 @@ const Content = styled.div`
   align-items: center;
 
   width: 95%;
+  max-width: 30rem;
 
   border-radius: 16px;
   padding: 5rem;
