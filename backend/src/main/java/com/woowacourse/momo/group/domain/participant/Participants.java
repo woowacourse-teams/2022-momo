@@ -33,11 +33,11 @@ import com.woowacourse.momo.member.domain.Member;
 @Embeddable
 public class Participants {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_id")
     private Member host;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "group", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private final List<Participant> participants = new ArrayList<>();
 
     @Embedded

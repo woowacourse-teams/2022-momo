@@ -90,11 +90,8 @@ class GroupRepositoryTest {
     @DisplayName("식별자를 통해 모임을 조회한다")
     @Test
     void findById() {
-
         Group group = constructGroup(host, List.of(이틀후_10시부터_12시까지, 일주일후_10시부터_12시까지));
         Group savedGroup = groupRepository.save(group);
-
-        synchronize();
 
         Optional<Group> foundGroup = groupSearchRepository.findById(savedGroup.getId());
 
@@ -119,22 +116,6 @@ class GroupRepositoryTest {
         assertThat(foundGroup).isEmpty();
     }
 
-    @DisplayName("식별자를 통해 참여자가 있는 모임을 삭제한다")
-    @Test
-    void deleteIncludedParticipants() {
-        Member participant = memberRepository.save(new Member(UserId.momo("momo"), password, UserName.from("모모1")));
-        Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
-
-        savedGroup.participate(participant);
-        synchronize();
-
-        groupRepository.deleteById(savedGroup.getId());
-        synchronize();
-
-        Optional<Group> deletedGroup = groupSearchRepository.findById(savedGroup.getId());
-        assertThat(deletedGroup).isEmpty();
-    }
-
     @DisplayName("모임에 참여자를 추가한다")
     @Test
     void saveParticipant() {
@@ -142,7 +123,6 @@ class GroupRepositoryTest {
         Group savedGroup = groupRepository.save(constructGroup(host, Collections.emptyList()));
 
         savedGroup.participate(participant);
-        synchronize();
 
         Optional<Group> foundGroup = groupSearchRepository.findById(savedGroup.getId());
 

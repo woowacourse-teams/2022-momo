@@ -1,12 +1,14 @@
 package com.woowacourse.momo.fixture;
 
+import static com.woowacourse.momo.fixture.LocationFixture.선릉역_스타벅스;
 import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.LocationFixture.잠실역_스타벅스;
 import static com.woowacourse.momo.fixture.LocationFixture.잠실캠퍼스;
 import static com.woowacourse.momo.fixture.calendar.DeadlineFixture.내일_23시_59분까지;
+import static com.woowacourse.momo.fixture.calendar.DurationFixture.내일부터_일주일동안;
 import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후_하루동안;
-import static com.woowacourse.momo.fixture.calendar.DurationFixture.이틀후부터_5일동안;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.toSchedules;
+import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.내일_10시부터_12시까지;
 import static com.woowacourse.momo.fixture.calendar.ScheduleFixture.이틀후_10시부터_12시까지;
 
 import java.lang.reflect.Field;
@@ -29,21 +31,21 @@ import com.woowacourse.momo.group.domain.GroupName;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Deadline;
+import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.member.domain.Member;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Getter
 public enum GroupFixture {
 
-    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
+    MOMO_STUDY("모모의 스터디", Category.STUDY, 12, 내일부터_일주일동안, List.of(내일_10시부터_12시까지, 이틀후_10시부터_12시까지),
             내일_23시_59분까지, 잠실캠퍼스, "같이 공부해요!!"),
     MOMO_TRAVEL("선릉 산책", Category.TRAVEL, 99, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분까지, 선릉캠퍼스, "점심 먹고 선릉 나들이~!!"),
-    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 이틀후부터_5일동안, List.of(이틀후_10시부터_12시까지),
-            내일_23시_59분까지, 잠실캠퍼스, "두두랑 함께 공부해요!!"),
+    DUDU_STUDY("두두와의 스터디", Category.STUDY, 8, 내일부터_일주일동안, List.of(이틀후_10시부터_12시까지),
+            내일_23시_59분까지, 선릉역_스타벅스, "두두랑 함께 공부해요!!"),
     DUDU_COFFEE_TIME("두두와의 커피타임", Category.CAFE, 2, 이틀후_하루동안, List.of(이틀후_10시부터_12시까지),
             내일_23시_59분까지, 잠실역_스타벅스, "두두가 쏘는 커피~ 선착순 1명!!");
 
@@ -82,7 +84,11 @@ public enum GroupFixture {
     }
 
     public Calendar getCalendar() {
-        return new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
+        return new Calendar(deadline.toDeadline(), duration.toDuration());
+    }
+
+    public List<Schedule> getSchedules1() {
+        return toSchedules(schedules);
     }
 
     public Location getLocationObject() {
@@ -91,7 +97,7 @@ public enum GroupFixture {
 
     public static void setDeadlinePast(Group group, int pastDays) {
         LocalDateTime now = LocalDateTime.now();
-        Calendar calendar = new Calendar(new Deadline(now.plusHours(1)), group.getDuration(), group.getSchedules());
+        Calendar calendar = new Calendar(new Deadline(now.plusHours(1)), group.getDuration());
 
         try {
             Field fieldDeadline = Calendar.class.getDeclaredField("deadline");
@@ -117,10 +123,6 @@ public enum GroupFixture {
 
     public GroupRequest toRequest() {
         return builder().toRequest();
-    }
-
-    public GroupUpdateRequest toUpdateRequest() {
-        return builder().toUpdateRequest();
     }
 
     public GroupApiRequest toApiRequest() {
@@ -192,21 +194,29 @@ public enum GroupFixture {
         }
 
         public Group toGroup(Member host) {
-            Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration(), toSchedules(schedules));
+            Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration());
             return new Group(host, new Capacity(capacity), calendar, new GroupName(name), Category.from(category),
                     new Location(location.getAddress(), location.getBuildingName(), location.getDetail()),
                     new Description(description));
+        }
+
+        public Group toGroupWithSchedule(Member host) {
+            Calendar calendar = new Calendar(deadline.toDeadline(), duration.toDuration());
+            Group group = new Group(host, new Capacity(capacity), calendar, new GroupName(name),
+                    Category.from(category),
+                    new Location(location.getAddress(), location.getBuildingName(), location.getDetail()),
+                    new Description(description));
+
+            for (Schedule schedule : toSchedules(schedules)) {
+                group.addSchedule(schedule);
+            }
+            return group;
         }
 
         public GroupRequest toRequest() {
             return new GroupRequest(name, category, capacity, duration.toRequest(),
                     ScheduleFixture.toRequests(schedules), deadline.toRequest(),
                     location.toRequest(), description);
-        }
-
-        public GroupUpdateRequest toUpdateRequest() {
-            return new GroupUpdateRequest(name, category, capacity, duration.toRequest(),
-                    ScheduleFixture.toRequests(schedules), deadline.toRequest(), description);
         }
 
         public GroupApiRequest toApiRequest() {

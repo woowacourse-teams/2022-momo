@@ -25,7 +25,6 @@ import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.group.domain.calendar.Calendar;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.group.domain.favorite.Favorites;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.domain.participant.Participants;
 import com.woowacourse.momo.group.exception.GroupException;
@@ -43,9 +42,6 @@ public class Group {
 
     @Embedded
     private Participants participants;
-
-    @Embedded
-    private Favorites favorites;
 
     @Embedded
     private Calendar calendar;
@@ -68,7 +64,6 @@ public class Group {
     public Group(Member host, Capacity capacity, Calendar calendar, GroupName name, Category category,
                  Location location, Description description) {
         this.participants = new Participants(host, capacity);
-        this.favorites = new Favorites();
         this.calendar = calendar;
         this.name = name;
         this.category = category;
@@ -77,17 +72,14 @@ public class Group {
     }
 
     public void update(Capacity capacity, Calendar calendar, GroupName name, Category category,
-                       Description description) {
+                       Location location, Description description) {
         validateGroupIsProceeding();
         this.participants.updateCapacity(capacity);
-        this.calendar.update(calendar.getDeadline(), calendar.getDuration(), calendar.getSchedules());
+        this.calendar.update(calendar.getDeadline(), calendar.getDuration());
         this.name = name;
         this.category = category;
-        this.description = description;
-    }
-
-    public void updateLocation(Location location) {
         this.location = location;
+        this.description = description;
     }
 
     public void closeEarly() {
@@ -103,14 +95,6 @@ public class Group {
     public void remove(Member participant) {
         validateGroupIsProceeding();
         participants.remove(participant);
-    }
-
-    public void like(Member member) {
-        favorites.like(this, member);
-    }
-
-    public void cancelLike(Member member) {
-        favorites.cancel(member);
     }
 
     public void validateGroupIsProceeding() {
@@ -130,6 +114,11 @@ public class Group {
         }
     }
 
+    public void addSchedule(Schedule schedule) {
+        schedule.assignGroup(this);
+        calendar.addSchedule(schedule);
+    }
+
     public boolean isHost(Member member) {
         return participants.isHost(member);
     }
@@ -140,10 +129,6 @@ public class Group {
 
     public boolean isFinishedRecruitment() {
         return closedEarly || calendar.isDeadlineOver();
-    }
-
-    public boolean isMemberLiked(Member member) {
-        return favorites.hasMember(member);
     }
 
     public Member getHost() {
@@ -159,7 +144,7 @@ public class Group {
     }
 
     public List<Schedule> getSchedules() {
-        return calendar.getSchedules().getValue();
+        return calendar.getSchedules();
     }
 
     public Duration getDuration() {

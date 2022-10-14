@@ -69,7 +69,7 @@ public class Member {
     }
 
     public boolean isSameUserId(Member member) {
-        return userId.equals(member.userId);
+        return userId.getValue().equals(member.userId.getValue());
     }
 
     public String getUserId() {

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.group.controller;
+package com.woowacourse.momo.favorite.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
+import com.woowacourse.momo.favorite.service.FavoriteService;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupModifyService;
-import com.woowacourse.momo.group.service.LikeService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
@@ -39,7 +39,7 @@ import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
-class LikeControllerTest {
+class FavoriteControllerTest {
 
     private static final String BASE_URL = "/api/groups/";
     private static final String RESOURCE = "/like";
@@ -47,15 +47,15 @@ class LikeControllerTest {
     private final MockMvc mockMvc;
     private final AuthService authService;
     private final GroupModifyService groupModifyService;
-    private final LikeService likeService;
+    private final FavoriteService favoriteService;
     private final MemberService memberService;
 
     @DisplayName("모임을 찜한다")
     @Test
     void like() throws Exception {
-        Long hostId = saveMember("host");
+        Long hostId = saveMember("host", "host");
         Long groupId = saveGroup(hostId);
-        Long memberId = saveMember("member");
+        Long memberId = saveMember("member", "member");
         String accessToken = accessToken("member");
 
         mockMvc.perform(post(BASE_URL + groupId + RESOURCE)
@@ -74,9 +74,9 @@ class LikeControllerTest {
     @DisplayName("모임을 찜하기를 취소한다")
     @Test
     void cancelLike() throws Exception {
-        Long hostId = saveMember("host");
+        Long hostId = saveMember("host", "host");
         Long groupId = saveGroup(hostId);
-        Long memberId = saveMember("member");
+        Long memberId = saveMember("member", "member");
         likeMember(groupId, memberId);
         String accessToken = accessToken("member");
 
@@ -93,8 +93,8 @@ class LikeControllerTest {
                 );
     }
 
-    Long saveMember(String userId) {
-        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", "momo");
+    Long saveMember(String userId, String userName) {
+        SignUpRequest request = new SignUpRequest(userId, "wooteco1!", userName);
         return memberService.signUp(request);
     }
 
@@ -113,6 +113,6 @@ class LikeControllerTest {
     }
 
     void likeMember(Long groupId, Long memberId) {
-        likeService.like(groupId, memberId);
+        favoriteService.like(groupId, memberId);
     }
 }
