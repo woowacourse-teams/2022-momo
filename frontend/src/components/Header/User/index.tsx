@@ -67,7 +67,7 @@ function User() {
   return (
     <S.Container>
       <S.ToggleButton type="button" onClick={toggleDropdownState}>
-        <S.Profile width="2rem">❤️</S.Profile>
+        <S.Profile width="32px">❤️</S.Profile>
       </S.ToggleButton>
       {isShownDropdown && (
         <S.Dropdown
@@ -75,7 +75,7 @@ function User() {
           animationTime={dropdownAnimationTime}
         >
           <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
-            <S.Profile width="4rem">❤️</S.Profile>
+            <S.Profile width="64px">❤️</S.Profile>
             <div>{user?.name}</div>
           </S.User>
           <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>

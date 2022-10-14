@@ -14,6 +14,11 @@ export { ReactComponent as TopArrowSVG } from './top_arrow.svg';
 export { ReactComponent as ForwardArrowSVG } from './forward_arrow.svg';
 export { ReactComponent as BackwardArrowSVG } from './backward_arrow.svg';
 export { ReactComponent as MagnifyingGlassSVG } from './magnifying_glass.svg';
+export { ReactComponent as MyGroupSVG } from './my_group.svg';
+export { ReactComponent as NewGroupSVG } from './new_group.svg';
+export { ReactComponent as SignInSVG } from './sign_in.svg';
+export { ReactComponent as SignUpSVG } from './sign_up.svg';
+export { ReactComponent as CreateSVG } from './create.svg';
 
 export { ReactComponent as StudySVG } from './category/study.svg';
 export { ReactComponent as MogackoSVG } from './category/mogacko.svg';

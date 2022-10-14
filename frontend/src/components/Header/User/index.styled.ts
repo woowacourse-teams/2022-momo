@@ -41,6 +41,8 @@ const Profile = styled.div`
 
   border-radius: 50%;
 
+  font-size: 16px;
+
   background: ${({ theme: { colors } }) => colors.gray004};
 
   ${({ width }: { width: string }) => `
