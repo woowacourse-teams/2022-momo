@@ -34,6 +34,11 @@ public enum Category {
                 .orElseThrow(() -> new CategoryException(CategoryErrorCode.CATEGORY_NOT_EXIST));
     }
 
+    public boolean isDefaultImage(String imageName) {
+        return Arrays.stream(values())
+                .anyMatch(category -> category.defaultImageName.equals(imageName));
+    }
+
     public String getDefaultImageName() {
         return defaultImageName;
     }

@@ -48,11 +48,9 @@ public class GroupSearchService {
     }
 
     private String getImageUrl(Group group) {
-        Optional<String> imageName = groupImageRepository.findImageNameByGroupId(group.getId());
-        if (imageName.isPresent()) {
-            return imageProvider.generateGroupImageUrl(imageName.get(), false);
-        }
-        return imageProvider.generateGroupImageUrl(group.getCategory().getDefaultImageName(), true);
+        String imageName = groupImageRepository.findImageNameByGroupId(group.getId())
+                .orElseGet(() -> group.getCategory().getDefaultImageName());
+        return imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
     }
 
     public GroupResponse findGroup(Long groupId, Long memberId) {
