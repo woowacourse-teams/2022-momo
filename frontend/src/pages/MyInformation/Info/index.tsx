@@ -21,8 +21,16 @@ function Info() {
   const { value: name, setValue: setName } = useInput(
     loginInfo.user?.name || '',
   );
-  const { value: oldPassword, setValue: setOldPassword } = useInput('');
-  const { value: newPassword, setValue: setNewPassword } = useInput('');
+  const {
+    value: oldPassword,
+    setValue: setOldPassword,
+    dangerouslySetValue: dangerouslySetOldPassword,
+  } = useInput('');
+  const {
+    value: newPassword,
+    setValue: setNewPassword,
+    dangerouslySetValue: dangerouslySetNewPassword,
+  } = useInput('');
 
   const [isNameEditable, setIsNameEditable] = useState(false);
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
@@ -30,11 +38,17 @@ function Info() {
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
+  const resetPassword = () => {
+    dangerouslySetOldPassword('');
+    dangerouslySetNewPassword('');
+  };
+
   const editPassword = (oldPassword: string, newPassword: string) => () => {
     requestChangePassword(oldPassword, newPassword)
       .then(() => {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
         setIsPasswordEditable(false);
+        resetPassword();
       })
       .catch(error => {
         if (!error) {
