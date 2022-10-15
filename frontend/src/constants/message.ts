@@ -18,7 +18,7 @@ const GUIDE_MESSAGE = {
     CONFIRM_WITHDRAWAL_REQUEST:
       '정말로 탈퇴하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
     SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴에 성공했어요. 다음에 다시 만나요 😊',
-    WITHDRAWAL_MEMBER: '이미 탈퇴한 회원이에요.',
+    WITHDRAWAL_MEMBER: '탈퇴한 회원이에요 👋',
   },
   GROUP: {
     CONFIRM_CLOSE_REQUEST: '모임 모집을 마감하시겠어요?',
@@ -26,6 +26,8 @@ const GUIDE_MESSAGE = {
     SUCCESS_JOIN_REQUEST: '참여에 성공했어요.',
     CONFIRM_EXIT_REQUEST: '참여를 취소할까요?',
     SUCCESS_EXIT_REQUEST: '참여를 취소했어요.',
+    CONFIRM_CHANGE_DURATION:
+      '기간을 변경하시면 기존에 설정하신 일정이 초기화돼요. 그래도 변경하실 건가요?',
     SUCCESS_EDIT_REQUEST: '모임 정보 수정에 성공했어요.',
     SUCCESS_LIKE_GROUP: '찜한 모임에 추가했어요.',
     SUCCESS_UNLIKE_GROUP: '찜한 모임에서 삭제했어요.',
