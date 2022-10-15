@@ -1,34 +1,32 @@
-import { SetterOrUpdater, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { requestChangeName, requestUserInfo } from 'apis/request/user';
 import { CompleteSVG, PencilSVG } from 'assets/svg';
 import { GUIDE_MESSAGE, CLIENT_ERROR_MESSAGE } from 'constants/message';
 import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
-import { modalState } from 'store/states';
-import { EditableType, LoginState } from 'types/user';
+import { loginState, modalState } from 'store/states';
+import { EditableType } from 'types/user';
 
 import * as S from './index.styled';
 
+const svgSize = 20;
+
 interface InfoButtonsProps {
-  loginInfo: LoginState;
-  isNameEditable: boolean;
-  isPasswordEditable: boolean;
-  setIsNameEditable: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsPasswordEditable: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
-  setLoginInfo: SetterOrUpdater<LoginState>;
+  name: {
+    value: string;
+    isEditable: boolean;
+    setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
+  };
+  password: {
+    isEditable: boolean;
+    setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 }
 
-function Buttons({
-  loginInfo,
-  isNameEditable,
-  isPasswordEditable,
-  setIsNameEditable,
-  setIsPasswordEditable,
-  name,
-  setLoginInfo,
-}: InfoButtonsProps) {
+function Buttons({ name, password }: InfoButtonsProps) {
+  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
+
   const setModalFlag = useSetRecoilState(modalState);
 
   const { setMessage } = useSnackbar();
@@ -37,11 +35,11 @@ function Buttons({
   const changeElementEditable = (type: EditableType) => () => {
     switch (type) {
       case 'name':
-        setIsNameEditable(prevState => !prevState);
+        name.setIsEditable(prevState => !prevState);
         break;
 
       case 'password':
-        setIsPasswordEditable(prevState => !prevState);
+        password.setIsEditable(prevState => !prevState);
         break;
 
       default:
@@ -50,15 +48,15 @@ function Buttons({
     }
   };
 
-  const showConfirmPasswordModal = () => () => {
+  const showConfirmPasswordModal = () => {
     setModalFlag('confirmPassword');
   };
 
   const editName = () => {
-    requestChangeName(name)
+    requestChangeName(name.value)
       .then(() => {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_NAME_REQUEST);
-        setIsNameEditable(false);
+        name.setIsEditable(false);
 
         requestUserInfo().then(userInfo => {
           setLoginInfo({ ...loginInfo, user: userInfo });
@@ -74,33 +72,33 @@ function Buttons({
 
   return (
     <S.ButtonBox>
-      {isNameEditable ? (
+      {name.isEditable ? (
         <S.EditButton type="button">
-          <CompleteSVG width={20} height={20} onClick={editName} />
+          <CompleteSVG width={svgSize} height={svgSize} onClick={editName} />
         </S.EditButton>
       ) : (
         <S.EditButton type="button">
           <PencilSVG
-            width={20}
-            height={20}
+            width={svgSize}
+            height={svgSize}
             onClick={changeElementEditable('name')}
           />
         </S.EditButton>
       )}
       {loginInfo.loginType === 'basic' &&
-        (isPasswordEditable ? (
+        (password.isEditable ? (
           <S.EditButton type="button">
             <CompleteSVG
-              width={20}
-              height={20}
-              onClick={showConfirmPasswordModal()}
+              width={svgSize}
+              height={svgSize}
+              onClick={showConfirmPasswordModal}
             />
           </S.EditButton>
         ) : (
           <S.EditButton type="button">
             <PencilSVG
-              width={20}
-              height={20}
+              width={svgSize}
+              height={svgSize}
               onClick={changeElementEditable('password')}
             />
           </S.EditButton>

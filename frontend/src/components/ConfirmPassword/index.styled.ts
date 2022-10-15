@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -19,7 +19,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   width: 100%;
-  height: 3rem;
+  height: 2.5rem;
 
   border-radius: 4px;
 

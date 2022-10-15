@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { requestChangePassword } from 'apis/request/user';
 import ConfirmPasswordModal from 'components/ConfirmPassword';
@@ -16,7 +16,7 @@ import Inputs from './Inputs';
 import LiveBean from './LiveBean';
 
 function Info() {
-  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
+  const loginInfo = useRecoilValue(loginState);
 
   const { value: name, setValue: setName } = useInput(
     loginInfo.user?.name || '',
@@ -63,22 +63,27 @@ function Info() {
       <LiveBean />
       <S.Right>
         <Inputs
-          loginInfo={loginInfo}
-          name={name}
-          setName={setName}
-          isNameEditable={isNameEditable}
-          newPassword={newPassword}
-          setNewPassword={setNewPassword}
-          isPasswordEditable={isPasswordEditable}
+          name={{
+            value: name,
+            setValue: setName,
+            isEditable: isNameEditable,
+          }}
+          password={{
+            value: newPassword,
+            setValue: setNewPassword,
+            isEditable: isPasswordEditable,
+          }}
         />
         <Buttons
-          loginInfo={loginInfo}
-          isNameEditable={isNameEditable}
-          isPasswordEditable={isPasswordEditable}
-          setIsNameEditable={setIsNameEditable}
-          setIsPasswordEditable={setIsPasswordEditable}
-          name={name}
-          setLoginInfo={setLoginInfo}
+          name={{
+            value: name,
+            isEditable: isNameEditable,
+            setIsEditable: setIsNameEditable,
+          }}
+          password={{
+            isEditable: isPasswordEditable,
+            setIsEditable: setIsPasswordEditable,
+          }}
         />
       </S.Right>
       {loginInfo.loginType === 'basic' && (

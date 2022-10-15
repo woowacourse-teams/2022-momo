@@ -26,7 +26,6 @@ function Withdrawal() {
         resetAuth();
 
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_WITHDRAWAL_REQUEST);
-
         navigate(BROWSER_PATH.BASE);
       })
       .catch(error => {

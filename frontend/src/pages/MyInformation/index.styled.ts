@@ -25,6 +25,7 @@ const InfoContainer = styled.div`
 
   border: 1px solid ${({ theme: { colors } }) => colors.gray003};
   border-radius: 10px;
+
   padding: 2rem;
 `;
 

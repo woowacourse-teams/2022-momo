@@ -1,26 +1,25 @@
-import { LoginState } from 'types/user';
+import { useRecoilValue } from 'recoil';
+
+import { loginState } from 'store/states';
 
 import * as S from './index.styled';
 
 interface InfoInputsProps {
-  loginInfo: LoginState;
-  name: string;
-  setName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isNameEditable: boolean;
-  newPassword: string;
-  setNewPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isPasswordEditable: boolean;
+  name: {
+    value: string;
+    setValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isEditable: boolean;
+  };
+  password: {
+    value: string;
+    setValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isEditable: boolean;
+  };
 }
 
-function Inputs({
-  loginInfo,
-  name,
-  setName,
-  isNameEditable,
-  newPassword,
-  setNewPassword,
-  isPasswordEditable,
-}: InfoInputsProps) {
+function Inputs({ name, password }: InfoInputsProps) {
+  const loginInfo = useRecoilValue(loginState);
+
   return (
     <S.InputBox>
       <S.Label>
@@ -31,9 +30,9 @@ function Inputs({
         닉네임
         <S.Input
           type="text"
-          value={name}
-          onChange={setName}
-          disabled={!isNameEditable}
+          value={name.value}
+          onChange={name.setValue}
+          disabled={!name.isEditable}
         />
       </S.Label>
       {loginInfo.loginType === 'basic' && (
@@ -42,9 +41,9 @@ function Inputs({
           <S.Input
             type="password"
             placeholder="********"
-            value={newPassword}
-            onChange={setNewPassword}
-            disabled={!isPasswordEditable}
+            value={password.value}
+            onChange={password.setValue}
+            disabled={!password.isEditable}
           />
         </S.Label>
       )}
