@@ -33,7 +33,6 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 1rem;
 `;
 
@@ -41,7 +40,7 @@ const Button = styled.button`
   width: 100%;
   height: 3rem;
 
-  border-radius: 5px;
+  border-radius: 4px;
 
   font-size: 1.1rem;
 
@@ -105,7 +104,7 @@ const OAuthButton = styled.button`
   align-items: center;
 
   width: 3rem;
-  height: 3rem;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
 `;

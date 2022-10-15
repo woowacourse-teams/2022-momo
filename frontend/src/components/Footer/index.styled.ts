@@ -23,9 +23,8 @@ const Container = styled.div`
       breakpoints: { md },
     },
   }) => `
-    border-top: 1px solid ${colors.gray005};
-
     background: ${colors.white001};
+    border-top: 1px solid ${colors.gray005};
 
     @media only screen and (min-width: ${md}px) {
       display: none;
@@ -41,9 +40,9 @@ const Button = styled.button`
 
   width: 100%;
 
-  font-size: 0.9rem;
-
   background: none;
+
+  font-size: 0.9rem;
 
   ${({ theme: { colors } }) => `
     color: ${colors.gray001};

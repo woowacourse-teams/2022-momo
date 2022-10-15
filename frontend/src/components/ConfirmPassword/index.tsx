@@ -29,7 +29,7 @@ function ConfirmPassword({
 
   return (
     <Modal modalState={modalFlag === 'confirmPassword'}>
-      <S.Container>
+      <S.Form onSubmit={handleEditPassword}>
         <S.Title>이전 비밀번호 입력</S.Title>
         <S.Input
           type="password"
@@ -38,10 +38,8 @@ function ConfirmPassword({
           onChange={setConfirmPassword}
           required
         />
-        <S.Button type="button" onClick={handleEditPassword}>
-          비밀번호 확인
-        </S.Button>
-      </S.Container>
+        <S.Button>비밀번호 확인</S.Button>
+      </S.Form>
     </Modal>
   );
 }

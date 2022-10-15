@@ -6,19 +6,31 @@ const Container = styled.div`
   align-items: center;
 
   border-radius: 20px;
-  padding: 1rem;
+  padding: 2rem;
 
-  background: ${({ theme: { colors } }) => colors.gray002};
-`;
+  background: ${({ theme: { colors } }) => colors.gray005};
 
-const Title = styled.h2`
-  font-size: 2rem;
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      flex-direction: column;
+    }
+  `};
 `;
 
 const Description = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      align-items: center;
+    }
+  `};
 `;
 
-export { Container, Title, Description };
+const Title = styled.h2`
+  font-size: 1.5rem;
+`;
+
+export { Container, Description, Title };

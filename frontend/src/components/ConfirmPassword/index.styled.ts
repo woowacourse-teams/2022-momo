@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
+const Form = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
   width: 90%;
 `;
 
@@ -20,7 +21,7 @@ const Button = styled.button`
   width: 100%;
   height: 3rem;
 
-  border-radius: 5px;
+  border-radius: 4px;
 
   font-size: 1.1rem;
 
@@ -30,4 +31,4 @@ const Button = styled.button`
   `};
 `;
 
-export { Container, Title, Input, Button };
+export { Form, Title, Input, Button };

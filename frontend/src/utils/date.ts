@@ -114,6 +114,16 @@ const parsedSchedule = (schedule: ScheduleType) => {
   return `${year}년 ${month}월 ${date}일 ${startTime} ~ ${endTime}`;
 };
 
+const isToday = (year: number, month: number, date: number) => {
+  const today = new Date();
+
+  return (
+    today.getFullYear() === year &&
+    today.getMonth() === month - 1 &&
+    today.getDate() === date
+  );
+};
+
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
@@ -125,4 +135,5 @@ export {
   parsedDurationDate,
   parsedTime,
   parsedSchedule,
+  isToday,
 };

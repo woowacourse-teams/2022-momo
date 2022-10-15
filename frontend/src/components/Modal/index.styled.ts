@@ -41,13 +41,14 @@ const closeModal = keyframes`
   }
 `;
 
-const Dimmer = styled.div`
+const Dimmer = styled.div<{ animationTime: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
 
   z-index: 2147483646;
 
@@ -57,7 +58,7 @@ const Dimmer = styled.div`
   background: ${({ theme: { filter } }) => filter.darken001};
   backdrop-filter: saturate(100%) blur(5px);
 
-  ${({ animationTime }: { animationTime: number }) => css`
+  ${({ animationTime }) => css`
     animation: ${openDimmer} ${animationTime}ms;
 
     &.close {
@@ -66,14 +67,14 @@ const Dimmer = styled.div`
   `}
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ animationTime: number }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   width: 95%;
-  max-width: 30rem;
+  max-width: 21rem;
 
   border-radius: 16px;
   padding: 5rem;
@@ -92,7 +93,7 @@ const Content = styled.div`
     }
   `}
 
-  ${({ animationTime }: { animationTime: number }) => css`
+  ${({ animationTime }) => css`
     animation: ${openModal} ${animationTime}ms;
 
     &.close {

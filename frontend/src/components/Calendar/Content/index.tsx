@@ -1,10 +1,9 @@
 import useCalendar from 'hooks/useCalendar';
 import { GroupDetailData } from 'types/data';
-import { convertToISOString } from 'utils/date';
+import { convertToISOString, isToday } from 'utils/date';
 
 import * as S from '../index.styled';
 import SelectedDate from '../SelectedDate';
-import { isToday } from '../utils';
 
 const days = ['일', '월', '화', '수', '목', '금', '토'];
 

@@ -1,7 +1,7 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
-type Size = 'medium' | 'large';
+import { preventUserSelect } from 'styles/common';
 
 const calendarAnimation = keyframes`
   from {
@@ -18,16 +18,9 @@ const Container = styled.div`
   flex-direction: column;
   gap: 2rem;
 
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  font-size: 1rem;
 
-  ${({ size }: { size: Size }) => `
-    transform: scale(${size === 'medium' ? 0.7 : 1});
-
-    font-size: ${size === 'medium' ? '1.8rem' : '1.1rem'};
-  `}
+  ${preventUserSelect}
 `;
 
 const Navigator = styled.div`
@@ -36,21 +29,18 @@ const Navigator = styled.div`
   align-items: center;
   text-align: center;
 
-  font-size: ${({ size }: { size: Size }) =>
-    size === 'medium' ? '2rem' : '1.3rem'};
+  font-size: 1.2rem;
 `;
 
-const Arrow = styled.div`
+const Arrow = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
+  justify-content: ${({ direction }) =>
+    direction === 'left' ? 'flex-start' : 'flex-end'};
   align-items: center;
 
   max-width: 2rem;
 
   cursor: pointer;
-`;
-
-const RightArrow = styled(Arrow)`
-  justify-content: flex-end;
 `;
 
 const Content = styled.div`
@@ -90,11 +80,11 @@ const Date = styled(DayColor)`
   justify-content: center;
   align-items: center;
 
-  min-width: 1.8rem;
-  aspect-ratio: 1;
+  width: 1rem;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
-  padding: 0.2rem;
+  padding: 0.1rem;
 
   cursor: pointer;
 
@@ -117,13 +107,4 @@ const Date = styled(DayColor)`
   `}
 `;
 
-export {
-  Container,
-  Navigator,
-  Arrow,
-  RightArrow,
-  Content,
-  DayColor,
-  PrevNextDate,
-  Date,
-};
+export { Container, Navigator, Arrow, Content, DayColor, PrevNextDate, Date };

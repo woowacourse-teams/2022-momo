@@ -29,16 +29,16 @@ const close = keyframes`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ animationTime: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: fixed;
-  left: 50%;
   bottom: 2rem;
+  left: 50%;
 
-  width: fit-content;
+  width: max-content;
   max-width: 40rem;
   height: 4rem;
 
@@ -52,7 +52,7 @@ const Container = styled.div`
     color: ${colors.black002};
   `}
 
-  ${({ animationTime }: { animationTime: number }) => css`
+  ${({ animationTime }) => css`
     animation: ${show} ${animationTime}ms forwards;
 
     &.close {

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { oneLineEllipsis } from 'styles/common';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,13 +75,11 @@ const SVGWrapper = styled.div<{ isHost?: boolean }>`
 `;
 
 const Name = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
   max-width: 5rem;
 
   font-size: 0.9rem;
+
+  ${oneLineEllipsis}
 `;
 
 const Button = styled.button<{ reverse?: boolean }>`
