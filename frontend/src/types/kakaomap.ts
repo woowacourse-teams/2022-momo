@@ -1,6 +1,6 @@
 import { Address } from 'react-daum-postcode';
 
-export type RoadAaddress = {
+export type RoadAddress = {
   address_name: string;
   region_1depth_name: string;
   region_2depth_name: string;
@@ -21,7 +21,7 @@ export type GeocoderResult = Array<{
   x: string;
   y: string;
   address: Address;
-  road_address: RoadAaddress;
+  road_address: RoadAddress;
 }>;
 
 export enum GeocoderStatus {
