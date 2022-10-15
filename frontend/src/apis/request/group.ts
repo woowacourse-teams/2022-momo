@@ -135,10 +135,10 @@ const requestJoinedGroups =
 
     const baseUrl =
       type === 'participated'
-        ? API_PATH.PARTICIPATED_GROUP
+        ? API_PATH.JOINED_GROUP.PARTICIPATED
         : type === 'hosted'
-        ? API_PATH.HOSTED_GROUP
-        : API_PATH.LIKED_GROUP;
+        ? API_PATH.JOINED_GROUP.HOSTED
+        : API_PATH.JOINED_GROUP.LIKED;
 
     return axiosWithAccessToken
       .get<GroupList>(makeUrl(baseUrl, queryParams))

@@ -5,7 +5,7 @@ import { UserProfile } from 'types/user';
 
 const requestUserInfo = () => {
   return axiosWithAccessToken
-    .get<UserProfile>(API_PATH.MEMBERS)
+    .get<UserProfile>(API_PATH.MEMBER.BASE)
     .then(response => {
       return response.data;
     })
@@ -18,18 +18,18 @@ const requestUserInfo = () => {
 };
 
 const requestChangeName = (name: string) => {
-  return axiosWithAccessToken.patch(API_PATH.NAME, { name });
+  return axiosWithAccessToken.patch(API_PATH.MEMBER.NAME, { name });
 };
 
 const requestChangePassword = (oldPassword: string, newPassword: string) => {
-  return axiosWithAccessToken.patch(API_PATH.PASSWORD, {
+  return axiosWithAccessToken.patch(API_PATH.MEMBER.PASSWORD, {
     oldPassword,
     newPassword,
   });
 };
 
 const requestWithdrawal = () => {
-  return axiosWithAccessToken.delete(API_PATH.MEMBERS);
+  return axiosWithAccessToken.delete(API_PATH.MEMBER.BASE);
 };
 
 export {
