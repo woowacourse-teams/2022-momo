@@ -1,7 +1,6 @@
 package com.woowacourse.momo.group.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import org.springframework.data.domain.Page;
