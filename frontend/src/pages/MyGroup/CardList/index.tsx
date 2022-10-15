@@ -31,13 +31,11 @@ function CardList({ isFetching, data, refetch, groups }: CardListProps) {
   return (
     <S.Container>
       {groups.length > 0 ? (
-        <>
-          <S.GroupListBox>
-            {groups.map(group => (
-              <Card group={group} key={group.id} />
-            ))}
-          </S.GroupListBox>
-        </>
+        <S.GroupListBox>
+          {groups.map(group => (
+            <Card group={group} key={group.id} />
+          ))}
+        </S.GroupListBox>
       ) : (
         <NoResult>
           아직 모임이 없어요 ・゜・(ノД`)

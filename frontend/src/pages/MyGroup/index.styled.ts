@@ -28,7 +28,7 @@ const Button = styled.div`
 
   ${({ theme: { colors } }) => `
     color: ${colors.gray002};
-    
+
     &.selected {
       color: ${colors.black001};
     }
