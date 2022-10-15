@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  bottom: 60px;
+
+  width: 100%;
 
   z-index: 100;
 `;

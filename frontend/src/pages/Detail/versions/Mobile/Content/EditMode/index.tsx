@@ -129,6 +129,20 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
     });
   };
 
+  const changeDuration =
+    (type: 'start' | 'end') => (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)) return;
+
+      dangerouslySetSchedules([]);
+
+      if (type === 'start') {
+        setStartDate(e);
+        return;
+      }
+
+      setEndDate(e);
+    };
+
   const setLocation = (data: Address) => {
     setLocationAddress(data.address, data.buildingName, '');
   };
@@ -169,14 +183,14 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
             <S.Input
               type="date"
               value={startDate}
-              onChange={setStartDate}
+              onChange={changeDuration('start')}
               min={getNewDateString('day')}
             />
             ~
             <S.Input
               type="date"
               value={endDate}
-              onChange={setEndDate}
+              onChange={changeDuration('end')}
               min={startDate || getNewDateString('day')}
             />
           </S.Duration>

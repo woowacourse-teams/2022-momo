@@ -50,12 +50,14 @@ const SideMenu = styled.div`
 `;
 
 const ContentContainer = styled(BasicContainer)`
-  padding-top: 12rem;
+  padding: 12rem 1rem 4rem;
 `;
 
 const ControlContainer = styled.div`
-  position: sticky;
+  position: fixed;
   bottom: 60px;
+
+  width: 100%;
 
   z-index: 100;
 `;

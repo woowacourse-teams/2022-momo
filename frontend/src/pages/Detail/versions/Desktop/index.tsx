@@ -5,7 +5,7 @@ import { Image } from '../@shared/index.styled';
 import Content from './Content';
 
 interface DesktopProps {
-  id: number;
+  id: GroupDetailData['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }

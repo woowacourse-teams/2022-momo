@@ -1,6 +1,17 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { oneLineEllipsis } from 'styles/common';
+
+const boxAnimation = keyframes`
+  from {
+    transform: scaleY(0.5);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -38,11 +49,14 @@ const Summary = styled.div`
   `}
 `;
 
-const Box = styled.div`
+const Box = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 1rem;
   column-gap: 0.5rem;
+
+  transform-origin: top;
+  animation: ${boxAnimation} 0.2s ease-in-out;
 
   ${({
     theme: {
@@ -55,7 +69,7 @@ const Box = styled.div`
   `}
 `;
 
-const Participant = styled.div`
+const Participant = styled.li`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -79,6 +93,16 @@ const Name = styled.div`
 
   font-size: 0.9rem;
 
+  ${({
+    theme: {
+      breakpoints: { lg },
+    },
+  }) => `
+    @media only screen and (max-width: ${lg}px) {
+      max-width: 10rem;
+    }
+  `}
+
   ${oneLineEllipsis}
 `;
 
@@ -86,6 +110,7 @@ const Button = styled.button<{ reverse?: boolean }>`
   background: none;
 
   transform: ${({ reverse = false }) => (reverse ? 'rotate(180deg)' : '')};
+  transition: transform 0.5s;
 `;
 
 export {

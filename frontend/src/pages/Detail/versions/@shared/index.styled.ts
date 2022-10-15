@@ -15,15 +15,16 @@ const Image = styled.div<{ src: string }>`
 `;
 
 const Category = styled.div`
-  color: ${({ theme: { colors } }) => colors.blue001};
-
   font-weight: 900;
 
   ${({
     theme: {
+      colors,
       breakpoints: { md },
     },
   }) => `
+    color: ${colors.blue001};
+
     @media only screen and (max-width: ${md}px) {
       font-size: 0.8rem;
     }
@@ -63,15 +64,16 @@ const Title = styled.h2`
 const Duration = styled.div`
   align-items: center;
 
-  color: ${({ theme: { colors } }) => colors.red003};
-
   font-weight: 700;
 
   ${({
     theme: {
+      colors,
       breakpoints: { md },
     },
   }) => `
+    color: ${colors.red003};
+
     @media only screen and (max-width: ${md}px) {
       font-size: 0.8rem;
     }
