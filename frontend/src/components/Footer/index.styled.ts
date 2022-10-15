@@ -26,7 +26,7 @@ const Container = styled.div`
     background: ${colors.white001};
     border-top: 1px solid ${colors.gray005};
 
-    @media only screen and (min-width: ${md}px) {
+    @media only screen and (min-width: ${md + 1}px) {
       display: none;
     }
   `}
