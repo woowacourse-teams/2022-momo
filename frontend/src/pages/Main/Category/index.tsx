@@ -18,7 +18,7 @@ function Category({
   selectCategory,
   resetSelectedCategoryId,
 }: CategoryProps) {
-  const { categories } = useCategory();
+  const categories = useCategory();
 
   return (
     <S.Container>

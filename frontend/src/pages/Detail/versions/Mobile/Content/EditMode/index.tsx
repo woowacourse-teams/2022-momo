@@ -30,7 +30,7 @@ interface EditModeProps {
 }
 
 function EditMode({ id, data, finishEditMode }: EditModeProps) {
-  const { categories } = useCategory();
+  const categories = useCategory();
   const resetGroupData = useResetRecoilState(groupDetailState);
 
   const { showPostcodeModal } = useModal();

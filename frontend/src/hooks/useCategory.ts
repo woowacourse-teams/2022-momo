@@ -11,9 +11,7 @@ const useCategory = () => {
     requestCategory,
   );
 
-  return {
-    categories: categories,
-  };
+  return categories;
 };
 
 export default useCategory;

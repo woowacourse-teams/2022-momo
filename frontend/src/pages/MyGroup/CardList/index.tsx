@@ -26,7 +26,7 @@ interface CardListProps {
 function CardList({ isFetching, data, refetch, groups }: CardListProps) {
   const target = useRef<HTMLDivElement>(null);
 
-  useInfiniteScroll(target, isFetching, data, refetch, groups);
+  useInfiniteScroll({ target, isFetching, data, refetch, groups });
 
   return (
     <S.Container>

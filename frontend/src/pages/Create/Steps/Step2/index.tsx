@@ -18,7 +18,7 @@ function Step2(
   ref: LegacyRef<HTMLDivElement>,
 ) {
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const { categories } = useCategory();
+  const categories = useCategory();
 
   const selectCategory =
     (newSelectedCategory: CreateGroupData['selectedCategory']) => () => {

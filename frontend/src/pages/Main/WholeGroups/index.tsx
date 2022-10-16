@@ -26,7 +26,7 @@ interface WholeGroupsProps {
 function WholeGroups({ isFetching, data, refetch, groups }: WholeGroupsProps) {
   const target = useRef<HTMLDivElement>(null);
 
-  useInfiniteScroll(target, isFetching, data, refetch, groups);
+  useInfiniteScroll({ target, isFetching, data, refetch, groups });
 
   return (
     <S.Container>
