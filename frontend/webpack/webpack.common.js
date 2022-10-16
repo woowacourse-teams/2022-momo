@@ -1,4 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const path = require('path');
 
@@ -6,6 +7,16 @@ module.exports = {
   entry: path.resolve(__dirname, '../src/index.tsx'),
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: {
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+          },
+        },
+      },
       {
         test: /\.(woff(2)?|ttf|png|jpe?g|gif|webp)$/i,
         type: 'asset/resource',
@@ -41,6 +52,7 @@ module.exports = {
     clean: true,
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {

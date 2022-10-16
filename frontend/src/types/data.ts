@@ -42,14 +42,18 @@ export interface GroupDetailData {
   description: string;
 }
 
-export interface CreateGroupData extends DurationDate {
-  name: GroupDetailData['name'];
+export interface CreateGroupData
+  extends DurationDate,
+    Pick<
+      GroupDetailData,
+      | 'name'
+      | 'capacity'
+      | 'schedules'
+      | 'deadline'
+      | 'location'
+      | 'description'
+    > {
   selectedCategory: CategoryType;
-  capacity: GroupDetailData['capacity'];
-  schedules: GroupDetailData['schedules'];
-  deadline: GroupDetailData['deadline'];
-  location: GroupDetailData['location'];
-  description: GroupDetailData['description'];
 }
 
 export interface GroupList {
@@ -58,15 +62,18 @@ export interface GroupList {
   hasNextPage: boolean;
 }
 
-export interface GroupSummary {
-  id: GroupDetailData['id'];
-  name: GroupDetailData['name'];
-  host: GroupDetailData['host'];
-  categoryId: GroupDetailData['categoryId'];
-  deadline: GroupDetailData['deadline'];
-  finished: GroupDetailData['finished'];
-  capacity: GroupDetailData['capacity'];
-  like: GroupDetailData['like'];
+export interface GroupSummary
+  extends Pick<
+    GroupDetailData,
+    | 'id'
+    | 'name'
+    | 'host'
+    | 'categoryId'
+    | 'deadline'
+    | 'finished'
+    | 'capacity'
+    | 'like'
+  > {
   numOfParticipant: number;
 }
 
@@ -74,10 +81,10 @@ export type GroupParticipants = Omit<UserProfile, 'userId'>[];
 
 export type SelectableGroup = 'participated' | 'hosted' | 'liked';
 
-export type ServerErrorType = {
+export interface ServerErrorType {
   response: {
     data: {
       message: string;
     };
   };
-};
+}

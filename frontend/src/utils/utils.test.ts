@@ -31,25 +31,19 @@ describe('convertRemainTime 함수에 목표 시간을 넣어 오늘로부터 �
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 분 단위로 반환한다.', () => {
-    const afterOneMinute = '2022-01-01T00:01:00.000Z';
+    const afterOneMinute = '2022-01-01T00:01:30.000Z';
 
     expect(convertRemainTime(afterOneMinute)).toBe('1분');
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 시간 단위로 반환한다.', () => {
-    const afterOneHour = '2022-01-01T01:00:00.000Z';
-
-    expect(convertRemainTime(afterOneHour)).toBe('1시간');
-  });
-
-  it('미래의 시간을 넣으면 남은 시간 값을 시간과 분 단위로 반환한다.', () => {
     const afterOneHalfHour = '2022-01-01T01:30:00.000Z';
 
-    expect(convertRemainTime(afterOneHalfHour)).toBe('1시간 30분');
+    expect(convertRemainTime(afterOneHalfHour)).toBe('1시간');
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 일 단위로 반환한다.', () => {
-    const afterOneDay = '2022-01-02T00:00:00.000Z';
+    const afterOneDay = '2022-01-02T01:00:00.000Z';
 
     expect(convertRemainTime(afterOneDay)).toBe('1일');
   });
@@ -73,27 +67,23 @@ describe('convertDeadlineToRemainTime 함수에 목표 시간을 넣으면 오�
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 가공된 분 단위로 반환한다.', () => {
-    const afterOneMinute = '2022-01-01T00:01:00.000Z';
+    const afterOneHalfMinute = '2022-01-01T00:01:30.000Z';
 
-    expect(convertDeadlineToRemainTime(afterOneMinute)).toBe('마감까지 1분');
+    expect(convertDeadlineToRemainTime(afterOneHalfMinute)).toBe(
+      '마감까지 1분',
+    );
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 가공된 시간 단위로 반환한다.', () => {
-    const afterOneHour = '2022-01-01T01:00:00.000Z';
-
-    expect(convertDeadlineToRemainTime(afterOneHour)).toBe('마감까지 1시간');
-  });
-
-  it('미래의 시간을 넣으면 남은 시간 값을 가공된 시간과 분 단위로 반환한다.', () => {
     const afterOneHalfHour = '2022-01-01T01:30:00.000Z';
 
     expect(convertDeadlineToRemainTime(afterOneHalfHour)).toBe(
-      '마감까지 1시간 30분',
+      '마감까지 1시간',
     );
   });
 
   it('미래의 시간을 넣으면 남은 시간 값을 가공된 일 단위로 반환한다.', () => {
-    const afterOneDay = '2022-01-02T00:00:00.000Z';
+    const afterOneDay = '2022-01-02T01:00:00.000Z';
 
     expect(convertDeadlineToRemainTime(afterOneDay)).toBe('마감까지 1일');
   });

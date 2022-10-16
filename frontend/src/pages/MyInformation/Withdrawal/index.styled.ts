@@ -8,15 +8,9 @@ const Wrapper = styled.div`
 `;
 
 const Button = styled.button`
-  width: 5rem;
-  height: 2.5rem;
-
+  background: none;
+  color: ${({ theme: { colors } }) => colors.gray002};
   border-radius: 8px;
-
-  ${({ theme: { colors } }) => `
-    background: ${colors.red001};
-    color: ${colors.white001};
-  `}
 `;
 
 export { Wrapper, Button };

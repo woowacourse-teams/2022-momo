@@ -8,7 +8,6 @@ import {
 
 import { Loading } from 'components/Animation';
 import Card from 'components/Card';
-import Checkbox from 'components/Checkbox';
 import NoResult from 'components/NoResult';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { GroupList } from 'types/data';
@@ -22,29 +21,15 @@ interface CardListProps {
     options?: RefetchOptions & RefetchQueryFilters<GroupList>,
   ) => Promise<QueryObserverResult<GroupList, unknown>>;
   groups: GroupList['groups'];
-  isExcludeFinished: boolean;
-  toggleIsExcludeFinished: () => void;
 }
 
-function CardList({
-  isFetching,
-  data,
-  refetch,
-  groups,
-  isExcludeFinished,
-  toggleIsExcludeFinished,
-}: CardListProps) {
+function CardList({ isFetching, data, refetch, groups }: CardListProps) {
   const target = useRef<HTMLDivElement>(null);
 
   useInfiniteScroll(target, isFetching, data, refetch, groups);
 
   return (
     <S.Container>
-      <Checkbox
-        description="마감된 모임 제외"
-        checked={isExcludeFinished}
-        toggleChecked={toggleIsExcludeFinished}
-      />
       {groups.length > 0 ? (
         <>
           <S.GroupListBox>

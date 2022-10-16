@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
-import static com.woowacourse.momo.fixture.LocationFixture.선릉캠퍼스;
 import static com.woowacourse.momo.fixture.MemberFixture.DUDU;
 import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
@@ -222,9 +221,10 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
+        Location location = fixture.getLocationObject();
         Description description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, description);
+        group.update(capacity, calendar, name, category, location, description);
 
         assertAll(
                 () -> assertThat(group.getHost().getUserId()).isEqualTo(host.getUserId()),
@@ -242,21 +242,10 @@ class GroupTest {
         Calendar calendar = fixture.getCalendar();
         GroupName name = fixture.getName();
         Category category = fixture.getCategory();
+        Location location = fixture.getLocationObject();
         Description description = fixture.getDescription();
 
-        group.update(capacity, calendar, name, category, description);
-    }
-
-    @DisplayName("모임 장소를 수정한다")
-    @Test
-    void updateLocation() {
-        Member host = MOMO.toMember();
-        Group group = MOMO_STUDY.toGroup(host);
-        Location location = 선릉캠퍼스.toLocation();
-
-        group.updateLocation(location);
-
-        assertThat(group.getLocation()).isEqualTo(location);
+        group.update(capacity, calendar, name, category, location, description);
     }
 
     @DisplayName("모임 모집을 조기마감한다")
@@ -291,30 +280,6 @@ class GroupTest {
 
         assertThat(group.getParticipants()).usingRecursiveComparison()
                 .isEqualTo(List.of(HOST));
-    }
-
-    @DisplayName("모임을 찜한다")
-    @Test
-    void like() {
-        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
-
-        Member member = DUDU.toMember();
-        group.like(member);
-
-        assertThat(group.isMemberLiked(member)).isTrue();
-    }
-
-    @DisplayName("모임을 찜하기를 취소한다")
-    @Test
-    void cancelLike() {
-        Group group = MOMO_STUDY.toGroup(MOMO.toMember());
-
-        Member member = DUDU.toMember();
-        group.like(member);
-
-        group.cancelLike(member);
-
-        assertThat(group.isMemberLiked(member)).isFalse();
     }
 
     @DisplayName("모임의 주최자와 일치하는지 확인한다")

@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.auth.service.AuthService;
 import com.woowacourse.momo.auth.service.dto.request.LoginRequest;
 import com.woowacourse.momo.category.domain.Category;
+import com.woowacourse.momo.favorite.service.FavoriteService;
 import com.woowacourse.momo.fixture.calendar.ScheduleFixture;
 import com.woowacourse.momo.group.service.GroupModifyService;
-import com.woowacourse.momo.group.service.LikeService;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
 import com.woowacourse.momo.member.service.MemberService;
 import com.woowacourse.momo.member.service.dto.request.SignUpRequest;
@@ -51,7 +51,7 @@ class GroupSearchControllerTest {
     private final MockMvc mockMvc;
     private final GroupModifyService groupModifyService;
     private final AuthService authService;
-    private final LikeService likeService;
+    private final FavoriteService favoriteService;
     private final MemberService memberService;
 
     @DisplayName("로그인을 하지 않은 상태로 하나의 그룹을 가져오는 경우를 테스트한다")
@@ -282,6 +282,6 @@ class GroupSearchControllerTest {
     }
 
     void likeGroup(Long groupId, Long memberId) {
-        likeService.like(groupId, memberId);
+        favoriteService.like(groupId, memberId);
     }
 }

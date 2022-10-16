@@ -35,9 +35,9 @@ function Calendar({
   return (
     <S.Container size={size}>
       <S.Navigator size={size}>
-        <S.LeftArrow onClick={goToPrevMonth}>
+        <S.Arrow onClick={goToPrevMonth}>
           <LeftArrow width={30} color={theme.colors.yellow001} />
-        </S.LeftArrow>
+        </S.Arrow>
         <div>
           {year}년 {month}월
         </div>

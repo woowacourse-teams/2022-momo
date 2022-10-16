@@ -107,7 +107,7 @@ bootJar {
 /* Sonarqube Start */
 sonarqube {
 	properties {
-		property "sonar.projectKey", "woowacourse-teams_2022-momo_AYKR-JWB6L96jeu46QtV"
+		property "sonar.projectKey", "woowacourse-teams_2022-momo_AYPVMgjN6WwXr_psaOXr"
 	}
 }
 /* Sonarqube End */

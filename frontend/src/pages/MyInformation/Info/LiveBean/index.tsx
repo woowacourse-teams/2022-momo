@@ -8,10 +8,10 @@ function LiveBean() {
   return (
     <S.Box>
       <S.LiveBean className="reverse">
-        <BeanSVG width={100} height={100} />
+        <BeanSVG />
       </S.LiveBean>
       <S.LiveBean>
-        <BeanSVG width={100} height={100} />
+        <BeanSVG />
       </S.LiveBean>
     </S.Box>
   );

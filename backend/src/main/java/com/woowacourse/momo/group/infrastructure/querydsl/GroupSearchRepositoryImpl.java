@@ -1,8 +1,9 @@
 package com.woowacourse.momo.group.infrastructure.querydsl;
 
+import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
-import static com.woowacourse.momo.group.domain.favorite.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
+import static com.woowacourse.momo.member.domain.QMember.member;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,15 +16,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
-import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
 
 @Repository
 public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
@@ -37,31 +39,36 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     }
 
     @Override
-    public Page<Group> findGroups(SearchCondition condition, Pageable pageable) {
+    public Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable) {
         return findGroups(condition, pageable, () -> null);
     }
 
     @Override
-    public Page<Group> findHostedGroups(SearchCondition condition, Member member, Pageable pageable) {
-        return findGroups(condition, pageable, () -> isHost(member));
+    public Page<GroupSummaryRepositoryResponse> findHostedGroups(SearchCondition condition, Long memberId,
+                                                                 Pageable pageable) {
+        return findGroups(condition, pageable, () -> isHost(memberId));
     }
 
     @Override
-    public Page<Group> findParticipatedGroups(SearchCondition condition, Member member, Pageable pageable) {
-        return findGroups(condition, pageable, () -> isParticipated(member));
+    public Page<GroupSummaryRepositoryResponse> findParticipatedGroups(SearchCondition condition, Long memberId,
+                                                                       Pageable pageable) {
+        return findGroups(condition, pageable, () -> isParticipated(memberId));
     }
 
     @Override
-    public Page<Group> findLikedGroups(SearchCondition condition, Member member, Pageable pageable) {
-        List<Long> likedGroupIds = findLikedGroupIds(condition, member, pageable);
+    public Page<GroupSummaryRepositoryResponse> findLikedGroups(SearchCondition condition, Long memberId,
+                                                                Pageable pageable) {
+        List<Long> likedGroupIds = findLikedGroupIds(condition, memberId, pageable);
 
-        List<Group> groups = queryFactory
-                .select(group).distinct()
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections()).distinct()
                 .from(group)
+                .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
+                .groupBy(group.id)
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
@@ -69,21 +76,22 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(group.count())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
-                        group.id.in(likedGroupIds)
+                        favorite.memberId.eq(memberId),
+                        conditionFilter.filterByCondition(condition)
                 );
 
         return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
-    private List<Long> findLikedGroupIds(SearchCondition condition, Member member, Pageable pageable) {
+    private List<Long> findLikedGroupIds(SearchCondition condition, Long memberId, Pageable pageable) {
         return queryFactory
                 .select(group.id)
                 .from(group)
-                .innerJoin(group.favorites.favorites, favorite)
+                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .where(
-                        favorite.member.eq(member),
+                        favorite.memberId.eq(memberId),
                         conditionFilter.filterByCondition(condition)
                 )
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
@@ -92,16 +100,18 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .fetch();
     }
 
-    private Page<Group> findGroups(SearchCondition condition, Pageable pageable,
-                                   Supplier<BooleanExpression> mainCondition) {
-        List<Group> groups = queryFactory
-                .select(group).distinct()
+    private Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable,
+                                                            Supplier<BooleanExpression> mainCondition) {
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
                 .from(group)
+                .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
                         conditionFilter.filterByCondition(condition)
                 )
+                .groupBy(group.id)
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -119,21 +129,27 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
-    public List<Group> findParticipatedGroups(Member member) {
-        return queryFactory
-                .select(group).distinct()
-                .from(group)
-                .leftJoin(group.participants.participants, participant)
-                .where(isParticipated(member))
-                .fetch();
+    private static ConstructorExpression<GroupSummaryRepositoryResponse> makeProjections() {
+        int host = 1;
+        return Projections.constructor(GroupSummaryRepositoryResponse.class,
+                group.id,
+                group.name.value,
+                group.participants.host.id,
+                member.userName.value,
+                group.category,
+                group.participants.capacity.value,
+                participant.count().intValue().add(host),
+                group.closedEarly,
+                group.calendar.deadline.value
+        );
     }
 
-    private BooleanExpression isHost(Member member) {
-        return group.participants.host.eq(member);
+    private BooleanExpression isHost(Long memberId) {
+        return group.participants.host.id.eq(memberId);
     }
 
-    private BooleanExpression isParticipated(Member member) {
-        return isHost(member).or(participant.member.eq(member));
+    private BooleanExpression isParticipated(Long memberId) {
+        return isHost(memberId).or(participant.member.id.eq(memberId));
     }
 
     private List<OrderSpecifier<?>> orderByDeadlineAsc(boolean orderByDeadline) {

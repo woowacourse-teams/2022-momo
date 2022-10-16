@@ -1,5 +1,7 @@
+export { ReactComponent as ArrowSVG } from './arrow.svg';
 export { ReactComponent as BeanSVG } from './bean.svg';
 export { ReactComponent as CalendarSVG } from './calendar.svg';
+export { ReactComponent as ListSVG } from './list.svg';
 export { ReactComponent as ClockSVG } from './clock.svg';
 export { ReactComponent as CompleteSVG } from './complete.svg';
 export { ReactComponent as CrownSVG } from './crown.svg';
@@ -8,8 +10,15 @@ export { ReactComponent as EmptyHeartSVG } from './heart_empty.svg';
 export { ReactComponent as FilledHeartSVG } from './heart_filled.svg';
 export { ReactComponent as LocationSVG } from './location.svg';
 export { ReactComponent as PencilSVG } from './pencil.svg';
-export { ReactComponent as PersonSVG } from './person.svg';
 export { ReactComponent as TopArrowSVG } from './top_arrow.svg';
+export { ReactComponent as ForwardArrowSVG } from './forward_arrow.svg';
+export { ReactComponent as BackwardArrowSVG } from './backward_arrow.svg';
+export { ReactComponent as MagnifyingGlassSVG } from './magnifying_glass.svg';
+export { ReactComponent as MyGroupSVG } from './my_group.svg';
+export { ReactComponent as NewGroupSVG } from './new_group.svg';
+export { ReactComponent as SignInSVG } from './sign_in.svg';
+export { ReactComponent as SignUpSVG } from './sign_up.svg';
+export { ReactComponent as CreateSVG } from './create.svg';
 
 export { ReactComponent as StudySVG } from './category/study.svg';
 export { ReactComponent as MogackoSVG } from './category/mogacko.svg';

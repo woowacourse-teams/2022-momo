@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import static com.woowacourse.momo.acceptance.favorite.FavoriteRestHandler.모임을_찜한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_주최한_모임을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_찜한_모임을_조회한다;
@@ -12,7 +13,6 @@ import static com.woowacourse.momo.acceptance.group.GroupRestHandler.본인이_�
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.카테고리별_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.키워드로_모임목록을_조회한다;
 import static com.woowacourse.momo.acceptance.group.GroupRestHandler.페이지로_모임목록을_조회한다;
-import static com.woowacourse.momo.acceptance.like.LikeRestHandler.모임을_찜한다;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_COFFEE_TIME;
 import static com.woowacourse.momo.fixture.GroupFixture.DUDU_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;

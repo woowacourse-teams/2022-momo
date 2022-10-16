@@ -1,26 +1,26 @@
 package com.woowacourse.momo.member.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.auth.domain.TokenRepository;
-import com.woowacourse.momo.auth.exception.AuthErrorCode;
-import com.woowacourse.momo.auth.exception.AuthException;
 import com.woowacourse.momo.auth.support.PasswordEncoder;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.service.GroupFindService;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.domain.Password;
 import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
+import com.woowacourse.momo.member.event.MemberDeleteEvent;
 import com.woowacourse.momo.member.exception.MemberErrorCode;
 import com.woowacourse.momo.member.exception.MemberException;
 import com.woowacourse.momo.member.service.dto.request.ChangeNameRequest;
@@ -39,24 +39,32 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GroupFindService groupFindService;
     private final TokenRepository tokenRepository;
+    private final ParticipantRepository participantRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
         UserId userId = UserId.momo(request.getUserId());
         UserName userName = UserName.from(request.getName());
         Password password = Password.encrypt(request.getPassword(), passwordEncoder);
-        Member member = new Member(userId, password, userName);
+        validateUserIdIsNotDuplicated(userId);
+        validateUserNameIsNotDuplicated(userName);
 
-        validateUserIsNotExist(userId);
+        Member member = new Member(userId, password, userName);
         Member savedMember = memberRepository.save(member);
 
         return savedMember.getId();
     }
 
-    private void validateUserIsNotExist(UserId userId) {
-        Optional<Member> member = memberRepository.findByUserId(userId);
-        if (member.isPresent()) {
-            throw new AuthException(AuthErrorCode.SIGNUP_ALREADY_REGISTER);
+    private void validateUserIdIsNotDuplicated(UserId userId) {
+        if (memberRepository.existsByUserId(userId)) {
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_ID_DUPLICATED);
+        }
+    }
+
+    private void validateUserNameIsNotDuplicated(UserName userName) {
+        if (memberRepository.existsByUserName(userName)) {
+            throw new MemberException(MemberErrorCode.SIGNUP_USER_NAME_DUPLICATED);
         }
     }
 
@@ -71,6 +79,7 @@ public class MemberService {
         Member member = memberFindService.findMember(id);
         leaveProgressingGroup(member);
         tokenRepository.deleteByMemberId(member.getId());
+        applicationEventPublisher.publishEvent(new MemberDeleteEvent(id));
         member.delete();
     }
 
@@ -80,7 +89,8 @@ public class MemberService {
                 .filter(group -> !group.isFinishedRecruitment())
                 .collect(Collectors.toList());
         validateMemberIsNotHost(member, progressingGroups);
-        progressingGroups.forEach(group -> group.remove(member));
+
+        participantRepository.deleteAllByMemberIdInGroups(member.getId(), progressingGroups);
     }
 
     private void validateMemberIsNotHost(Member member, List<Group> groups) {

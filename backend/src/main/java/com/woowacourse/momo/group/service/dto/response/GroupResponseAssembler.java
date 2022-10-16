@@ -1,59 +1,73 @@
 package com.woowacourse.momo.group.service.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.woowacourse.momo.favorite.domain.Favorite;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.Location;
 import com.woowacourse.momo.group.domain.calendar.Duration;
 import com.woowacourse.momo.group.domain.calendar.Schedule;
-import com.woowacourse.momo.member.domain.Member;
+import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
+import com.woowacourse.momo.member.service.dto.response.MemberResponse;
 import com.woowacourse.momo.member.service.dto.response.MemberResponseAssembler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GroupResponseAssembler {
 
-    public static GroupResponse groupResponseWithLogin(Group group, Member member) {
+    public static GroupResponse groupResponse(Group group, boolean isMemberLiked) {
         return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
                 group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
                 scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), group.isMemberLiked(member), group.getDescription().getValue());
+                locationResponse(group.getLocation()), isMemberLiked, group.getDescription().getValue());
     }
 
-    public static GroupResponse groupResponseWithoutLogin(Group group) {
-        return new GroupResponse(group.getName(), MemberResponseAssembler.memberResponse(group.getHost()),
-                group.getCategory().getId(), group.getCapacity(), durationResponse(group.getDuration()),
-                scheduleResponses(group.getSchedules()), group.isFinishedRecruitment(), group.getDeadline(),
-                locationResponse(group.getLocation()), false, group.getDescription().getValue());
+    public static GroupResponse groupResponse(Group group) {
+        return groupResponse(group, false);
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithLogin(List<Group> groups, Member member) {
-        return groups.stream()
-                .map(group -> GroupResponseAssembler.groupSummaryResponseWithLogin(group, member))
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<GroupSummaryRepositoryResponse> responses,
+                                                                   List<Favorite> favorites) {
+        return responses.stream()
+                .map(response -> GroupResponseAssembler.groupSummaryResponse(response, favorites))
                 .collect(Collectors.toList());
     }
 
-    public static List<GroupSummaryResponse> groupSummaryResponsesWithoutLogin(List<Group> groups) {
-        return groups.stream()
-                .map(GroupResponseAssembler::groupSummaryResponseWithoutLogin)
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response,
+                                                             List<Favorite> favorites) {
+        boolean isFavorite = anyFavoriteMatches(response, favorites);
+        return groupSummaryResponse(response, isFavorite);
+    }
+
+    private static boolean anyFavoriteMatches(GroupSummaryRepositoryResponse response,
+                                              List<Favorite> favorites) {
+        return favorites.stream()
+                .anyMatch(favorite -> favorite.isSameGroup(response.getGroupId()));
+    }
+
+    public static List<GroupSummaryResponse> groupSummaryResponses(List<GroupSummaryRepositoryResponse> responses) {
+        return responses.stream()
+                .map(GroupResponseAssembler::groupSummaryResponse)
                 .collect(Collectors.toList());
     }
 
-    public static GroupSummaryResponse groupSummaryResponseWithLogin(Group group, Member member) {
-        return new GroupSummaryResponse(group.getId(), group.getName(),
-                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline(), group.isMemberLiked(member));
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response) {
+        return groupSummaryResponse(response, false);
     }
 
-    public static GroupSummaryResponse groupSummaryResponseWithoutLogin(Group group) {
-        return new GroupSummaryResponse(group.getId(), group.getName(),
-                MemberResponseAssembler.memberResponse(group.getHost()), group.getCategory().getId(),
-                group.getCapacity(), group.getParticipants().size(), group.isFinishedRecruitment(),
-                group.getDeadline(), false);
+    private static GroupSummaryResponse groupSummaryResponse(GroupSummaryRepositoryResponse response, boolean isFavorite) {
+        return new GroupSummaryResponse(response.getGroupId(), response.getGroupName(),
+                new MemberResponse(response.getHostId(), response.getHostName()), response.getCategory().getId(),
+                response.getCapacity(), response.getNumOfParticipant(), isFinished(response),
+                response.getDeadline(), isFavorite);
+    }
+
+    private static boolean isFinished(GroupSummaryRepositoryResponse response) {
+        return response.isClosedEarly() || response.getDeadline().isBefore(LocalDateTime.now());
     }
 
     public static GroupPageResponse groupPageResponse(List<GroupSummaryResponse> groupSummaryResponses,

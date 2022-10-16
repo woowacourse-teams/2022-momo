@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.woowacourse.momo.group.controller.dto.request.calendar.DurationApiRequest;
 import com.woowacourse.momo.group.controller.dto.request.calendar.ScheduleApiRequest;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
-import com.woowacourse.momo.group.service.dto.request.GroupUpdateRequest;
 import com.woowacourse.momo.group.service.dto.request.LocationRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.DeadlineRequest;
 import com.woowacourse.momo.group.service.dto.request.calendar.DurationRequest;
@@ -24,16 +23,6 @@ public class GroupRequestAssembler {
                 durationRequest(request.getDuration()), schedulesRequest(request.getSchedules()),
                 deadlineRequest(request.getDeadline()), locationRequest(request.getLocation()),
                 request.getDescription());
-    }
-
-    public GroupUpdateRequest groupUpdateRequest(GroupUpdateApiRequest request) {
-        return new GroupUpdateRequest(request.getName(), request.getCategoryId(), request.getCapacity(),
-                durationRequest(request.getDuration()), schedulesRequest(request.getSchedules()),
-                deadlineRequest(request.getDeadline()), request.getDescription());
-    }
-
-    public LocationRequest groupLocationUpdateRequest(LocationUpdateApiRequest request) {
-        return new LocationRequest(request.getAddress(), request.getBuildingName(), request.getBuildingName());
     }
 
     private DurationRequest durationRequest(DurationApiRequest request) {

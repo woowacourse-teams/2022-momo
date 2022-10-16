@@ -7,6 +7,12 @@ const Container = styled.div`
   gap: 2rem;
 
   width: 100%;
+
+  margin: auto;
+
+  ${({ theme: { breakpoints } }) => `
+    max-width: ${breakpoints.md}px;
+  `}
 `;
 
 const Heading = styled.h2`
@@ -17,33 +23,15 @@ const Heading = styled.h2`
 `;
 
 const GroupListBox = styled.div`
-  display: grid;
-  place-items: center;
-  row-gap: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   width: 100%;
 
-  ${({
-    theme: {
-      breakpoints: { md, lg, xl },
-    },
-  }) => `
-    @media only screen and (max-width: ${md}px) {
-      grid-template-columns: repeat(1, 1fr);
-    }
-
-    @media only screen and (min-width: ${md}px) and (max-width: ${lg}px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media only screen and (min-width: ${lg}px) and (max-width: ${xl}px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media only screen and (min-width: ${xl}px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  `}
+  a {
+    width: 96%;
+  }
 `;
 
 const LoadingWrapper = styled.div`
