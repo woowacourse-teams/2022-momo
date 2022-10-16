@@ -5,11 +5,11 @@ import { oneLineEllipsis } from 'styles/common';
 
 const boxAnimation = keyframes`
   from {
-    transform: scaleY(0.5);
+    transform: scale3d(1, 0.5, 1);
   }
 
   to {
-    transform: scaleY(1);
+    transform: scale3d(1, 1, 1);
   }
 `;
 
@@ -109,7 +109,8 @@ const Name = styled.div`
 const Button = styled.button<{ reverse?: boolean }>`
   background: none;
 
-  transform: ${({ reverse = false }) => (reverse ? 'rotate(180deg)' : '')};
+  transform: ${({ reverse = false }) =>
+    reverse ? 'rotate3d(0, 0, 1, 180deg)' : ''};
   transition: transform 0.5s;
 `;
 

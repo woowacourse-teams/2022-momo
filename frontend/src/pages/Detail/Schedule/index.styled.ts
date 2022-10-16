@@ -5,11 +5,11 @@ import { DescriptionBox } from 'pages/Detail/@shared/index.styled';
 
 const headerAnimation = keyframes`
   from {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
   }
 
   to {
-    transform: translateX(-130%);
+    transform: translate3d(-130%, 0, 0);
   }
 `;
 

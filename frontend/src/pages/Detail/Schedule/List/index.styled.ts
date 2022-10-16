@@ -11,7 +11,8 @@ const ListContainer = styled.ul`
 const Button = styled.button<{ reverse?: boolean }>`
   background: none;
 
-  transform: ${({ reverse = false }) => (reverse ? 'rotate(180deg)' : '')};
+  transform: ${({ reverse = false }) =>
+    reverse ? 'rotate3d(0, 0, 1, 180deg)' : ''};
   transition: transform 0.5s;
 `;
 
