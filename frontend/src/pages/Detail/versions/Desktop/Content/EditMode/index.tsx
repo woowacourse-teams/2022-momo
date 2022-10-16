@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import { Address } from 'react-daum-postcode';
 import { useQueryClient } from 'react-query';
 import { useResetRecoilState } from 'recoil';
@@ -14,6 +12,7 @@ import useCategory from 'hooks/useCategory';
 import useCreateState from 'hooks/useCreateState';
 import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
+import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
 import validateGroupData from 'pages/Create/validate';
 import { groupDetailState } from 'store/states';
@@ -70,7 +69,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
 
   const queryClient = useQueryClient();
 
-  useEffect(() => {
+  useMount(() => {
     dangerouslySetName(data.name);
     setSelectedCategory({
       id: data.categoryId,
@@ -87,7 +86,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
       data.location.detail,
     );
     dangerouslySetDescription(data.description);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  });
 
   const editGroup = () => {
     const groupData = getGroupState();
