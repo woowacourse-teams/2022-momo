@@ -6,6 +6,7 @@ import useModal from 'hooks/useModal';
 import { modalState } from 'store/states';
 
 const postCodeStyle = {
+  width: '90%',
   height: '500px',
 };
 

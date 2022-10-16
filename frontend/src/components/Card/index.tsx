@@ -15,8 +15,8 @@ interface CardProps {
   group: GroupSummary;
 }
 
-function Card({ group }: CardProps) {
-  const {
+function Card({
+  group: {
     id,
     name,
     categoryId,
@@ -26,8 +26,8 @@ function Card({ group }: CardProps) {
     numOfParticipant,
     capacity,
     like,
-  } = group;
-
+  },
+}: CardProps) {
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${id}`}>
       <S.Container finished={finished}>

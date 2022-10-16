@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { preventUserSelect } from 'styles/common';
+
 const Label = styled.label`
   display: flex;
   gap: 0.5rem;
@@ -10,10 +12,7 @@ const Label = styled.label`
 
   cursor: pointer;
 
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  ${preventUserSelect}
 `;
 
 const Checkbox = styled.div`
@@ -35,7 +34,7 @@ const Checkbox = styled.div`
 `;
 
 const Check = styled.div`
-  transform: rotate(-45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
 
   width: 0.5rem;
   height: 0.3rem;

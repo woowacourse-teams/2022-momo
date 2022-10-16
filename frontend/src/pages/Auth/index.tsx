@@ -25,8 +25,8 @@ function Auth() {
 
   if (code) {
     requestGoogleLogin(code)
-      .then(({ accessToken, refreshToken }) => {
-        setAuth(accessToken, refreshToken);
+      .then(token => {
+        setAuth(token);
 
         requestUserInfo().then(userInfo => {
           setLogin('oauth', userInfo);

@@ -7,6 +7,8 @@ import { GroupDetailData } from 'types/data';
 import Content from './Content';
 import * as S from './index.styled';
 
+const svgSize = 20;
+
 interface CalendarProps {
   year: number;
   month: number;
@@ -16,7 +18,6 @@ interface CalendarProps {
   schedules: GroupDetailData['schedules'];
   selectDate?: (year: number, month: number, date: number) => void;
   selectedDate?: string;
-  size: 'medium' | 'large';
 }
 
 function Calendar({
@@ -28,22 +29,21 @@ function Calendar({
   schedules,
   selectDate,
   selectedDate,
-  size,
 }: CalendarProps) {
   const theme = useTheme();
 
   return (
-    <S.Container size={size}>
-      <S.Navigator size={size}>
-        <S.Arrow onClick={goToPrevMonth}>
-          <LeftArrow width={30} color={theme.colors.yellow001} />
+    <S.Container>
+      <S.Navigator>
+        <S.Arrow direction="left" onClick={goToPrevMonth}>
+          <LeftArrow width={svgSize} color={theme.colors.yellow001} />
         </S.Arrow>
-        <div>
+        <p>
           {year}년 {month}월
-        </div>
-        <S.RightArrow onClick={goToNextMonth}>
-          <RightArrow width={30} color={theme.colors.yellow001} />
-        </S.RightArrow>
+        </p>
+        <S.Arrow direction="right" onClick={goToNextMonth}>
+          <RightArrow width={svgSize} color={theme.colors.yellow001} />
+        </S.Arrow>
       </S.Navigator>
       <Content
         value={{

@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 import { DescriptionBox } from 'pages/Detail/@shared/index.styled';
 
-const HeaderAnimation = keyframes`
+const headerAnimation = keyframes`
   from {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
   }
 
   to {
-    transform: translateX(-130%);
+    transform: translate3d(-130%, 0, 0);
   }
 `;
 
@@ -41,13 +41,13 @@ const Header = styled.div`
     white-space: nowrap;
     word-break: keep-all;
 
-    color: ${({ theme: { colors } }) => colors.black002};
-
     line-height: 1.5rem;
 
-    animation: ${HeaderAnimation} linear 15s infinite;
+    color: ${({ theme: { colors } }) => colors.black002};
 
     font-size: 0.9rem;
+
+    animation: ${headerAnimation} linear 15s infinite;
 
     ::-webkit-scrollbar {
       display: none;
@@ -63,19 +63,19 @@ const SVGBox = styled.div`
 
     cursor: pointer;
 
-    &:hover {
-      background: ${({ theme: { colors } }) => colors.gray004};
-
-      border-radius: 50%;
-    }
-
     ${({
       theme: {
+        colors,
         breakpoints: { md },
       },
     }) => `
       @media only screen and (max-width: ${md}px) {
         width: 1rem;
+      }
+
+      &:hover {
+        background: ${colors.gray005};
+        border-radius: 50%;
       }
     `}
   }

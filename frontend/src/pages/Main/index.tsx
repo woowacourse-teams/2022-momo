@@ -8,6 +8,7 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import { BROWSER_PATH } from 'constants/path';
+import useMount from 'hooks/useMount';
 import { CategoryType, GroupList } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
 
@@ -37,7 +38,7 @@ function Main() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useMount(() => {
     const isVisitedUser = localStorage.getItem('visited');
 
     if (!isVisitedUser) {
@@ -45,7 +46,7 @@ function Main() {
     }
 
     localStorage.setItem('visited', 'true');
-  }, [navigate]);
+  });
 
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);

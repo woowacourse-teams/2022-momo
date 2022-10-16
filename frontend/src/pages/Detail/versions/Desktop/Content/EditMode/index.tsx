@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import { Address } from 'react-daum-postcode';
 import { useQueryClient } from 'react-query';
 import { useResetRecoilState } from 'recoil';
@@ -14,6 +12,7 @@ import useCategory from 'hooks/useCategory';
 import useCreateState from 'hooks/useCreateState';
 import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
+import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
 import validateGroupData from 'pages/Create/validate';
 import { groupDetailState } from 'store/states';
@@ -30,7 +29,7 @@ interface EditModeProps {
 }
 
 function EditMode({ id, data, finishEditMode }: EditModeProps) {
-  const { categories } = useCategory();
+  const categories = useCategory();
   const resetGroupData = useResetRecoilState(groupDetailState);
 
   const { showPostcodeModal } = useModal();
@@ -70,7 +69,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
 
   const queryClient = useQueryClient();
 
-  useEffect(() => {
+  useMount(() => {
     dangerouslySetName(data.name);
     setSelectedCategory({
       id: data.categoryId,
@@ -87,7 +86,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
       data.location.detail,
     );
     dangerouslySetDescription(data.description);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  });
 
   const editGroup = () => {
     const groupData = getGroupState();
@@ -130,6 +129,20 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
     });
   };
 
+  const changeDuration =
+    (type: 'start' | 'end') => (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)) return;
+
+      dangerouslySetSchedules([]);
+
+      if (type === 'start') {
+        setStartDate(e);
+        return;
+      }
+
+      setEndDate(e);
+    };
+
   const setLocation = (data: Address) => {
     setLocationAddress(data.address, data.buildingName, '');
   };
@@ -171,14 +184,14 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
             <S.Input
               type="date"
               value={startDate}
-              onChange={setStartDate}
+              onChange={changeDuration('start')}
               min={getNewDateString('day')}
             />
             ~
             <S.Input
               type="date"
               value={endDate}
-              onChange={setEndDate}
+              onChange={changeDuration('end')}
               min={startDate || getNewDateString('day')}
             />
           </S.Duration>

@@ -4,7 +4,7 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 
 import * as S from './index.styled';
 
-interface DetailSideBarProps
+interface RightProps
   extends Pick<
     GroupDetailData,
     'host' | 'capacity' | 'duration' | 'schedules'
@@ -12,13 +12,13 @@ interface DetailSideBarProps
   participants: GroupParticipants;
 }
 
-function DetailSideBar({
+function Right({
   host,
   capacity,
   duration,
   schedules,
   participants,
-}: DetailSideBarProps) {
+}: RightProps) {
   return (
     <S.Container>
       <Schedule duration={duration} schedules={schedules} />
@@ -31,4 +31,4 @@ function DetailSideBar({
   );
 }
 
-export default DetailSideBar;
+export default Right;

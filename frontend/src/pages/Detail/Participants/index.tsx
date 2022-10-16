@@ -39,7 +39,7 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
       <S.HeaderContainer>
         <h2>참여자 목록</h2>
         <S.Summary>
-          (<span>{participants.length}</span>명 / 최대 <span>{capacity}</span>
+          (<span>{participants.length}</span>명 / <span>{capacity}</span>
           명)
         </S.Summary>
       </S.HeaderContainer>
@@ -64,16 +64,18 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
             ),
         )}
       </S.Box>
-      {showingParticipants.length > cutLine ? (
-        <S.Button type="button" onClick={showSomeParticipants} reverse={true}>
+      {participantsWithoutHost.length > cutLine && (
+        <S.Button
+          type="button"
+          onClick={
+            showingParticipants.length > cutLine
+              ? showSomeParticipants
+              : showAllParticipants
+          }
+          reverse={showingParticipants.length > cutLine}
+        >
           <ArrowSVG />
         </S.Button>
-      ) : (
-        participantsWithoutHost.length > cutLine && (
-          <S.Button type="button" onClick={showAllParticipants}>
-            <ArrowSVG />
-          </S.Button>
-        )
       )}
     </S.Container>
   );

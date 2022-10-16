@@ -3,7 +3,7 @@ import Lottie from 'lottie-react';
 import notFound from 'assets/lottie/not_found.json';
 
 const style = {
-  height: 300,
+  height: '40%',
 };
 
 function NotFoundPage() {

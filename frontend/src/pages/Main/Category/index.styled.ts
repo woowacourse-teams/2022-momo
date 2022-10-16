@@ -103,7 +103,7 @@ const ButtonContainer = styled.div`
 
 const Button = styled.button`
   width: 2.75rem;
-  height: 2.75rem;
+  aspect-ratio: 1 / 1;
 
   border: none;
   border-radius: 50%;
@@ -113,8 +113,7 @@ const Button = styled.button`
 
   background: none;
 
-  transition: box-shadow 0.3s;
-  transition: background-color 0.3s;
+  transition: box-shadow 0.3s, background-color 0.3s;
 
   p {
     width: 5rem;

@@ -5,7 +5,7 @@ const Location = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  margin-left: 0.5rem;
+  margin-left: 1rem;
 `;
 
 const MapWrapper = styled.div`

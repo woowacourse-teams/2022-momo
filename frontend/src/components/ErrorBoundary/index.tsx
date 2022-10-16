@@ -1,22 +1,26 @@
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 
 import { Error as ErrorAnimation } from 'components/Animation';
 
 import * as S from './index.styled';
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
+  children: React.ReactNode;
   isError?: boolean;
-  fallbackUI?: ReactNode;
+  fallbackUI?: React.ReactNode;
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps> {
-  state = { isError: false };
+  state = {
+    isError: false,
+  };
 
   static getDerivedStateFromError(
     _: Error,
   ): Pick<ErrorBoundaryProps, 'isError'> {
-    return { isError: true };
+    return {
+      isError: true,
+    };
   }
 
   componentDidCatch(error: Error) {

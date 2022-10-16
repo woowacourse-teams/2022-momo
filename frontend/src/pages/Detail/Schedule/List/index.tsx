@@ -23,18 +23,20 @@ function List({ schedules }: Pick<GroupDetailData, 'schedules'>) {
   return (
     <S.ListContainer>
       {showingSchedules.map((schedule, idx) => (
-        <div key={idx}>· {parsedSchedule(schedule)}</div>
+        <li key={idx}>· {parsedSchedule(schedule)}</li>
       ))}
-      {showingSchedules.length > cutLine ? (
-        <S.Button type="button" onClick={showSomeSchedules} reverse={true}>
+      {schedules.length > cutLine && (
+        <S.Button
+          type="button"
+          onClick={
+            showingSchedules.length > cutLine
+              ? showSomeSchedules
+              : showAllSchedules
+          }
+          reverse={showingSchedules.length > cutLine}
+        >
           <ArrowSVG />
         </S.Button>
-      ) : (
-        schedules.length > cutLine && (
-          <S.Button type="button" onClick={showAllSchedules}>
-            <ArrowSVG />
-          </S.Button>
-        )
       )}
     </S.ListContainer>
   );

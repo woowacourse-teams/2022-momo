@@ -13,12 +13,17 @@ import { CategoryType, GroupList, SelectableGroup } from 'types/data';
 import CardList from './CardList';
 import * as S from './index.styled';
 
-const groupTypes: { type: SelectableGroup; name: string; shortName: string }[] =
-  [
-    { type: 'participated', name: '내가 참여한 모임', shortName: '참여' },
-    { type: 'hosted', name: '내가 주최한 모임', shortName: '주최' },
-    { type: 'liked', name: '내가 찜한 모임', shortName: '찜' },
-  ];
+interface GroupType {
+  type: SelectableGroup;
+  name: string;
+  shortName: string;
+}
+
+const groupTypes: GroupType[] = [
+  { type: 'participated', name: '내가 참여한 모임', shortName: '참여' },
+  { type: 'hosted', name: '내가 주최한 모임', shortName: '주최' },
+  { type: 'liked', name: '내가 찜한 모임', shortName: '찜' },
+];
 
 const invalidCategoryId = -1;
 

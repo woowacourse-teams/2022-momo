@@ -28,7 +28,7 @@ const Button = styled.div`
 
   ${({ theme: { colors } }) => `
     color: ${colors.gray002};
-    
+
     &.selected {
       color: ${colors.black001};
     }
@@ -43,7 +43,7 @@ const Content = styled.div`
 `;
 
 const Check = styled.div`
-  transform: rotate(-45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
 
   width: 0.5rem;
   height: 0.3rem;

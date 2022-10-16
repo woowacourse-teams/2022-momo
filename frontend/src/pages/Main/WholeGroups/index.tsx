@@ -26,18 +26,16 @@ interface WholeGroupsProps {
 function WholeGroups({ isFetching, data, refetch, groups }: WholeGroupsProps) {
   const target = useRef<HTMLDivElement>(null);
 
-  useInfiniteScroll(target, isFetching, data, refetch, groups);
+  useInfiniteScroll({ target, isFetching, data, refetch, groups });
 
   return (
     <S.Container>
       {groups.length > 0 ? (
-        <>
-          <S.GroupListBox>
-            {groups.map(group => (
-              <Card group={group} key={group.id} />
-            ))}
-          </S.GroupListBox>
-        </>
+        <S.GroupListBox>
+          {groups.map(group => (
+            <Card group={group} key={group.id} />
+          ))}
+        </S.GroupListBox>
       ) : (
         <NoResult>
           찾고 계신 모임이 없어요 ・゜・(ノД`)

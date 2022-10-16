@@ -6,7 +6,6 @@ const Container = styled(DescriptionBox)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
 
   line-height: 2rem;
   white-space: pre-wrap;

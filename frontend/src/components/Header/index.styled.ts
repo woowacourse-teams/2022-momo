@@ -49,9 +49,9 @@ const Nav = styled.div`
       @media only screen and (max-width: ${md}px) {
         display: none;
       }
-  
+
       fill: ${colors.white001};
-      
+
       cursor: pointer;
     }
   `}

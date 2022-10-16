@@ -8,8 +8,7 @@ interface isValidSignupFormDataProp {
   isValidConfirmPassword: boolean;
 }
 
-const passwordRegExp =
-  '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$';
+const passwordRegExp = `^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{${MEMBER_RULE.PASSWORD.MIN_LENGTH},${MEMBER_RULE.PASSWORD.MAX_LENGTH}}$`;
 
 const checkValidId = (inputId: string) => {
   return (
@@ -50,7 +49,7 @@ const isValidSignupFormData = ({
   }
 
   if (!isValidConfirmPassword) {
-    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_CONFIRMPASSWORD);
+    throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_CONFIRM_PASSWORD);
   }
 };
 

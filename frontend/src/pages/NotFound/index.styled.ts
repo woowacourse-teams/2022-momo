@@ -7,14 +7,23 @@ const Container = styled.div`
   align-items: center;
   gap: 4rem;
 
-  height: 100%;
+  height: calc(100% - 64px);
+
+  padding: 0 2rem 2rem;
 `;
 
 const Title = styled.h1`
   font-size: 2rem;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  white-space: nowrap;
+
   font-size: 1.2rem;
 `;
 

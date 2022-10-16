@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
+import { oneLineEllipsis } from 'styles/common';
+
+const Container = styled.div<{ finished: boolean }>`
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
@@ -12,7 +14,7 @@ const Container = styled.div`
 
   transition: transform 0.2s;
 
-  filter: ${({ finished }: { finished: boolean }) =>
+  filter: ${({ finished }) =>
     finished ? `contrast(50%) grayscale(100%)` : ''};
 
   cursor: pointer;
@@ -22,13 +24,13 @@ const Container = styled.div`
   }
 `;
 
-const Image = styled.div`
+const Image = styled.div<{ imgSrc: string }>`
   width: 25%;
   height: 70%;
 
   border-radius: 20px;
 
-  background: url(${({ imgSrc }: { imgSrc: string }) => imgSrc});
+  background: url(${({ imgSrc }) => imgSrc});
   background-size: cover;
   background-position: center;
 
@@ -41,9 +43,11 @@ const Description = styled.div`
   justify-content: space-between;
 
   width: 70%;
-  line-height: 1.4em;
+  line-height: 1.4rem;
 
   padding: 1rem 3%;
+
+  font-size: 1rem;
 `;
 
 const Left = styled.div`
@@ -66,45 +70,18 @@ const Right = styled.div`
 `;
 
 const Title = styled.div`
-  display: -webkit-box;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-
   font-weight: 700;
   font-size: 1.2rem;
+
+  ${oneLineEllipsis}
 `;
 
 const HostName = styled.div`
-  display: -webkit-box;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-
   color: ${({ theme: { colors } }) => colors.gray001};
 
   font-weight: 100;
-  font-size: 1rem;
-`;
 
-const HashtagBox = styled.div`
-  display: flex;
-  gap: 0.3rem;
-
-  margin-top: 1.875rem;
-`;
-
-const Hashtag = styled.div`
-  color: ${({ theme: { colors } }) => colors.blue002};
-
-  font-weight: 700;
-  font-size: 1rem;
+  ${oneLineEllipsis}
 `;
 
 const Deadline = styled.div`
@@ -114,12 +91,9 @@ const Deadline = styled.div`
   color: ${({ theme: { colors } }) => colors.red003};
 
   font-weight: 700;
-  font-size: 1rem;
 `;
 
 const Capacity = styled.div`
-  font-size: 1rem;
-
   ${({ theme: { colors } }) => `
     color: ${colors.gray001};
 
@@ -137,8 +111,6 @@ export {
   Right,
   Title,
   HostName,
-  HashtagBox,
-  Hashtag,
   Deadline,
   Capacity,
 };

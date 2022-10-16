@@ -17,7 +17,7 @@ const Button = styled.button`
   bottom: 1rem;
 
   width: 56px;
-  height: 56px;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
 
@@ -33,9 +33,8 @@ const Button = styled.button`
       breakpoints: { md },
     },
   }) => `
-    filter: drop-shadow(0 0 2px ${colors.gray001});
-
     background: ${colors.white001};
+    filter: drop-shadow(0 0 2px ${colors.gray001});
 
     @media only screen and (max-width: ${md}px) {
       bottom: 80px;

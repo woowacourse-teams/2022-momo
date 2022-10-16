@@ -18,12 +18,11 @@ const Input = styled.input`
   width: 100%;
 
   background: none;
-
   border: none;
   border-radius: 0;
 
-  padding-bottom: 0.5rem;
   margin: 0 0.5rem;
+  padding-bottom: 0.5rem;
 
   transition: border 0.3s;
 
