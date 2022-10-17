@@ -66,7 +66,7 @@ public class GroupSearchService {
         Pageable pageable = defaultPageable(request);
         Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(searchCondition, pageable);
 
-        List<GroupSummaryRepositoryResponse> groupsOfPage = getGroupsOfPage(groups);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = convertImageUrl(groups);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
@@ -101,12 +101,12 @@ public class GroupSearchService {
         Pageable pageable = defaultPageable(request);
         Page<GroupSummaryRepositoryResponse> groups = function.apply(searchCondition, pageable);
 
-        List<GroupSummaryRepositoryResponse> groupsOfPage = getGroupsOfPage(groups);
+        List<GroupSummaryRepositoryResponse> groupsOfPage = convertImageUrl(groups);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage, favorites);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    private List<GroupSummaryRepositoryResponse> getGroupsOfPage(Page<GroupSummaryRepositoryResponse> groups) {
+    private List<GroupSummaryRepositoryResponse> convertImageUrl(Page<GroupSummaryRepositoryResponse> groups) {
         for (GroupSummaryRepositoryResponse group : groups.getContent()) {
             String imageName = group.getImageName();
             String imageUrl = imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
