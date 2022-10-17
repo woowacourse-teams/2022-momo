@@ -19,7 +19,7 @@ const StickyContainer = styled(BasicContainer)`
   align-items: center;
 
   position: fixed;
-  top: calc(5rem + 64px);
+  top: calc(5rem + 52px);
 
   background: ${({ theme: { colors } }) => colors.white001};
 

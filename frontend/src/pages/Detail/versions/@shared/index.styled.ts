@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const Image = styled.div<{ src: string }>`
   position: fixed;
-  top: 64px;
+  top: 52px;
   z-index: 100;
 
   width: 100%;

@@ -10,7 +10,7 @@ const Container = styled.div`
   z-index: 999;
 
   width: 100%;
-  height: 64px;
+  height: 52px;
 
   backdrop-filter: saturate(150%) blur(5px);
 
@@ -23,10 +23,9 @@ const Container = styled.div`
 `;
 
 const Logo = styled.div`
-  color: ${({ theme: { colors } }) => colors.white001};
-
-  font-size: 40px;
-  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Nav = styled.div`
