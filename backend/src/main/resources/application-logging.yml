@@ -12,3 +12,7 @@
 momo-logging:
   show: 'true'
   file-path: './momolog/'
+
+logging:
+  level:
+    com.zaxxer.hikari.pool.HikariPool: debug
