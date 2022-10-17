@@ -50,7 +50,13 @@ const style = (colors: Theme['colors']) => css`
 
     font-family: 'GangwonEdu_Bold';
 
+    background: none;
+
     cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
   input {
