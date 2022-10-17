@@ -4,12 +4,10 @@ import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import com.woowacourse.momo.category.domain.Category;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public class GroupSummaryRepositoryResponse {
 
@@ -23,4 +21,8 @@ public class GroupSummaryRepositoryResponse {
     private boolean isClosedEarly;
     private LocalDateTime deadline;
     private String imageName;
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 }
