@@ -51,7 +51,6 @@ const CLIENT_ERROR_MESSAGE = {
   CREATE: {
     NAME: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
     CAPACITY: `최대 인원은 ${GROUP_RULE.CAPACITY.MIN}명 이상 ${GROUP_RULE.CAPACITY.MAX}명 이하여야 해요.`,
-    CATEGORY: '카테고리는 꼭 선택해 주세요.',
     DURATION: '기간이 잘못 입력되었어요.',
     SCHEDULE_TIME: '일정의 시작 시간은 종료 시간 이전이어야 해요.',
     SCHEDULE_DAY: '일정이 잘못 입력되었어요.',
