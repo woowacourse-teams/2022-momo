@@ -86,7 +86,8 @@ class GroupImageControllerTest {
                 .init(Mockito.anyLong(), Mockito.anyLong());
 
         mockMvc.perform(delete("/api/groups/1/thumbnail")
-                        .header("Authorization", "bearer " + accessToken))
+                        .header("Authorization", "bearer " + accessToken)
+                )
                 .andExpect(status().isNoContent())
                 .andDo(
                         document("groupimageinit",
