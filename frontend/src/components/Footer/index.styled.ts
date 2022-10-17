@@ -11,7 +11,7 @@ const Container = styled.div`
   z-index: 100;
 
   width: 100%;
-  height: 60px;
+  height: 52px;
 
   a {
     width: 100%;
@@ -37,12 +37,13 @@ const Button = styled.button`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.1rem;
 
   width: 100%;
 
   background: none;
 
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 
   ${({ theme: { colors } }) => `
     color: ${colors.gray001};

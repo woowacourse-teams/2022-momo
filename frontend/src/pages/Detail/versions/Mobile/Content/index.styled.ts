@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  padding-bottom: 60px;
+  padding-bottom: 52px;
 `;
 
 const BasicContainer = styled.div`
@@ -55,7 +55,7 @@ const ContentContainer = styled(BasicContainer)`
 
 const ControlContainer = styled.div`
   position: fixed;
-  bottom: 60px;
+  bottom: 52px;
 
   width: 100%;
 

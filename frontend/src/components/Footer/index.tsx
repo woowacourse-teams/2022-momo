@@ -13,6 +13,8 @@ import useModal from 'hooks/useModal';
 
 import * as S from './index.styled';
 
+const svgSize = 26;
+
 function Footer() {
   const { isLogin } = useAuth();
 
@@ -35,7 +37,7 @@ function Footer() {
           </Link>
           <Link to={BROWSER_PATH.MY_INFORMATION}>
             <S.Button>
-              <FilledHeartSVG />내 정보
+              <FilledHeartSVG width={svgSize} height={svgSize} />내 정보
             </S.Button>
           </Link>
         </>
