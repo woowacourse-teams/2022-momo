@@ -1,10 +1,12 @@
 import { LocationSVG } from 'assets/svg';
-import useKakaoMap from 'hooks/useKakaoMap';
+import ErrorBoundary from 'components/ErrorBoundary';
+import LocationFallback from 'components/ErrorBoundary/Fallback/Location';
 import { GroupDetailData } from 'types/data';
 import { processLocation } from 'utils/location';
 
 import Description from '../Description';
 import * as S from './index.styled';
+import Map from './Map';
 
 const svgSize = 25;
 
@@ -13,8 +15,6 @@ interface LocationProps {
 }
 
 function Location({ location }: LocationProps) {
-  useKakaoMap(location);
-
   return (
     <>
       {location.address ? (
@@ -23,9 +23,9 @@ function Location({ location }: LocationProps) {
             <LocationSVG width={svgSize} />
             {processLocation(location)}
           </S.Location>
-          <S.MapWrapper>
-            <S.Map id="map" />
-          </S.MapWrapper>
+          <ErrorBoundary fallbackUI={<LocationFallback />}>
+            <Map location={location} />
+          </ErrorBoundary>
         </Description>
       ) : (
         <Description type="location" />
