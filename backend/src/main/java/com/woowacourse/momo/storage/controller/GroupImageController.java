@@ -31,7 +31,7 @@ public class GroupImageController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> init(@PathVariable Long groupId, @AuthenticationPrincipal Long memberId) {
+    public ResponseEntity<Void> init(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId) {
         groupImageService.init(memberId, groupId);
         return ResponseEntity.noContent().build();
     }
