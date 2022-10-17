@@ -23,6 +23,7 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.service.MemberValidator;
+import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
 import com.woowacourse.momo.storage.support.ImageProvider;
 
@@ -47,8 +48,9 @@ public class GroupSearchService {
     }
 
     private String getImageUrl(Group group) {
-        String imageName = groupImageRepository.findImageNameByGroupId(group.getId())
-                .orElseGet(() -> group.getCategory().getDefaultImageName());
+        GroupImage groupImage = groupImageRepository.findByGroupId(group.getId())
+                .orElseGet(() -> new GroupImage(group.getId(), group.getCategory().getDefaultImageName()));
+        String imageName = groupImage.getImageName();
         return imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
     }
 

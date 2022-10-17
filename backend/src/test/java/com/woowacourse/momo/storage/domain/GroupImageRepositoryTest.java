@@ -40,17 +40,6 @@ class GroupImageRepositoryTest {
                 .isEqualTo(GROUP_IMAGE);
     }
 
-    @DisplayName("그룹 아이디를 이용해 그룹 이미지 이름을 조회한다")
-    @Test
-    void findImageNameByGroupId() {
-        groupImageRepository.save(GROUP_IMAGE);
-
-        Optional<String> imageName = groupImageRepository.findImageNameByGroupId(GROUP_ID);
-
-        assertThat(imageName).isPresent();
-        assertThat(imageName.get()).isEqualTo(IMAGE_NAME);
-    }
-
     @DisplayName("그룹 아이디를 이용해 그룹 이미지 정보를 삭제한다")
     @Test
     void deleteByGroupId() {
