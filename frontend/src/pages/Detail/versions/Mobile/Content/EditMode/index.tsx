@@ -14,7 +14,7 @@ import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
-import validateGroupData from 'pages/Create/validate';
+import { validateGroupData } from 'pages/Create/validate';
 import { groupDetailState } from 'store/states';
 import { GroupDetailData } from 'types/data';
 import { getNewDateString } from 'utils/date';
@@ -197,7 +197,6 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
         <S.Label>
           일정
           <CalendarEditor
-            type="edit"
             useScheduleState={useScheduleState}
             duration={{ start: startDate, end: endDate }}
           />
