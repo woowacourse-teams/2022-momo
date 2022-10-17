@@ -2,3 +2,6 @@ spring:
   jpa:
     hibernate:
       naming.physical-strategy: com.woowacourse.momo.global.config.CustomNamingStrategy
+  datasource:
+    hikari:
+      maximum-pool-size: ${MAX_POOL_SIZE:10}
