@@ -6,6 +6,7 @@ export type ModalStateType =
   | 'postcode';
 
 export interface SnackbarState {
+  type: 'basic' | 'error';
   isShowing: boolean;
   message: string;
 }

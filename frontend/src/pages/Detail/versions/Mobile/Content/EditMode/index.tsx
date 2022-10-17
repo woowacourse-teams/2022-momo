@@ -97,7 +97,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
         return;
       }
 
-      setMessage(error.message);
+      setMessage(error.message, true);
       return;
     }
 

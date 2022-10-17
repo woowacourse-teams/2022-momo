@@ -72,7 +72,7 @@ function Signup() {
     e.preventDefault();
 
     if (!idRef.current) {
-      setMessage(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID);
+      setMessage(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID, true);
       return;
     }
 
@@ -87,11 +87,11 @@ function Signup() {
       });
     } catch (error) {
       if (error instanceof Error) {
-        setMessage(error.message);
+        setMessage(error.message, true);
         return;
       }
 
-      setMessage(CLIENT_ERROR_MESSAGE.UNHANDLED);
+      setMessage(CLIENT_ERROR_MESSAGE.UNHANDLED, true);
     }
 
     requestSignup({ userId: idRef.current.value, password, name })

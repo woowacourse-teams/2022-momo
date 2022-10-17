@@ -37,26 +37,36 @@ const categoryImages = [
   CategoryImage10,
 ];
 
-const svgSize = 40;
-const categoryIcons = [
-  <StudySVG width={svgSize} height={svgSize} />,
-  <MogackoSVG width={svgSize} height={svgSize} />,
-  <SicsaSVG width={svgSize} height={svgSize} />,
-  <CafeSVG width={svgSize} height={svgSize} />,
-  <DrinkSVG width={svgSize} height={svgSize} />,
-  <ExerciseSVG width={svgSize} height={svgSize} />,
-  <GameSVG width={svgSize} height={svgSize} />,
-  <TravelSVG width={svgSize} height={svgSize} />,
-  <CultureSVG width={svgSize} height={svgSize} />,
-  <GuitarSVG width={svgSize} height={svgSize} />,
-];
-
 const getCategoryImage = (categoryId: GroupDetailData['categoryId']) => {
   return categoryImages[categoryId - 1];
 };
 
-const getCategoryIcon = (categoryId: GroupDetailData['categoryId']) => {
-  return categoryIcons[categoryId - 1];
+const getCategoryIcon = (
+  categoryId: GroupDetailData['categoryId'],
+  svgSize: number,
+) => {
+  switch (categoryId) {
+    case 1:
+      return <StudySVG width={svgSize} height={svgSize} />;
+    case 2:
+      return <MogackoSVG width={svgSize} height={svgSize} />;
+    case 3:
+      return <SicsaSVG width={svgSize} height={svgSize} />;
+    case 4:
+      return <CafeSVG width={svgSize} height={svgSize} />;
+    case 5:
+      return <DrinkSVG width={svgSize} height={svgSize} />;
+    case 6:
+      return <ExerciseSVG width={svgSize} height={svgSize} />;
+    case 7:
+      return <GameSVG width={svgSize} height={svgSize} />;
+    case 8:
+      return <TravelSVG width={svgSize} height={svgSize} />;
+    case 9:
+      return <CultureSVG width={svgSize} height={svgSize} />;
+    case 10:
+      return <GuitarSVG width={svgSize} height={svgSize} />;
+  }
 };
 
 export { getCategoryImage, getCategoryIcon };

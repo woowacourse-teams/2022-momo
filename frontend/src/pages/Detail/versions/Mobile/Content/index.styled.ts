@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  padding-bottom: 60px;
+  padding-bottom: 52px;
 `;
 
 const BasicContainer = styled.div`
@@ -19,7 +19,7 @@ const StickyContainer = styled(BasicContainer)`
   align-items: center;
 
   position: fixed;
-  top: calc(5rem + 64px);
+  top: calc(5rem + 52px);
 
   background: ${({ theme: { colors } }) => colors.white001};
 
@@ -55,7 +55,7 @@ const ContentContainer = styled(BasicContainer)`
 
 const ControlContainer = styled.div`
   position: fixed;
-  bottom: 60px;
+  bottom: 52px;
 
   width: 100%;
 

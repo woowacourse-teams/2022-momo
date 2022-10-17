@@ -71,15 +71,30 @@ const Right = styled.div`
 
 const Title = styled.div`
   font-weight: 700;
-  font-size: 1.2rem;
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 1rem;
+    }
+
+    @media only screen and (min-width: ${breakpoints.md}px) {
+      font-size: 1.2rem;
+    }
+  `}
 
   ${oneLineEllipsis}
 `;
 
 const HostName = styled.div`
-  color: ${({ theme: { colors } }) => colors.gray001};
-
   font-weight: 100;
+
+  ${({ theme: { colors, breakpoints } }) => `
+    color: ${colors.gray001};
+
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
+    }
+  `}
 
   ${oneLineEllipsis}
 `;
@@ -88,17 +103,27 @@ const Deadline = styled.div`
   min-width: 40%;
   max-width: 90%;
 
-  color: ${({ theme: { colors } }) => colors.red003};
-
   font-weight: 700;
+
+  ${({ theme: { colors, breakpoints } }) => `
+    color: ${colors.red003};
+
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
+    }
+  `}
 `;
 
 const Capacity = styled.div`
-  ${({ theme: { colors } }) => `
+  ${({ theme: { colors, breakpoints } }) => `
     color: ${colors.gray001};
 
     span {
       color: ${colors.blue002};
+    }
+
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
     }
   `}
 `;

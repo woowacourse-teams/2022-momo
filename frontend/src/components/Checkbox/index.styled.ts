@@ -12,6 +12,12 @@ const Label = styled.label`
 
   cursor: pointer;
 
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
+    }
+  `}
+
   ${preventUserSelect}
 `;
 

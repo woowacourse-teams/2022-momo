@@ -7,7 +7,7 @@ const Container = styled.div`
   align-items: center;
   gap: 4rem;
 
-  height: calc(100% - 64px);
+  height: calc(100% - 52px);
 
   padding: 0 2rem 2rem;
 `;

@@ -77,7 +77,7 @@ function ControlButton({
 
   const joinGroup = () => {
     if (!isLogin) {
-      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
+      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN, true);
 
       return;
     }

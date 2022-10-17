@@ -2,15 +2,13 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   position: fixed;
-  top: 64px;
+  top: 52px;
 
   width: 100%;
 
-  z-index: 998;
+  background: ${({ theme: { colors } }) => colors.white001};
 
-  ${({ theme: { colors } }) => `
-    background: ${colors.white001};
-  `}
+  z-index: 998;
 `;
 
 const ContentContainer = styled.div`
@@ -19,13 +17,10 @@ const ContentContainer = styled.div`
   align-items: flex-end;
 
   width: 94%;
+  max-width: ${({ theme: { breakpoints } }) => breakpoints.md}px;
 
   margin: 0 auto;
   padding: 0 3%;
-
-  ${({ theme: { breakpoints } }) => `
-    max-width: ${breakpoints.md}px;
-  `}
 `;
 
 export { Container, ContentContainer };

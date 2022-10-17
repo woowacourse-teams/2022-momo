@@ -5,7 +5,7 @@ import { getCategoryIcon } from 'utils/category';
 
 import * as S from './index.styled';
 
-const svgSize = 40;
+const svgSize = 30;
 
 interface CategoryProps {
   selectedCategoryId: CategoryType['id'];
@@ -43,7 +43,7 @@ function Category({
               }
             >
               <S.Button type="button" className={isSelected ? 'select' : ''}>
-                {getCategoryIcon(id)}
+                {getCategoryIcon(id, svgSize)}
               </S.Button>
               <p>{name}</p>
             </S.ButtonContainer>

@@ -12,13 +12,13 @@ interface PageProps {
 }
 
 function Page({ children }: PageProps) {
-  const { isShowing, message } = useRecoilValue(snackbarState);
+  const { type, isShowing, message } = useRecoilValue(snackbarState);
 
   return (
     <S.PageContainer>
       <Header />
       <S.Content>{children}</S.Content>
-      {isShowing && <Snackbar>{message}</Snackbar>}
+      {isShowing && <Snackbar isError={type === 'error'}>{message}</Snackbar>}
       <Footer />
     </S.PageContainer>
   );
