@@ -67,9 +67,16 @@ public class GroupImageService {
         }
     }
 
+    /**
+        이미지 서버로부터 받아온 이미지 접근 경로를 이미지 이름만 추출하는 메서드
+        ex) https://image.moyeora.site/group/saved/imageName.png -> imageName.png
+
+        @Param   이미지 접근 경로 (URL)
+        @Return  이미지 이름
+     */
     private String parseSavedImageName(String fullPathOfSavedImage) {
-        int startIndexImageName = fullPathOfSavedImage.indexOf(imageProvider.getSavedGroupPath())
-                + imageProvider.getSavedGroupPath().length() + 1;
+        int endIndexImageUrl = fullPathOfSavedImage.indexOf(imageProvider.getSavedGroupPath());
+        int startIndexImageName = endIndexImageUrl + imageProvider.getSavedGroupPath().length() + 1;
         return fullPathOfSavedImage.substring(startIndexImageName);
     }
 
