@@ -1,55 +1,80 @@
-import { forwardRef, LegacyRef, memo } from 'react';
+import { memo } from 'react';
 
-import useCategory from 'hooks/useCategory';
 import { CreateStateReturnValues } from 'hooks/useCreateState';
-import { CreateGroupData } from 'types/data';
-import { isEqualObject } from 'utils/object';
+import { convertRemainTime, getNewDateString } from 'utils/date';
 
-import { Container, ErrorColor, Heading } from '../@shared/styled';
+import {
+  Container,
+  SectionContainer,
+  Heading,
+  Input,
+  LabelContainer,
+  Label,
+} from '../@shared/styled';
 import * as S from './index.styled';
 
 interface Step2Props {
-  useSelectedCategoryState: CreateStateReturnValues['useSelectedCategoryState'];
-  gotoAdjacentPage: (direction: 'next' | 'prev') => void;
+  useDateState: CreateStateReturnValues['useDateState'];
+  useDeadlineState: CreateStateReturnValues['useDeadlineState'];
+  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step2(
-  { useSelectedCategoryState, gotoAdjacentPage }: Step2Props,
-  ref: LegacyRef<HTMLDivElement>,
-) {
-  const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
-  const categories = useCategory();
+function Step2({
+  useDateState,
+  useDeadlineState,
+  pressEnterToNext,
+}: Step2Props) {
+  const { startDate, setStartDate, endDate, setEndDate } = useDateState();
+  const { deadline, setDeadline } = useDeadlineState();
 
-  const selectCategory =
-    (newSelectedCategory: CreateGroupData['selectedCategory']) => () => {
-      setSelectedCategory(newSelectedCategory);
-
-      gotoAdjacentPage('next');
-    };
+  const remainTime = convertRemainTime(deadline);
 
   return (
-    <Container ref={ref}>
-      <Heading>
-        <span>어떤</span> 모임인가요? <ErrorColor>*</ErrorColor>
-        <p>(카테고리 선택)</p>
-      </Heading>
-      <S.OptionBox>
-        {categories &&
-          categories.map(category => (
-            <S.Button
-              type="button"
-              key={category.id}
-              className={
-                isEqualObject(selectedCategory, category) ? 'isActive' : ''
-              }
-              onClick={selectCategory(category)}
-            >
-              {category.name}
-            </S.Button>
-          ))}
-      </S.OptionBox>
+    <Container>
+      <SectionContainer>
+        <Heading>
+          <span>언제부터 언제까지</span> 만날건가요?
+        </Heading>
+        <LabelContainer>
+          <p>기간</p>
+          <S.InputWrapper>
+            <Input
+              type="date"
+              value={startDate}
+              onChange={setStartDate}
+              min={getNewDateString('day')}
+            />
+            ~
+            <Input
+              type="date"
+              value={endDate}
+              onChange={setEndDate}
+              min={startDate || getNewDateString('day')}
+              onKeyPress={pressEnterToNext}
+            />
+          </S.InputWrapper>
+        </LabelContainer>
+      </SectionContainer>
+      <SectionContainer>
+        <Heading>
+          <span>언제까지</span> 모집할까요?
+        </Heading>
+        <LabelContainer>
+          <Label>
+            <p>날짜</p>
+            <p>{remainTime && `${remainTime} 후`}</p>
+          </Label>
+          <Input
+            type="datetime-local"
+            value={deadline}
+            onChange={setDeadline}
+            onKeyPress={pressEnterToNext}
+            min={getNewDateString('min')}
+          />
+        </LabelContainer>
+      </SectionContainer>
     </Container>
   );
 }
 
-export default memo(forwardRef(Step2));
+export default memo(Step2);
