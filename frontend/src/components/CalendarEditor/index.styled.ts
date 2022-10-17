@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 
 import { Input as BasicInput } from 'pages/Create/Steps/@shared/styled';
 
-const Content = styled.div<{ isEdit: boolean }>`
+const Content = styled.div`
   display: flex;
+  gap: 2rem;
 
   max-width: 56rem;
   height: fit-content;
@@ -12,16 +13,14 @@ const Content = styled.div<{ isEdit: boolean }>`
     theme: {
       breakpoints: { md },
     },
-    isEdit,
   }) =>
-    isEdit
-      ? `
-        @media only screen and (max-width: ${md}px) {
-          flex-direction: column;
-          align-items: center;
-        }
-      `
-      : ''}
+    `
+      @media only screen and (max-width: ${md}px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+    `}
 `;
 
 const Left = styled.div`
@@ -115,7 +114,7 @@ const DayBox = styled.div`
   `}
 `;
 
-const InputWrapper = styled.div<{ isEdit: boolean }>`
+const InputWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,17 +124,13 @@ const InputWrapper = styled.div<{ isEdit: boolean }>`
     theme: {
       breakpoints: { md },
     },
-    isEdit,
-  }) =>
-    isEdit
-      ? `
+  }) => `
         @media only screen and (max-width: ${md}px) {
           display: grid;
           grid-template-columns: 3fr 1fr;
           place-items: center;
         }
-      `
-      : ''}
+      `}
 `;
 
 const Input = styled(BasicInput)`
