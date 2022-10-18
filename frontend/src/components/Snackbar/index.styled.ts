@@ -29,17 +29,17 @@ const close = keyframes`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ animationTime: number; isError: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: fixed;
-  left: 50%;
   bottom: 2rem;
+  left: 50%;
 
-  width: fit-content;
-  max-width: 40rem;
+  width: 80%;
+  max-width: 30rem;
   height: 4rem;
 
   border-radius: 4px;
@@ -47,12 +47,12 @@ const Container = styled.div`
 
   z-index: 2147483647;
 
-  ${({ theme: { colors } }) => `
-    background: ${colors.yellow001}cc;
-    color: ${colors.black002};
+  ${({ theme: { colors }, isError }) => `
+    background: ${isError ? colors.red002 : colors.yellow001}cc;
+    color: ${isError ? colors.white001 : colors.black002};
   `}
 
-  ${({ animationTime }: { animationTime: number }) => css`
+  ${({ animationTime }) => css`
     animation: ${show} ${animationTime}ms forwards;
 
     &.close {

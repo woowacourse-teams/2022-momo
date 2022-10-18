@@ -34,20 +34,21 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Profile = styled.div`
+const Profile = styled.div<{ width: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
 
   font-size: 16px;
 
-  background: ${({ theme: { colors } }) => colors.gray004};
-
-  ${({ width }: { width: string }) => `
+  ${({ theme: { colors }, width }) => `
     width: ${width};
-    height: ${width};
+
+    background: ${colors.gray004};
   `}
 `;
 
@@ -55,17 +56,15 @@ const ToggleButton = styled.button`
   width: fit-content;
   height: fit-content;
 
-  border-radius: 50%;
-
   background: none;
+  border-radius: 50%;
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.div<{ animationTime: number }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 
   position: absolute;
   transform: translate3d(-7rem, 3rem, 0);
@@ -73,6 +72,10 @@ const Dropdown = styled.div`
   width: 10rem;
 
   border-radius: 4px;
+
+  * {
+    cursor: pointer;
+  }
 
   ${({ theme: { colors } }) => `
     background: ${colors.white001};
@@ -83,7 +86,7 @@ const Dropdown = styled.div`
     }
   `}
 
-  ${({ animationTime }: { animationTime: number }) => css`
+  ${({ animationTime }) => css`
     animation: ${showDropdown} ${animationTime}ms;
 
     &.close {
@@ -112,4 +115,10 @@ const Option = styled.div`
   height: 3rem;
 `;
 
-export { Container, Profile, ToggleButton, Dropdown, User, Option };
+const SvgWrapper = styled.div`
+  svg {
+    display: block;
+  }
+`;
+
+export { Container, Profile, ToggleButton, Dropdown, User, Option, SvgWrapper };

@@ -1,4 +1,4 @@
-import axios from 'apis/axios';
+import { axios, axiosWithAccessToken } from 'apis/axios';
 import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
 import { GROUP_RULE } from 'constants/rule';
@@ -10,9 +10,37 @@ import {
   CategoryType,
   SelectableGroup,
 } from 'types/data';
-import { conditionalAuthenticationHeader } from 'utils/header';
-import { accessTokenProvider } from 'utils/token';
 import { makeUrl } from 'utils/url';
+
+interface GroupIdResponse {
+  groupId: GroupDetailData['id'];
+}
+
+const makeGroupData = ({
+  name,
+  selectedCategory,
+  capacity,
+  startDate,
+  endDate,
+  schedules,
+  deadline,
+  location,
+  description,
+}: CreateGroupData) => {
+  return {
+    name,
+    categoryId: selectedCategory.id === -1 ? 1 : selectedCategory.id,
+    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
+    duration: {
+      start: startDate,
+      end: endDate,
+    },
+    schedules,
+    deadline,
+    location,
+    description,
+  };
+};
 
 const requestCreateGroup = ({
   name,
@@ -25,26 +53,20 @@ const requestCreateGroup = ({
   location,
   description,
 }: CreateGroupData) => {
-  const data = {
+  const data = makeGroupData({
     name,
-    categoryId: selectedCategory.id,
-    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
-    duration: {
-      start: startDate,
-      end: endDate,
-    },
+    selectedCategory,
+    capacity,
+    startDate,
+    endDate,
     schedules,
     deadline,
     location,
     description,
-  };
+  });
 
-  return axios
-    .post<{ groupId: GroupDetailData['id'] }>(API_PATH.GROUP, data, {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    })
+  return axiosWithAccessToken
+    .post<GroupIdResponse>(API_PATH.GROUP, data)
     .then(response => {
       return response.data.groupId;
     })
@@ -70,26 +92,20 @@ const requestEditGroup = (
   }: CreateGroupData,
   id: GroupDetailData['id'],
 ) => {
-  const data = {
+  const data = makeGroupData({
     name,
-    categoryId: selectedCategory.id,
-    capacity: capacity || GROUP_RULE.CAPACITY.MAX,
-    duration: {
-      start: startDate,
-      end: endDate,
-    },
+    selectedCategory,
+    capacity,
+    startDate,
+    endDate,
     schedules,
     deadline,
     location,
     description,
-  };
+  });
 
-  return axios
-    .put<{ groupId: GroupDetailData['id'] }>(`${API_PATH.GROUP}/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    })
+  return axiosWithAccessToken
+    .put<GroupIdResponse>(`${API_PATH.GROUP}/${id}`, data)
     .then(response => {
       return response.data.groupId;
     })
@@ -119,17 +135,13 @@ const requestJoinedGroups =
 
     const baseUrl =
       type === 'participated'
-        ? API_PATH.PARTICIPATED_GROUP
+        ? API_PATH.JOINED_GROUP.PARTICIPATED
         : type === 'hosted'
-        ? API_PATH.HOSTED_GROUP
-        : API_PATH.LIKED_GROUP;
+        ? API_PATH.JOINED_GROUP.HOSTED
+        : API_PATH.JOINED_GROUP.LIKED;
 
-    return axios
-      .get<GroupList>(makeUrl(baseUrl, queryParams), {
-        headers: {
-          Authorization: `Bearer ${accessTokenProvider.get()}`,
-        },
-      })
+    return axiosWithAccessToken
+      .get<GroupList>(makeUrl(baseUrl, queryParams))
       .then(response => response.data);
   };
 
@@ -148,29 +160,19 @@ const requestGroups =
       category: categoryId,
     };
 
-    return axios
-      .get<GroupList>(
-        makeUrl(API_PATH.GROUP, queryParams),
-        conditionalAuthenticationHeader(),
-      )
+    return axiosWithAccessToken
+      .get<GroupList>(makeUrl(API_PATH.GROUP, queryParams))
       .then(response => response.data);
   };
 
 const requestGroupDetail = (id: GroupDetailData['id']) => {
-  return axios
-    .get<GroupDetailData>(
-      `${API_PATH.GROUP}/${id}`,
-      conditionalAuthenticationHeader(),
-    )
+  return axiosWithAccessToken
+    .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
     .then(response => response.data);
 };
 
 const requestDeleteGroup = (id: GroupDetailData['id']) => {
-  return axios.delete(`${API_PATH.GROUP}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${accessTokenProvider.get()}`,
-    },
-  });
+  return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}`);
 };
 
 const requestGroupParticipants = (id: GroupDetailData['id']) => {
@@ -180,55 +182,27 @@ const requestGroupParticipants = (id: GroupDetailData['id']) => {
 };
 
 const requestJoinGroup = (id: GroupDetailData['id']) => {
-  return axios.post(
+  return axiosWithAccessToken.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    },
   );
 };
 
 const requestExitGroup = (id: GroupDetailData['id']) => {
-  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`, {
-    headers: {
-      Authorization: `Bearer ${accessTokenProvider.get()}`,
-    },
-  });
+  return axiosWithAccessToken.delete(
+    `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
+  );
 };
 
 const requestCloseGroup = (id: GroupDetailData['id']) => {
-  return axios.post(
-    `${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    },
-  );
+  return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`);
 };
 
 const requestLikeGroup = (id: GroupDetailData['id']) => {
-  return axios.post(
-    `${API_PATH.GROUP}/${id}${API_PATH.LIKE}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessTokenProvider.get()}`,
-      },
-    },
-  );
+  return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
 const requestUnlikeGroup = (id: GroupDetailData['id']) => {
-  return axios.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`, {
-    headers: {
-      Authorization: `Bearer ${accessTokenProvider.get()}`,
-    },
-  });
+  return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
 export {

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import useMount from 'hooks/useMount';
 import useThrottle from 'hooks/useThrottle';
 
 import { Step1, Step2, Step3, Step4, Step5 } from './Steps';
@@ -40,12 +41,11 @@ function Landing() {
     setShowedPageNumbers([1, 2, 3, 4, 5]);
   }, 100);
 
-  useEffect(() => {
+  useMount(() => {
     window.addEventListener('scroll', throttledScrollEvent);
 
     return () => window.removeEventListener('scroll', throttledScrollEvent);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <>

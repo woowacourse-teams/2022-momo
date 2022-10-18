@@ -8,8 +8,8 @@ function NotFound() {
       <NotFoundPage />
       <S.Title> 404 Not Found </S.Title>
       <S.Description>
-        요청하신 페이지를 찾을 수 없어요. 주소가 올바른지 다시 한 번
-        확인해주세요.
+        <p>요청하신 페이지를 찾을 수 없어요.</p>
+        <p>주소가 올바른지 다시 한 번 확인해주세요.</p>
       </S.Description>
     </S.Container>
   );

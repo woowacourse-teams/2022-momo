@@ -12,7 +12,6 @@ import * as S from './index.styled';
 const svgSize = 20;
 
 interface CalendarEditorProps {
-  type?: 'create' | 'edit';
   useScheduleState: () => {
     schedules: CreateGroupData['schedules'];
     setSchedules: (schedule: ScheduleType) => void;
@@ -26,7 +25,6 @@ interface CalendarEditorProps {
 }
 
 function CalendarEditor({
-  type = 'create',
   useScheduleState,
   duration,
   pressEnterToNext = () => {},
@@ -89,7 +87,7 @@ function CalendarEditor({
   };
 
   return (
-    <S.Content isEdit={type === 'edit'}>
+    <S.Content>
       <S.Left>
         <Calendar
           duration={duration}
@@ -122,7 +120,7 @@ function CalendarEditor({
             </S.Wrapper>
           </S.TimeContainer>
         </S.Container>
-        <S.InputWrapper isEdit={type === 'edit'}>
+        <S.InputWrapper>
           <S.Input
             type="time"
             value={startTime}

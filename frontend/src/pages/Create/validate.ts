@@ -10,11 +10,6 @@ const validateName = (name: CreateGroupData['name']) => () => {
   );
 };
 
-const validateCategory =
-  (category: CreateGroupData['selectedCategory']) => () => {
-    return !!category.id;
-  };
-
 const validateCapacity = (capacity: CreateGroupData['capacity']) => () => {
   return (
     !capacity ||
@@ -29,12 +24,18 @@ const validateDurationDate =
 
 const validateDeadlineDate =
   (
+    startDate: Date,
     deadline: CreateGroupData['deadline'],
     schedules: CreateGroupData['schedules'],
   ) =>
   () => {
     const parsedDeadline = new Date(deadline);
+    const endOfStartDate = resetDateToEndOfDay(new Date(startDate));
     const now = new Date();
+
+    if (parsedDeadline > endOfStartDate) {
+      return false;
+    }
 
     if (schedules.length === 0) {
       return parsedDeadline > now;
@@ -62,7 +63,6 @@ const validateDescription =
 
 const generateValidators = ({
   name,
-  selectedCategory,
   capacity,
   startDate,
   endDate,
@@ -81,10 +81,6 @@ const generateValidators = ({
       errorMessage: CLIENT_ERROR_MESSAGE.CREATE.NAME,
     },
     {
-      validator: validateCategory(selectedCategory),
-      errorMessage: CLIENT_ERROR_MESSAGE.CREATE.CATEGORY,
-    },
-    {
       validator: validateCapacity(capacity),
       errorMessage: CLIENT_ERROR_MESSAGE.CREATE.CAPACITY,
     },
@@ -97,7 +93,7 @@ const generateValidators = ({
       errorMessage: CLIENT_ERROR_MESSAGE.CREATE.DURATION,
     },
     {
-      validator: validateDeadlineDate(deadline, schedules),
+      validator: validateDeadlineDate(startDateInMidnight, deadline, schedules),
       errorMessage: CLIENT_ERROR_MESSAGE.CREATE.DEADLINE,
     },
     {
@@ -121,4 +117,10 @@ const validateGroupData = (props: CreateGroupData) => {
   });
 };
 
-export default validateGroupData;
+export {
+  validateName,
+  validateCapacity,
+  validateDurationDate,
+  validateDeadlineDate,
+  validateGroupData,
+};

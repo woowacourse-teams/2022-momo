@@ -17,7 +17,7 @@ const modalState = atom<ModalStateType>({
 
 const snackbarState = atom<SnackbarState>({
   key: 'snackbarState',
-  default: { isShowing: false, message: '' },
+  default: { type: 'basic', isShowing: false, message: '' },
 });
 
 const loginState = atom<LoginState>({

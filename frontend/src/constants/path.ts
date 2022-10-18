@@ -10,20 +10,26 @@ const BROWSER_PATH = {
 
 const API_PATH = {
   GROUP: '/groups',
-  PARTICIPATED_GROUP: '/groups/me/participated',
-  HOSTED_GROUP: '/groups/me/hosted',
-  LIKED_GROUP: '/groups/me/liked',
+  JOINED_GROUP: {
+    PARTICIPATED: '/groups/me/participated',
+    HOSTED: '/groups/me/hosted',
+    LIKED: '/groups/me/liked',
+  },
   CATEGORY: '/categories',
   PARTICIPANTS: '/participants',
   CLOSE: '/close',
   LIKE: '/like',
-  LOGIN: '/auth/login',
-  GOOGLE_LOGIN: '/auth/oauth2/google/login',
-  LOGOUT: '/auth/logout',
-  REFRESH_ACCESS_TOKEN: '/auth/token/refresh',
-  MEMBERS: '/members',
-  NAME: '/members/name',
-  PASSWORD: '/members/password',
+  AUTH: {
+    LOGIN: '/auth/login',
+    GOOGLE_LOGIN: '/auth/oauth2/google/login',
+    LOGOUT: '/auth/logout',
+    REFRESH_ACCESS_TOKEN: '/auth/token/refresh',
+  },
+  MEMBER: {
+    BASE: '/members',
+    NAME: '/members/name',
+    PASSWORD: '/members/password',
+  },
 };
 
 export { BROWSER_PATH, API_PATH };

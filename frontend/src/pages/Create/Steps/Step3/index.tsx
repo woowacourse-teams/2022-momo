@@ -1,49 +1,31 @@
-import { forwardRef, LegacyRef, memo } from 'react';
+import { memo } from 'react';
 
-import { GROUP_RULE } from 'constants/rule';
+import CalendarEditor from 'components/CalendarEditor';
 import { CreateStateReturnValues } from 'hooks/useCreateState';
+import { GroupDetailData } from 'types/data';
 
-import {
-  Container,
-  Heading,
-  Input,
-  Label,
-  LabelContainer,
-} from '../@shared/styled';
-
+import { Container, Heading, SectionContainer } from '../@shared/styled';
 interface Step3Props {
-  useCapacityState: CreateStateReturnValues['useCapacityState'];
+  useScheduleState: CreateStateReturnValues['useScheduleState'];
+  duration: GroupDetailData['duration'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step3(
-  { useCapacityState, pressEnterToNext }: Step3Props,
-  ref: LegacyRef<HTMLDivElement>,
-) {
-  const { capacity, setCapacity } = useCapacityState();
-
+function Step3({ useScheduleState, duration, pressEnterToNext }: Step3Props) {
   return (
-    <Container ref={ref}>
-      <Heading>
-        모임에 <span>최대 몇 명</span>까지 모일 수 있나요?
-        <p>미입력 시 {GROUP_RULE.CAPACITY.MAX}명으로 설정됩니다.</p>
-      </Heading>
-      <LabelContainer>
-        <Label>
-          <p>최대 인원 수</p>
-        </Label>
-        <Input
-          type="number"
-          min={GROUP_RULE.CAPACITY.MIN}
-          max={GROUP_RULE.CAPACITY.MAX}
-          value={capacity || ''}
-          onChange={setCapacity}
-          onKeyPress={pressEnterToNext}
-          placeholder={GROUP_RULE.CAPACITY.MAX.toString()}
+    <Container>
+      <SectionContainer>
+        <Heading>
+          <span>언제</span> 만날건가요?
+        </Heading>
+        <CalendarEditor
+          useScheduleState={useScheduleState}
+          duration={duration}
+          pressEnterToNext={pressEnterToNext}
         />
-      </LabelContainer>
+      </SectionContainer>
     </Container>
   );
 }
 
-export default memo(forwardRef(Step3));
+export default memo(Step3);

@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { requestSignup } from 'apis/request/auth';
 import Modal from 'components/Modal';
 import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
+import { MEMBER_RULE } from 'constants/rule';
 import useHandleError from 'hooks/useHandleError';
 import useInput from 'hooks/useInput';
 import useModal from 'hooks/useModal';
@@ -21,6 +22,9 @@ import {
 function Signup() {
   const modalFlag = useRecoilValue(modalState);
   const { showLoginModal } = useModal();
+
+  const { setMessage } = useSnackbar();
+
   const { handleError } = useHandleError();
 
   const idRef = useRef<HTMLInputElement>(null);
@@ -39,11 +43,21 @@ function Signup() {
     setValue: setConfirmPassword,
     dangerouslySetValue: dangerouslySetConfirmPassword,
   } = useInput('');
+
   const [isValidName, setIsValidName] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
 
-  const { setMessage } = useSnackbar();
+  useEffect(() => {
+    setIsValidPassword(password.length === 0 || checkValidPassword(password));
+    setIsValidConfirmPassword(
+      confirmPassword.length === 0 || password === confirmPassword,
+    );
+  }, [password, confirmPassword, isValidPassword]);
+
+  useEffect(() => {
+    setIsValidName(name.length === 0 || checkValidName(name));
+  }, [name]);
 
   const resetValues = () => {
     if (!idRef.current) return;
@@ -58,7 +72,7 @@ function Signup() {
     e.preventDefault();
 
     if (!idRef.current) {
-      setMessage(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID);
+      setMessage(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID, true);
       return;
     }
 
@@ -73,11 +87,11 @@ function Signup() {
       });
     } catch (error) {
       if (error instanceof Error) {
-        setMessage(error.message);
+        setMessage(error.message, true);
         return;
       }
 
-      setMessage(CLIENT_ERROR_MESSAGE.UNHANDLED);
+      setMessage(CLIENT_ERROR_MESSAGE.UNHANDLED, true);
     }
 
     requestSignup({ userId: idRef.current.value, password, name })
@@ -91,17 +105,6 @@ function Signup() {
       });
   };
 
-  useEffect(() => {
-    setIsValidPassword(password.length === 0 || checkValidPassword(password));
-    setIsValidConfirmPassword(
-      confirmPassword.length === 0 || password === confirmPassword,
-    );
-  }, [password, confirmPassword, isValidPassword]);
-
-  useEffect(() => {
-    setIsValidName(name.length === 0 || checkValidName(name));
-  }, [name]);
-
   return (
     <Modal modalState={modalFlag === 'signup'}>
       <S.Form onSubmit={signup}>
@@ -109,13 +112,14 @@ function Signup() {
         <S.InputContainer>
           <S.Label>
             아이디
-            <S.Input type="text" ref={idRef} autoFocus required />
+            <S.Input type="text" ref={idRef} required />
           </S.Label>
           <S.Label>
             닉네임
             <S.Input type="text" value={name} onChange={setName} required />
             <S.InfoMessage isValid={isValidName}>
-              닉네임은 1~30자 사이여야 해요.
+              닉네임은 {MEMBER_RULE.NAME.MIN_LENGTH} ~{' '}
+              {MEMBER_RULE.NAME.MAX_LENGTH}자 사이여야 해요.
             </S.InfoMessage>
           </S.Label>
           <S.Label>
@@ -127,7 +131,9 @@ function Signup() {
               required
             />
             <S.InfoMessage isValid={isValidPassword}>
-              8~16자 사이의 영문, 숫자, 특수문자 포함
+              {MEMBER_RULE.PASSWORD.MIN_LENGTH} ~{' '}
+              {MEMBER_RULE.PASSWORD.MAX_LENGTH}자 사이의 영문, 숫자, 특수문자
+              포함
             </S.InfoMessage>
           </S.Label>
           <S.Label>

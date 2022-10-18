@@ -1,35 +1,38 @@
-import { forwardRef, LegacyRef, memo } from 'react';
+import { memo } from 'react';
 
-import CalendarEditor from 'components/CalendarEditor';
+import { GROUP_RULE } from 'constants/rule';
 import { CreateStateReturnValues } from 'hooks/useCreateState';
-import { GroupDetailData } from 'types/data';
 
-import { Container, Heading } from '../@shared/styled';
-
+import { Container, Heading, SectionContainer } from '../@shared/styled';
+import * as S from './index.styled';
 interface Step5Props {
-  useScheduleState: CreateStateReturnValues['useScheduleState'];
-  duration: GroupDetailData['duration'];
-  pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  useDescriptionState: CreateStateReturnValues['useDescriptionState'];
 }
 
-// TODO: duration이 바뀌면 schedules 날림
-// TODO: schedule 관련 코드 리팩토링
-function Step5(
-  { useScheduleState, duration, pressEnterToNext }: Step5Props,
-  ref: LegacyRef<HTMLDivElement>,
-) {
+function Step5({ useDescriptionState }: Step5Props) {
+  const { description, setDescription } = useDescriptionState();
   return (
-    <Container ref={ref}>
-      <Heading>
-        <span>언제</span> 만날건가요?
-      </Heading>
-      <CalendarEditor
-        useScheduleState={useScheduleState}
-        duration={duration}
-        pressEnterToNext={pressEnterToNext}
-      />
+    <Container>
+      <SectionContainer>
+        <Heading>
+          모임의 <span>추가 설명</span>을 입력해주세요.
+          <p>자세히 설명할수록 인원이 모일 확률이 높아져요!</p>
+        </Heading>
+        <S.LabelContainer>
+          <S.Label>
+            <p>
+              {description.length}/{GROUP_RULE.DESCRIPTION.MAX_LENGTH}
+            </p>
+          </S.Label>
+          <S.TextArea
+            value={description}
+            onChange={setDescription}
+            maxLength={GROUP_RULE.DESCRIPTION.MAX_LENGTH}
+          />
+        </S.LabelContainer>
+      </SectionContainer>
     </Container>
   );
 }
 
-export default memo(forwardRef(Step5));
+export default memo(Step5);

@@ -8,7 +8,15 @@ const Wrapper = styled.div`
 
   width: 100%;
 
-  padding: 1rem 0;
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      padding: 0.5rem 0;
+    }
+
+    @media only screen and (min-width: ${breakpoints.md}px) {
+      padding: 1rem 0;
+    }
+  `}
 `;
 
 export { Wrapper };

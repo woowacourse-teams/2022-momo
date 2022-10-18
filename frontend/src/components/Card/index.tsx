@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import theme from 'styles/theme';
 import { GroupSummary } from 'types/data';
 import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
@@ -15,8 +16,8 @@ interface CardProps {
   group: GroupSummary;
 }
 
-function Card({ group }: CardProps) {
-  const {
+function Card({
+  group: {
     id,
     name,
     categoryId,
@@ -26,7 +27,9 @@ function Card({ group }: CardProps) {
     numOfParticipant,
     capacity,
     like,
-  } = group;
+  },
+}: CardProps) {
+  const svgSize = document.body.clientWidth > theme.breakpoints.md ? 30 : 25;
 
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${id}`}>
@@ -45,7 +48,13 @@ function Card({ group }: CardProps) {
             </S.Deadline>
           </S.Left>
           <S.Right>
-            <div>{like ? <FilledHeartSVG /> : <EmptyHeartSVG />}</div>
+            <div>
+              {like ? (
+                <FilledHeartSVG width={svgSize} height={svgSize} />
+              ) : (
+                <EmptyHeartSVG width={svgSize} height={svgSize} />
+              )}
+            </div>
             <S.Capacity>
               <span>{numOfParticipant}</span>명 / <span>{capacity}</span>명
             </S.Capacity>

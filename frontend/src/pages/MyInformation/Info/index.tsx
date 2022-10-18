@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { requestChangePassword } from 'apis/request/user';
 import ConfirmPasswordModal from 'components/ConfirmPassword';
@@ -16,13 +16,21 @@ import Inputs from './Inputs';
 import LiveBean from './LiveBean';
 
 function Info() {
-  const [loginInfo, setLoginInfo] = useRecoilState(loginState);
+  const loginInfo = useRecoilValue(loginState);
 
   const { value: name, setValue: setName } = useInput(
     loginInfo.user?.name || '',
   );
-  const { value: oldPassword, setValue: setOldPassword } = useInput('');
-  const { value: newPassword, setValue: setNewPassword } = useInput('');
+  const {
+    value: oldPassword,
+    setValue: setOldPassword,
+    dangerouslySetValue: dangerouslySetOldPassword,
+  } = useInput('');
+  const {
+    value: newPassword,
+    setValue: setNewPassword,
+    dangerouslySetValue: dangerouslySetNewPassword,
+  } = useInput('');
 
   const [isNameEditable, setIsNameEditable] = useState(false);
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
@@ -30,11 +38,17 @@ function Info() {
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
+  const resetPassword = () => {
+    dangerouslySetOldPassword('');
+    dangerouslySetNewPassword('');
+  };
+
   const editPassword = (oldPassword: string, newPassword: string) => () => {
     requestChangePassword(oldPassword, newPassword)
       .then(() => {
         setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
         setIsPasswordEditable(false);
+        resetPassword();
       })
       .catch(error => {
         if (!error) {
@@ -49,22 +63,27 @@ function Info() {
       <LiveBean />
       <S.Right>
         <Inputs
-          loginInfo={loginInfo}
-          name={name}
-          setName={setName}
-          isNameEditable={isNameEditable}
-          newPassword={newPassword}
-          setNewPassword={setNewPassword}
-          isPasswordEditable={isPasswordEditable}
+          name={{
+            value: name,
+            setValue: setName,
+            isEditable: isNameEditable,
+          }}
+          password={{
+            value: newPassword,
+            setValue: setNewPassword,
+            isEditable: isPasswordEditable,
+          }}
         />
         <Buttons
-          loginInfo={loginInfo}
-          isNameEditable={isNameEditable}
-          isPasswordEditable={isPasswordEditable}
-          setIsNameEditable={setIsNameEditable}
-          setIsPasswordEditable={setIsPasswordEditable}
-          name={name}
-          setLoginInfo={setLoginInfo}
+          name={{
+            value: name,
+            isEditable: isNameEditable,
+            setIsEditable: setIsNameEditable,
+          }}
+          password={{
+            isEditable: isPasswordEditable,
+            setIsEditable: setIsPasswordEditable,
+          }}
         />
       </S.Right>
       {loginInfo.loginType === 'basic' && (

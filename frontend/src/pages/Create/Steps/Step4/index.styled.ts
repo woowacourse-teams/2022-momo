@@ -9,8 +9,23 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled(BasicInput)`
-  width: 12rem;
-  height: 3rem;
+  cursor: pointer;
 `;
 
-export { InputWrapper, Input };
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Name = styled.p`
+  min-width: fit-content;
+`;
+
+export { InputContainer, InputWrapper, Input, Label, Name };

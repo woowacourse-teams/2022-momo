@@ -8,10 +8,11 @@ import useSnackbar from 'hooks/useSnackbar';
 import * as S from './index.styled';
 
 interface SnackbarProps {
+  isError: boolean;
   children: string;
 }
 
-function Snackbar({ children }: SnackbarProps) {
+function Snackbar({ isError, children }: SnackbarProps) {
   const { resetSnackbar } = useSnackbar();
   const { isClosing, close } = useClosingState(SNACKBAR_ANIMATION_TIME, () => {
     resetSnackbar();
@@ -29,6 +30,7 @@ function Snackbar({ children }: SnackbarProps) {
     <Portal to="snackbar">
       <S.Container
         animationTime={SNACKBAR_ANIMATION_TIME}
+        isError={isError}
         className={isClosing ? 'close' : ''}
       >
         {children}

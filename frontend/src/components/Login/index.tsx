@@ -44,9 +44,9 @@ function Login() {
     const password = passwordRef.current.value;
 
     requestLogin({ userId, password })
-      .then(({ accessToken, refreshToken }) => {
+      .then(token => {
         setMessage(GUIDE_MESSAGE.AUTH.LOGIN_SUCCESS);
-        setAuth(accessToken, refreshToken);
+        setAuth(token);
 
         requestUserInfo().then(userInfo => {
           setLogin('basic', userInfo);

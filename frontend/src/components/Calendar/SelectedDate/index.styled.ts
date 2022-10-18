@@ -5,6 +5,8 @@ import { Date } from '../index.styled';
 const TimeModal = styled.div`
   position: absolute;
 
+  white-space: nowrap;
+
   border-radius: 8px;
   padding: 1rem;
 

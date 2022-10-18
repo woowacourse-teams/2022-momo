@@ -32,7 +32,7 @@ interface ContentProps {
 
 function Content({ id, data, participants }: ContentProps) {
   const { user } = useRecoilValue(loginState);
-  const { categories } = useCategory();
+  const categories = useCategory();
 
   const [mode, setMode] = useState<'basic' | 'edit'>('basic');
 

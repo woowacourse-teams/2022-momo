@@ -19,7 +19,6 @@ function Calendar({ schedules }: CalendarProps) {
         goToPrevMonth={goToPrevMonth}
         goToNextMonth={goToNextMonth}
         schedules={schedules}
-        size="medium"
       />
     </S.Container>
   );

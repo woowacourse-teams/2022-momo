@@ -56,6 +56,12 @@ const Box = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
+    }
+  `}
 `;
 
 const FloatingLeftButton = styled.div`
@@ -102,8 +108,12 @@ const ButtonContainer = styled.div`
 `;
 
 const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 2.75rem;
-  height: 2.75rem;
+  aspect-ratio: 1 / 1;
 
   border: none;
   border-radius: 50%;
@@ -113,8 +123,7 @@ const Button = styled.button`
 
   background: none;
 
-  transition: box-shadow 0.3s;
-  transition: background-color 0.3s;
+  transition: box-shadow 0.3s, background-color 0.3s;
 
   p {
     width: 5rem;

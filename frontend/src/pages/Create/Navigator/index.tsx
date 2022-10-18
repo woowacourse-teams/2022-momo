@@ -1,77 +1,63 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-import { useTheme } from '@emotion/react';
-
-import { CompleteSVG } from 'assets/svg';
-import LeftArrow from 'components/svg/LeftArrow';
-import RightArrow from 'components/svg/RightArrow';
+import { ExclamationMark, Triangle } from 'assets/svg';
 import { PageType } from 'types/data';
 
-import Button from './Button';
 import * as S from './index.styled';
-
-const arrowSize = 40;
 
 interface NavigatorProps {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   totalPage: PageType[];
-  changeScroll: (page: number) => void;
-  gotoAdjacentPage: (direction: 'next' | 'prev') => void;
-  createNewGroup: () => void;
+  getValidateState: (pageIndex: number) => '' | 'invalid';
 }
 
 function Navigator({
   page,
   setPage,
   totalPage,
-  changeScroll,
-  gotoAdjacentPage,
-  createNewGroup,
+  getValidateState,
 }: NavigatorProps) {
-  const {
-    colors: { green002: active, gray003: inactive },
-  } = useTheme();
-
-  const goToNextPage = () => {
-    gotoAdjacentPage('next');
-  };
-
-  const goToPrevPage = () => {
-    gotoAdjacentPage('prev');
-  };
+  const [isClosed, setIsClosed] = useState(true);
 
   const changePage = (newPageNumber: number) => () => {
     setPage(newPageNumber);
-    changeScroll(newPageNumber);
+  };
+
+  const changeCloseState = () => {
+    setIsClosed(prevState => !prevState);
+  };
+
+  const getPageContentBoxClassName = () => {
+    const currentStep = `step-${page}`;
+    return isClosed ? `closed ${currentStep}` : '';
   };
 
   return (
     <S.Container>
-      <S.SideButton type="button" onClick={goToPrevPage}>
-        <LeftArrow width={arrowSize} color={page === 1 ? inactive : active} />
-      </S.SideButton>
-      {totalPage.map(({ number, content }) => (
-        <Button
-          content={content}
-          number={number}
-          isFocused={number === page}
-          changePage={changePage}
-          key={number}
-        />
-      ))}
-      {page < totalPage.length ? (
-        <S.SideButton type="button" onClick={goToNextPage}>
-          <RightArrow
-            width={arrowSize}
-            color={page === totalPage.length ? inactive : active}
-          />
-        </S.SideButton>
-      ) : (
-        <S.SideButton type="button" onClick={createNewGroup}>
-          <CompleteSVG />
-        </S.SideButton>
-      )}
+      <S.PageContentsBox className={getPageContentBoxClassName()}>
+        {totalPage.map((page, pageIndex) => (
+          <S.PageItem key={page.content} onClick={changePage(page.number)}>
+            <S.Classification
+              className={page.required ? 'required' : 'not-required'}
+            >
+              {page.required ? '필수' : '선택'}
+            </S.Classification>
+            <S.Content>{page.content}</S.Content>
+            <S.Required>
+              {page.required && (
+                <ExclamationMark className={getValidateState(pageIndex + 1)} />
+              )}
+            </S.Required>
+          </S.PageItem>
+        ))}
+      </S.PageContentsBox>
+      <S.ToggleButton
+        className={isClosed ? 'closed' : ''}
+        onClick={changeCloseState}
+      >
+        <Triangle />
+      </S.ToggleButton>
     </S.Container>
   );
 }

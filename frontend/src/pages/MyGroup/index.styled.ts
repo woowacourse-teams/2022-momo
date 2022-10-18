@@ -17,6 +17,12 @@ const GroupTypeBox = styled.div`
   width: 100%;
 
   padding: 0.5rem 0;
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      font-size: 0.9rem;
+    }
+  `}
 `;
 
 const Button = styled.div`
@@ -28,7 +34,7 @@ const Button = styled.div`
 
   ${({ theme: { colors } }) => `
     color: ${colors.gray002};
-    
+
     &.selected {
       color: ${colors.black001};
     }
@@ -39,11 +45,20 @@ const Content = styled.div`
   width: 100%;
 
   margin: 2rem auto;
-  padding-top: 12rem;
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md}px) {
+      padding: 11rem 0 2rem;
+    }
+
+    @media only screen and (min-width: ${breakpoints.md}px) {
+      padding-top: 12rem;
+    }
+  `}
 `;
 
 const Check = styled.div`
-  transform: rotate(-45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
 
   width: 0.5rem;
   height: 0.3rem;

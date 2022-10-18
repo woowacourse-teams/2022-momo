@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  padding-bottom: 60px;
+  padding-bottom: 52px;
 `;
 
 const BasicContainer = styled.div`
@@ -19,7 +19,7 @@ const StickyContainer = styled(BasicContainer)`
   align-items: center;
 
   position: fixed;
-  top: calc(5rem + 64px);
+  top: calc(5rem + 52px);
 
   background: ${({ theme: { colors } }) => colors.white001};
 
@@ -50,12 +50,14 @@ const SideMenu = styled.div`
 `;
 
 const ContentContainer = styled(BasicContainer)`
-  padding-top: 12rem;
+  padding: 12rem 1rem 4rem;
 `;
 
 const ControlContainer = styled.div`
-  position: sticky;
-  bottom: 60px;
+  position: fixed;
+  bottom: 52px;
+
+  width: 100%;
 
   z-index: 100;
 `;

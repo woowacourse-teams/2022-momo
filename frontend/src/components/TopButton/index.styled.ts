@@ -13,13 +13,15 @@ const dungdung = keyframes`
 
 const Button = styled.button`
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  right: 16px;
+  bottom: 16px;
 
-  width: 56px;
-  height: 56px;
+  width: fit-content;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
+
+  padding: 8px;
 
   animation: 1s ${dungdung} infinite;
 
@@ -33,12 +35,11 @@ const Button = styled.button`
       breakpoints: { md },
     },
   }) => `
+    background: ${colors.white001};
     filter: drop-shadow(0 0 2px ${colors.gray001});
 
-    background: ${colors.white001};
-
     @media only screen and (max-width: ${md}px) {
-      bottom: 80px;
+      bottom: 72px;
     }
   `}
 `;

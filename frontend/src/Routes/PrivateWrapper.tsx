@@ -6,16 +6,15 @@ import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 
 function PrivateWrapper() {
-  // TODO: 새로고침 시 isLogin이 false라서 privatePage들은 홈으로 연결되는 버그
-  const { isLogin } = useAuth();
+  const { isLogin, accessToken } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin && !accessToken) {
       navigate(BROWSER_PATH.BASE, { replace: true });
     }
-  }, [isLogin, navigate]);
+  }, [isLogin, accessToken, navigate]);
 
   return <Outlet />;
 }

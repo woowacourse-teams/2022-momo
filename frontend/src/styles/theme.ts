@@ -18,6 +18,7 @@ const theme: Theme = {
     gray003: '#DDDDDD',
     gray004: '#E7E7E7',
     gray005: '#EEEEEE',
+    gray006: '#F6F6F6',
     yellow001: '#FFC500',
     yellow002: '#FFE47A',
     green001: '#85AD61',
