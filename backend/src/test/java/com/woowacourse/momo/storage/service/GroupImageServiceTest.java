@@ -69,7 +69,7 @@ class GroupImageServiceTest {
     @DisplayName("모임 이미지 정보를 수정한다")
     @Test
     void update() {
-        String expected = "https://image.moyeora.site/group/saved/imageName.png";
+        String expected = "http://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
@@ -88,7 +88,7 @@ class GroupImageServiceTest {
     @DisplayName("모임 이미지 정보를 수정할 때 이전에 저장된 이미지 정보가 없으면 예외가 발생한다")
     @Test
     void updateGroupImageIsNotExist() {
-        String expected = "https://image.moyeora.site/group/saved/imageName.png";
+        String expected = "http://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
