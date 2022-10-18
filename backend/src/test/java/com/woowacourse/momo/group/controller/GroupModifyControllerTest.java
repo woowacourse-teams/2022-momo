@@ -80,7 +80,7 @@ class GroupModifyControllerTest {
                 )
                 .andExpect(header().string("location", startsWith("/api/groups")))
                 .andDo(
-                        document("groupcreate",
+                        document("groupCreate",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -103,7 +103,7 @@ class GroupModifyControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(
-                        document("groupupdate",
+                        document("groupUpdate",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -122,7 +122,7 @@ class GroupModifyControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(
-                        document("groupupdate",
+                        document("groupEarlyClose",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -141,7 +141,7 @@ class GroupModifyControllerTest {
                 )
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
                 .andDo(
-                        document("groupdelete",
+                        document("groupDelete",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

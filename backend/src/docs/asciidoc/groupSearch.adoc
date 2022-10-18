@@ -1,0 +1,60 @@
+= 모임 조회 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 모임 조회 (로그인 X)
+Request
+include::{snippets}/groupSearchWithoutLogin/http-request.adoc[]
+Response
+include::{snippets}/groupSearchWithoutLogin/http-response.adoc[]
+
+== 모임 조회 (로그인 O)
+Request
+include::{snippets}/groupSearchWithLogin/http-request.adoc[]
+Response
+include::{snippets}/groupSearchWithLogin/http-response.adoc[]
+
+== 모임 목록 조회 (로그인 X)
+Request
+include::{snippets}/groupListWithoutLogin/http-request.adoc[]
+Response
+include::{snippets}/groupListWithoutLogin/http-response.adoc[]
+
+== 모임 목록 조회 (로그인 O)
+Request
+include::{snippets}/groupListWithLogin/http-request.adoc[]
+Response
+include::{snippets}/groupListWithLogin/http-response.adoc[]
+
+== 카테고리별 모임 조회
+Request
+include::{snippets}/groupListByCategory/http-request.adoc[]
+Response
+include::{snippets}/groupListByCategory/http-response.adoc[]
+
+== 키워드를 통한 모임 조회
+Request
+include::{snippets}/groupListByKeyword/http-request.adoc[]
+Response
+include::{snippets}/groupListByKeyword/http-response.adoc[]
+
+== 본인이 가입한 모임 조회
+Request
+include::{snippets}/participatedGroupList/http-request.adoc[]
+Response
+include::{snippets}/participatedGroupList/http-response.adoc[]
+
+== 본인이 주최한 모임 조회
+Request
+include::{snippets}/hostedGroupList/http-request.adoc[]
+Response
+include::{snippets}/hostedGroupList/http-response.adoc[]
+
+== 본인이 찜한 모임 조회
+Request
+include::{snippets}/likedGroupList/http-request.adoc[]
+Response
+include::{snippets}/likedGroupList/http-response.adoc[]

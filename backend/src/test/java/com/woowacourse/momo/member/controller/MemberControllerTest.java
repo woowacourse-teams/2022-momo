@@ -70,7 +70,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("id", notNullValue()))
                 .andExpect(jsonPath("userId", is(ID)))
                 .andDo(
-                        document("memberfind",
+                        document("memberFind",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -95,7 +95,7 @@ class MemberControllerTest {
                         .content(objectMapper.writeValueAsString(changePasswordRequest)))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andDo(
-                        document("memberupdatepassword",
+                        document("memberUpdatePassword",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -126,7 +126,7 @@ class MemberControllerTest {
                         .content(objectMapper.writeValueAsString(nameRequest)))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andDo(
-                        document("memberupdatename",
+                        document("memberUpdateName",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -140,7 +140,7 @@ class MemberControllerTest {
                         .header("authorization", "bearer " + accessToken))
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
                 .andDo(
-                        document("memberdelete",
+                        document("memberDelete",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
