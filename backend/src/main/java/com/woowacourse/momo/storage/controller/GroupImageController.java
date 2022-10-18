@@ -27,8 +27,8 @@ public class GroupImageController {
     private final GroupImageService groupImageService;
 
     @PostMapping
-    public ResponseEntity<Void> update(@PathVariable Long groupId,
-                                       @AuthenticationPrincipal Long memberId, @NotNull MultipartFile multipartFile) {
+    public ResponseEntity<Void> update(@AuthenticationPrincipal Long memberId, @PathVariable Long groupId,
+                                       @NotNull MultipartFile multipartFile) {
         String fullPathOfSavedImage = groupImageService.update(memberId, groupId, multipartFile);
         return ResponseEntity.created(URI.create(fullPathOfSavedImage)).build();
     }
