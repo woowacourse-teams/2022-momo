@@ -6,16 +6,19 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.group.event.GroupCreateEvent;
-import com.woowacourse.momo.storage.service.GroupImageService;
+import com.woowacourse.momo.storage.domain.GroupImage;
+import com.woowacourse.momo.storage.domain.GroupImageRepository;
 
 @RequiredArgsConstructor
 @Component
 public class GroupImageCreateEventListener {
 
-    private final GroupImageService groupImageService;
+    private final GroupImageRepository groupImageRepository;
 
     @EventListener
     public void createGroupImage(GroupCreateEvent event) {
-        groupImageService.save(event.getGroupId(), event.getCategory().getDefaultImageName());
+        GroupImage groupImage = new GroupImage(event.getGroupId(), event.getCategory().getDefaultImageName());
+
+        groupImageRepository.save(groupImage);
     }
 }
