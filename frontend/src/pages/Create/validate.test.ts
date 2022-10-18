@@ -2,7 +2,7 @@ import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { copyObject } from 'utils/object';
 
-import validateGroupData from './validate';
+import { validateGroupData } from './validate';
 
 const exampleCreateGroupData: CreateGroupData = {
   name: '잠실 루터회관 모임',
@@ -47,16 +47,6 @@ describe('필수 값과 선택 값들을 넣어 모임을 생성하도록 요청
 
     // when & then
     expect(() => validateGroupData(noNameCreateGroupData)).toThrow();
-  });
-
-  it('카테고리를 선택하지 않은 경우 모임 생성 요청이 가능하지 않아야 한다.', () => {
-    // given
-    const fulfilledCreateGroupData = copyObject(exampleCreateGroupData);
-    delete fulfilledCreateGroupData.selectedCategory;
-    const noCategoryCreateGroupData = fulfilledCreateGroupData;
-
-    // when & then
-    expect(() => validateGroupData(noCategoryCreateGroupData)).toThrow();
   });
 
   it('유효하지 않은 모집 인원을 입력한 경우 모임 생성 요청이 가능하지 않아야 한다.', () => {

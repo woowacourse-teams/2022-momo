@@ -29,7 +29,7 @@ const makeGroupData = ({
 }: CreateGroupData) => {
   return {
     name,
-    categoryId: selectedCategory.id,
+    categoryId: selectedCategory.id === -1 ? 1 : selectedCategory.id,
     capacity: capacity || GROUP_RULE.CAPACITY.MAX,
     duration: {
       start: startDate,

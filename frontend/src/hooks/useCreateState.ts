@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
-import { CreateGroupData } from 'types/data';
+import {
+  validateDeadlineDate,
+  validateDurationDate,
+  validateName,
+} from 'pages/Create/validate';
+import { CreateGroupData, RequiredGroupDataBooleanType } from 'types/data';
 import { ArrElement } from 'types/utils';
+import { resetDateToStartOfDay, resetDateToEndOfDay } from 'utils/date';
 import { isEqualObject } from 'utils/object';
 
 import useInput from './useInput';
@@ -74,6 +80,7 @@ export interface CreateStateReturnValues {
     >;
   };
   getGroupState: () => CreateGroupData;
+  isEmptyInput: RequiredGroupDataBooleanType;
 }
 
 const useCreateState = (): CreateStateReturnValues => {
@@ -115,6 +122,13 @@ const useCreateState = (): CreateStateReturnValues => {
     setValue: setDescription,
     dangerouslySetValue: dangerouslySetDescription,
   } = useInput('');
+  const [isEmptyInput, setIsEmptyInput] =
+    useState<RequiredGroupDataBooleanType>({
+      name: false,
+      startDate: false,
+      endDate: false,
+      deadline: false,
+    });
 
   const changeSelectedCategory = (
     newSelectedCategory: CreateGroupData['selectedCategory'],
@@ -189,6 +203,31 @@ const useCreateState = (): CreateStateReturnValues => {
     setLocation({ ...location, detail: e.target.value });
   };
 
+  useEffect(() => {
+    const startDateInMidnight = resetDateToStartOfDay(new Date(startDate));
+    const endDateInMidnight = resetDateToEndOfDay(new Date(endDate));
+    const todayInMidnight = new Date();
+
+    const validateDate = validateDurationDate(
+      startDateInMidnight,
+      endDateInMidnight,
+      todayInMidnight,
+    )();
+
+    const newInputState = {
+      name: validateName(name)(),
+      startDate: validateDate,
+      endDate: validateDate,
+      deadline: validateDeadlineDate(
+        startDateInMidnight,
+        deadline,
+        schedules,
+      )(),
+    };
+
+    setIsEmptyInput(newInputState);
+  }, [name, startDate, endDate, deadline, schedules]);
+
   return {
     useNameState: () => ({
       name,
@@ -244,6 +283,7 @@ const useCreateState = (): CreateStateReturnValues => {
       location,
       description,
     }),
+    isEmptyInput,
   };
 };
 

@@ -1,34 +1,27 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 import { requestCreateGroup } from 'apis/request/group';
+import { CompleteSVG } from 'assets/svg';
+import RightArrow from 'components/svg/RightArrow';
 import { BROWSER_PATH } from 'constants/path';
 import useCreateState from 'hooks/useCreateState';
 import Navigator from 'pages/Create/Navigator';
+import theme from 'styles/theme';
 
 import * as S from './index.styled';
-import {
-  Step1,
-  Step2,
-  Step3,
-  Step4,
-  Step5,
-  Step6,
-  Step7,
-  Step8,
-} from './Steps';
-import validateGroupData from './validate';
+import CreateSteps from './Steps/CreateSteps';
+import { validateGroupData } from './validate';
+
+const svgSize = 20;
 
 const totalPage = [
-  { number: 1, content: '이름 입력' },
-  { number: 2, content: '카테고리 선택' },
-  { number: 3, content: '최대 인원 입력' },
-  { number: 4, content: '진행 날짜 선택' },
-  { number: 5, content: '날짜, 시간대 상세 입력' },
-  { number: 6, content: '모집 마감일자 입력' },
-  { number: 7, content: '장소 입력' },
-  { number: 8, content: '상세 설명 입력' },
+  { number: 1, content: '이름 입력 / 카테고리 선택', required: true },
+  { number: 2, content: '기간 입력 / 마감일 입력', required: true },
+  { number: 3, content: '일정 입력', required: false },
+  { number: 4, content: '장소 입력 / 최대 인원 입력', required: false },
+  { number: 5, content: '설명 입력', required: false },
 ];
 
 function Create() {
@@ -42,47 +35,27 @@ function Create() {
     useLocationState,
     useDescriptionState,
     getGroupState,
+    isEmptyInput,
   } = useCreateState();
   const duration = {
     start: getGroupState().startDate,
     end: getGroupState().endDate,
   };
   const [page, setPage] = useState(1);
-  const pageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const navigate = useNavigate();
 
-  const getPageRef = (page: number) => (element: HTMLDivElement | null) => {
-    pageRefs.current[page] = element;
-
-    return pageRefs.current[page];
-  };
-
-  const gotoAdjacentPage = (direction: 'next' | 'prev') => {
-    if (
-      (direction === 'next' && page === totalPage.length) ||
-      (direction === 'prev' && page === 1)
-    )
+  const gotoNextPage = () => {
+    if (page >= totalPage.length) {
       return;
+    }
 
-    setPage(prevState => {
-      const target = prevState + (direction === 'next' ? 1 : -1);
-
-      changeScroll(target);
-
-      return target;
-    });
+    setPage(prevPage => prevPage + 1);
   };
 
   const pressEnterToNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
 
-    gotoAdjacentPage('next');
-  };
-
-  const changeScroll = (page: number) => {
-    pageRefs.current[page]?.scrollIntoView({
-      behavior: 'smooth',
-    });
+    gotoNextPage();
   };
 
   const createNewGroup = () => {
@@ -106,51 +79,77 @@ function Create() {
       });
   };
 
+  const getValidateState = (pageIndex: number) => {
+    switch (pageIndex) {
+      case 1:
+        if (!isEmptyInput.name) return 'invalid';
+        break;
+      case 2:
+        if (
+          !(
+            isEmptyInput.startDate &&
+            isEmptyInput.endDate &&
+            isEmptyInput.deadline
+          )
+        )
+          return 'invalid';
+    }
+    return '';
+  };
+
+  const getSubmitAvailableState = () => {
+    return (
+      isEmptyInput.name &&
+      isEmptyInput.startDate &&
+      isEmptyInput.endDate &&
+      isEmptyInput.deadline
+    );
+  };
+
   return (
     <S.PageContainer>
-      <S.ScrollContainer>
-        <Step1
-          useNameState={useNameState}
-          ref={getPageRef(1)}
-          pressEnterToNext={pressEnterToNext}
-        />
-        <Step2
-          useSelectedCategoryState={useSelectedCategoryState}
-          ref={getPageRef(2)}
-          gotoAdjacentPage={gotoAdjacentPage}
-        />
-        <Step3
-          useCapacityState={useCapacityState}
-          ref={getPageRef(3)}
-          pressEnterToNext={pressEnterToNext}
-        />
-        <Step4
-          useDateState={useDateState}
-          ref={getPageRef(4)}
-          pressEnterToNext={pressEnterToNext}
-        />
-        <Step5
-          useScheduleState={useScheduleState}
-          duration={duration}
-          ref={getPageRef(5)}
-          pressEnterToNext={pressEnterToNext}
-        />
-        <Step6
-          useDeadlineState={useDeadlineState}
-          ref={getPageRef(6)}
-          pressEnterToNext={pressEnterToNext}
-        />
-        <Step7 useLocationState={useLocationState} ref={getPageRef(7)} />
-        <Step8 useDescriptionState={useDescriptionState} ref={getPageRef(8)} />
-      </S.ScrollContainer>
       <Navigator
         page={page}
         setPage={setPage}
         totalPage={totalPage}
-        changeScroll={changeScroll}
-        gotoAdjacentPage={gotoAdjacentPage}
-        createNewGroup={createNewGroup}
+        getValidateState={getValidateState}
       />
+      <CreateSteps
+        useNameState={useNameState}
+        useSelectedCategoryState={useSelectedCategoryState}
+        useCapacityState={useCapacityState}
+        useDateState={useDateState}
+        useScheduleState={useScheduleState}
+        useDeadlineState={useDeadlineState}
+        useLocationState={useLocationState}
+        useDescriptionState={useDescriptionState}
+        pressEnterToNext={pressEnterToNext}
+        gotoNextPage={gotoNextPage}
+        duration={duration}
+        page={page}
+      />
+      <S.ButtonContainer>
+        <S.NextPageButton
+          onClick={gotoNextPage}
+          disabled={getValidateState(page) === 'invalid'}
+          className={`${getValidateState(page)} ${
+            page >= totalPage.length ? `last-page` : ''
+          }`}
+        >
+          <h3>다음</h3>
+          <RightArrow width={svgSize} color={theme.colors.green001} />{' '}
+        </S.NextPageButton>
+        <S.SubmitButton
+          onClick={createNewGroup}
+          disabled={!getSubmitAvailableState()}
+          className={getSubmitAvailableState() ? '' : 'invalid'}
+        >
+          <CompleteSVG width={svgSize} />{' '}
+          <h3>
+            이대로 <span>모임</span>을 생성할게요
+          </h3>
+        </S.SubmitButton>
+      </S.ButtonContainer>
     </S.PageContainer>
   );
 }

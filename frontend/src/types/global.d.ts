@@ -12,6 +12,7 @@ declare module '@emotion/react' {
       | 'gray003'
       | 'gray004'
       | 'gray005'
+      | 'gray006'
       | 'yellow001'
       | 'yellow002'
       | 'green001'

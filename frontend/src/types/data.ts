@@ -14,6 +14,7 @@ export interface ScheduleType {
 export interface PageType {
   number: number;
   content: string;
+  required: boolean;
 }
 
 export interface DurationDate {
@@ -75,6 +76,13 @@ export interface GroupSummary
     | 'like'
   > {
   numOfParticipant: number;
+}
+
+export interface RequiredGroupDataBooleanType {
+  name: boolean;
+  startDate: boolean;
+  endDate: boolean;
+  deadline: boolean;
 }
 
 export type GroupParticipants = Omit<UserProfile, 'userId'>[];
