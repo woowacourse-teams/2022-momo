@@ -2,6 +2,8 @@ package com.woowacourse.momo.storage.controller;
 
 import java.net.URI;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,7 @@ public class GroupImageController {
 
     @PostMapping
     public ResponseEntity<Void> update(@PathVariable Long groupId,
-                                       @AuthenticationPrincipal Long memberId, MultipartFile multipartFile) {
+                                       @AuthenticationPrincipal Long memberId, @NotNull MultipartFile multipartFile) {
         String fullPathOfSavedImage = groupImageService.update(memberId, groupId, multipartFile);
         return ResponseEntity.created(URI.create(fullPathOfSavedImage)).build();
     }

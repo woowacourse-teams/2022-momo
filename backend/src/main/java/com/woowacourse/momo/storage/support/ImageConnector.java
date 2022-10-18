@@ -74,7 +74,7 @@ public class ImageConnector {
 
     private Resource createResource(MultipartFile multipartFile) {
         byte[] bytes = readFile(multipartFile);
-        String filename = multipartFile.getOriginalFilename();
+        String filename = getFilename(multipartFile);
         String extension = filename.substring(filename.lastIndexOf("."));
         try {
             Path tempFile = Files.createTempFile(filename, extension);
@@ -91,6 +91,14 @@ public class ImageConnector {
         } catch (IOException e){
             throw new GroupImageException(GroupImageErrorCode.MULTIPART_FILE_DOSE_NOT_READ);
         }
+    }
+
+    private String getFilename(MultipartFile multipartFile) {
+        String filename = multipartFile.getOriginalFilename();
+        if (filename == null) {
+            throw new GroupImageException(GroupImageErrorCode.MULTIPART_FILE_NAME_IS_NULL);
+        }
+        return filename;
     }
 
     private ResponseEntity<Void> saveImage(HttpEntity<MultiValueMap<String, Object>> request) {
