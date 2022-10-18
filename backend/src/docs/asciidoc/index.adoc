@@ -1,4 +1,4 @@
-= 모모의 API 명세
+= 모모 API 명세
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
