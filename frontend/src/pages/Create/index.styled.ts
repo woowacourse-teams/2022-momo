@@ -48,8 +48,8 @@ const NextPageButton = styled.button`
       }
 
       svg {
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
       }
     }
   `}
@@ -93,8 +93,8 @@ const SubmitButton = styled.button`
       }
 
       svg {
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
       }
     }
   `}

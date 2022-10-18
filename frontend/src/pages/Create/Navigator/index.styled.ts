@@ -28,46 +28,46 @@ const Container = styled.div`
 const PageContentsBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.375rem;
 
   overflow: hidden;
 
   width: 100%;
-  height: 144px;
+  height: 9rem;
 
   padding: 0.5rem 0;
 
   transition: height 0.5s;
 
   &.closed {
-    height: 24px;
+    height: 1.5rem;
   }
 
   &.step-1 {
-    height: 24px;
+    height: 1.5rem;
   }
 
   &.step-2 {
     button {
-      transform: translate3d(0, -30px, 0);
+      transform: translate3d(0, -1.875rem, 0);
     }
   }
 
   &.step-3 {
     button {
-      transform: translate3d(0, -60px, 0);
+      transform: translate3d(0, -3.75rem, 0);
     }
   }
 
   &.step-4 {
     button {
-      transform: translate3d(0, -90px, 0);
+      transform: translate3d(0, -5.625rem, 0);
     }
   }
 
   &.step-5 {
     button {
-      transform: translate3d(0, -120px, 0);
+      transform: translate3d(0, -7.5rem, 0);
     }
   }
 `;
@@ -77,7 +77,7 @@ const PageItem = styled.button`
   align-items: center;
 
   width: 100%;
-  height: 24px;
+  height: 1.5rem;
 
   padding: 1px 0.75rem;
 
@@ -97,7 +97,8 @@ const Classification = styled.div`
     
     &.not-required:first-of-type {
       color: ${colors.gray002}
-    }`}
+    }
+  `}
 `;
 
 const Content = styled.div`
@@ -118,7 +119,8 @@ const Required = styled.div`
 
   ${({ theme: { colors } }) => `
     svg {
-      width: 20px;
+      width: 1.25rem;
+      height: 1.25rem;
 
       padding-right: 0.5rem;
 
@@ -133,7 +135,7 @@ const ToggleButton = styled.button`
 
   z-index: 100;
 
-  padding: 0 0 1rem;
+  padding-bottom: 1rem;
 
   transition: rotate 0.5s;
 

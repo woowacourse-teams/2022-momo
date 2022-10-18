@@ -1,3 +1,5 @@
+import { NotFound } from 'pages';
+
 import { CreateStateReturnValues } from 'hooks/useCreateState';
 import { GroupDetailData } from 'types/data';
 
@@ -70,7 +72,7 @@ function CreateSteps({
       return <Step5 useDescriptionState={useDescriptionState} />;
     }
     default: {
-      return <></>;
+      return <NotFound />;
     }
   }
 }
