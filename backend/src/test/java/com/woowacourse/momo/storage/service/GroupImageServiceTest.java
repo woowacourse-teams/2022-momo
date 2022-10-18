@@ -107,6 +107,16 @@ class GroupImageServiceTest {
                 .hasMessage("모임의 주최자가 아닙니다.");
     }
 
+    @DisplayName("모임 이미지를 수정할 때 모임이 진행중이 아니면 예외가 발생한다")
+    @Test
+    void updateGroupIsNotProceeding() {
+        savedGroup.closeEarly();
+
+        assertThatThrownBy(() -> groupImageService.update(savedGroup.getId(), savedGroup.getId(), IMAGE))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("해당 모임은 조기 마감되어 있습니다.");
+    }
+
     @DisplayName("모임의 이미지를 기본 이미지로 초기화한다")
     @Test
     void init() {
@@ -122,6 +132,26 @@ class GroupImageServiceTest {
                 () -> assertThat(savedGroupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
                 () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo(expected)
         );
+    }
+
+    @DisplayName("모임 이미지를 초기화할 때 주최자가 아니면 예외가 발생한다")
+    @Test
+    void initMemberIsNotHost() {
+        Member member = memberRepository.save(new Member(UserId.momo("member"), password, UserName.from("momo")));
+
+        assertThatThrownBy(() -> groupImageService.init(member.getId(), savedGroup.getId()))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("모임의 주최자가 아닙니다.");
+    }
+
+    @DisplayName("모임 이미지를 초기화할 때 모임이 진행중이 아니면 예외가 발생한다")
+    @Test
+    void initGroupIsNotProceeding() {
+        savedGroup.closeEarly();
+
+        assertThatThrownBy(() -> groupImageService.init(savedGroup.getId(), savedGroup.getId()))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("해당 모임은 조기 마감되어 있습니다.");
     }
 
     private Group saveGroup() {
