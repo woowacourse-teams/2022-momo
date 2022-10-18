@@ -3,15 +3,17 @@
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:toclevels: 3
+:sectlinks:
 
-include::member.adoc[]
-include::auth.adoc[]
-include::category.adoc[]
-include::groupModify.adoc[]
-include::groupSearch.adoc[]
-include::participate.adoc[]
-include::like.adoc[]
+== APIs
+* link:member.html[회원 API, window=_blank]
+* link:auth.html[인증 API, window=_blank]
+* link:category.html[카테고리 API, window=_blank]
+* link:groupModify.html[모임 생성/변경/삭제 API, window=_blank]
+* link:groupSearch.html[모임 조회 API, window=_blank]
+* link:participate.html[모임 참여 API, window=_blank]
+* link:like.html[모임 찜기능 API, window=_blank]
 
 == 이미지
 === 이미지 업로드

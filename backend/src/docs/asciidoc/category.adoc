@@ -1,5 +1,11 @@
-== 카테고리 API
-=== 카테고리 조회
+= 카테고리 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 카테고리 조회
 Request
 include::{snippets}/categoryList/http-request.adoc[]
 Response
