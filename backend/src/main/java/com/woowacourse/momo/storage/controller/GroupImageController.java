@@ -12,12 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
+import com.woowacourse.momo.auth.config.Authenticated;
 import com.woowacourse.momo.auth.config.AuthenticationPrincipal;
 import com.woowacourse.momo.storage.service.GroupImageService;
 
-@RestController
+@Authenticated
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/thumbnail")
+@RestController
 public class GroupImageController {
 
     private final GroupImageService groupImageService;
