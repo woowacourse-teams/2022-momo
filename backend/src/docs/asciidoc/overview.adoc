@@ -8,5 +8,5 @@
 | `dev-api.moyeora.site`
 
 | Production
-| 'api.moyeora.site'
+| `api.moyeora.site`
 |===

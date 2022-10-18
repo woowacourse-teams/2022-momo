@@ -10,28 +10,20 @@
 include::overview.adoc[]
 
 == APIs
+=== Member API
 * link:member.html[회원 API, window=_blank]
 * link:auth.html[인증 API, window=_blank]
-* link:category.html[카테고리 API, window=_blank]
+
+=== Group API
 * link:groupModify.html[모임 생성/변경/삭제 API, window=_blank]
 * link:groupSearch.html[모임 조회 API, window=_blank]
 * link:participate.html[모임 참여 API, window=_blank]
-* link:like.html[모임 찜기능 API, window=_blank]
 
-== 이미지
-=== 이미지 업로드
+=== Category API
+* link:category.html[카테고리 API, window=_blank]
 
-Request
-include::{snippets}/imageupload/http-request.adoc[]
+=== Favorite API
+* link:like.html[찜기능 API, window=_blank]
 
-Response
-include::{snippets}/imageupload/http-response.adoc[]
-
-=== 이미지 불러오기
-
-Request
-include::{snippets}/imageload/http-request.adoc[]
-
-Response
-include::{snippets}/imageload/http-response.adoc[]
-
+=== Image API
+* link:image.html[이미지 API, window=_blank]
