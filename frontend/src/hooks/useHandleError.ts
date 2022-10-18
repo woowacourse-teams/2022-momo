@@ -13,12 +13,12 @@ const useHandleError = () => {
 
     // @ts-ignore
     if (prefix === 'SERVER' || !SERVER_ERROR_MESSAGE[prefix][message]) {
-      setMessage(SERVER_ERROR_MESSAGE.SERVER.UNHANDLED);
+      setMessage(SERVER_ERROR_MESSAGE.SERVER.UNHANDLED, true);
       return;
     }
 
     // @ts-ignore
-    setMessage(SERVER_ERROR_MESSAGE[prefix][message]);
+    setMessage(SERVER_ERROR_MESSAGE[prefix][message], true);
   };
   return { handleError };
 };

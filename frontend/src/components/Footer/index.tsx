@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
   NewGroupSVG,
   MyGroupSVG,
@@ -5,12 +7,13 @@ import {
   SignInSVG,
   SignUpSVG,
 } from 'assets/svg';
-import NavLink from 'components/NavLink';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
 
 import * as S from './index.styled';
+
+const svgSize = 26;
 
 function Footer() {
   const { isLogin } = useAuth();
@@ -21,22 +24,22 @@ function Footer() {
     <S.Container>
       {isLogin ? (
         <>
-          <NavLink to={BROWSER_PATH.MY_GROUP}>
+          <Link to={BROWSER_PATH.MY_GROUP}>
             <S.Button>
               <MyGroupSVG />내 모임
             </S.Button>
-          </NavLink>
-          <NavLink to={BROWSER_PATH.CREATE}>
+          </Link>
+          <Link to={BROWSER_PATH.CREATE}>
             <S.Button>
               <NewGroupSVG />
               모임 만들기
             </S.Button>
-          </NavLink>
-          <NavLink to={BROWSER_PATH.MY_INFORMATION}>
+          </Link>
+          <Link to={BROWSER_PATH.MY_INFORMATION}>
             <S.Button>
-              <FilledHeartSVG />내 정보
+              <FilledHeartSVG width={svgSize} height={svgSize} />내 정보
             </S.Button>
-          </NavLink>
+          </Link>
         </>
       ) : (
         <>

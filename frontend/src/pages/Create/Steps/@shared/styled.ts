@@ -3,29 +3,61 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
+  gap: 5rem;
 
-  min-width: 100%;
+  width: 100%;
+
+  box-sizing: border-box;
+  padding: 2rem 1rem;
+
+  ${({
+    theme: {
+      breakpoints: { md },
+    },
+  }) => `
+    @media only screen and (min-width: ${md}px) {
+      gap: 10rem;
+
+      width: ${md}px;
+
+      padding: 10rem 1rem;
+    }
+  `}
+`;
+
+const SectionContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const Heading = styled.h2`
   font-size: 1.5rem;
 
-  ${({ theme: { colors } }) => `
+  ${({
+    theme: {
+      colors,
+      breakpoints: { md },
+    },
+  }) => `
     span {
       color: ${colors.green002};
     }
 
     p {
-      text-align: center;
-
       margin-top: 0.5rem;
 
       color: ${colors.gray002};
 
       font-size: 1rem;
+    }
+
+    @media only screen and (max-width: ${md}px) {
+      font-size: 1rem;
+
+      p {
+        font-size: 0.8rem;
+      }
     }
   `}
 `;
@@ -44,8 +76,18 @@ const Label = styled.div`
 const Input = styled.input`
   text-align: center;
 
-  width: 25rem;
+  width: 100%;
   height: 3rem;
+
+  ${({
+    theme: {
+      breakpoints: { md },
+    },
+  }) => `
+    @media only screen and (max-width: ${md}px) {
+      font-size: 1rem;
+    }
+  `}
 `;
 
 const ErrorColor = styled.b`
@@ -62,6 +104,7 @@ const SuccessColor = styled.b`
 
 export {
   Container,
+  SectionContainer,
   Heading,
   LabelContainer,
   Label,

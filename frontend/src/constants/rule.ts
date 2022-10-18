@@ -24,6 +24,10 @@ const MEMBER_RULE = {
     MIN_LENGTH: 1,
     MAX_LENGTH: 20,
   },
+  PASSWORD: {
+    MIN_LENGTH: 8,
+    MAX_LENGTH: 16,
+  },
 };
 
 const SNACKBAR_ANIMATION_TIME = 500;

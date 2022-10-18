@@ -18,19 +18,19 @@ import LikeButton from '../LikeButton';
 import EditMode from './EditMode';
 import * as S from './index.styled';
 import Left from './Left';
-import SideBar from './SideBar';
+import Right from './Right';
 
 const svgSize = 20;
 
 interface ContentProps {
-  id: number;
+  id: GroupDetailData['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
 function Content({ id, data, participants }: ContentProps) {
   const { user } = useRecoilValue(loginState);
-  const { categories } = useCategory();
+  const categories = useCategory();
 
   const [mode, setMode] = useState<'basic' | 'edit'>('basic');
 
@@ -83,7 +83,7 @@ function Content({ id, data, participants }: ContentProps) {
       </S.StickyContainer>
       <S.ContentContainer>
         <Left location={data.location} description={data.description} />
-        <SideBar
+        <Right
           host={data.host}
           capacity={data.capacity}
           duration={data.duration}

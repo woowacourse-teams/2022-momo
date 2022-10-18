@@ -48,7 +48,7 @@ const WarningMessage = styled(InfoMessage)`
 const Button = styled.button`
   height: 3rem;
 
-  border-radius: 5px;
+  border-radius: 4px;
 
   font-size: 1.1rem;
 

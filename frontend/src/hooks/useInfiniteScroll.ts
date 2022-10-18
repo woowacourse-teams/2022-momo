@@ -8,15 +8,23 @@ import {
 
 import { GroupList } from 'types/data';
 
-const useInfiniteScroll = (
-  target: React.RefObject<HTMLDivElement>,
-  isFetching: boolean,
-  data: GroupList | undefined,
+interface useInfiniteScrollProps {
+  target: React.RefObject<HTMLDivElement>;
+  isFetching: boolean;
   refetch: (
-    options?: (RefetchOptions & RefetchQueryFilters<GroupList>) | undefined,
-  ) => Promise<QueryObserverResult<GroupList, unknown>>,
-  groups: GroupList['groups'],
-) => {
+    options?: RefetchOptions & RefetchQueryFilters<GroupList>,
+  ) => Promise<QueryObserverResult<GroupList, unknown>>;
+  groups: GroupList['groups'];
+  data?: GroupList;
+}
+
+const useInfiniteScroll = ({
+  target,
+  isFetching,
+  refetch,
+  groups,
+  data,
+}: useInfiniteScrollProps) => {
   useEffect(() => {
     let observer: IntersectionObserver;
 

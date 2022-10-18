@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { requestLogout } from 'apis/request/auth';
+import { SignInSVG } from 'assets/svg';
 import { CLIENT_ERROR_MESSAGE, GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 import useClosingState from 'hooks/useClosingState';
 import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
+import theme from 'styles/theme';
 
 import * as S from './index.styled';
 
@@ -65,26 +67,34 @@ function User() {
   };
 
   return (
-    <S.Container>
-      <S.ToggleButton type="button" onClick={toggleDropdownState}>
-        <S.Profile width="32px">❤️</S.Profile>
-      </S.ToggleButton>
-      {isShownDropdown && (
-        <S.Dropdown
-          className={isClosing ? 'close' : ''}
-          animationTime={dropdownAnimationTime}
-        >
-          <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
-            <S.Profile width="64px">❤️</S.Profile>
-            <div>{user?.name}</div>
-          </S.User>
-          <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>
-            내 모임
-          </S.Option>
-          <S.Option onClick={logout}>로그아웃</S.Option>
-        </S.Dropdown>
+    <>
+      {document.body.clientWidth > theme.breakpoints.md ? (
+        <S.Container>
+          <S.ToggleButton type="button" onClick={toggleDropdownState}>
+            <S.Profile width="32px">❤️</S.Profile>
+          </S.ToggleButton>
+          {isShownDropdown && (
+            <S.Dropdown
+              className={isClosing ? 'close' : ''}
+              animationTime={dropdownAnimationTime}
+            >
+              <S.User onClick={navigateToLocation(BROWSER_PATH.MY_INFORMATION)}>
+                <S.Profile width="64px">❤️</S.Profile>
+                <div>{user?.name}</div>
+              </S.User>
+              <S.Option onClick={navigateToLocation(BROWSER_PATH.MY_GROUP)}>
+                내 모임
+              </S.Option>
+              <S.Option onClick={logout}>로그아웃</S.Option>
+            </S.Dropdown>
+          )}
+        </S.Container>
+      ) : (
+        <S.SvgWrapper>
+          <SignInSVG onClick={logout} />
+        </S.SvgWrapper>
       )}
-    </S.Container>
+    </>
   );
 }
 

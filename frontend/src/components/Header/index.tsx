@@ -4,8 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 
 import { requestReissueAccessToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
-import { CreateSVG, SignInSVG, SignUpSVG } from 'assets/svg';
-import Logo from 'components/svg/Logo';
+import { BeanSVG, CreateSVG, SignInSVG, SignUpSVG } from 'assets/svg';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 import useModal from 'hooks/useModal';
@@ -13,6 +12,8 @@ import { getLoginType } from 'utils/user';
 
 import * as S from './index.styled';
 import User from './User';
+
+const svgSize = 30;
 
 function Header() {
   const {
@@ -68,7 +69,7 @@ function Header() {
     <S.Container>
       <a href={BROWSER_PATH.BASE}>
         <S.Logo>
-          <Logo />
+          <BeanSVG width={svgSize} height={svgSize} fill="white" />
         </S.Logo>
       </a>
       <S.Nav>

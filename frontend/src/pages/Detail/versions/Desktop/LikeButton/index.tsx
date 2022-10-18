@@ -34,7 +34,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
 
   const toggleLiked = () => {
     if (!isLogin) {
-      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN);
+      setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN, true);
       return;
     }
 
@@ -46,7 +46,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
         })
         .catch(error => {
           if (!error) {
-            setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+            setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP, true);
           }
 
           handleError(error);
@@ -61,7 +61,7 @@ function LikeButton({ like, id }: LikeButtonProps) {
       })
       .catch(error => {
         if (!error) {
-          setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP);
+          setMessage(CLIENT_ERROR_MESSAGE.GROUP.FAILURE_LIKE_GROUP, true);
         }
         handleError(error);
       });

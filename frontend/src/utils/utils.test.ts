@@ -7,6 +7,7 @@ import {
   parsedDurationDate,
   parsedTime,
   getTimeInKorea,
+  isToday,
 } from './date';
 
 const fakeTimerSetUp = () => {
@@ -180,5 +181,13 @@ describe('parsedTime 함수를 사용하면 시간을 가공하여 반환한다.
     const rowTimeString = '18:30:00';
 
     expect(parsedTime(rowTimeString)).toBe('18시 30분');
+  });
+});
+
+describe('isToday 함수를 사용하면 전달한 날짜가 오늘인지의 여부를 반환한다.', () => {
+  it('연도, 월, 일을 전달하면 오늘이 맞는지를 확인하여 반환한다.', () => {
+    fakeTimerSetUp();
+
+    expect(isToday(2022, 1, 1)).toBeTruthy();
   });
 });
