@@ -1,5 +1,6 @@
 package com.woowacourse.momo.storage.support;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -73,23 +74,13 @@ public class ImageConnector {
     }
 
     private Resource createResource(MultipartFile multipartFile) {
-        byte[] bytes = readFile(multipartFile);
         String filename = getFilename(multipartFile);
-        String extension = filename.substring(filename.lastIndexOf("."));
         try {
-            Path tempFile = Files.createTempFile(filename, extension);
-            Files.write(tempFile, bytes);
-            return new FileSystemResource(tempFile.toFile());
+            File tempFile = new File(filename);
+            multipartFile.transferTo(tempFile);
+            return new FileSystemResource(tempFile);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
-        }
-    }
-
-    private byte[] readFile(MultipartFile multipartFile) {
-        try {
-            return multipartFile.getBytes();
-        } catch (IOException e){
-            throw new GroupImageException(GroupImageErrorCode.MULTIPART_FILE_DOSE_NOT_READ);
         }
     }
 
