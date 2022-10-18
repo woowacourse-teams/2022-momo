@@ -12,16 +12,16 @@ import com.woowacourse.momo.category.exception.CategoryException;
 @RequiredArgsConstructor
 public enum Category {
 
-    STUDY(1, "스터디", "study.jpg", "study.png"),
-    MOCO(2, "모각코", "moco.jpg", "moco.png"),
-    EAT(3, "식사", "eat.jpg", "eat.png"),
-    CAFE(4, "카페", "cafe.jpg", "cafe.png"),
-    DRINK(5, "술", "drink.jpg", "drink.png"),
-    HEALTH(6, "운동", "health.jpg", "health.png"),
-    GAME(7, "게임", "game.jpg", "game.png"),
-    TRAVEL(8, "여행", "travel.jpg", "travel.png"),
-    CULTURE(9, "문화생활", "culture.jpg", "culture.png"),
-    ETC(10, "기타", "etc.jpg", "etc.png");
+    STUDY(1, "스터디", "thumbnail_study.jpg", "icon_study.svg"),
+    MOCO(2, "모각코", "thumbnail_moco.jpg", "icon_moco.svg"),
+    EAT(3, "식사", "thumbnail_eat.jpg", "icon_eat.svg"),
+    CAFE(4, "카페", "thumbnail_cafe.jpg", "icon_cafe.svg"),
+    DRINK(5, "술", "thumbnail_drink.jpg", "icon_drink.svg"),
+    HEALTH(6, "운동", "thumbnail_health.jpg", "icon_health.svg"),
+    GAME(7, "게임", "thumbnail_game.jpg", "icon_game.svg"),
+    TRAVEL(8, "여행", "thumbnail_travel.jpg", "icon_travel.svg"),
+    CULTURE(9, "문화생활", "thumbnail_culture.jpg", "icon_culture.svg"),
+    ETC(10, "기타", "thumbnail_etc.jpg", "icon_etc.svg");
 
     private final long id;
     private final String name;
