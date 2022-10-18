@@ -32,13 +32,6 @@ public class GroupImageService {
     private final ImageProvider imageProvider;
 
     @Transactional
-    public void save(Long groupId, String defaultImageName) {
-        GroupImage groupImage = new GroupImage(groupId, defaultImageName);
-
-        groupImageRepository.save(groupImage);
-    }
-
-    @Transactional
     public String update(Long memberId, Long groupId, MultipartFile multipartFile) {
         validateMemberIsHost(memberId, groupId);
 

@@ -66,21 +66,6 @@ class GroupImageServiceTest {
         savedGroup = saveGroup();
     }
 
-    @DisplayName("모임 기본 이미지 정보를 저장한다")
-    @Test
-    void save() {
-        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
-
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
-
-        String imageName = savedGroup.getCategory().getDefaultImageName();
-        assertThat(groupImage).isPresent();
-        assertAll(
-                () -> assertThat(groupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
-                () -> assertThat(groupImage.get().getImageName()).isEqualTo(imageName)
-        );
-    }
-
     @DisplayName("모임 이미지 정보를 수정한다")
     @Test
     void update() {
@@ -88,14 +73,15 @@ class GroupImageServiceTest {
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
-        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
+        GroupImage groupImage = new GroupImage(savedHost.getId(), savedGroup.getCategory().getDefaultImageName());
+        groupImageRepository.save(groupImage);
         String actual = groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
 
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
-        assertThat(groupImage).isPresent();
+        Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        assertThat(savedGroupImage).isPresent();
         assertAll(
                 () -> assertThat(actual).isEqualTo(expected),
-                () -> assertThat(groupImage.get().getImageName()).isEqualTo("imageName.png")
+                () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo("imageName.png")
         );
     }
 
@@ -124,16 +110,17 @@ class GroupImageServiceTest {
     @DisplayName("모임의 이미지를 기본 이미지로 초기화한다")
     @Test
     void init() {
-        groupImageService.save(savedGroup.getId(), savedGroup.getCategory().getDefaultImageName());
+        GroupImage groupImage = new GroupImage(savedHost.getId(), savedGroup.getCategory().getDefaultImageName());
+        groupImageRepository.save(groupImage);
 
         groupImageService.init(savedHost.getId(), savedGroup.getId());
 
-        Optional<GroupImage> groupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
         String expected = savedGroup.getCategory().getDefaultImageName();
-        assertThat(groupImage).isPresent();
+        assertThat(savedGroupImage).isPresent();
         assertAll(
-                () -> assertThat(groupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
-                () -> assertThat(groupImage.get().getImageName()).isEqualTo(expected)
+                () -> assertThat(savedGroupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
+                () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo(expected)
         );
     }
 
