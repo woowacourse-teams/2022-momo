@@ -22,7 +22,7 @@ public class GroupImage {
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column
+    @Column(name = "image_name")
     private String imageName;
 
     public GroupImage(Long groupId, String imageName) {
