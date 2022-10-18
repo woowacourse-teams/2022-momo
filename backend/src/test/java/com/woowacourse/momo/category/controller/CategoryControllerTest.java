@@ -37,7 +37,7 @@ class CategoryControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$", hasSize(10)))
                 .andDo(
-                        document("categorylist",
+                        document("categoryList",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

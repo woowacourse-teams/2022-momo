@@ -85,7 +85,7 @@ class FavoriteControllerTest {
                 )
                 .andExpect(status().isNoContent())
                 .andDo(
-                        document("cancellike",
+                        document("cancelLike",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()
                                 )
