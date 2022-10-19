@@ -146,6 +146,13 @@ const SERVER_ERROR_MESSAGE = {
     GROUP_020: '찜하지 않은 모임이에요.',
     GROUP_021: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
     GROUP_022: `모임의 설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자를 넘을 수 없어요.`,
+    GROUP_IMAGE_001: '모임의 주최자만 수정할 수 있어요.',
+    GROUP_IMAGE_002: '이미지 파일 이름이 비어있어요.',
+    GROUP_IMAGE_003:
+      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    GROUP_IMAGE_004:
+      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    GROUP_IMAGE_005: '모임의 썸네일이 존재하지 않아요.',
   },
   CATEGORY: {
     CATEGORY_001: '존재하지 않는 카테고리예요.',
