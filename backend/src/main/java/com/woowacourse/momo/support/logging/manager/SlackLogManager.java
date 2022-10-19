@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.woowacourse.momo.support.logging.manager.dto.SlackMessageRequest;
 import com.woowacourse.momo.support.logging.TraceExtractor;
+import com.woowacourse.momo.support.logging.manager.dto.SlackMessageRequest;
 import com.woowacourse.momo.support.logging.manager.dto.SlackThreadRequest;
 
 
@@ -84,13 +84,11 @@ public class SlackLogManager implements LogManager {
     }
 
     private String configureBody(Object body) {
-        String jsonData = null;
         try {
-            jsonData = objectMapper.writeValueAsString(body);
+            return objectMapper.writeValueAsString(body);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Json 파싱 에러입니다.");
         }
-        return jsonData;
     }
 
     private HttpHeaders configureHeader() {
