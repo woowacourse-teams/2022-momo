@@ -6,14 +6,14 @@
 :toclevels: 2
 
 == 이미지
-=== 이미지 업로드
+=== 모임 썸네일 변경
 Request
-include::{snippets}/imageupload/http-request.adoc[]
+include::{snippets}/groupImageUpdate/http-request.adoc[]
 Response
-include::{snippets}/imageupload/http-response.adoc[]
+include::{snippets}/groupImageUpdate/http-response.adoc[]
 
-=== 이미지 불러오기
+=== 모임 이미지 초기화
 Request
-include::{snippets}/imageload/http-request.adoc[]
+include::{snippets}/groupImageInit/http-request.adoc[]
 Response
-include::{snippets}/imageload/http-response.adoc[]
+include::{snippets}/groupImageInit/http-response.adoc[]

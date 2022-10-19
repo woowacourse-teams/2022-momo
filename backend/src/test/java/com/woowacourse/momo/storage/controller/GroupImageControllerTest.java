@@ -69,7 +69,7 @@ class GroupImageControllerTest {
                         status().isCreated(),
                         header().string("location", equalTo(fullPath)))
                 .andDo(
-                        document("groupimageupdate",
+                        document("groupImageUpdate",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -90,7 +90,7 @@ class GroupImageControllerTest {
                 )
                 .andExpect(status().isNoContent())
                 .andDo(
-                        document("groupimageinit",
+                        document("groupImageInit",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
