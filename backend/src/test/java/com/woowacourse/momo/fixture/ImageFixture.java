@@ -1,12 +1,11 @@
 package com.woowacourse.momo.fixture;
 
-
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 public enum ImageFixture {
 
-    PNG_IMAGE("imageFile", "asdf.png", MediaType.IMAGE_PNG_VALUE, "asdf".getBytes())
+    PNG_IMAGE("file", "asdf.png", MediaType.IMAGE_PNG_VALUE, "asdf".getBytes())
     ;
 
     private final String name;
