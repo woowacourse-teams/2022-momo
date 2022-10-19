@@ -9,15 +9,18 @@ const GUIDE_MESSAGE = {
     LOGOUT_SUCCESS: '로그아웃에 성공했어요.',
   },
   DELETE: {
-    CONFIRM_REQUEST: '정말로 삭제하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
-    SUCCESS_REQUEST: '모임을 성공적으로 삭제했어요.',
+    CONFIRM_GROUP_REQUEST:
+      '정말로 삭제하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
+    SUCCESS_GROUP_REQUEST: '모임을 성공적으로 삭제했어요.',
+    CONFIRM_THUMBNAIL_REQUEST: '썸네일을 삭제하시겠어요?',
+    SUCCESS_THUMBNAIL_REQUEST: '썸네일을 성공적으로 삭제했어요.',
   },
   MEMBER: {
-    SUCCESS_NAME_REQUEST: '닉네임 변경에 성공했어요.',
-    SUCCESS_PASSWORD_REQUEST: '비밀번호 변경에 성공했어요.',
+    SUCCESS_NAME_REQUEST: '닉네임 변경을 성공했어요.',
+    SUCCESS_PASSWORD_REQUEST: '비밀번호 변경을 성공했어요.',
     CONFIRM_WITHDRAWAL_REQUEST:
       '정말로 탈퇴하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
-    SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴에 성공했어요. 다음에 다시 만나요 😊',
+    SUCCESS_WITHDRAWAL_REQUEST: '회원 탈퇴를 성공했어요. 다음에 다시 만나요 😊',
     WITHDRAWAL_MEMBER: '탈퇴한 회원이에요 👋',
   },
   GROUP: {
@@ -28,9 +31,10 @@ const GUIDE_MESSAGE = {
     SUCCESS_EXIT_REQUEST: '참여를 취소했어요.',
     CONFIRM_CHANGE_DURATION:
       '기간을 변경하시면 기존에 설정하신 일정이 초기화돼요. 그래도 변경하실 건가요?',
-    SUCCESS_EDIT_REQUEST: '모임 정보 수정에 성공했어요.',
+    SUCCESS_EDIT_REQUEST: '모임 정보를 성공적으로 수정했어요.',
     SUCCESS_LIKE_GROUP: '찜한 모임에 추가했어요.',
     SUCCESS_UNLIKE_GROUP: '찜한 모임에서 삭제했어요.',
+    SUCCESS_EDIT_THUMBNAIL: '썸네일을 성공적으로 수정했어요.',
   },
 };
 
@@ -60,7 +64,9 @@ const CLIENT_ERROR_MESSAGE = {
     FAILURE_REQUEST: '모임 생성을 실패했어요.',
   },
   DELETE: {
-    FAILURE_REQUEST: '모임 삭제를 실패했어요.',
+    FAILURE_GROUP_REQUEST: '모임 삭제를 실패했어요.',
+    NO_THUMBNAIL: '저장된 썸네일이 없어요.',
+    FAILURE_THUMBNAIL_REQUEST: '썸네일 삭제를 실패했어요.',
   },
   MEMBER: {
     FAILURE_CONFIRM_PASSWORD: '비밀번호 확인이 일치하지 않아요.',
@@ -76,6 +82,9 @@ const CLIENT_ERROR_MESSAGE = {
     FAILURE_EXIT_GROUP: '모임 참여 취소를 실패했어요.',
     FAILURE_EDIT_GROUP: '모임 정보 수정을 실패했어요.',
     FAILURE_LIKE_GROUP: '모임 찜하기를 실패했어요.',
+    NO_THUMBNAIL: '추가된 썸네일이 없어요. 먼저 사진을 추가해주세요.',
+    FAILURE_EDIT_THUMBNAIL: '썸네일 수정을 실패했어요.',
+    NOT_ALLOWED_THUMBNAIL_TYPE: '파일 형식은 jpg 또는 png여야 해요.',
   },
   UNHANDLED:
     '알 수 없는 클라이언트 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
@@ -137,6 +146,13 @@ const SERVER_ERROR_MESSAGE = {
     GROUP_020: '찜하지 않은 모임이에요.',
     GROUP_021: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
     GROUP_022: `모임의 설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자를 넘을 수 없어요.`,
+    GROUP_IMAGE_001: '모임의 주최자만 수정할 수 있어요.',
+    GROUP_IMAGE_002: '이미지 파일 이름이 비어있어요.',
+    GROUP_IMAGE_003:
+      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    GROUP_IMAGE_004:
+      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    GROUP_IMAGE_005: '모임의 썸네일이 존재하지 않아요.',
   },
   CATEGORY: {
     CATEGORY_001: '존재하지 않는 카테고리예요.',

@@ -3,7 +3,8 @@ export type ModalStateType =
   | 'login'
   | 'signup'
   | 'confirmPassword'
-  | 'postcode';
+  | 'postcode'
+  | 'thumbnail';
 
 export interface SnackbarState {
   type: 'basic' | 'error';

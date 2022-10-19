@@ -50,6 +50,7 @@ const groupDetailState = atom<GroupDetailData>({
       detail: '',
     },
     description: '',
+    imageUrl: '',
   },
 });
 

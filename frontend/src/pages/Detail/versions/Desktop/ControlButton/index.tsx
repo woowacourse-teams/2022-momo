@@ -59,17 +59,17 @@ function ControlButton({
   };
 
   const deleteGroup = () => {
-    if (!window.confirm(GUIDE_MESSAGE.DELETE.CONFIRM_REQUEST)) return;
+    if (!window.confirm(GUIDE_MESSAGE.DELETE.CONFIRM_GROUP_REQUEST)) return;
 
     requestDeleteGroup(id)
       .then(() => {
-        setMessage(GUIDE_MESSAGE.DELETE.SUCCESS_REQUEST);
+        setMessage(GUIDE_MESSAGE.DELETE.SUCCESS_GROUP_REQUEST);
 
         navigate(BROWSER_PATH.BASE);
       })
       .catch(error => {
         if (!error) {
-          alert(CLIENT_ERROR_MESSAGE.DELETE.FAILURE_REQUEST);
+          alert(CLIENT_ERROR_MESSAGE.DELETE.FAILURE_GROUP_REQUEST);
         }
         handleError(error);
       });
