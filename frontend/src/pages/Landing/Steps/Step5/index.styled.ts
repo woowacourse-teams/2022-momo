@@ -2,6 +2,7 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import {
+  Container as BasicContainer,
   Heading,
   LeftHeadingAnimation,
   RightHeadingAnimation,
@@ -35,8 +36,16 @@ const ButtonAnimation = keyframes`
   }
 `;
 
+const Container = styled(BasicContainer)`
+  justify-content: center;
+
+  padding: 0;
+`;
+
 const IconBox = styled.div`
   display: flex;
+
+  height: max-content;
 
   svg {
     height: fit-content;
@@ -99,12 +108,16 @@ const HeadingContainer = styled.div`
 `;
 
 const DescriptionHeading = styled(Heading)`
+  display: block;
+
   &.show {
     animation: ${LeftHeadingAnimation} 1s;
   }
 `;
 
 const TitleHeading = styled(Heading)`
+  display: block;
+
   color: ${({ theme: { colors } }) => colors.green001};
 
   &.show {
@@ -153,4 +166,11 @@ const Button = styled.button`
   `}
 `;
 
-export { IconBox, HeadingContainer, DescriptionHeading, TitleHeading, Button };
+export {
+  Container,
+  IconBox,
+  HeadingContainer,
+  DescriptionHeading,
+  TitleHeading,
+  Button,
+};
