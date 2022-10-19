@@ -32,6 +32,7 @@ public class FileLogManager implements LogManager {
         if (!used) {
             return;
         }
+
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
