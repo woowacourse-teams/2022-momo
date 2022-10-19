@@ -137,12 +137,27 @@ class MemberServiceTest {
         assertThat(member.getUserName()).isNotEqualTo(beforeName);
     }
 
+    @DisplayName("이미 존재하는 회원 이름으로 수정하는 경우 예외가 발생한다")
+    @Test
+    void updateNameWithDuplicated() {
+        Long memberId = createMember();
+        Member member = memberFindService.findMember(memberId);
+        String name = member.getUserName();
+
+        ChangeNameRequest request = new ChangeNameRequest(name);
+
+        assertThatThrownBy(() -> memberService.updateName(memberId, request))
+                .isInstanceOf(MemberException.class)
+                .hasMessageContaining("이미 가입된 이름입니다.");
+    }
+
     @DisplayName("존재하지 않는 회원의 이름을 수정하는 경우 예외가 발생한다")
     @Test
     void updateNameNotExist() {
         ChangeNameRequest request = new ChangeNameRequest("무무");
 
-        assertThatThrownBy(() -> memberService.updateName(1000L, request)).isInstanceOf(MemberException.class)
+        assertThatThrownBy(() -> memberService.updateName(1000L, request))
+                .isInstanceOf(MemberException.class)
                 .hasMessageContaining("멤버가 존재하지 않습니다.");
     }
 
