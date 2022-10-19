@@ -87,19 +87,6 @@ const HeadingContainer = styled.div`
   `}
 `;
 
-const LeftHeadingWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-
-  width: 100%;
-
-  ${({ theme: { breakpoints } }) => `
-    @media only screen and (max-width: ${breakpoints.md - 1}px) {
-      justify-content: center;
-    }
-  `}
-`;
-
 const RightHeadingWrapper = styled.div`
   display: flex;
 
@@ -110,6 +97,10 @@ const RightHeadingWrapper = styled.div`
       justify-content: center;
     }
   `}
+`;
+
+const LeftHeadingWrapper = styled(RightHeadingWrapper)`
+  justify-content: flex-end;
 `;
 
 const Heading = styled.h1`

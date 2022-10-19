@@ -16,7 +16,7 @@ function Landing() {
     () => [target1, target2, target3, target4, target5],
     [],
   );
-  console.log(showedPageNumbers);
+
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
