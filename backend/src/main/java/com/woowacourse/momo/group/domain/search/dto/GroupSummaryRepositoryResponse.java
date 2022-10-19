@@ -20,4 +20,9 @@ public class GroupSummaryRepositoryResponse {
     private int numOfParticipant;
     private boolean isClosedEarly;
     private LocalDateTime deadline;
+    private String imageName;
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 }

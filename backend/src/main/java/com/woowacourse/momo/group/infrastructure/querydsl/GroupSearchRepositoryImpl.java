@@ -4,6 +4,7 @@ import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 import static com.woowacourse.momo.member.domain.QMember.member;
+import static com.woowacourse.momo.storage.domain.QGroupImage.groupImage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
                 .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
@@ -106,6 +108,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .select(makeProjections())
                 .from(group)
                 .innerJoin(group.participants.host, member)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
@@ -140,7 +143,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 group.participants.capacity.value,
                 participant.count().intValue().add(host),
                 group.closedEarly,
-                group.calendar.deadline.value
+                group.calendar.deadline.value,
+                groupImage.imageName
         );
     }
 

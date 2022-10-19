@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.momo.category.domain.Category;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponse;
 import com.woowacourse.momo.category.service.dto.response.CategoryResponseAssembler;
+import com.woowacourse.momo.storage.support.ImageProvider;
 
 @Transactional
 @SpringBootTest
@@ -23,11 +24,18 @@ class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ImageProvider imageProvider;
+
     @DisplayName("카테고리 목록을 조회한다")
     @Test
     void findAll() {
         List<CategoryResponse> expected = Arrays.stream(Category.values())
-                .map(CategoryResponseAssembler::categoryResponse)
+                .map(category ->
+                        CategoryResponseAssembler.categoryResponse(
+                                category, imageProvider.generateCategoryImageUrl(category.getIconName())
+                        )
+                )
                 .collect(Collectors.toList());
 
         List<CategoryResponse> actual = categoryService.findAll();

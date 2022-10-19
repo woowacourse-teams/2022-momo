@@ -4,3 +4,4 @@ truncate table momo_schedule;
 truncate table momo_participant;
 truncate table momo_favorite;
 truncate table momo_token;
+truncate table momo_groupimage;

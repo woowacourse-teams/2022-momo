@@ -23,4 +23,5 @@ public class GroupSummaryResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime deadline;
     private boolean like;
+    private String imageUrl;
 }
