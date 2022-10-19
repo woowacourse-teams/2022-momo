@@ -2,6 +2,7 @@ package com.woowacourse.momo.support.logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,7 +16,7 @@ public class ExceptionLogging {
 
     private final Logging logging;
 
-    @Pointcut("execution(* com.woowacourse.momo..*.*(..))")
+    @Pointcut("execution(* com.woowacourse.momo.*.controller.*.*(..))")
     public void allMethod() {
     }
 

@@ -1,21 +1,21 @@
 package com.woowacourse.momo.support.logging.manager;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.woowacourse.momo.support.logging.manager.dto.SlackMessage;
+import com.woowacourse.momo.support.logging.manager.dto.SlackMessageRequest;
 import com.woowacourse.momo.support.logging.TraceExtractor;
+import com.woowacourse.momo.support.logging.manager.dto.SlackThreadRequest;
 
-@Component
-@Primary
+
 public class SlackLogManager implements LogManager {
 
     private static final String SLACK_MESSAGE_REQUEST_URL = "https://slack.com/api/chat.postMessage";
@@ -26,34 +26,67 @@ public class SlackLogManager implements LogManager {
     @Value("${slack.token}")
     private String token;
 
-    @Value("${slack.channel-id")
+    @Value("${slack.channel-id}")
     private String channelId;
+
+    @Value("${momo-log.slack}")
+    private boolean used;
 
     @Override
     public void writeMessage(String message) {
-        HttpEntity<String> request = generateHttpEntity(message);
+        if (!used) {
+            return;
+        }
+
+        HttpEntity<String> request = generateSlackMessageHttpEntity(message);
         restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, request, String.class);
     }
 
     @Override
     public void writeException(Exception exception) {
-        HttpEntity<String> request = generateHttpEntity(TraceExtractor.getStackTrace(exception));
+        if (!used) {
+            return;
+        }
 
-        restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, request, String.class);
+        HttpEntity<String> request = generateSlackMessageHttpEntity("에러가 발생했습니다.");
+
+        String response = restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, request, String.class);
+        String ts = extractCommentNumber(response);
+
+        HttpEntity<String> threadRequest = generateSlackThreadHttpEntity(ts,
+                TraceExtractor.getStackTrace(exception));
+        restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, threadRequest, String.class);
     }
 
-    private HttpEntity<String> generateHttpEntity(String message) {
-        SlackMessage slackMessage = new SlackMessage(channelId, message);
+    private String extractCommentNumber(String response) {
+        try {
+            HashMap<String, Object> hashMap = objectMapper.readValue(response, HashMap.class);
+            return (String) hashMap.get("ts");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private HttpEntity<String> generateSlackMessageHttpEntity(String message) {
+        SlackMessageRequest slackMessage = new SlackMessageRequest(channelId, message);
         HttpHeaders httpHeaders = configureHeader();
         String body = configureBody(slackMessage);
 
         return new HttpEntity<>(body, httpHeaders);
     }
 
-    private String configureBody(SlackMessage slackMessage) {
+    private HttpEntity<String> generateSlackThreadHttpEntity(String ts, String message) {
+        SlackThreadRequest threadRequest = new SlackThreadRequest(channelId, ts, message);
+        HttpHeaders httpHeaders = configureHeader();
+        String body = configureBody(threadRequest);
+
+        return new HttpEntity<>(body, httpHeaders);
+    }
+
+    private String configureBody(Object body) {
         String jsonData = null;
         try {
-            jsonData = objectMapper.writeValueAsString(slackMessage);
+            jsonData = objectMapper.writeValueAsString(body);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Json 파싱 에러입니다.");
         }

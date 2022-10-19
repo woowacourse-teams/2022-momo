@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.woowacourse.momo.support.logging.TraceExtractor;
 import com.woowacourse.momo.support.logging.exception.LogException;
-import com.woowacourse.momo.support.logging.manager.LogManager;
 
 public class FileLogManager implements LogManager {
 
@@ -18,6 +19,9 @@ public class FileLogManager implements LogManager {
     private static final String EXTENSION = ".txt";
     private static final boolean IS_APPENDED = true;
 
+    @Value("${momo-log.file}")
+    private boolean used;
+
     private final String logPath;
 
     public FileLogManager(String logPath) {
@@ -25,6 +29,9 @@ public class FileLogManager implements LogManager {
     }
 
     public void writeMessage(String message) {
+        if (!used) {
+            return;
+        }
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
@@ -38,6 +45,9 @@ public class FileLogManager implements LogManager {
     }
 
     public void writeException(Exception exception) {
+        if (!used) {
+            return;
+        }
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);

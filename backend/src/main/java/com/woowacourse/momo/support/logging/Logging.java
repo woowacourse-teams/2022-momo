@@ -26,7 +26,7 @@ public class Logging {
 
     public void printStackTrace(Exception exception, JoinPoint joinPoint) {
         LOGGER.error(ConsolePrettier.red("" + TraceExtractor.getStackTrace(exception)));
-        logManagers.forEach(logManager -> logManager.writeException(exception);
+        logManagers.forEach(logManager -> logManager.writeException(exception));
     }
 
     private String extractExceptionInfo(JoinPoint joinPoint) {
