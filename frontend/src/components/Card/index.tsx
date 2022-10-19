@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { EmptyHeartSVG, FilledHeartSVG } from 'assets/svg';
 import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
+import useCategory from 'hooks/useCategory';
 import theme from 'styles/theme';
 import { GroupSummary } from 'types/data';
-import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
 import * as S from './index.styled';
@@ -27,14 +27,17 @@ function Card({
     numOfParticipant,
     capacity,
     like,
+    imageUrl,
   },
 }: CardProps) {
+  const categories = useCategory();
+
   const svgSize = document.body.clientWidth > theme.breakpoints.md ? 30 : 25;
 
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${id}`}>
       <S.Container finished={finished}>
-        <S.Image imgSrc={getCategoryImage(categoryId)} />
+        <S.Image imgSrc={imageUrl ?? categories[categoryId].imageUrl} />
         <S.Description>
           <S.Left>
             <div>
