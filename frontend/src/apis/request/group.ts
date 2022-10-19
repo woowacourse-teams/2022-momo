@@ -117,6 +117,20 @@ const requestEditGroup = (
     });
 };
 
+const requestEditThumbnail = (
+  id: GroupDetailData['id'],
+  formData: FormData,
+) => {
+  return axiosWithAccessToken.post(
+    `${API_PATH.GROUP}/${id}/thumbnail`,
+    formData,
+  );
+};
+
+const requestResetThumbnail = (id: GroupDetailData['id']) => {
+  return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}/thumbnail`);
+};
+
 const requestJoinedGroups =
   (
     type: SelectableGroup,
@@ -208,6 +222,8 @@ const requestUnlikeGroup = (id: GroupDetailData['id']) => {
 export {
   requestCreateGroup,
   requestEditGroup,
+  requestEditThumbnail,
+  requestResetThumbnail,
   requestJoinedGroups,
   requestGroups,
   requestGroupDetail,
