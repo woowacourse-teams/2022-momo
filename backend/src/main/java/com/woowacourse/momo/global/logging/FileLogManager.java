@@ -4,12 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.woowacourse.momo.global.logging.exception.LogException;
 
-public class LogFileManager {
+public class FileLogManager implements LogManager {
 
     private static final SimpleDateFormat FILE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -18,30 +23,30 @@ public class LogFileManager {
 
     private final String logPath;
 
-    public LogFileManager(String logPath) {
+    public FileLogManager(String logPath) {
         this.logPath = logPath;
     }
 
-    public void writeExceptionStackTrace(String exceptionStackTrace) {
+    public void writeMessage(String message) {
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
-            writer.append(exceptionStackTrace);
+            writer.append(message);
             writer.newLine();
         } catch (IOException e) {
             throw new LogException("로그 작성에 실패하였습니다");
         }
     }
 
-    public void writeExceptionMessage(Exception exception) {
+    public void writeException(Exception exception) {
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, IS_APPENDED))) {
-            writeExceptionMessage(exception, writer, today);
+            writeException(exception, writer, today);
             writer.newLine();
         } catch (IOException e) {
             throw new LogException("로그 작성에 실패하였습니다");
@@ -65,12 +70,13 @@ public class LogFileManager {
         return FILE_FORMAT.format(today) + EXTENSION;
     }
 
-    private void writeExceptionMessage(Exception exception, BufferedWriter writer, Date today) throws IOException {
+    private void writeException(Exception exception, BufferedWriter writer, Date today) throws IOException {
+        String stackTrace = TraceExtractor.getStackTrace(exception);
         writer.append(LOG_DATE_FORMAT.format(today))
                 .append(" ")
                 .append(String.valueOf(exception.getClass()))
                 .append(": ")
-                .append(exception.getMessage());
+                .append(stackTrace);
         writer.newLine();
     }
 }

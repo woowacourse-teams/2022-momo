@@ -7,8 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.woowacourse.momo.global.logging.ExceptionLogging;
-import com.woowacourse.momo.global.logging.LogFileManager;
+import com.woowacourse.momo.global.logging.FileLogManager;
 import com.woowacourse.momo.global.logging.Logging;
+import com.woowacourse.momo.global.logging.SlackLogManager;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -18,8 +19,13 @@ public class AspectConfiguration {
     private String logFilePath;
 
     @Bean
-    public LogFileManager logFileManager() {
-        return new LogFileManager(logFilePath);
+    public FileLogManager logFileManager() {
+        return new FileLogManager(logFilePath);
+    }
+
+    @Bean
+    public SlackLogManager slackLogManager() {
+        return new SlackLogManager();
     }
 
     @Bean

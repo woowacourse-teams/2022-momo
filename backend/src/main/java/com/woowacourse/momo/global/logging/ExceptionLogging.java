@@ -25,13 +25,13 @@ public class ExceptionLogging {
 
     @AfterThrowing(value = "allMethod()", throwing = "exception")
     public void exceptionStackTrace(JoinPoint joinPoint, Exception exception) {
-        logging.printExceptionStackTrace(joinPoint);
+        logging.printStackTrace(exception, joinPoint);
     }
 
     @Around("exceptionMethod()")
     public Object exceptionMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        logging.printExceptionMessage(joinPoint);
+        logging.printExceptionPoint(joinPoint);
         return result;
     }
 }

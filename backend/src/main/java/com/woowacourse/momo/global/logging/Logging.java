@@ -13,20 +13,20 @@ public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
 
-    private final LogFileManager logFileManager;
+    private final LogManager logManager;
 
-    public void printExceptionStackTrace(JoinPoint joinPoint) {
-        String logMessage = log(joinPoint);
+    public void printExceptionPoint(JoinPoint joinPoint) {
+        String logMessage = extractExceptionInfo(joinPoint);
         LOGGER.error(ConsolePrettier.red(logMessage));
-        logFileManager.writeExceptionStackTrace(logMessage);
+        logManager.writeMessage(logMessage);
     }
 
-    public void printExceptionMessage(JoinPoint joinPoint) {
-        LOGGER.error(ConsolePrettier.red("" + getException(joinPoint)));
-        logFileManager.writeExceptionMessage(getException(joinPoint));
+    public void printStackTrace(Exception exception, JoinPoint joinPoint) {
+        LOGGER.error(ConsolePrettier.red("" + TraceExtractor.getStackTrace(exception)));
+        logManager.writeException(exception);
     }
 
-    private String log(JoinPoint joinPoint) {
+    private String extractExceptionInfo(JoinPoint joinPoint) {
         return getPathAndClassName(joinPoint) + "/" + getMethodName(joinPoint) + "(" + getParams(joinPoint) + ")";
     }
 
@@ -40,9 +40,5 @@ public class Logging {
 
     private String getParams(JoinPoint joinPoint) {
         return Arrays.toString(joinPoint.getArgs());
-    }
-
-    private Exception getException(JoinPoint joinPoint) {
-        return (Exception) joinPoint.getArgs()[0];
     }
 }
