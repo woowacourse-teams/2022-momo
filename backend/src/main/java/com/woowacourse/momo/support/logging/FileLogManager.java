@@ -1,18 +1,13 @@
-package com.woowacourse.momo.global.logging;
+package com.woowacourse.momo.support.logging;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
-
-import com.woowacourse.momo.global.logging.exception.LogException;
+import com.woowacourse.momo.support.logging.exception.LogException;
 
 public class FileLogManager implements LogManager {
 

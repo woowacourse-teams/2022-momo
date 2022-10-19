@@ -1,4 +1,4 @@
-package com.woowacourse.momo.global.logging;
+package com.woowacourse.momo.support.logging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.woowacourse.momo.global.logging;
+package com.woowacourse.momo.support.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 

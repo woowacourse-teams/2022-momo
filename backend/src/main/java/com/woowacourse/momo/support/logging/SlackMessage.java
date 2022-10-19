@@ -1,4 +1,4 @@
-package com.woowacourse.momo.global.logging;
+package com.woowacourse.momo.support.logging;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

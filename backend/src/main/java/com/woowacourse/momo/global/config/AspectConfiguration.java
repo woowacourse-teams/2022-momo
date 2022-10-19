@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import com.woowacourse.momo.global.logging.ExceptionLogging;
-import com.woowacourse.momo.global.logging.FileLogManager;
-import com.woowacourse.momo.global.logging.Logging;
-import com.woowacourse.momo.global.logging.SlackLogManager;
+import com.woowacourse.momo.support.logging.ExceptionLogging;
+import com.woowacourse.momo.support.logging.FileLogManager;
+import com.woowacourse.momo.support.logging.Logging;
+import com.woowacourse.momo.support.logging.SlackLogManager;
 
 @Configuration
 @EnableAspectJAutoProxy
