@@ -1,6 +1,5 @@
 import { useRecoilValue } from 'recoil';
 
-import useCategory from 'hooks/useCategory';
 import useModal from 'hooks/useModal';
 import { loginState } from 'store/states';
 import { GroupDetailData, GroupParticipants } from 'types/data';
@@ -16,7 +15,6 @@ interface MobileProps {
 
 function Mobile({ id, data, participants }: MobileProps) {
   const { user } = useRecoilValue(loginState);
-  const categories = useCategory();
 
   const { showThumbnailModal } = useModal();
 
@@ -30,11 +28,7 @@ function Mobile({ id, data, participants }: MobileProps) {
 
   return (
     <>
-      <Image
-        src={data.imageUrl ?? categories[data.categoryId].imageUrl}
-        canEdit={canEdit}
-        onClick={showModalToHost}
-      />
+      <Image src={data.imageUrl} canEdit={canEdit} onClick={showModalToHost} />
       <Content id={id} data={data} participants={participants} />
     </>
   );

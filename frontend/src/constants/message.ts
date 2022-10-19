@@ -84,7 +84,7 @@ const CLIENT_ERROR_MESSAGE = {
     FAILURE_LIKE_GROUP: '모임 찜하기를 실패했어요.',
     NO_THUMBNAIL: '추가된 썸네일이 없어요. 먼저 사진을 추가해주세요.',
     FAILURE_EDIT_THUMBNAIL: '썸네일 수정을 실패했어요.',
-    NOT_ALLOWED_THUMBNAIL_TYPE: '파일 형식은 jpg 또는 png여야 합니다.',
+    NOT_ALLOWED_THUMBNAIL_TYPE: '파일 형식은 jpg 또는 png여야 해요.',
   },
   UNHANDLED:
     '알 수 없는 클라이언트 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
