@@ -22,8 +22,18 @@ const IconBox = styled.div`
   row-gap: 2rem;
 
   &.show {
-    animation: ${IconAnimation} 1s;
+    animation: ${IconAnimation} 0.5s;
   }
+
+  ${({ theme: { breakpoints } }) => `
+    @media only screen and (max-width: ${breakpoints.md - 1}px) {
+      gap: 0.75rem 1.5rem;
+
+      & > svg {
+        width: 2.75rem;
+      }
+    }
+  `}
 `;
 
 export { IconBox };

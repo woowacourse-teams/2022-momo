@@ -27,7 +27,7 @@ function Step4({ show }: { show: boolean }) {
           </RightHeading>
         </RightHeadingWrapper>
       </HeadingContainer>
-      <Image src={DescImage} width="50rem" className={show ? 'show' : ''} />
+      <Image src={DescImage} width="40rem" className={show ? 'show' : ''} />
     </Container>
   );
 }
