@@ -1,12 +1,8 @@
 package com.woowacourse.momo.storage.support;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -67,27 +63,8 @@ public class ImageConnector {
     private MultiValueMap<String, Object> generateBody(String path, MultipartFile multipartFile) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add(pathKey, path);
-        body.add(fileKey, createResource(multipartFile));
+        body.add(fileKey, multipartFile.getResource());
         return body;
-    }
-
-    private Resource createResource(MultipartFile multipartFile) {
-        String filename = getFilename(multipartFile);
-        try {
-            File tempFile = new File(filename);
-            multipartFile.transferTo(tempFile);
-            return new FileSystemResource(tempFile);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    private String getFilename(MultipartFile multipartFile) {
-        String filename = multipartFile.getOriginalFilename();
-        if (filename == null) {
-            throw new GroupImageException(GroupImageErrorCode.MULTIPART_FILE_NAME_IS_NULL);
-        }
-        return filename;
     }
 
     private ResponseEntity<Void> saveImage(HttpEntity<MultiValueMap<String, Object>> request) {
