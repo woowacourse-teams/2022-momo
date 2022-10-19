@@ -108,16 +108,16 @@ public class GroupSearchService {
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
-    private List<GroupSummaryRepositoryResponse> convertImageUrl(Page<GroupSummaryRepositoryResponse> groups) {
-        for (GroupSummaryRepositoryResponse group : groups.getContent()) {
-            String imageName = group.getImageName();
-            String imageUrl = imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
-            group.setImageName(imageUrl);
-        }
-        return groups.getContent();
-    }
-
     private Pageable defaultPageable(GroupSearchRequest request) {
         return PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+    }
+
+    private List<GroupSummaryRepositoryResponse> convertImageUrl(Page<GroupSummaryRepositoryResponse> repositoryResponses) {
+        for (GroupSummaryRepositoryResponse repositoryResponse : repositoryResponses.getContent()) {
+            String imageName = repositoryResponse.getImageName();
+            String imageUrl = imageProvider.generateGroupImageUrl(imageName, repositoryResponse.getCategory().isDefaultImage(imageName));
+            repositoryResponse.setImageName(imageUrl);
+        }
+        return repositoryResponses.getContent();
     }
 }
