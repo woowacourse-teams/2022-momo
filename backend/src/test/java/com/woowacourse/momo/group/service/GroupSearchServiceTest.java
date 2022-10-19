@@ -116,6 +116,20 @@ class GroupSearchServiceTest {
         assertThat(actual.getGroups()).hasSize(6);
     }
 
+    @DisplayName("모임 목록 조회 시 모임의 이미지 정보가 없으면 기본 이미지를 반환한다")
+    @Test
+    void findGroupsWithoutGroupImage() {
+        GroupSearchRequest request = new GroupSearchRequest();
+        request.setKeyword("모모의 스터디");
+        request.setPage(0);
+
+        GroupPageResponse actual = groupSearchService.findGroups(request);
+
+        assertThat(actual.getGroups()).hasSize(1);
+        assertThat(actual.getGroups().get(0).getImageUrl())
+                .isEqualTo("http://image.moyeora.site/group/default/thumbnail_study.jpg");
+    }
+
     @DisplayName("키워드를 포함하는 이름의 모임을 조회한다")
     @Test
     void findAllByKeyword() {
