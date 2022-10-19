@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.support.logging.manager.LogManager;
+import com.woowacourse.momo.support.logging.manager.LogManagerAdapter;
 
 @RequiredArgsConstructor
 public class Logging {
@@ -21,12 +22,12 @@ public class Logging {
     public void printExceptionPoint(JoinPoint joinPoint) {
         String logMessage = extractExceptionInfo(joinPoint);
         LOGGER.error(ConsolePrettier.red(logMessage));
-        logManagers.forEach(logManager -> logManager.writeMessage(logMessage));
+        logManagers.forEach(logManager -> LogManagerAdapter.writeMessage(logManager, logMessage));
     }
 
     public void printStackTrace(Exception exception, JoinPoint joinPoint) {
         LOGGER.error(ConsolePrettier.red("" + TraceExtractor.getStackTrace(exception)));
-        logManagers.forEach(logManager -> logManager.writeException(exception));
+        logManagers.forEach(logManager -> LogManagerAdapter.writeException(logManager, exception));
     }
 
     private String extractExceptionInfo(JoinPoint joinPoint) {

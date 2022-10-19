@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class SlackMessageRequest {
+
     private final String channel;
     private final String text;
 }

@@ -15,7 +15,6 @@ import com.woowacourse.momo.support.logging.TraceExtractor;
 import com.woowacourse.momo.support.logging.manager.dto.SlackMessageRequest;
 import com.woowacourse.momo.support.logging.manager.dto.SlackThreadRequest;
 
-
 public class SlackLogManager implements LogManager {
 
     private static final String SLACK_MESSAGE_REQUEST_URL = "https://slack.com/api/chat.postMessage";
@@ -57,6 +56,11 @@ public class SlackLogManager implements LogManager {
         HttpEntity<String> threadRequest = generateSlackThreadHttpEntity(ts,
                 TraceExtractor.getStackTrace(exception));
         restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, threadRequest, String.class);
+    }
+
+    @Override
+    public boolean isUsed() {
+        return used;
     }
 
     private String extractCommentNumber(String response) {

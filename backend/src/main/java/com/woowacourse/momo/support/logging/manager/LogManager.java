@@ -5,4 +5,6 @@ public interface LogManager {
     void writeMessage(String message);
 
     void writeException(Exception exception);
+
+    boolean isUsed();
 }

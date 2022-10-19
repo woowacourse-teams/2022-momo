@@ -29,10 +29,6 @@ public class FileLogManager implements LogManager {
     }
 
     public void writeMessage(String message) {
-        if (!used) {
-            return;
-        }
-
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
@@ -46,9 +42,6 @@ public class FileLogManager implements LogManager {
     }
 
     public void writeException(Exception exception) {
-        if (!used) {
-            return;
-        }
         Date today = new Date();
         String filePath = createFile(today);
         File file = new File(filePath);
@@ -59,6 +52,11 @@ public class FileLogManager implements LogManager {
         } catch (IOException e) {
             throw new LogException("로그 작성에 실패하였습니다");
         }
+    }
+
+    @Override
+    public boolean isUsed() {
+        return used;
     }
 
     private String createFile(Date today) {
