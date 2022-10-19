@@ -20,6 +20,7 @@ public class SlackLogManager implements LogManager {
 
     private static final String SLACK_MESSAGE_REQUEST_URL = "https://slack.com/api/chat.postMessage";
     private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String COMMENT_ID = "ts";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -61,7 +62,7 @@ public class SlackLogManager implements LogManager {
     private String extractCommentNumber(String response) {
         try {
             HashMap<String, Object> hashMap = objectMapper.readValue(response, HashMap.class);
-            return (String) hashMap.get("ts");
+            return (String) hashMap.get(COMMENT_ID);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -75,8 +76,8 @@ public class SlackLogManager implements LogManager {
         return new HttpEntity<>(body, httpHeaders);
     }
 
-    private HttpEntity<String> generateSlackThreadHttpEntity(String ts, String message) {
-        SlackThreadRequest threadRequest = new SlackThreadRequest(channelId, ts, message);
+    private HttpEntity<String> generateSlackThreadHttpEntity(String commentID, String message) {
+        SlackThreadRequest threadRequest = new SlackThreadRequest(channelId, commentID, message);
         HttpHeaders httpHeaders = configureHeader();
         String body = configureBody(threadRequest);
 
