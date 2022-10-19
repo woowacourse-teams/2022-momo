@@ -131,7 +131,11 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
 
   const changeDuration =
     (type: 'start' | 'end') => (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)) return;
+      if (
+        schedules.length > 0 &&
+        !window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)
+      )
+        return;
 
       dangerouslySetSchedules([]);
 
