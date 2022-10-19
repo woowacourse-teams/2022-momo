@@ -1,4 +1,4 @@
-package com.woowacourse.momo.support.logging;
+package com.woowacourse.momo.support.logging.manager;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.woowacourse.momo.support.logging.manager.dto.SlackMessage;
+import com.woowacourse.momo.support.logging.TraceExtractor;
 
 @Component
 @Primary
@@ -41,13 +44,13 @@ public class SlackLogManager implements LogManager {
 
     private HttpEntity<String> generateHttpEntity(String message) {
         SlackMessage slackMessage = new SlackMessage(channelId, message);
-        HttpHeaders httpHeaders = headerConfigure();
-        String body = bodyConfigure(slackMessage);
+        HttpHeaders httpHeaders = configureHeader();
+        String body = configureBody(slackMessage);
 
         return new HttpEntity<>(body, httpHeaders);
     }
 
-    private String bodyConfigure(SlackMessage slackMessage) {
+    private String configureBody(SlackMessage slackMessage) {
         String jsonData = null;
         try {
             jsonData = objectMapper.writeValueAsString(slackMessage);
@@ -57,7 +60,7 @@ public class SlackLogManager implements LogManager {
         return jsonData;
     }
 
-    private HttpHeaders headerConfigure() {
+    private HttpHeaders configureHeader() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);

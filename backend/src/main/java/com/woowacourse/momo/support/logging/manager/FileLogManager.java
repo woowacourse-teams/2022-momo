@@ -1,4 +1,4 @@
-package com.woowacourse.momo.support.logging;
+package com.woowacourse.momo.support.logging.manager;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.woowacourse.momo.support.logging.TraceExtractor;
 import com.woowacourse.momo.support.logging.exception.LogException;
+import com.woowacourse.momo.support.logging.manager.LogManager;
 
 public class FileLogManager implements LogManager {
 
