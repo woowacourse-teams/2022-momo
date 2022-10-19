@@ -114,24 +114,10 @@ public class GroupSearchService {
 
     private List<GroupSummaryRepositoryResponse> convertImageUrl(Page<GroupSummaryRepositoryResponse> groups) {
         for (GroupSummaryRepositoryResponse group : groups.getContent()) {
-            boolean defaultImage = isDefaultImage(group);
-            String imageName = getGroupImage(group, defaultImage);
-
-            String imageUrl = imageProvider.generateGroupImageUrl(imageName, defaultImage);
+            String imageName = group.getImageName();
+            String imageUrl = imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
             group.setImageName(imageUrl);
         }
         return groups.getContent();
-    }
-
-    private boolean isDefaultImage(GroupSummaryRepositoryResponse group) {
-        String imageName = group.getImageName();
-        return imageName == null || group.getCategory().isDefaultImage(imageName);
-    }
-
-    private String getGroupImage(GroupSummaryRepositoryResponse group, boolean defaultImage) {
-        if (defaultImage) {
-            return group.getCategory().getDefaultImageName();
-        }
-        return group.getImageName();
     }
 }
