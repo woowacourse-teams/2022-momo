@@ -25,12 +25,17 @@ const useModal = () => {
     setModalFlag('postcode');
   };
 
+  const showThumbnailModal = () => {
+    setModalFlag('thumbnail');
+  };
+
   return {
     setOffModal,
     showSignupModal,
     showLoginModal,
     showConfirmPasswordModal,
     showPostcodeModal,
+    showThumbnailModal,
   };
 };
 

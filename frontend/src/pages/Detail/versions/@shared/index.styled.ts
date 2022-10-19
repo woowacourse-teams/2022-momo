@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Image = styled.div<{ src: string }>`
+const Image = styled.div<{ src: string; canEdit: boolean }>`
   position: fixed;
   top: 52px;
   z-index: 100;
@@ -12,6 +12,10 @@ const Image = styled.div<{ src: string }>`
     `linear-gradient(${filter.darken001}, ${filter.darken001}), url(${src})`};
   background-size: cover;
   background-position: center;
+
+  ${({ canEdit }) => `
+    ${canEdit ? `cursor: pointer` : ''};
+  `}
 `;
 
 const Category = styled.div`
