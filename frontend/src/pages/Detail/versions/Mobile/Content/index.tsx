@@ -25,12 +25,11 @@ import * as S from './index.styled';
 const svgSize = 20;
 
 interface ContentProps {
-  id: number;
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
-function Content({ id, data, participants }: ContentProps) {
+function Content({ data, participants }: ContentProps) {
   const { user } = useRecoilValue(loginState);
   const categories = useCategory();
 
@@ -45,9 +44,7 @@ function Content({ id, data, participants }: ContentProps) {
   };
 
   if (mode === 'edit') {
-    return (
-      <EditMode id={Number(id)} data={data} finishEditMode={finishEditMode} />
-    );
+    return <EditMode data={data} finishEditMode={finishEditMode} />;
   }
 
   return (
@@ -68,7 +65,7 @@ function Content({ id, data, participants }: ContentProps) {
             </Category>
           </S.TitleContainer>
           <S.SideMenu>
-            <LikeButton id={id} like={data.like} />
+            <LikeButton id={data.id} like={data.like} />
             {user?.id === data.host.id && !data.finished && (
               <PencilSVG
                 width={svgSize}
@@ -91,7 +88,7 @@ function Content({ id, data, participants }: ContentProps) {
       </S.ContentContainer>
       <S.ControlContainer>
         <ControlButton
-          id={id}
+          id={data.id}
           host={data.host}
           capacity={data.capacity}
           finished={data.finished}

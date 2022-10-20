@@ -8,12 +8,11 @@ import { Image } from '../@shared/index.styled';
 import Content from './Content';
 
 interface DesktopProps {
-  id: GroupDetailData['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
-function Desktop({ id, data, participants }: DesktopProps) {
+function Desktop({ data, participants }: DesktopProps) {
   const { user } = useRecoilValue(loginState);
 
   const { showThumbnailModal } = useModal();
@@ -29,7 +28,7 @@ function Desktop({ id, data, participants }: DesktopProps) {
   return (
     <>
       <Image src={data.imageUrl} canEdit={canEdit} onClick={showModalToHost} />
-      <Content id={id} data={data} participants={participants} />
+      <Content data={data} participants={participants} />
     </>
   );
 }

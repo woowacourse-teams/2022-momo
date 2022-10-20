@@ -8,12 +8,11 @@ import { Image } from '../@shared/index.styled';
 import Content from './Content';
 
 interface MobileProps {
-  id: number;
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
-function Mobile({ id, data, participants }: MobileProps) {
+function Mobile({ data, participants }: MobileProps) {
   const { user } = useRecoilValue(loginState);
 
   const { showThumbnailModal } = useModal();
@@ -29,7 +28,7 @@ function Mobile({ id, data, participants }: MobileProps) {
   return (
     <>
       <Image src={data.imageUrl} canEdit={canEdit} onClick={showModalToHost} />
-      <Content id={id} data={data} participants={participants} />
+      <Content data={data} participants={participants} />
     </>
   );
 }

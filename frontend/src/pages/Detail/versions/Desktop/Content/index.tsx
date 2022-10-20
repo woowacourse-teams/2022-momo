@@ -23,12 +23,11 @@ import Right from './Right';
 const svgSize = 20;
 
 interface ContentProps {
-  id: GroupDetailData['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
-function Content({ id, data, participants }: ContentProps) {
+function Content({ data, participants }: ContentProps) {
   const { user } = useRecoilValue(loginState);
   const categories = useCategory();
 
@@ -43,9 +42,7 @@ function Content({ id, data, participants }: ContentProps) {
   };
 
   if (mode === 'edit') {
-    return (
-      <EditMode id={Number(id)} data={data} finishEditMode={finishEditMode} />
-    );
+    return <EditMode data={data} finishEditMode={finishEditMode} />;
   }
 
   return (
@@ -74,7 +71,7 @@ function Content({ id, data, participants }: ContentProps) {
           )}
         </S.Header>
         <ControlButton
-          id={id}
+          id={data.id}
           host={data.host}
           capacity={data.capacity}
           finished={data.finished}
@@ -90,7 +87,7 @@ function Content({ id, data, participants }: ContentProps) {
           schedules={data.schedules}
           participants={participants}
         />
-        <LikeButton id={id} like={data.like} />
+        <LikeButton id={data.id} like={data.like} />
       </S.ContentContainer>
     </S.Container>
   );

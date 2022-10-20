@@ -45,9 +45,9 @@ function Detail() {
   return (
     <>
       {document.body.clientWidth > theme.breakpoints.md ? (
-        <Desktop id={Number(id)} data={data} participants={participants} />
+        <Desktop data={data} participants={participants} />
       ) : (
-        <Mobile id={Number(id)} data={data} participants={participants} />
+        <Mobile data={data} participants={participants} />
       )}
       <ImageDropBox id={Number(id)} />
     </>
