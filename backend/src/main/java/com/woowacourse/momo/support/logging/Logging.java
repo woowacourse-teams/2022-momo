@@ -12,12 +12,15 @@ import lombok.RequiredArgsConstructor;
 import com.woowacourse.momo.support.logging.manager.LogManager;
 import com.woowacourse.momo.support.logging.manager.LogManagerAdapter;
 
-@RequiredArgsConstructor
 public class Logging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
 
     private final List<LogManager> logManagers;
+
+    public Logging(LogManager ... logManagers) {
+        this.logManagers = List.of(logManagers);
+    }
 
     public void printExceptionPoint(JoinPoint joinPoint) {
         String logMessage = extractExceptionInfo(joinPoint);
@@ -25,7 +28,7 @@ public class Logging {
         logManagers.forEach(logManager -> LogManagerAdapter.writeMessage(logManager, logMessage));
     }
 
-    public void printStackTrace(Exception exception, JoinPoint joinPoint) {
+    public void printStackTrace(Exception exception) {
         LOGGER.error(ConsolePrettier.red("" + TraceExtractor.getStackTrace(exception)));
         logManagers.forEach(logManager -> LogManagerAdapter.writeException(logManager, exception));
     }

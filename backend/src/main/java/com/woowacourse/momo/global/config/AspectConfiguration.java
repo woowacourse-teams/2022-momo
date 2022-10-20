@@ -32,7 +32,7 @@ public class AspectConfiguration {
 
     @Bean
     public Logging logging() {
-        return new Logging(List.of(fileLogManager(), slackLogManager()));
+        return new Logging(fileLogManager(), slackLogManager());
     }
 
     @ConditionalOnExpression("${momo-logging.show:true}")

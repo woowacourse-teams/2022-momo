@@ -24,8 +24,8 @@ public class ExceptionLogging {
     }
 
     @AfterThrowing(value = "allControllerExecution()", throwing = "exception")
-    public void exceptionStackTrace(JoinPoint joinPoint, Exception exception) {
-        logging.printStackTrace(exception, joinPoint);
+    public void exceptionStackTrace(Exception exception) {
+        logging.printStackTrace(exception);
     }
 
     @Around("exceptionMethod()")
