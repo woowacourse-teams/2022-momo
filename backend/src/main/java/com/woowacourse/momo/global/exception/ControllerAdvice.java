@@ -5,6 +5,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.woowacourse.momo.global.exception.dto.response.ExceptionResponse;
@@ -29,7 +30,7 @@ public class ControllerAdvice {
         return convert(GlobalErrorCode.VALIDATION_ERROR);
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ExceptionResponse> notSupportedUriException() {
         return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR);
     }
