@@ -25,23 +25,23 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException() {
         return convert(GlobalErrorCode.VALIDATION_ERROR);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ExceptionResponse> unhandledApiException(NoHandlerFoundException e) {
+    public ResponseEntity<ExceptionResponse> unhandledApiException() {
         return convert(GlobalErrorCode.NOT_SUPPORTED_API_ERROR);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ExceptionResponse> notSupportedMethodException(HttpRequestMethodNotSupportedException e) {
+    public ResponseEntity<ExceptionResponse> notSupportedMethodException() {
         return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR);
     }
 
     @UnhandledErrorLogging
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleAnyException(Exception e) {
+    public ResponseEntity<ExceptionResponse> handleAnyException() {
         return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR);
     }
 
