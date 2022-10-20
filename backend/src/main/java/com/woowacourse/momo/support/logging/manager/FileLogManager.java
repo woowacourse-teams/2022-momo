@@ -55,8 +55,8 @@ public class FileLogManager implements LogManager {
     }
 
     @Override
-    public boolean isUsed() {
-        return used;
+    public boolean isNotUsed() {
+        return !used;
     }
 
     private String createFile(Date today) {

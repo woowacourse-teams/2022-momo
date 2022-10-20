@@ -52,8 +52,8 @@ public class SlackLogManager implements LogManager {
     }
 
     @Override
-    public boolean isUsed() {
-        return used;
+    public boolean isNotUsed() {
+        return !used;
     }
 
     private String extractCommentNumber(String response) {

@@ -6,5 +6,5 @@ public interface LogManager {
 
     void writeException(Exception exception);
 
-    boolean isUsed();
+    boolean isNotUsed();
 }
