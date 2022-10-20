@@ -69,7 +69,7 @@ class GroupImageServiceTest {
     @DisplayName("모임 이미지 정보를 수정한다")
     @Test
     void update() {
-        String expected = "http://image.moyeora.site/group/saved/imageName.png";
+        String expected = "https://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
@@ -85,16 +85,21 @@ class GroupImageServiceTest {
         );
     }
 
-    @DisplayName("모임 이미지 정보를 수정할 때 이전에 저장된 이미지 정보가 없으면 예외가 발생한다")
+    @DisplayName("이전에 저장된 이미지가 존재하지 않을 때 모임 이미지 정보를 수정한다")
     @Test
     void updateGroupImageIsNotExist() {
-        String expected = "http://image.moyeora.site/group/saved/imageName.png";
+        String expected = "https://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(imageConnector.requestImageSave(Mockito.anyString(), Mockito.any()))
                 .willReturn(expected);
 
-        assertThatThrownBy(() -> groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE))
-                .isInstanceOf(GroupImageException.class)
-                .hasMessage("모임의 이미지 정보가 존재하지 않습니다.");
+        String actual = groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), IMAGE);
+
+        Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        assertThat(savedGroupImage).isPresent();
+        assertAll(
+                () -> assertThat(actual).isEqualTo(expected),
+                () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo("imageName.png")
+        );
     }
 
     @DisplayName("모임 이미지를 수정할 때 주최자가 아니면 예외가 발생한다")
@@ -120,10 +125,41 @@ class GroupImageServiceTest {
     @DisplayName("모임의 이미지를 기본 이미지로 초기화한다")
     @Test
     void init() {
-        GroupImage groupImage = new GroupImage(savedHost.getId(), savedGroup.getCategory().getDefaultImageName());
+        GroupImage groupImage = new GroupImage(savedHost.getId(), "imageName.jpg");
         groupImageRepository.save(groupImage);
 
         groupImageService.init(savedHost.getId(), savedGroup.getId());
+
+        Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        String expected = savedGroup.getCategory().getDefaultImageName();
+        assertThat(savedGroupImage).isPresent();
+        assertAll(
+                () -> assertThat(savedGroupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
+                () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo(expected)
+        );
+    }
+
+    @DisplayName("이전에 저장된 이미지가 존재하지 않을 때 모임 이미지 정보를 초기화하면 기본 이미지 정보가 저장된다")
+    @Test
+    void initGroupImageIsNotExist() {
+        groupImageService.init(savedGroup.getHost().getId(), savedGroup.getId());
+
+        Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
+        String expected = savedGroup.getCategory().getDefaultImageName();
+        assertThat(savedGroupImage).isPresent();
+        assertAll(
+                () -> assertThat(savedGroupImage.get().getGroupId()).isEqualTo(savedGroup.getId()),
+                () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo(expected)
+        );
+    }
+
+    @DisplayName("기본 이미지가 저장되어 있을 때 모임 이미지를 초기화한다")
+    @Test
+    void initGroupImageIsDefaultImage() {
+        GroupImage groupImage = new GroupImage(savedHost.getId(), savedGroup.getCategory().getDefaultImageName());
+        groupImageRepository.save(groupImage);
+
+        groupImageService.init(savedGroup.getHost().getId(), savedGroup.getId());
 
         Optional<GroupImage> savedGroupImage = groupImageRepository.findByGroupId(savedGroup.getId());
         String expected = savedGroup.getCategory().getDefaultImageName();
