@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Image = styled.div<{ src: string; canEdit: boolean }>`
+const Image = styled.div<{ src: string }>`
   position: fixed;
   top: 52px;
   z-index: 100;
@@ -12,10 +12,15 @@ const Image = styled.div<{ src: string; canEdit: boolean }>`
     `linear-gradient(${filter.darken001}, ${filter.darken001}), url(${src})`};
   background-size: cover;
   background-position: center;
+`;
 
-  ${({ canEdit }) => `
-    ${canEdit ? `cursor: pointer` : ''};
-  `}
+const SvgWrapper = styled.div`
+  position: fixed;
+  top: 60px;
+  right: 1rem;
+  z-index: 101;
+
+  cursor: pointer;
 `;
 
 const Category = styled.div`
@@ -84,4 +89,4 @@ const Duration = styled.div`
   `}
 `;
 
-export { Image, Category, Title, Duration };
+export { Image, SvgWrapper, Category, Title, Duration };
