@@ -87,14 +87,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_001")))
-                .andDo(
-                        document("participatenotexistgroup",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
+                .andExpect(jsonPath("$.message", is("GROUP_001")));
     }
 
     @DisplayName("탈퇴한 사용자는 모임에 참여할 수 없다")
@@ -110,14 +103,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("MEMBER_002")))
-                .andDo(
-                        document("participatenotexistmember",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
+                .andExpect(jsonPath("$.message", is("MEMBER_002")));
     }
 
     @DisplayName("모임에 이미 속해있을 경우 모임에 참여할 수 없다")
@@ -133,14 +119,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_016")))
-                .andDo(
-                        document("participateparticipant",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
+                .andExpect(jsonPath("$.message", is("GROUP_016")));
     }
 
     @DisplayName("모임 정원이 가득 찬 경우 참여를 할 수 없다")
@@ -155,14 +134,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("GROUP_013")))
-                .andDo(
-                        document("participatefullgroup",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
+                .andExpect(jsonPath("$.message", is("GROUP_013")));
     }
 
     @DisplayName("모임의 참여자 목록을 조회한다")
@@ -175,7 +147,7 @@ class ParticipateControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(
-                        document("findparticipants",
+                        document("findParticipants",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()
                                 )
@@ -189,14 +161,7 @@ class ParticipateControllerTest {
         mockMvc.perform(get(BASE_URL + 0 + RESOURCE)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("GROUP_001")))
-                .andDo(
-                        document("findparticipantsnotexistgroup",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()
-                                )
-                        )
-                );
+                .andExpect(jsonPath("$.message", is("GROUP_001")));
     }
 
     @DisplayName("모임에 탈퇴한다")
@@ -212,7 +177,7 @@ class ParticipateControllerTest {
                         .header("Authorization", "bearer " + accessToken))
                 .andExpect(status().isNoContent())
                 .andDo(
-                        document("deleteparticipant",
+                        document("deleteParticipant",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()))
                 );
@@ -227,12 +192,7 @@ class ParticipateControllerTest {
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
-                .andExpect(status().isBadRequest())
-                .andDo(
-                        document("deletehost",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()))
-                );
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("모임에 참여하지 않았으면 탈퇴할 수 없다")
@@ -266,12 +226,7 @@ class ParticipateControllerTest {
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
-                .andExpect(status().isBadRequest())
-                .andDo(
-                        document("deletedeadline",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()))
-                );
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("조기 종료된 모임에는 탈퇴할 수 없다")
@@ -287,12 +242,7 @@ class ParticipateControllerTest {
 
         mockMvc.perform(delete(BASE_URL + groupId + RESOURCE)
                         .header("Authorization", "bearer " + accessToken))
-                .andExpect(status().isBadRequest())
-                .andDo(
-                        document("deleteearlyclosed",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()))
-                );
+                .andExpect(status().isBadRequest());
     }
 
     Long saveMember(String userId, String userName) {

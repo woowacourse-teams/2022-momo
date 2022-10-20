@@ -1,0 +1,19 @@
+= 이미지 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 이미지
+=== 모임 썸네일 변경
+Request
+include::{snippets}/groupImageUpdate/http-request.adoc[]
+Response
+include::{snippets}/groupImageUpdate/http-response.adoc[]
+
+=== 모임 이미지 초기화
+Request
+include::{snippets}/groupImageInit/http-request.adoc[]
+Response
+include::{snippets}/groupImageInit/http-response.adoc[]

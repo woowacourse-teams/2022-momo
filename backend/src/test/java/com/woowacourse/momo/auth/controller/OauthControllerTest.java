@@ -51,7 +51,7 @@ class OauthControllerTest {
                         status().isOk(),
                         jsonPath("oauthLink", notNullValue()))
                 .andDo(
-                        document("oauthlink",
+                        document("oauthLink",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -75,7 +75,7 @@ class OauthControllerTest {
                         jsonPath("accessToken", notNullValue()),
                         jsonPath("refreshToken", notNullValue()))
                 .andDo(
-                        document("oauthlogin",
+                        document("oauthLogin",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

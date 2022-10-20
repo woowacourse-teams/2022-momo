@@ -25,6 +25,7 @@ import com.woowacourse.momo.group.domain.calendar.Schedule;
 import com.woowacourse.momo.group.domain.calendar.ScheduleRepository;
 import com.woowacourse.momo.group.domain.participant.Capacity;
 import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
+import com.woowacourse.momo.group.event.GroupCreateEvent;
 import com.woowacourse.momo.group.event.GroupDeleteEvent;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.group.service.dto.request.GroupRequest;
@@ -54,6 +55,8 @@ public class GroupModifyService {
                 request.getCategory(), request.getLocation(), request.getDescription());
         Group savedGroup = groupRepository.save(group);
         saveSchedules(request, savedGroup);
+
+        applicationEventPublisher.publishEvent(new GroupCreateEvent(group.getId(), group.getCategory()));
 
         return GroupResponseAssembler.groupIdResponse(savedGroup);
     }

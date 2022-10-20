@@ -1,0 +1,30 @@
+= 모임 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 모임 생성
+Request
+include::{snippets}/groupCreate/http-request.adoc[]
+Response
+include::{snippets}/groupCreate/http-response.adoc[]
+
+== 모임 수정
+Request
+include::{snippets}/groupUpdate/http-request.adoc[]
+Response
+include::{snippets}/groupUpdate/http-response.adoc[]
+
+== 모임 조기마감
+Request
+include::{snippets}/groupEarlyClose/http-request.adoc[]
+Response
+include::{snippets}/groupEarlyClose/http-response.adoc[]
+
+== 모임 삭제
+Request
+include::{snippets}/groupDelete/http-request.adoc[]
+Response
+include::{snippets}/groupDelete/http-response.adoc[]

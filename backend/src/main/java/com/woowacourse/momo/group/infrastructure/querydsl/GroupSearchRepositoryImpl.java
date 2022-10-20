@@ -4,6 +4,7 @@ import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 import static com.woowacourse.momo.member.domain.QMember.member;
+import static com.woowacourse.momo.storage.domain.QGroupImage.groupImage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
                 .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
@@ -102,8 +104,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable,
                                                             Supplier<BooleanExpression> mainCondition) {
-        List<GroupSummaryRepositoryResponse> groups = queryFactory
-                .select(makeProjections())
+        List<Long> groupIds = queryFactory
+                .select(group.id)
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
@@ -111,10 +113,20 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                         mainCondition.get(),
                         conditionFilter.filterByCondition(condition)
                 )
-                .groupBy(group.id)
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .fetch();
+
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
+                .from(group)
+                .innerJoin(group.participants.host, member)
+                .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
+                .where(group.id.in(groupIds))
+                .groupBy(group.id)
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -140,7 +152,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 group.participants.capacity.value,
                 participant.count().intValue().add(host),
                 group.closedEarly,
-                group.calendar.deadline.value
+                group.calendar.deadline.value,
+                groupImage.imageName
         );
     }
 

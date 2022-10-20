@@ -114,8 +114,10 @@ public class MemberService {
 
     @Transactional
     public void updateName(Long id, ChangeNameRequest request) {
-        Member member = memberFindService.findMember(id);
+        UserName userName = UserName.from(request.getName());
+        validateUserNameIsNotDuplicated(userName);
 
+        Member member = memberFindService.findMember(id);
         member.changeUserName(request.getName());
     }
 
