@@ -23,12 +23,11 @@ import ControlButton from './ControlButton';
 import * as S from './index.styled';
 
 interface EditModeProps {
-  id: number;
   data: GroupDetailData;
   finishEditMode: () => void;
 }
 
-function EditMode({ id, data, finishEditMode }: EditModeProps) {
+function EditMode({ data, finishEditMode }: EditModeProps) {
   const categories = useCategory();
   const resetGroupData = useResetRecoilState(groupDetailState);
 
@@ -102,7 +101,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
       return;
     }
 
-    requestEditGroup(groupData, id)
+    requestEditGroup(groupData, data.id)
       .then(() => {
         resetGroupData();
 

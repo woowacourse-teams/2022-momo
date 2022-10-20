@@ -86,8 +86,7 @@ const CLIENT_ERROR_MESSAGE = {
     FAILURE_EDIT_THUMBNAIL: '썸네일 수정을 실패했어요.',
     NOT_ALLOWED_THUMBNAIL_TYPE: '파일 형식은 jpg, jpeg, png여야 해요.',
   },
-  UNHANDLED:
-    '알 수 없는 클라이언트 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+  UNHANDLED: '알 수 없는 클라이언트 에러가 발생했어요.',
 };
 
 const SERVER_ERROR_MESSAGE = {
@@ -147,11 +146,7 @@ const SERVER_ERROR_MESSAGE = {
     GROUP_021: `이름의 글자 수는 ${GROUP_RULE.NAME.MIN_LENGTH}자에서 ${GROUP_RULE.NAME.MAX_LENGTH}자 사이여야 해요.`,
     GROUP_022: `모임의 설명은 ${GROUP_RULE.DESCRIPTION.MAX_LENGTH}자를 넘을 수 없어요.`,
     GROUP_IMAGE_001: '모임의 주최자만 수정할 수 있어요.',
-    GROUP_IMAGE_003:
-      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    GROUP_IMAGE_004:
-      '이미지 서버에 에러가 발생했어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    GROUP_IMAGE_005: '모임의 썸네일이 존재하지 않아요.',
+    GROUP_IMAGE_002: '이미지 서버에 에러가 발생했어요.',
   },
   CATEGORY: {
     CATEGORY_001: '존재하지 않는 카테고리예요.',
@@ -159,9 +154,8 @@ const SERVER_ERROR_MESSAGE = {
   SERVER: {
     NOT_SUPPORTED_METHOD: '지원하지 않는 메서드예요. 다시 확인해주세요.',
     NOT_SUPPORTED_URI: '존재하지 않는 주소예요. 주소를 다시 확인해주세요.',
-    VALIDATION_001: '잘못된 요청이에요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
-    UNHANDLED:
-      '알 수 없는 서버 에러가 발생하였어요. 관리자에게 문의해주세요 🙇‍♂️🙇‍♀️',
+    VALIDATION_001: '잘못된 요청이에요.',
+    UNHANDLED: '알 수 없는 서버 에러가 발생했어요.',
   },
 };
 
