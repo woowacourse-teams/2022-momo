@@ -10,7 +10,7 @@ import {
   Title,
 } from 'pages/Detail/versions/@shared/index.styled';
 import { loginState } from 'store/states';
-import { GroupDetailData, GroupParticipants } from 'types/data';
+import { GroupDetailData, GroupParticipants, GroupSummary } from 'types/data';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
 import ControlButton from '../ControlButton';
@@ -23,11 +23,12 @@ import Right from './Right';
 const svgSize = 20;
 
 interface ContentProps {
+  id: GroupSummary['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }
 
-function Content({ data, participants }: ContentProps) {
+function Content({ id, data, participants }: ContentProps) {
   const { user } = useRecoilValue(loginState);
   const categories = useCategory();
 
@@ -42,7 +43,7 @@ function Content({ data, participants }: ContentProps) {
   };
 
   if (mode === 'edit') {
-    return <EditMode data={data} finishEditMode={finishEditMode} />;
+    return <EditMode id={id} data={data} finishEditMode={finishEditMode} />;
   }
 
   return (
@@ -71,7 +72,7 @@ function Content({ data, participants }: ContentProps) {
           )}
         </S.Header>
         <ControlButton
-          id={data.id}
+          id={id}
           host={data.host}
           capacity={data.capacity}
           finished={data.finished}
@@ -87,7 +88,7 @@ function Content({ data, participants }: ContentProps) {
           schedules={data.schedules}
           participants={participants}
         />
-        <LikeButton id={data.id} like={data.like} />
+        <LikeButton id={id} like={data.like} />
       </S.ContentContainer>
     </S.Container>
   );
