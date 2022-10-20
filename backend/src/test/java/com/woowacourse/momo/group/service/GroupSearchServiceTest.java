@@ -42,6 +42,7 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
+import com.woowacourse.momo.storage.support.ImageProvider;
 
 @Transactional
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -54,6 +55,7 @@ class GroupSearchServiceTest {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
+    private final ImageProvider imageProvider;
 
     private Member host;
     private Group group1;
@@ -86,8 +88,10 @@ class GroupSearchServiceTest {
     @DisplayName("모임을 조회한다")
     @Test
     void findById() {
+        String imageUrl = imageProvider.generateGroupImageUrl(group1.getCategory().getDefaultImageName(), true);
+
         GroupResponse actual = groupSearchService.findGroup(group1.getId());
-        GroupResponse expected = GroupResponseAssembler.groupResponse(group1);
+        GroupResponse expected = GroupResponseAssembler.groupResponse(group1, imageUrl);
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -110,6 +114,20 @@ class GroupSearchServiceTest {
         GroupPageResponse actual = groupSearchService.findGroups(request);
 
         assertThat(actual.getGroups()).hasSize(6);
+    }
+
+    @DisplayName("모임 목록 조회 시 모임의 이미지 정보가 없으면 기본 이미지를 반환한다")
+    @Test
+    void findGroupsWithoutGroupImage() {
+        GroupSearchRequest request = new GroupSearchRequest();
+        request.setKeyword("모모의 스터디");
+        request.setPage(0);
+
+        GroupPageResponse actual = groupSearchService.findGroups(request);
+
+        assertThat(actual.getGroups()).hasSize(1);
+        assertThat(actual.getGroups().get(0).getImageUrl())
+                .isEqualTo("https://image.moyeora.site/group/default/thumbnail_study.jpg");
     }
 
     @DisplayName("키워드를 포함하는 이름의 모임을 조회한다")

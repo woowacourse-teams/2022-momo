@@ -1,0 +1,36 @@
+= 회원 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 회원가입
+Request
+include::{snippets}/memberSignup/http-request.adoc[]
+Response
+include::{snippets}/memberSignup/http-response.adoc[]
+
+== 회원 정보 조회
+Request
+include::{snippets}/memberFind/http-request.adoc[]
+Response
+include::{snippets}/memberFind/http-response.adoc[]
+
+== 회원 이름 변경
+Request
+include::{snippets}/memberUpdateName/http-request.adoc[]
+Response
+include::{snippets}/memberUpdateName/http-response.adoc[]
+
+== 회원 비밀번호 변경
+Request
+include::{snippets}/memberUpdatePassword/http-request.adoc[]
+Response
+include::{snippets}/memberUpdatePassword/http-response.adoc[]
+
+== 회원 탈퇴
+Request
+include::{snippets}/memberDelete/http-request.adoc[]
+Response
+include::{snippets}/memberDelete/http-response.adoc[]

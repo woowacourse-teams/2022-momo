@@ -1,0 +1,18 @@
+= 모임 찜기능 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 찜하기
+Request
+include::{snippets}/like/http-request.adoc[]
+Response
+include::{snippets}/like/http-response.adoc[]
+
+== 찜 취소하기
+Request
+include::{snippets}/cancelLike/http-request.adoc[]
+Response
+include::{snippets}/cancelLike/http-response.adoc[]

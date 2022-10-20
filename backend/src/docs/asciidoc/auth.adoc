@@ -1,0 +1,36 @@
+= 인증 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 로그인
+Request
+include::{snippets}/memberLogin/http-request.adoc[]
+Response
+include::{snippets}/memberLogin/http-response.adoc[]
+
+== OAuth 구글 링크
+Request
+include::{snippets}/oauthLink/http-request.adoc[]
+Response
+include::{snippets}/oauthLink/http-response.adoc[]
+
+== OAuth 로그인
+Request
+include::{snippets}/oauthLogin/http-request.adoc[]
+Response
+include::{snippets}/oauthLogin/http-response.adoc[]
+
+== 로그아웃
+Request
+include::{snippets}/memberLogin/http-request.adoc[]
+Response
+include::{snippets}/memberLogin/http-response.adoc[]
+
+== 리프레시토큰을 통한 엑세스 토큰 재발급
+Request
+include::{snippets}/reissueToken/http-request.adoc[]
+Response
+include::{snippets}/reissueToken/http-response.adoc[]

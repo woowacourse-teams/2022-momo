@@ -8,7 +8,7 @@ import com.woowacourse.momo.category.domain.Category;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryResponseAssembler {
 
-    public static CategoryResponse categoryResponse(Category category) {
-        return new CategoryResponse(category.getId(), category.getName());
+    public static CategoryResponse categoryResponse(Category category, String imageUrl) {
+        return new CategoryResponse(category.getId(), category.getName(), imageUrl);
     }
 }

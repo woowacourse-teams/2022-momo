@@ -23,6 +23,9 @@ import com.woowacourse.momo.group.service.dto.response.GroupResponse;
 import com.woowacourse.momo.group.service.dto.response.GroupResponseAssembler;
 import com.woowacourse.momo.group.service.dto.response.GroupSummaryResponse;
 import com.woowacourse.momo.member.service.MemberValidator;
+import com.woowacourse.momo.storage.domain.GroupImage;
+import com.woowacourse.momo.storage.domain.GroupImageRepository;
+import com.woowacourse.momo.storage.support.ImageProvider;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -35,10 +38,20 @@ public class GroupSearchService {
     private final GroupFindService groupFindService;
     private final GroupSearchRepository groupSearchRepository;
     private final FavoriteRepository favoriteRepository;
+    private final GroupImageRepository groupImageRepository;
+    private final ImageProvider imageProvider;
 
     public GroupResponse findGroup(Long groupId) {
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        return GroupResponseAssembler.groupResponse(group);
+        String imageUrl = getImageUrl(group);
+        return GroupResponseAssembler.groupResponse(group, imageUrl);
+    }
+
+    private String getImageUrl(Group group) {
+        String imageName = groupImageRepository.findByGroupId(group.getId())
+                .map(GroupImage::getImageName)
+                .orElse(group.getCategory().getDefaultImageName());
+        return imageProvider.generateGroupImageUrl(imageName, group.getCategory().isDefaultImage(imageName));
     }
 
     public GroupResponse findGroup(Long groupId, Long memberId) {
@@ -46,7 +59,8 @@ public class GroupSearchService {
         boolean favoriteChecked = favoriteRepository.existsByGroupIdAndMemberId(groupId, memberId);
 
         Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
-        return GroupResponseAssembler.groupResponse(group, favoriteChecked);
+        String imageUrl = getImageUrl(group);
+        return GroupResponseAssembler.groupResponse(group, imageUrl, favoriteChecked);
     }
 
     public GroupPageResponse findGroups(GroupSearchRequest request) {
@@ -54,7 +68,7 @@ public class GroupSearchService {
         Pageable pageable = defaultPageable(request);
         Page<GroupSummaryRepositoryResponse> groups = groupSearchRepository.findGroups(searchCondition, pageable);
 
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+        List<GroupSummaryRepositoryResponse> groupsOfPage = convertImageUrl(groups);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
@@ -89,12 +103,21 @@ public class GroupSearchService {
         Pageable pageable = defaultPageable(request);
         Page<GroupSummaryRepositoryResponse> groups = function.apply(searchCondition, pageable);
 
-        List<GroupSummaryRepositoryResponse> groupsOfPage = groups.getContent();
+        List<GroupSummaryRepositoryResponse> groupsOfPage = convertImageUrl(groups);
         List<GroupSummaryResponse> summaries = GroupResponseAssembler.groupSummaryResponses(groupsOfPage, favorites);
         return GroupResponseAssembler.groupPageResponse(summaries, groups.hasNext(), request.getPage());
     }
 
     private Pageable defaultPageable(GroupSearchRequest request) {
         return PageRequest.of(request.getPage(), DEFAULT_PAGE_SIZE);
+    }
+
+    private List<GroupSummaryRepositoryResponse> convertImageUrl(Page<GroupSummaryRepositoryResponse> repositoryResponses) {
+        for (GroupSummaryRepositoryResponse repositoryResponse : repositoryResponses.getContent()) {
+            String imageName = repositoryResponse.getImageName();
+            String imageUrl = imageProvider.generateGroupImageUrl(imageName, repositoryResponse.getCategory().isDefaultImage(imageName));
+            repositoryResponse.setImageName(imageUrl);
+        }
+        return repositoryResponses.getContent();
     }
 }
