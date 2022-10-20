@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 2rem;
 
   width: 100%;
 
   box-sizing: border-box;
-  padding: 2rem 1rem;
+  padding: calc(3rem + 52px) 1rem 2rem;
 
   ${({
     theme: {
@@ -16,11 +16,11 @@ const Container = styled.div`
     },
   }) => `
     @media only screen and (min-width: ${md}px) {
-      gap: 10rem;
+      gap: 5rem;
 
       width: ${md}px;
 
-      padding: 10rem 1rem;
+      padding: calc(5rem + 52px) 1rem;
     }
   `}
 `;
@@ -29,6 +29,18 @@ const SectionContainer = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  ${({ theme: { colors } }) => `
+    span {
+      font-size: 0.9rem;
+      
+      color: ${colors.gray004}
+    }
+
+    span.invalid {
+      color: ${colors.red001};
+    }
+  `}
 `;
 
 const Heading = styled.h2`
