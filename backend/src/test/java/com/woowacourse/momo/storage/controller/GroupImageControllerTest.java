@@ -57,7 +57,7 @@ class GroupImageControllerTest {
     void update() throws Exception {
         Long saveMemberId = saveMember();
         String accessToken = accessToken();
-        String fullPath = "http://image.moyeora.site/group/saved/imageName.png";
+        String fullPath = "https://image.moyeora.site/group/saved/imageName.png";
         BDDMockito.given(groupImageService.update(Mockito.anyLong(), Mockito.anyLong(), Mockito.any()))
                 .willReturn(fullPath);
 
