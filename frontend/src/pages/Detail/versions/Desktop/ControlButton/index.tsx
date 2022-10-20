@@ -14,12 +14,12 @@ import { BROWSER_PATH } from 'constants/path';
 import useHandleError from 'hooks/useHandleError';
 import useSnackbar from 'hooks/useSnackbar';
 import { loginState } from 'store/states';
-import { GroupDetailData, GroupParticipants } from 'types/data';
+import { GroupParticipants, GroupSummary } from 'types/data';
 
 import * as S from './index.styled';
 
 interface ControlButtonProps
-  extends Pick<GroupDetailData, 'id' | 'host' | 'capacity' | 'finished'> {
+  extends Pick<GroupSummary, 'id' | 'host' | 'capacity' | 'finished'> {
   participants: GroupParticipants;
 }
 

@@ -14,15 +14,11 @@ import useHandleError from 'hooks/useHandleError';
 import useModal from 'hooks/useModal';
 import useSnackbar from 'hooks/useSnackbar';
 import { modalState } from 'store/states';
-import { GroupDetailData } from 'types/data';
+import { GroupSummary } from 'types/data';
 
 import * as S from './index.styled';
 
-interface ImageDropBoxProps {
-  id: GroupDetailData['id'];
-}
-
-function ImageDropBox({ id }: ImageDropBoxProps) {
+function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
   const [file, setFile] = useState<File | null>();
   const [isDragOver, setIsDragOver] = useState(false);
 

@@ -24,7 +24,6 @@ export interface DurationDate {
 }
 
 export interface GroupDetailData {
-  id: number;
   name: string;
   host: {
     id: number;
@@ -68,7 +67,6 @@ export interface GroupList {
 export interface GroupSummary
   extends Pick<
     GroupDetailData,
-    | 'id'
     | 'name'
     | 'host'
     | 'categoryId'
@@ -78,6 +76,7 @@ export interface GroupSummary
     | 'like'
     | 'imageUrl'
   > {
+  id: number;
   numOfParticipant: number;
 }
 
