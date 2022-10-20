@@ -16,6 +16,7 @@ public enum GroupImageErrorCode implements ErrorCode {
     RESPONSE_IS_NULL(400, "GROUP_IMAGE_004", "이미지 서버의 응답값이 null 입니다."),
 
     GROUP_IMAGE_IS_NOT_EXIST(400, "GROUP_IMAGE_005", "모임의 이미지 정보가 존재하지 않습니다."),
+    GROUP_IMAGE_IS_DEFAULT(400, "GROUP_IMAGE_005", "모임의 이미지가 기본 이미지 입니다."),
     ;
 
     private final int statusCode;

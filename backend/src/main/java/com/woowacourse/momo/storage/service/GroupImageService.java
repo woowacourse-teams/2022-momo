@@ -1,6 +1,9 @@
 package com.woowacourse.momo.storage.service;
 
+import static com.woowacourse.momo.storage.exception.GroupImageErrorCode.GROUP_IMAGE_IS_DEFAULT;
 import static com.woowacourse.momo.storage.exception.GroupImageErrorCode.GROUP_IMAGE_IS_NOT_EXIST;
+
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +54,7 @@ public class GroupImageService {
         Group group = groupFindService.findGroup(groupId);
         String defaultImageName = group.getCategory().getDefaultImageName();
 
-        updateGroupImage(groupId, defaultImageName);
+        initGroupImage(groupId, defaultImageName);
     }
 
     private void validateMemberIsHost(Long memberId, Long groupId) {
@@ -73,8 +76,21 @@ public class GroupImageService {
     }
 
     private void updateGroupImage(Long groupId, String savedImageName) {
+        Optional<GroupImage> existedGroupImage = groupImageRepository.findByGroupId(groupId);
+        if (existedGroupImage.isPresent()) {
+            existedGroupImage.get().update(savedImageName);
+            return;
+        }
+        GroupImage groupImage = new GroupImage(groupId, savedImageName);
+        groupImageRepository.save(groupImage);
+    }
+
+    private void initGroupImage(Long groupId, String savedImageName) {
         GroupImage existedGroupImage = groupImageRepository.findByGroupId(groupId)
-                        .orElseThrow(() -> new GroupImageException(GROUP_IMAGE_IS_NOT_EXIST));
+                .orElseThrow(() -> new GroupImageException(GROUP_IMAGE_IS_NOT_EXIST));
+        if (savedImageName.equals(existedGroupImage.getImageName())) {
+            throw new GroupImageException(GROUP_IMAGE_IS_DEFAULT);
+        }
         existedGroupImage.update(savedImageName);
     }
 }
