@@ -16,6 +16,7 @@ interface CreateStepsProp {
   useDescriptionState: CreateStateReturnValues['useDescriptionState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   gotoNextPage: () => void;
+  getValidateState: (pageIndex: number) => '' | 'invalid';
   duration: GroupDetailData['duration'];
   page: number;
 }
@@ -31,6 +32,7 @@ function CreateSteps({
   useDescriptionState,
   pressEnterToNext,
   gotoNextPage,
+  getValidateState,
   duration,
   page,
 }: CreateStepsProp) {
@@ -49,6 +51,7 @@ function CreateSteps({
         <Step2
           useDateState={useDateState}
           useDeadlineState={useDeadlineState}
+          getValidateState={getValidateState}
           pressEnterToNext={pressEnterToNext}
         />
       );

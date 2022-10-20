@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { ExclamationMark, Triangle } from 'assets/svg';
+import { ExclamationMarkSVG, TriangleSVG } from 'assets/svg';
 import { PageType } from 'types/data';
 
 import * as S from './index.styled';
@@ -22,6 +22,8 @@ function Navigator({
 
   const changePage = (newPageNumber: number) => () => {
     setPage(newPageNumber);
+    setIsClosed(true);
+    window.scroll({ top: 0, behavior: 'smooth' });
   };
 
   const changeCloseState = () => {
@@ -46,7 +48,9 @@ function Navigator({
             <S.Content>{page.content}</S.Content>
             <S.Required>
               {page.required && (
-                <ExclamationMark className={getValidateState(pageIndex + 1)} />
+                <ExclamationMarkSVG
+                  className={getValidateState(pageIndex + 1)}
+                />
               )}
             </S.Required>
           </S.PageItem>
@@ -56,7 +60,7 @@ function Navigator({
         className={isClosed ? 'closed' : ''}
         onClick={changeCloseState}
       >
-        <Triangle />
+        <TriangleSVG />
       </S.ToggleButton>
     </S.Container>
   );

@@ -12,8 +12,8 @@ const GUIDE_MESSAGE = {
     CONFIRM_GROUP_REQUEST:
       '정말로 삭제하실 건가요? 이 작업은 돌이킬 수 없어요 🥺',
     SUCCESS_GROUP_REQUEST: '모임을 성공적으로 삭제했어요.',
-    CONFIRM_THUMBNAIL_REQUEST: '썸네일을 삭제하시겠어요?',
-    SUCCESS_THUMBNAIL_REQUEST: '썸네일을 성공적으로 삭제했어요.',
+    CONFIRM_THUMBNAIL_REQUEST: '썸네일을 기본 이미지로 수정하시겠어요?',
+    SUCCESS_THUMBNAIL_REQUEST: '썸네일을 성공적으로 수정했어요.',
   },
   MEMBER: {
     SUCCESS_NAME_REQUEST: '닉네임 변경을 성공했어요.',

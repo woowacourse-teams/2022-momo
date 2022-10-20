@@ -5,7 +5,6 @@ const PageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
 
   padding-bottom: 60px;
 `;
