@@ -9,11 +9,12 @@ import {
   GroupList,
   CategoryType,
   SelectableGroup,
+  GroupSummary,
 } from 'types/data';
 import { makeUrl } from 'utils/url';
 
 interface GroupIdResponse {
-  groupId: GroupDetailData['id'];
+  groupId: GroupSummary['id'];
 }
 
 const makeGroupData = ({
@@ -90,7 +91,7 @@ const requestEditGroup = (
     location,
     description,
   }: CreateGroupData,
-  id: GroupDetailData['id'],
+  id: GroupSummary['id'],
 ) => {
   const data = makeGroupData({
     name,
@@ -115,6 +116,17 @@ const requestEditGroup = (
       }
       throw error;
     });
+};
+
+const requestEditThumbnail = (id: GroupSummary['id'], formData: FormData) => {
+  return axiosWithAccessToken.post(
+    `${API_PATH.GROUP}/${id}/thumbnail`,
+    formData,
+  );
+};
+
+const requestResetThumbnail = (id: GroupSummary['id']) => {
+  return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}/thumbnail`);
 };
 
 const requestJoinedGroups =
@@ -165,49 +177,51 @@ const requestGroups =
       .then(response => response.data);
   };
 
-const requestGroupDetail = (id: GroupDetailData['id']) => {
+const requestGroupDetail = (id: GroupSummary['id']) => {
   return axiosWithAccessToken
     .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
     .then(response => response.data);
 };
 
-const requestDeleteGroup = (id: GroupDetailData['id']) => {
+const requestDeleteGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}`);
 };
 
-const requestGroupParticipants = (id: GroupDetailData['id']) => {
+const requestGroupParticipants = (id: GroupSummary['id']) => {
   return axios
     .get<GroupParticipants>(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const requestJoinGroup = (id: GroupDetailData['id']) => {
+const requestJoinGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
   );
 };
 
-const requestExitGroup = (id: GroupDetailData['id']) => {
+const requestExitGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.delete(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
   );
 };
 
-const requestCloseGroup = (id: GroupDetailData['id']) => {
+const requestCloseGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`);
 };
 
-const requestLikeGroup = (id: GroupDetailData['id']) => {
+const requestLikeGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
-const requestUnlikeGroup = (id: GroupDetailData['id']) => {
+const requestUnlikeGroup = (id: GroupSummary['id']) => {
   return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
 export {
   requestCreateGroup,
   requestEditGroup,
+  requestEditThumbnail,
+  requestResetThumbnail,
   requestJoinedGroups,
   requestGroups,
   requestGroupDetail,

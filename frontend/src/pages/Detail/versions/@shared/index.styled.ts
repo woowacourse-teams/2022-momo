@@ -14,6 +14,15 @@ const Image = styled.div<{ src: string }>`
   background-position: center;
 `;
 
+const SvgWrapper = styled.div`
+  position: fixed;
+  top: 60px;
+  right: 1rem;
+  z-index: 101;
+
+  cursor: pointer;
+`;
+
 const Category = styled.div`
   font-weight: 900;
 
@@ -80,4 +89,4 @@ const Duration = styled.div`
   `}
 `;
 
-export { Image, Category, Title, Duration };
+export { Image, SvgWrapper, Category, Title, Duration };

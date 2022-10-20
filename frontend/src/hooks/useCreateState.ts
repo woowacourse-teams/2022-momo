@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
 import {
@@ -30,6 +30,7 @@ export interface CreateStateReturnValues {
   useCapacityState: () => {
     capacity: CreateGroupData['capacity'];
     setCapacity: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    blurCapacity: (e: React.FocusEvent<HTMLInputElement>) => void;
     dangerouslySetCapacity: (newCapacity: CreateGroupData['capacity']) => void;
   };
   useDateState: () => {
@@ -137,6 +138,12 @@ const useCreateState = (): CreateStateReturnValues => {
   };
 
   const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCapacityString = e.target.value;
+    if (newCapacityString === '') {
+      setCapacity(0);
+      return;
+    }
+
     const newCapacity = Number(e.target.value);
     const { MIN, MAX } = GROUP_RULE.CAPACITY;
 
@@ -150,6 +157,12 @@ const useCreateState = (): CreateStateReturnValues => {
     }
 
     setCapacity(newCapacity);
+  };
+
+  const blurCapacity = (e: React.FocusEvent<HTMLInputElement>) => {
+    const replacedCapacity = e.target.value.replace(/[^0-9]/g, '');
+
+    setCapacity(Number(replacedCapacity));
   };
 
   const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,6 +254,7 @@ const useCreateState = (): CreateStateReturnValues => {
     useCapacityState: () => ({
       capacity,
       setCapacity: changeCapacity,
+      blurCapacity,
       dangerouslySetCapacity: setCapacity,
     }),
     useDateState: () => ({

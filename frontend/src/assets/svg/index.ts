@@ -19,8 +19,9 @@ export { ReactComponent as NewGroupSVG } from './new_group.svg';
 export { ReactComponent as SignInSVG } from './sign_in.svg';
 export { ReactComponent as SignUpSVG } from './sign_up.svg';
 export { ReactComponent as CreateSVG } from './create.svg';
-export { ReactComponent as ExclamationMark } from './exclamation_mark.svg';
-export { ReactComponent as Triangle } from './triangle.svg';
+export { ReactComponent as CameraSVG } from './camera.svg';
+export { ReactComponent as ExclamationMarkSVG } from './exclamation_mark.svg';
+export { ReactComponent as TriangleSVG } from './triangle.svg';
 
 export { ReactComponent as StudySVG } from './category/study.svg';
 export { ReactComponent as MogackoSVG } from './category/mogacko.svg';

@@ -7,6 +7,7 @@ import {
   requestGroupDetail,
   requestGroupParticipants,
 } from 'apis/request/group';
+import ImageDropBox from 'components/ImageDropBox';
 import { QUERY_KEY } from 'constants/key';
 import useRecoilQuery from 'hooks/useRecoilQuery';
 import { groupDetailState } from 'store/states';
@@ -41,11 +42,16 @@ function Detail() {
 
   if (!participants) return <></>;
 
-  if (document.body.clientWidth > theme.breakpoints.md) {
-    return <Desktop id={Number(id)} data={data} participants={participants} />;
-  }
-
-  return <Mobile id={Number(id)} data={data} participants={participants} />;
+  return (
+    <>
+      {document.body.clientWidth > theme.breakpoints.md ? (
+        <Desktop id={Number(id)} data={data} participants={participants} />
+      ) : (
+        <Mobile id={Number(id)} data={data} participants={participants} />
+      )}
+      <ImageDropBox id={Number(id)} />
+    </>
+  );
 }
 
 export default Detail;

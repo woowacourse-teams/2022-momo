@@ -3,6 +3,7 @@ import { UserProfile } from './user';
 export interface CategoryType {
   id: GroupDetailData['categoryId'];
   name: string;
+  imageUrl: string;
 }
 
 export interface ScheduleType {
@@ -23,7 +24,6 @@ export interface DurationDate {
 }
 
 export interface GroupDetailData {
-  id: number;
   name: string;
   host: {
     id: number;
@@ -41,6 +41,7 @@ export interface GroupDetailData {
   like: boolean;
   location: Record<'address' | 'buildingName' | 'detail', string>;
   description: string;
+  imageUrl: string;
 }
 
 export interface CreateGroupData
@@ -54,7 +55,7 @@ export interface CreateGroupData
       | 'location'
       | 'description'
     > {
-  selectedCategory: CategoryType;
+  selectedCategory: Omit<CategoryType, 'imageUrl'>;
 }
 
 export interface GroupList {
@@ -66,7 +67,6 @@ export interface GroupList {
 export interface GroupSummary
   extends Pick<
     GroupDetailData,
-    | 'id'
     | 'name'
     | 'host'
     | 'categoryId'
@@ -74,7 +74,9 @@ export interface GroupSummary
     | 'finished'
     | 'capacity'
     | 'like'
+    | 'imageUrl'
   > {
+  id: number;
   numOfParticipant: number;
 }
 

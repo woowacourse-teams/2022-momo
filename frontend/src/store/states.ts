@@ -28,7 +28,6 @@ const loginState = atom<LoginState>({
 const groupDetailState = atom<GroupDetailData>({
   key: 'groupDetailState',
   default: {
-    id: -1,
     name: '',
     host: {
       id: -1,
@@ -50,6 +49,7 @@ const groupDetailState = atom<GroupDetailData>({
       detail: '',
     },
     description: '',
+    imageUrl: '',
   },
 });
 

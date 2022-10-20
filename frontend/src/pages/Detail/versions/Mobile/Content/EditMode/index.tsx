@@ -16,14 +16,14 @@ import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
 import { validateGroupData } from 'pages/Create/validate';
 import { groupDetailState } from 'store/states';
-import { GroupDetailData } from 'types/data';
+import { GroupDetailData, GroupSummary } from 'types/data';
 import { getNewDateString } from 'utils/date';
 
 import ControlButton from './ControlButton';
 import * as S from './index.styled';
 
 interface EditModeProps {
-  id: number;
+  id: GroupSummary['id'];
   data: GroupDetailData;
   finishEditMode: () => void;
 }
