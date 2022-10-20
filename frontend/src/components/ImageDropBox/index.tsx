@@ -34,7 +34,11 @@ function ImageDropBox({ id }: ImageDropBoxProps) {
   const queryClient = useQueryClient();
 
   const updateFile = (newFile: File) => {
-    if (newFile.type !== 'image/png' && newFile.type !== 'image/jpg') {
+    if (
+      newFile.type !== 'image/png' &&
+      newFile.type !== 'image/jpg' &&
+      newFile.type !== 'image/jpeg'
+    ) {
       setMessage(CLIENT_ERROR_MESSAGE.GROUP.NOT_ALLOWED_THUMBNAIL_TYPE, true);
       return;
     }
@@ -82,7 +86,11 @@ function ImageDropBox({ id }: ImageDropBoxProps) {
       return;
     }
 
-    if (file.type !== 'image/png' && file.type !== 'image/jpg') {
+    if (
+      file.type !== 'image/png' &&
+      file.type !== 'image/jpg' &&
+      file.type !== 'image/jpeg'
+    ) {
       setMessage(CLIENT_ERROR_MESSAGE.GROUP.NOT_ALLOWED_THUMBNAIL_TYPE, true);
       return;
     }
@@ -147,7 +155,7 @@ function ImageDropBox({ id }: ImageDropBoxProps) {
         <S.FileInput
           id="file"
           type="file"
-          accept=".jpg, .png"
+          accept=".jpg, .jpeg, .png"
           onChange={changeFile}
         />
         <S.ButtonContainer>
