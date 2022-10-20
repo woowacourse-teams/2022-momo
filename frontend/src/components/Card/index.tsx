@@ -7,7 +7,6 @@ import { GUIDE_MESSAGE } from 'constants/message';
 import { BROWSER_PATH } from 'constants/path';
 import theme from 'styles/theme';
 import { GroupSummary } from 'types/data';
-import { getCategoryImage } from 'utils/category';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
 import * as S from './index.styled';
@@ -27,6 +26,7 @@ function Card({
     numOfParticipant,
     capacity,
     like,
+    imageUrl,
   },
 }: CardProps) {
   const svgSize = document.body.clientWidth > theme.breakpoints.md ? 30 : 25;
@@ -34,7 +34,7 @@ function Card({
   return (
     <Link to={`${BROWSER_PATH.DETAIL}/${id}`}>
       <S.Container finished={finished}>
-        <S.Image imgSrc={getCategoryImage(categoryId)} />
+        <S.Image imgSrc={imageUrl} />
         <S.Description>
           <S.Left>
             <div>

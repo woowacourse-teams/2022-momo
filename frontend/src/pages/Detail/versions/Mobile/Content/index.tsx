@@ -14,7 +14,7 @@ import {
   Title,
 } from 'pages/Detail/versions/@shared/index.styled';
 import { loginState } from 'store/states';
-import { GroupDetailData, GroupParticipants } from 'types/data';
+import { GroupDetailData, GroupParticipants, GroupSummary } from 'types/data';
 import { convertDeadlineToRemainTime } from 'utils/date';
 
 import ControlButton from '../ControlButton';
@@ -25,7 +25,7 @@ import * as S from './index.styled';
 const svgSize = 20;
 
 interface ContentProps {
-  id: number;
+  id: GroupSummary['id'];
   data: GroupDetailData;
   participants: GroupParticipants;
 }
@@ -45,9 +45,7 @@ function Content({ id, data, participants }: ContentProps) {
   };
 
   if (mode === 'edit') {
-    return (
-      <EditMode id={Number(id)} data={data} finishEditMode={finishEditMode} />
-    );
+    return <EditMode id={id} data={data} finishEditMode={finishEditMode} />;
   }
 
   return (

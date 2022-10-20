@@ -1,16 +1,4 @@
 import {
-  CategoryImage1,
-  CategoryImage2,
-  CategoryImage3,
-  CategoryImage4,
-  CategoryImage5,
-  CategoryImage6,
-  CategoryImage7,
-  CategoryImage8,
-  CategoryImage9,
-  CategoryImage10,
-} from 'assets/category';
-import {
   CafeSVG,
   CultureSVG,
   DrinkSVG,
@@ -23,23 +11,6 @@ import {
   TravelSVG,
 } from 'assets/svg';
 import { GroupDetailData } from 'types/data';
-
-const categoryImages = [
-  CategoryImage1,
-  CategoryImage2,
-  CategoryImage3,
-  CategoryImage4,
-  CategoryImage5,
-  CategoryImage6,
-  CategoryImage7,
-  CategoryImage8,
-  CategoryImage9,
-  CategoryImage10,
-];
-
-const getCategoryImage = (categoryId: GroupDetailData['categoryId']) => {
-  return categoryImages[categoryId - 1];
-};
 
 const getCategoryIcon = (
   categoryId: GroupDetailData['categoryId'],
@@ -69,4 +40,4 @@ const getCategoryIcon = (
   }
 };
 
-export { getCategoryImage, getCategoryIcon };
+export { getCategoryIcon };
