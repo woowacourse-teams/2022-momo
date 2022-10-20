@@ -16,14 +16,14 @@ public class ExceptionLogging {
     private final Logging logging;
 
     @Pointcut("execution(* com.woowacourse.momo.*.controller.*.*(..))")
-    public void allMethod() {
+    public void allControllerExecution() {
     }
 
     @Pointcut("@annotation(com.woowacourse.momo.support.logging.UnhandledErrorLogging)")
     public void exceptionMethod() {
     }
 
-    @AfterThrowing(value = "allMethod()", throwing = "exception")
+    @AfterThrowing(value = "allControllerExecution()", throwing = "exception")
     public void exceptionStackTrace(JoinPoint joinPoint, Exception exception) {
         logging.printStackTrace(exception, joinPoint);
     }

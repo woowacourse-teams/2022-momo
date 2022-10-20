@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.woowacourse.momo.support.logging.TraceExtractor;
+import com.woowacourse.momo.support.logging.exception.LogException;
 import com.woowacourse.momo.support.logging.manager.dto.SlackMessageRequest;
 import com.woowacourse.momo.support.logging.manager.dto.SlackThreadRequest;
 
@@ -34,21 +35,13 @@ public class SlackLogManager implements LogManager {
 
     @Override
     public void writeMessage(String message) {
-        if (!used) {
-            return;
-        }
-
         HttpEntity<String> request = generateSlackMessageHttpEntity(message);
         restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, request, String.class);
     }
 
     @Override
     public void writeException(Exception exception) {
-        if (!used) {
-            return;
-        }
-
-        HttpEntity<String> request = generateSlackMessageHttpEntity("에러가 발생했습니다.");
+        HttpEntity<String> request = generateSlackMessageHttpEntity(exception.getMessage());
 
         String response = restTemplate.postForObject(SLACK_MESSAGE_REQUEST_URL, request, String.class);
         String ts = extractCommentNumber(response);
@@ -68,7 +61,7 @@ public class SlackLogManager implements LogManager {
             HashMap<String, Object> hashMap = objectMapper.readValue(response, HashMap.class);
             return (String) hashMap.get(COMMENT_ID);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new LogException("json 변환 에러입니다.");
         }
     }
 
@@ -92,7 +85,7 @@ public class SlackLogManager implements LogManager {
         try {
             return objectMapper.writeValueAsString(body);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Json 파싱 에러입니다.");
+            throw new LogException("json 파싱 에러입니다.");
         }
     }
 
