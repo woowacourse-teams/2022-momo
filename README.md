@@ -76,11 +76,11 @@
 
 ### 프론트 CI/CD
 
-<img src="https://user-images.githubusercontent.com/57928612/196931212-4a214017-1e0a-4e24-b41b-a9f7110bd06b.png" height="300" />
+<img src="https://user-images.githubusercontent.com/57928612/196931212-4a214017-1e0a-4e24-b41b-a9f7110bd06b.png" height="250" />
 
 ### 백엔드 CI/CD
 
-<img src="https://user-images.githubusercontent.com/57928612/196931031-f62cd639-15ed-4e8a-a8cb-3a160e683da1.png" height="450" />
+<img src="https://user-images.githubusercontent.com/57928612/196931031-f62cd639-15ed-4e8a-a8cb-3a160e683da1.png" height="500" />
 
 ---
 
