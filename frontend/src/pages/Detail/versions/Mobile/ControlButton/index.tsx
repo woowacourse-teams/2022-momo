@@ -38,7 +38,10 @@ function ControlButton({
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  const refetch = () => {
+  const refetchGroup = () => {
+    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
+  };
+  const refetchParticipants = () => {
     queryClient.invalidateQueries(`${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`);
   };
 
@@ -48,7 +51,8 @@ function ControlButton({
     requestCloseGroup(id)
       .then(() => {
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_CLOSE_REQUEST);
-        refetch();
+
+        refetchGroup();
       })
       .catch(error => {
         if (!error) {
@@ -85,7 +89,7 @@ function ControlButton({
     requestJoinGroup(id)
       .then(() => {
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_JOIN_REQUEST);
-        refetch();
+        refetchParticipants();
       })
       .catch(error => {
         if (!error) {
@@ -101,7 +105,7 @@ function ControlButton({
     requestExitGroup(id)
       .then(() => {
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EXIT_REQUEST);
-        refetch();
+        refetchParticipants();
       })
       .catch(error => {
         if (!error) {
