@@ -78,10 +78,16 @@ const Button = styled.button`
   width: 8rem;
   height: 2.5rem;
 
-  background: ${({ theme: { colors } }) => colors.gray003};
   border-radius: 8px;
 
   font-size: 1rem;
+`;
+
+const ResetButton = styled(Button)`
+  ${({ theme: { colors } }) => `
+    border: 1px solid ${colors.green001};
+    color: ${colors.green001};
+  `}
 `;
 
 const EditButton = styled(Button)`
@@ -98,6 +104,6 @@ export {
   Image,
   FileInput,
   ButtonContainer,
-  Button,
+  ResetButton,
   EditButton,
 };

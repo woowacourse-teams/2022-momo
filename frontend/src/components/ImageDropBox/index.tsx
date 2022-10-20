@@ -159,9 +159,9 @@ function ImageDropBox({ id }: ImageDropBoxProps) {
           onChange={changeFile}
         />
         <S.ButtonContainer>
-          <S.Button type="button" onClick={resetThumbnail}>
-            초기화
-          </S.Button>
+          <S.ResetButton type="button" onClick={resetThumbnail}>
+            기본 이미지로 수정
+          </S.ResetButton>
           <S.EditButton>수정</S.EditButton>
         </S.ButtonContainer>
       </S.Form>
