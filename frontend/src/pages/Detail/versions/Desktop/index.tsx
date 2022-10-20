@@ -9,6 +9,8 @@ import { GroupDetailData, GroupParticipants } from 'types/data';
 import { Image, SvgWrapper } from '../@shared/index.styled';
 import Content from './Content';
 
+const svgSize = 20;
+
 interface DesktopProps {
   data: GroupDetailData;
   participants: GroupParticipants;
@@ -26,7 +28,7 @@ function Desktop({ data, participants }: DesktopProps) {
       <Image src={data.imageUrl} />
       {canEdit && (
         <SvgWrapper onClick={showThumbnailModal}>
-          <CameraSVG width={20} height={20} fill={theme.colors.white001} />
+          <CameraSVG width={svgSize} fill={theme.colors.white001} />
         </SvgWrapper>
       )}
       <Content data={data} participants={participants} />
