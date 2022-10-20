@@ -104,20 +104,29 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable,
                                                             Supplier<BooleanExpression> mainCondition) {
-        List<GroupSummaryRepositoryResponse> groups = queryFactory
-                .select(makeProjections())
+        List<Long> groupIds = queryFactory
+                .select(group.id)
                 .from(group)
                 .innerJoin(group.participants.host, member)
-                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
                         conditionFilter.filterByCondition(condition)
                 )
-                .groupBy(group.id)
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .fetch();
+
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
+                .from(group)
+                .innerJoin(group.participants.host, member)
+                .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
+                .where(group.id.in(groupIds))
+                .groupBy(group.id)
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
