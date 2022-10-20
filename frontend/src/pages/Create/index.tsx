@@ -50,6 +50,7 @@ function Create() {
     }
 
     setPage(prevPage => prevPage + 1);
+    window.scroll({ top: 0, behavior: 'smooth' });
   };
 
   const pressEnterToNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -125,6 +126,7 @@ function Create() {
         useDescriptionState={useDescriptionState}
         pressEnterToNext={pressEnterToNext}
         gotoNextPage={gotoNextPage}
+        getValidateState={getValidateState}
         duration={duration}
         page={page}
       />
