@@ -18,7 +18,7 @@
 
 새로운 사람들과 함께하는 즐거운 시간이 여러분을 기다립니다.
 
-![메인](https://user-images.githubusercontent.com/57928612/196835204-718a978a-c835-4752-af8a-d08a648ce989.gif)
+<img src="https://user-images.githubusercontent.com/57928612/196835204-718a978a-c835-4752-af8a-d08a648ce989.gif" height="400" />
 
 <br>
 
@@ -26,7 +26,7 @@
 
 무엇을 적어야할지 몰라도 괜찮아요. 한 단계씩 따라가다보면 원하는 모임을 쉽게 만들 수 있어요!
 
-![모임_생성](https://user-images.githubusercontent.com/57928612/196837566-fcb22c45-3983-4daa-9411-8a8953934ab4.gif)
+<img src="https://user-images.githubusercontent.com/57928612/196837566-fcb22c45-3983-4daa-9411-8a8953934ab4.gif" height="400" />
 
 <br>
 
@@ -34,7 +34,7 @@
 
 일정 변경도, 사소한 오타도 괜찮아요. 간단하게 수정할 수 있어요.
 
-![모임 정보 수정](https://user-images.githubusercontent.com/57928612/196835458-f2b4db36-41fe-43df-8fc8-d2b37ead02cb.gif)
+<img src="https://user-images.githubusercontent.com/57928612/196835458-f2b4db36-41fe-43df-8fc8-d2b37ead02cb.gif" height="400" />
 
 <br>
 
@@ -42,7 +42,7 @@
 
 흥미있는 모임을 찾아 참여해보세요!
 
-![모임_참여](https://user-images.githubusercontent.com/57928612/196835497-7eaee8dc-163b-4e44-875f-1152a292a597.gif)
+<img src="https://user-images.githubusercontent.com/57928612/196835497-7eaee8dc-163b-4e44-875f-1152a292a597.gif" height="400" />
 
 <br>
 
@@ -50,7 +50,7 @@
 
 내가 참여하거나, 주최하거나, 찜한 모임을 한 곳에 모아 관리해보세요!
 
-![내_모임](https://user-images.githubusercontent.com/57928612/196835623-b11f0e7e-e515-41f0-b4d5-fb7ef5e696af.gif)
+<img src="https://user-images.githubusercontent.com/57928612/196835623-b11f0e7e-e515-41f0-b4d5-fb7ef5e696af.gif" height="400" />
 
 <br>
 
@@ -58,7 +58,7 @@
 
 ### 프론트엔드
 
-<img src="https://user-images.githubusercontent.com/57744251/192218850-0eb40906-4752-4c67-adbd-9c92bcead646.png" alt="frontend tech stack" height="375">
+<img src="https://user-images.githubusercontent.com/57928612/196930938-2dc0b509-3085-479c-88b2-42786d0511ce.png" height="400" />
 
 ### 백엔드
 
@@ -66,25 +66,21 @@
 - Springboot 2.6.9
 - Mysql 8
 
-<img src="https://user-images.githubusercontent.com/57744251/192218874-5e6fc74c-dd4d-4df5-bb70-6fddfa51707f.png" alt="backend tech stack" height="250">
-
-### 인프라
-
-<img src="https://user-images.githubusercontent.com/57744251/192218897-5b5180eb-880c-4822-a11d-2001fe4fad8f.png" alt="infra" height="250">
+<img src="https://user-images.githubusercontent.com/57928612/196930854-ed14853b-47ae-4da2-96be-5bad41c6a532.png" height="400" />
 
 ## 프로젝트 아키텍처
 
 ### 인프라 아키텍처
 
-<img src="https://user-images.githubusercontent.com/57744251/192219026-3e33df66-6791-4832-8ded-9c65d4f3e648.png" alt="infra architecture" height="450">
+<img src="https://user-images.githubusercontent.com/57928612/196931135-cdb9464f-c379-4d2a-a3bc-8e4ec75bed39.png" height="450" />
 
 ### 프론트 CI/CD
 
-<img src="https://user-images.githubusercontent.com/57744251/192219052-ff56595d-b166-4d81-a36d-4a3fc50eed5c.png" alt="frontend cicd" height="300">
+<img src="https://user-images.githubusercontent.com/57928612/196931212-4a214017-1e0a-4e24-b41b-a9f7110bd06b.png" height="300" />
 
 ### 백엔드 CI/CD
 
-<img src="https://user-images.githubusercontent.com/57744251/192219074-a4de7ab5-2518-49d0-8c95-b130ef115f79.png" alt="backend cicd" height="450">
+<img src="https://user-images.githubusercontent.com/57928612/196931031-f62cd639-15ed-4e8a-a8cb-3a160e683da1.png" height="450" />
 
 ---
 
