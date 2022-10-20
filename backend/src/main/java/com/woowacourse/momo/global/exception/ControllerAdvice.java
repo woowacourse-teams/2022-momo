@@ -1,6 +1,7 @@
 package com.woowacourse.momo.global.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,18 +25,23 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException() {
         return convert(GlobalErrorCode.VALIDATION_ERROR);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ExceptionResponse> unhandledApiException(NoHandlerFoundException e) {
-        return convert(GlobalErrorCode.UNHANDLED_API_ERROR);
+    public ResponseEntity<ExceptionResponse> notSupportedUriException() {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ExceptionResponse> notSupportedMethodException() {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR);
     }
 
     @UnhandledErrorLogging
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleAnyException(Exception e) {
+    public ResponseEntity<ExceptionResponse> handleAnyException() {
         return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR);
     }
 
