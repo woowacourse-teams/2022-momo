@@ -30,7 +30,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ExceptionResponse> unhandledApiException() {
+    public ResponseEntity<ExceptionResponse> notSupportedUriException() {
         return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR);
     }
 
