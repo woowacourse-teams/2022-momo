@@ -31,7 +31,7 @@ public class AuthConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/docs/index.html")
+        registry.addResourceHandler("/*")
                 .addResourceLocations("classpath:/static/");
     }
 
