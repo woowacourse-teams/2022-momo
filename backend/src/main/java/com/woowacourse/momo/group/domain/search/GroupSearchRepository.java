@@ -3,6 +3,9 @@ package com.woowacourse.momo.group.domain.search;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +15,7 @@ import com.woowacourse.momo.member.domain.Member;
 
 public interface GroupSearchRepository extends Repository<Group, Long>, GroupSearchRepositoryCustom {
 
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     Optional<Group> findById(Long id);
 
     @Query("select g from Group g "
