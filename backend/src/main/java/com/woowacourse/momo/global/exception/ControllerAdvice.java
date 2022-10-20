@@ -31,7 +31,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ExceptionResponse> unhandledApiException(NoHandlerFoundException e) {
-        return convert(GlobalErrorCode.UNHANDLED_API_ERROR);
+        return convert(GlobalErrorCode.NOT_SUPPORTED_API_ERROR);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
