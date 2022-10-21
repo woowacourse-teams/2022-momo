@@ -9,6 +9,7 @@ import static com.woowacourse.momo.storage.domain.QGroupImage.groupImage;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
@@ -26,6 +27,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
+import com.woowacourse.momo.group.domain.search.dto.GroupIdRepositoryResponse;
 import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
 
 @Repository
@@ -130,7 +132,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
     private Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable,
                                                             Supplier<BooleanExpression> mainCondition) {
         List<Long> groupIds = queryFactory
-                .select(group.id)
+                .select(makeGroupIdRepositoryResponse())
                 .from(group)
                 .leftJoin(group.participants.participants, participant)
                 .where(
@@ -140,7 +142,9 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .stream()
+                .map(GroupIdRepositoryResponse::getGroupId)
+                .collect(Collectors.toUnmodifiableList());
 
         List<GroupSummaryRepositoryResponse> groups = queryFactory
                 .select(makeProjections())
@@ -203,5 +207,9 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private OrderSpecifier<Long> orderByIdDesc() {
         return group.id.desc();
+    }
+
+    private ConstructorExpression<GroupIdRepositoryResponse> makeGroupIdRepositoryResponse() {
+        return Projections.constructor(GroupIdRepositoryResponse.class, group.id, group.calendar);
     }
 }
