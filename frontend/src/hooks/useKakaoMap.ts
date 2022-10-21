@@ -45,6 +45,11 @@ const useKakaoMap = (location: GroupDetailData['location']) => {
               kakao.maps.event.addListener(marker, 'mouseout', function () {
                 infoWindow.close();
               });
+              kakao.maps.event.addListener(map, 'click', () => {
+                window.open(
+                  `https://map.kakao.com/link/map/${result[0].road_address.building_name},${result[0].y},${result[0].x}`,
+                );
+              });
 
               map.setCenter(coords);
             }
