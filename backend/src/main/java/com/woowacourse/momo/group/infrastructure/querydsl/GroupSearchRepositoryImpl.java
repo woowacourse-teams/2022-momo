@@ -134,6 +134,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
         List<Long> groupIds = queryFactory
                 .select(makeGroupIdRepositoryResponse())
                 .from(group)
+                .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
                 .where(
                         mainCondition.get(),
