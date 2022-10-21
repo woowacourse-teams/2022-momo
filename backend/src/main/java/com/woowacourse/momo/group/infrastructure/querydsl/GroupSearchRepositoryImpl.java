@@ -41,8 +41,33 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     @Override
     public Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable) {
-        return findGroups(condition, pageable, () -> null);
-    }
+        List<Long> groupIds = queryFactory
+                .select(group.id)
+                .from(group)
+                .where(conditionFilter.filterByCondition(condition))
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
+                .from(group)
+                .innerJoin(group.participants.host, member)
+                .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
+                .where(group.id.in(groupIds))
+                .groupBy(group.id)
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.countDistinct())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .where(conditionFilter.filterByCondition(condition));
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);    }
 
     @Override
     public Page<GroupSummaryRepositoryResponse> findHostedGroups(SearchCondition condition, Long memberId,
