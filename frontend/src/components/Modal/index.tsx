@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Portal from 'components/Portal';
 import useClosingState from 'hooks/useClosingState';
 import useModal from 'hooks/useModal';

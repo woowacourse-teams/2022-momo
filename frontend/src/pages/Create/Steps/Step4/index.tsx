@@ -68,9 +68,8 @@ function Step4({
       return;
     }
 
-    if (e.nativeEvent.key.match(/[^0-9]/g) || e.nativeEvent.key === 'Process') {
+    if (e.nativeEvent.key.match(/[^0-9]/g)) {
       e.preventDefault();
-      return;
     }
   };
 
