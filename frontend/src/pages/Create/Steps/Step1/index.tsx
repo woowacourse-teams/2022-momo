@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
 import useCategory from 'hooks/useCategory';
