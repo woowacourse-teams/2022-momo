@@ -4,10 +4,12 @@ import static com.woowacourse.momo.favorite.domain.QFavorite.favorite;
 import static com.woowacourse.momo.group.domain.QGroup.group;
 import static com.woowacourse.momo.group.domain.participant.QParticipant.participant;
 import static com.woowacourse.momo.member.domain.QMember.member;
+import static com.woowacourse.momo.storage.domain.QGroupImage.groupImage;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
@@ -25,6 +27,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.woowacourse.momo.group.domain.search.GroupSearchRepositoryCustom;
 import com.woowacourse.momo.group.domain.search.SearchCondition;
+import com.woowacourse.momo.group.domain.search.dto.GroupIdRepositoryResponse;
 import com.woowacourse.momo.group.domain.search.dto.GroupSummaryRepositoryResponse;
 
 @Repository
@@ -40,7 +43,33 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     @Override
     public Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable) {
-        return findGroups(condition, pageable, () -> null);
+        List<Long> groupIds = queryFactory
+                .select(group.id)
+                .from(group)
+                .where(conditionFilter.filterByCondition(condition))
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
+                .from(group)
+                .innerJoin(group.participants.host, member)
+                .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
+                .where(group.id.in(groupIds))
+                .groupBy(group.id)
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(group.countDistinct())
+                .from(group)
+                .leftJoin(group.participants.participants, participant)
+                .where(conditionFilter.filterByCondition(condition));
+
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
     }
 
     @Override
@@ -65,7 +94,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
-                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
                 .groupBy(group.id)
@@ -102,8 +131,9 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private Page<GroupSummaryRepositoryResponse> findGroups(SearchCondition condition, Pageable pageable,
                                                             Supplier<BooleanExpression> mainCondition) {
-        List<GroupSummaryRepositoryResponse> groups = queryFactory
-                .select(makeProjections())
+        List<Long> groupIds = queryFactory
+                .select(makeGroupIdRepositoryResponse())
+                .distinct()
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
@@ -115,6 +145,20 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .fetch()
+                .stream()
+                .map(GroupIdRepositoryResponse::getGroupId)
+                .collect(Collectors.toUnmodifiableList());
+
+        List<GroupSummaryRepositoryResponse> groups = queryFactory
+                .select(makeProjections())
+                .from(group)
+                .innerJoin(group.participants.host, member)
+                .leftJoin(group.participants.participants, participant)
+                .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
+                .where(group.id.in(groupIds))
+                .groupBy(group.id)
+                .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -140,7 +184,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 group.participants.capacity.value,
                 participant.count().intValue().add(host),
                 group.closedEarly,
-                group.calendar.deadline.value
+                group.calendar.deadline.value,
+                groupImage.imageName
         );
     }
 
@@ -166,5 +211,9 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
 
     private OrderSpecifier<Long> orderByIdDesc() {
         return group.id.desc();
+    }
+
+    private ConstructorExpression<GroupIdRepositoryResponse> makeGroupIdRepositoryResponse() {
+        return Projections.constructor(GroupIdRepositoryResponse.class, group.id, group.calendar);
     }
 }

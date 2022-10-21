@@ -2,7 +2,7 @@ import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { copyObject } from 'utils/object';
 
-import { validateGroupData } from './validate';
+import { validateDeadlineWithNow, validateGroupData } from './validate';
 
 const exampleCreateGroupData: CreateGroupData = {
   name: '잠실 루터회관 모임',
@@ -125,5 +125,17 @@ describe('필수 값과 선택 값들을 넣어 모임을 생성하도록 요청
 
     // then
     expect(() => validateGroupData(noDescriptionCreateGroupData)).not.toThrow();
+  });
+});
+
+describe('주어진 모임 데이터를 검증할 수 있다.', () => {
+  it('마감일이 현재 시간보다 이후인지 검증할 수 있다.', () => {
+    // given & when
+    const parsedValidDeadline = new Date('2080-09-30');
+    const parsedInvalidDeadline = new Date('1980-09-30');
+
+    // then
+    expect(validateDeadlineWithNow(parsedValidDeadline)).toBeTruthy();
+    expect(validateDeadlineWithNow(parsedInvalidDeadline)).toBeFalsy();
   });
 });

@@ -3,12 +3,12 @@ name: Backend CI
 on:
   push:
     branches:
-      - main
       - develop-be
+      - release-be
   pull_request:
     branches:
-      - main
       - develop-be
+      - release-be
 
 defaults:
   run:

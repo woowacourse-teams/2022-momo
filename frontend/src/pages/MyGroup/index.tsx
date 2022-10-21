@@ -55,17 +55,20 @@ function MyGroup() {
   useEffect(() => {
     if (!data) return;
 
-    if (data.hasNextPage) {
-      setPageNumber(data.pageNumber + 1);
+    const { pageNumber, hasNextPage, groups } = data;
+
+    if (hasNextPage) {
+      setPageNumber(pageNumber + 1);
     }
 
-    if (data.pageNumber === 0) {
-      setGroups(data.groups);
+    if (pageNumber === 0) {
+      setGroups(groups);
       return;
     }
 
-    setGroups(prevState => [...prevState, ...data.groups]);
-  }, [data]);
+    setGroups(prevState => [...prevState, ...groups]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetching]);
 
   const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
     await setSelectedGroupType(newType);

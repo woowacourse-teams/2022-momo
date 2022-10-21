@@ -16,14 +16,14 @@ import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
 import { validateGroupData } from 'pages/Create/validate';
 import { groupDetailState } from 'store/states';
-import { GroupDetailData } from 'types/data';
+import { GroupDetailData, GroupSummary } from 'types/data';
 import { getNewDateString } from 'utils/date';
 
 import ControlButton from './ControlButton';
 import * as S from './index.styled';
 
 interface EditModeProps {
-  id: number;
+  id: GroupSummary['id'];
   data: GroupDetailData;
   finishEditMode: () => void;
 }
@@ -131,7 +131,11 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
 
   const changeDuration =
     (type: 'start' | 'end') => (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)) return;
+      if (
+        schedules.length > 0 &&
+        !window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)
+      )
+        return;
 
       dangerouslySetSchedules([]);
 

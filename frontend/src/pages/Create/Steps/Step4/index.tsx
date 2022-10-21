@@ -28,7 +28,7 @@ function Step4({
   useLocationState,
   pressEnterToNext,
 }: Step4Props) {
-  const { capacity, setCapacity } = useCapacityState();
+  const { capacity, setCapacity, blurCapacity } = useCapacityState();
   const { location, setLocationAddress, setLocationDetail } =
     useLocationState();
 
@@ -39,6 +39,39 @@ function Step4({
   };
 
   const isNotFulfilledAddress = location.address === '';
+
+  const preventInputNaN = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!(e.target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    if (e.nativeEvent.key === 'Enter') {
+      pressEnterToNext(e);
+      return;
+    }
+
+    if (
+      [
+        'Backspace',
+        'Delete',
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowUp',
+        'ArrowDown',
+      ].includes(e.nativeEvent.key)
+    ) {
+      return;
+    }
+
+    if (e.nativeEvent.key === 'Process') {
+      e.target.value = capacity.toString();
+      return;
+    }
+
+    if (e.nativeEvent.key.match(/[^0-9]/g)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <Container>
@@ -90,7 +123,8 @@ function Step4({
             max={GROUP_RULE.CAPACITY.MAX}
             value={capacity || ''}
             onChange={setCapacity}
-            onKeyPress={pressEnterToNext}
+            onBlur={blurCapacity}
+            onKeyDown={preventInputNaN}
             placeholder={GROUP_RULE.CAPACITY.MAX.toString()}
           />
         </LabelContainer>

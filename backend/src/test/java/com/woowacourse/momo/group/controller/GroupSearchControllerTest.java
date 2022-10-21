@@ -64,7 +64,7 @@ class GroupSearchControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("name", is("모모의 스터디")))
                 .andDo(
-                        document("groupget",
+                        document("groupSearchWithoutLogin",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -83,16 +83,16 @@ class GroupSearchControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("name", is("모모의 스터디")))
                 .andDo(
-                        document("groupget",
+                        document("groupSearchWithLogin",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
                 );
     }
 
-    @DisplayName("그룹 목록을 가져오는 경우를 테스트한다")
+    @DisplayName("로그인을 하지 않은 상태로 그룹 목록을 가져오는 경우를 테스트한다")
     @Test
-    void groupGetListTest() throws Exception {
+    void groupGetListWithoutAuthorizationHeaderTest() throws Exception {
         Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
         saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
         saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
@@ -105,7 +105,31 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
-                        document("grouplist",
+                        document("groupListWithoutLogin",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @DisplayName("로그인한 후 그룹 목록을 가져오는 경우를 테스트한다")
+    @Test
+    void groupGetListWithAuthorizationHeaderTest() throws Exception {
+        Long saveMemberId = saveMember("woowa", "wooteco1!", "모모");
+        String token = accessToken("woowa", "wooteco1!");
+        saveGroup("모모의 JPA 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 스터디", saveMemberId, Category.STUDY);
+        saveGroup("무무의 술파티", saveMemberId, Category.DRINK);
+        saveGroup("모모의 리엑트 스터디", saveMemberId, Category.STUDY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                        "/api/groups?category=1&keyword=모모&excludeFinished=true&orderByDeadline=true&page=0")
+                .header("Authorization", "bearer " + token))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
+                .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
+                .andDo(
+                        document("groupListWithLogin",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -129,7 +153,7 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[0].name", is("모모의 리액트 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
-                        document("participatedgrouplist",
+                        document("participatedGroupList",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -161,7 +185,7 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
-                        document("hostedgrouplist",
+                        document("hostedGroupList",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -189,7 +213,7 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[0].name", is("모모의 리엑트 스터디")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 JPA 스터디")))
                 .andDo(
-                        document("likedgrouplist",
+                        document("likedGroupList",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -220,7 +244,7 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[2].name", is("무무의 스터디")))
                 .andExpect(jsonPath("groups[3].name", is("모모의 스터디")))
                 .andDo(
-                        document("grouplistbycategory",
+                        document("groupListByCategory",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )
@@ -242,7 +266,7 @@ class GroupSearchControllerTest {
                 .andExpect(jsonPath("groups[0].name", is("모모의 술파티")))
                 .andExpect(jsonPath("groups[1].name", is("모모의 스터디")))
                 .andDo(
-                        document("grouplistbykeyword",
+                        document("groupListByKeyword",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint())
                         )

@@ -16,7 +16,7 @@ function Step5({ show }: { show: boolean }) {
   };
 
   return (
-    <Container>
+    <S.Container>
       <S.IconBox>
         {[...Array(3)].map((_, idx) => (
           <BeanSVG key={idx} />
@@ -37,7 +37,7 @@ function Step5({ show }: { show: boolean }) {
       >
         시작하기
       </S.Button>
-    </Container>
+    </S.Container>
   );
 }
 

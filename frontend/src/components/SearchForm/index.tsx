@@ -13,6 +13,7 @@ const suggestSearchKeyword = [
   '모여서 각자 코딩해요',
   '여행을 떠나요',
   '조조영화 같이 보실 분',
+  '오늘 같이 칼퇴해요',
 ];
 
 const randomKeyword =

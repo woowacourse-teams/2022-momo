@@ -1,0 +1,24 @@
+= 모임 참여 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 모임 참여
+Request
+include::{snippets}/participate/http-request.adoc[]
+Response
+include::{snippets}/participate/http-response.adoc[]
+
+== 모임 참여 취소
+Request
+include::{snippets}/deleteParticipant/http-request.adoc[]
+Response
+include::{snippets}/deleteParticipant/http-response.adoc[]
+
+== 모임 참여자 목록 조회
+Request
+include::{snippets}/findParticipants/http-request.adoc[]
+Response
+include::{snippets}/findParticipants/http-response.adoc[]

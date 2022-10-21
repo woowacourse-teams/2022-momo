@@ -22,7 +22,7 @@ public class ParticipateService {
     private final GroupFindService groupFindService;
 
     @Transactional
-    public synchronized void participate(Long groupId, Long memberId) {
+    public void participate(Long groupId, Long memberId) {
         Group group = groupFindService.findGroup(groupId);
         Member member = memberFindService.findMember(memberId);
 
@@ -30,7 +30,7 @@ public class ParticipateService {
     }
 
     public List<MemberResponse> findParticipants(Long groupId) {
-        Group group = groupFindService.findGroup(groupId);
+        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
         List<Member> participants = group.getParticipants();
 
         return MemberResponseAssembler.memberResponses(participants);

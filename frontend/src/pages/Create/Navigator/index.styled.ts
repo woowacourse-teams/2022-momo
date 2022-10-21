@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 52px;
 
   overflow: hidden;
 

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { CreateStateReturnValues } from 'hooks/useCreateState';
+import { validateDeadlineWithNow } from 'pages/Create/validate';
 import { convertRemainTime, getNewDateString } from 'utils/date';
 
 import {
@@ -17,12 +18,14 @@ interface Step2Props {
   useDateState: CreateStateReturnValues['useDateState'];
   useDeadlineState: CreateStateReturnValues['useDeadlineState'];
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  getValidateState: (pageIndex: number) => '' | 'invalid';
 }
 
 function Step2({
   useDateState,
   useDeadlineState,
   pressEnterToNext,
+  getValidateState,
 }: Step2Props) {
   const { startDate, setStartDate, endDate, setEndDate } = useDateState();
   const { deadline, setDeadline } = useDeadlineState();
@@ -33,7 +36,34 @@ function Step2({
     <Container>
       <SectionContainer>
         <Heading>
+          <span>언제까지</span> 모집할까요?
+          <p>(마감일 설정)</p>
+        </Heading>
+        <LabelContainer>
+          <Label>
+            <p>날짜</p>
+            <p>{remainTime ? `${remainTime} 후` : '이미 지난 시간이에요'}</p>
+          </Label>
+          <Input
+            type="datetime-local"
+            value={deadline}
+            onChange={setDeadline}
+            onKeyPress={pressEnterToNext}
+            min={getNewDateString('min')}
+          />
+        </LabelContainer>
+        <span
+          className={
+            validateDeadlineWithNow(new Date(deadline)) ? '' : 'invalid'
+          }
+        >
+          마감일은 지금 이후여야 합니다.
+        </span>
+      </SectionContainer>
+      <SectionContainer>
+        <Heading>
           <span>언제부터 언제까지</span> 만날건가요?
+          <p>(모임 기간 설정)</p>
         </Heading>
         <LabelContainer>
           <p>기간</p>
@@ -54,24 +84,9 @@ function Step2({
             />
           </S.InputWrapper>
         </LabelContainer>
-      </SectionContainer>
-      <SectionContainer>
-        <Heading>
-          <span>언제까지</span> 모집할까요?
-        </Heading>
-        <LabelContainer>
-          <Label>
-            <p>날짜</p>
-            <p>{remainTime && `${remainTime} 후`}</p>
-          </Label>
-          <Input
-            type="datetime-local"
-            value={deadline}
-            onChange={setDeadline}
-            onKeyPress={pressEnterToNext}
-            min={getNewDateString('min')}
-          />
-        </LabelContainer>
+        <span className={getValidateState(2)}>
+          모임 기간은 마감일 이후여야 합니다.
+        </span>
       </SectionContainer>
     </Container>
   );
