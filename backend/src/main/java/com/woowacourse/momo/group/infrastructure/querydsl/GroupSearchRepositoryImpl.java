@@ -67,7 +67,8 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .leftJoin(group.participants.participants, participant)
                 .where(conditionFilter.filterByCondition(condition));
 
-        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);    }
+        return PageableExecutionUtils.getPage(groups, pageable, countQuery::fetchOne);
+    }
 
     @Override
     public Page<GroupSummaryRepositoryResponse> findHostedGroups(SearchCondition condition, Long memberId,
