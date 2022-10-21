@@ -31,14 +31,14 @@ const SectionContainer = styled.section`
   gap: 2rem;
 
   ${({ theme: { colors } }) => `
-    span {
+    & > span {
       font-size: 0.9rem;
       
-      color: ${colors.gray004}
-    }
+      color: ${colors.gray004};
 
-    span.invalid {
-      color: ${colors.red001};
+      &.invalid {
+        color: ${colors.red001};
+      }
     }
   `}
 `;

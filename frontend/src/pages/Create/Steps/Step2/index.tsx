@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { CreateStateReturnValues } from 'hooks/useCreateState';
+import { validateDeadlineWithNow } from 'pages/Create/validate';
 import { convertRemainTime, getNewDateString } from 'utils/date';
 
 import {
@@ -30,12 +31,6 @@ function Step2({
   const { deadline, setDeadline } = useDeadlineState();
 
   const remainTime = convertRemainTime(deadline);
-  const compareDeadlineWithNow = () => {
-    const parsedDeadline = new Date(deadline);
-    const now = new Date();
-
-    return parsedDeadline > now ? '' : 'invalid';
-  };
 
   return (
     <Container>
@@ -47,7 +42,7 @@ function Step2({
         <LabelContainer>
           <Label>
             <p>날짜</p>
-            <p>{remainTime && `${remainTime} 후`}</p>
+            <p>{remainTime ? `${remainTime} 후` : '이미 지난 시간이에요'}</p>
           </Label>
           <Input
             type="datetime-local"
@@ -57,7 +52,11 @@ function Step2({
             min={getNewDateString('min')}
           />
         </LabelContainer>
-        <span className={compareDeadlineWithNow()}>
+        <span
+          className={
+            validateDeadlineWithNow(new Date(deadline)) ? '' : 'invalid'
+          }
+        >
           마감일은 지금 이후여야 합니다.
         </span>
       </SectionContainer>
