@@ -22,6 +22,36 @@ const validateDurationDate =
     return startDate <= endDate && startDate >= resetDateToStartOfDay(today);
   };
 
+const validateDeadlineWithNow = (parsedDeadline: Date) => {
+  const now = new Date();
+
+  return parsedDeadline > now;
+};
+
+const validateDeadlineWithDate = (
+  endOfStartDate: Date,
+  deadline: Date,
+  schedules: CreateGroupData['schedules'],
+) => {
+  const parsedDeadline = new Date(deadline);
+
+  if (parsedDeadline > endOfStartDate) {
+    return false;
+  }
+
+  if (schedules.length === 0) {
+    return true;
+  }
+
+  schedules.sort((scheduleA, scheduleB) =>
+    scheduleA.date.localeCompare(scheduleB.date),
+  );
+
+  return (
+    parsedDeadline <= new Date(`${schedules[0].date}T${schedules[0].startTime}`)
+  );
+};
+
 const validateDeadlineDate =
   (
     startDate: Date,
@@ -31,24 +61,10 @@ const validateDeadlineDate =
   () => {
     const parsedDeadline = new Date(deadline);
     const endOfStartDate = resetDateToEndOfDay(new Date(startDate));
-    const now = new Date();
-
-    if (parsedDeadline > endOfStartDate) {
-      return false;
-    }
-
-    if (schedules.length === 0) {
-      return parsedDeadline > now;
-    }
-
-    schedules.sort((scheduleA, scheduleB) =>
-      scheduleA.date.localeCompare(scheduleB.date),
-    );
 
     return (
-      parsedDeadline <=
-        new Date(`${schedules[0].date}T${schedules[0].startTime}`) &&
-      parsedDeadline > now
+      validateDeadlineWithDate(endOfStartDate, parsedDeadline, schedules) &&
+      validateDeadlineWithNow(parsedDeadline)
     );
   };
 
@@ -122,5 +138,6 @@ export {
   validateCapacity,
   validateDurationDate,
   validateDeadlineDate,
+  validateDeadlineWithNow,
   validateGroupData,
 };
