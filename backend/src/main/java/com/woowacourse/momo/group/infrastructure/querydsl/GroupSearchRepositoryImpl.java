@@ -92,7 +92,6 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
                 .leftJoin(groupImage).on(group.id.eq(groupImage.groupId))
-                .innerJoin(favorite).on(group.id.eq(favorite.groupId))
                 .fetchJoin()
                 .where(group.id.in(likedGroupIds))
                 .groupBy(group.id)
