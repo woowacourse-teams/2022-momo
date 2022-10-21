@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GROUP_RULE } from 'constants/rule';
 import {
@@ -144,7 +144,7 @@ const useCreateState = (): CreateStateReturnValues => {
       return;
     }
 
-    const newCapacity = Number(e.target.value);
+    const newCapacity = Number(newCapacityString);
     const { MIN, MAX } = GROUP_RULE.CAPACITY;
 
     if (newCapacity < MIN) {
