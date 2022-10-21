@@ -133,6 +133,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                                                             Supplier<BooleanExpression> mainCondition) {
         List<Long> groupIds = queryFactory
                 .select(makeGroupIdRepositoryResponse())
+                .distinct()
                 .from(group)
                 .innerJoin(group.participants.host, member)
                 .leftJoin(group.participants.participants, participant)
@@ -143,6 +144,7 @@ public class GroupSearchRepositoryImpl implements GroupSearchRepositoryCustom {
                 .orderBy(orderByDeadlineAsc(condition.orderByDeadline()).toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .fetch()
                 .stream()
                 .map(GroupIdRepositoryResponse::getGroupId)
                 .collect(Collectors.toUnmodifiableList());
