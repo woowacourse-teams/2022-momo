@@ -8,6 +8,7 @@ import {
   parsedTime,
   getTimeInKorea,
   isToday,
+  convertToISOString,
 } from './date';
 
 const fakeTimerSetUp = () => {
@@ -22,6 +23,7 @@ describe('convertRemainTime 함수에 목표 시간을 넣어 오늘로부터 �
 
   it('지난 시간을 넣으면 null을 반환한다.', () => {
     const pastTime = '2021-12-31T00:00:01.000Z';
+
     expect(convertRemainTime(pastTime)).toBeNull();
   });
 
@@ -87,6 +89,17 @@ describe('convertDeadlineToRemainTime 함수에 목표 시간을 넣으면 오�
     const afterOneDay = '2022-01-02T01:00:00.000Z';
 
     expect(convertDeadlineToRemainTime(afterOneDay)).toBe('마감까지 1일');
+  });
+});
+
+describe('convertToISOString 함수에 년, 월, 일 데이터를 넣으면 ISO 8601 형식 문자열로 반환할 수 있다.', () => {
+  it('년, 월, 일 데이터를 넣어 ISO 8601 형식 문자열을 반환한다.', () => {
+    const year = 2022;
+    const month = 1;
+    const date = 1;
+
+    expect(convertToISOString(year, month, date)).toBe('2022-01-01');
+    expect(convertToISOString(year, month, date)).not.toBe('2022-02-02');
   });
 });
 
