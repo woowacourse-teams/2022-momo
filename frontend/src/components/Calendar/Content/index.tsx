@@ -1,9 +1,9 @@
-import useCalendar from 'hooks/useCalendar';
 import { GroupDetailData } from 'types/data';
-import { convertToISOString, isToday } from 'utils/date';
+import { isToday } from 'utils/date';
 
 import * as S from '../index.styled';
 import SelectedDate from '../SelectedDate';
+import useCalendar from './hooks/useCalendar';
 
 const days = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -24,12 +24,12 @@ interface ContentProps {
   value: {
     year: number;
     month: number;
+    goToPrevMonth: () => void;
+    goToNextMonth: () => void;
     duration?: GroupDetailData['duration'];
     schedules: GroupDetailData['schedules'];
     selectDate?: (year: number, month: number, date: number) => void;
     selectedDate?: string;
-    goToPrevMonth: () => void;
-    goToNextMonth: () => void;
   };
 }
 
@@ -37,39 +37,30 @@ function Content({
   value: {
     year,
     month,
+    goToPrevMonth,
+    goToNextMonth,
     duration,
     schedules,
     selectDate,
     selectedDate,
-    goToPrevMonth,
-    goToNextMonth,
   },
 }: ContentProps) {
-  const { dates, prevDates, nextDates } = useCalendar(year, month);
-
-  const getSchedule = (date: number) => {
-    return schedules.find(
-      schedule => schedule.date === convertToISOString(year, month, date),
-    );
-  };
-
-  const isNotInDuration = (date: number) => {
-    if (!duration) return false;
-
-    const thisDate = convertToISOString(year, month, date);
-
-    return thisDate < duration.start || thisDate > duration.end;
-  };
-
-  const isSelectedDate = (date: number) => {
-    return selectedDate === convertToISOString(year, month, date);
-  };
-
-  const pickDate = (date: number) => () => {
-    if (!selectDate) return;
-
-    selectDate(year, month, date);
-  };
+  const {
+    dates,
+    prevDates,
+    nextDates,
+    getSchedule,
+    isNotInDuration,
+    isSelectedDate,
+    pickDate,
+  } = useCalendar({
+    year,
+    month,
+    duration,
+    schedules,
+    selectDate,
+    selectedDate,
+  });
 
   return (
     <S.Content key={month}>

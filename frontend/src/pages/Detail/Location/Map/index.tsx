@@ -1,6 +1,6 @@
-import useKakaoMap from 'hooks/useKakaoMap';
 import { GroupDetailData } from 'types/data';
 
+import useKakaoMap from './hooks/useKakaoMap';
 import * as S from './index.styled';
 
 interface MapProps {
