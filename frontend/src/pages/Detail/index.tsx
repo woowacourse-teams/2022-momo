@@ -9,8 +9,6 @@ import {
 } from 'apis/request/group';
 import ImageDropBox from 'components/ImageDropBox';
 import { QUERY_KEY } from 'constants/key';
-import useRecoilQuery from 'hooks/useRecoilQuery';
-import { groupDetailState } from 'store/states';
 import theme from 'styles/theme';
 import { GroupParticipants } from 'types/data';
 import { accessTokenProvider } from 'utils/token';
@@ -21,11 +19,8 @@ import Mobile from './versions/Mobile';
 function Detail() {
   const { id } = useParams();
 
-  const { state: data } = useRecoilQuery(
-    groupDetailState,
-    QUERY_KEY.GROUP_DETAILS,
-    () => requestGroupDetail(Number(id)),
-    0,
+  const { data } = useQuery(QUERY_KEY.GROUP_DETAILS, () =>
+    requestGroupDetail(Number(id)),
   );
   const { data: participants } = useQuery<GroupParticipants>(
     `${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`,
@@ -40,7 +35,7 @@ function Detail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessTokenProvider.get()]);
 
-  if (!participants) return <></>;
+  if (!data || !participants) return <></>;
 
   return (
     <>

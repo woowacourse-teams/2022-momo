@@ -1,14 +1,10 @@
 import { atom, DefaultValue, selector } from 'recoil';
 
+import { requestCategory } from 'apis/request/category';
 import { ModalStateType, SnackbarState } from 'types/condition';
-import { CategoryType, GroupDetailData } from 'types/data';
+import { CategoryType } from 'types/data';
 import { LoginState } from 'types/user';
 import { accessTokenProvider, refreshTokenProvider } from 'utils/token';
-
-const categoryState = atom<CategoryType[]>({
-  key: 'categoryState',
-  default: [],
-});
 
 const modalState = atom<ModalStateType>({
   key: 'modalState',
@@ -25,31 +21,12 @@ const loginState = atom<LoginState>({
   default: { isLogin: false },
 });
 
-const groupDetailState = atom<GroupDetailData>({
-  key: 'groupDetailState',
-  default: {
-    name: '',
-    host: {
-      id: -1,
-      name: '',
-    },
-    categoryId: 0,
-    capacity: 1,
-    duration: {
-      start: '',
-      end: '',
-    },
-    schedules: [],
-    finished: false,
-    deadline: '',
-    like: false,
-    location: {
-      address: '',
-      buildingName: '',
-      detail: '',
-    },
-    description: '',
-    imageUrl: '',
+const categoryState = selector<CategoryType[]>({
+  key: 'categoryState',
+  get: async () => {
+    const categories = await requestCategory();
+
+    return categories;
   },
 });
 
@@ -86,11 +63,10 @@ const refreshTokenState = selector<string>({
 });
 
 export {
-  categoryState,
   modalState,
   snackbarState,
   loginState,
-  groupDetailState,
+  categoryState,
   accessTokenState,
   refreshTokenState,
 };
