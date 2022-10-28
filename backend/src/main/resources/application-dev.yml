@@ -14,3 +14,13 @@ spring:
 momo-log:
   slack: false
   file: false
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

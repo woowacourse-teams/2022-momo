@@ -32,6 +32,7 @@ dependencies {
 	implementation 'com.querydsl:querydsl-apt:5.0.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
