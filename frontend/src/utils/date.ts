@@ -33,7 +33,6 @@ const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
   return `마감까지 ${remainTime}`;
 };
 
-// TODO: 누락된 테스트 코드 추가
 /**
  * 년, 월, 일 데이터를 ISO 8601 형식 문자열로 변환하는 함수입니다.
  * return 'YYYY-MM-DD'
