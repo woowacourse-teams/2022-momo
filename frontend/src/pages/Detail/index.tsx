@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -11,7 +9,6 @@ import ImageDropBox from 'components/ImageDropBox';
 import { QUERY_KEY } from 'constants/key';
 import theme from 'styles/theme';
 import { GroupParticipants } from 'types/data';
-import { accessTokenProvider } from 'utils/token';
 
 import Desktop from './versions/Desktop';
 import Mobile from './versions/Mobile';
@@ -27,13 +24,6 @@ function Detail() {
     () => requestGroupParticipants(Number(id)),
     { staleTime: Infinity },
   );
-
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessTokenProvider.get()]);
 
   if (!data || !participants) return <></>;
 

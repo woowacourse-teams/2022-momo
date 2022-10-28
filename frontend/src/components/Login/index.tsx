@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 
-import { useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -8,7 +7,6 @@ import { requestLogin, requestGoogleOauthToken } from 'apis/request/auth';
 import { requestUserInfo } from 'apis/request/user';
 import { GoogleSVG } from 'assets/svg';
 import Modal from 'components/Modal';
-import { QUERY_KEY } from 'constants/key';
 import { GUIDE_MESSAGE } from 'constants/message';
 import useAuth from 'hooks/useAuth';
 import useHandleError from 'hooks/useHandleError';
@@ -20,8 +18,6 @@ import { prevLocationProvider } from 'utils/location';
 import * as S from './index.styled';
 
 function Login() {
-  const queryClient = useQueryClient();
-
   const { setAuth, setLogin } = useAuth();
 
   const userIdRef = useRef<HTMLInputElement>(null);
@@ -50,8 +46,6 @@ function Login() {
 
         requestUserInfo().then(userInfo => {
           setLogin('basic', userInfo);
-          queryClient.invalidateQueries([QUERY_KEY.GROUP_DETAILS]);
-          queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
         });
 
         setOffModal();

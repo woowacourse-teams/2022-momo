@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { requestGroups } from 'apis/request/group';
@@ -10,7 +10,6 @@ import { QUERY_KEY } from 'constants/key';
 import { BROWSER_PATH } from 'constants/path';
 import useMount from 'hooks/useMount';
 import { CategoryType, GroupList } from 'types/data';
-import { accessTokenProvider } from 'utils/token';
 
 import FilterSection from './FilterSection';
 import * as S from './index.styled';
@@ -19,8 +18,6 @@ import WholeGroups from './WholeGroups';
 const invalidCategoryId = -1;
 
 function Main() {
-  const queryClient = useQueryClient();
-
   const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
@@ -47,11 +44,6 @@ function Main() {
 
     localStorage.setItem('visited', 'true');
   });
-
-  useEffect(() => {
-    queryClient.invalidateQueries([QUERY_KEY.GROUP_SUMMARIES]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessTokenProvider.get()]);
 
   useEffect(() => {
     if (!data) return;
