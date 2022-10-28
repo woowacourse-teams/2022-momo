@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+
+import { useQueryClient } from 'react-query';
 import { useResetRecoilState, useRecoilState } from 'recoil';
 
+import { QUERY_KEY } from 'constants/key';
 import { accessTokenState, refreshTokenState, loginState } from 'store/states';
 import { LoginType, Token, UserProfile } from 'types/user';
 
@@ -9,6 +13,14 @@ const useAuth = () => {
 
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
+    queryClient.invalidateQueries(QUERY_KEY.GROUP_SUMMARIES);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
 
   const setAuth = ({ accessToken, refreshToken }: Token) => {
     setAccessToken(accessToken);

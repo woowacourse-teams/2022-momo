@@ -1,6 +1,5 @@
 import { Address } from 'react-daum-postcode';
 import { useQueryClient } from 'react-query';
-import { useResetRecoilState } from 'recoil';
 
 import { requestEditGroup } from 'apis/request/group';
 import CalendarEditor from 'components/CalendarEditor';
@@ -15,7 +14,6 @@ import useModal from 'hooks/useModal';
 import useMount from 'hooks/useMount';
 import useSnackbar from 'hooks/useSnackbar';
 import { validateGroupData } from 'pages/Create/validate';
-import { groupDetailState } from 'store/states';
 import { GroupDetailData, GroupSummary } from 'types/data';
 import { getNewDateString } from 'utils/date';
 
@@ -30,7 +28,6 @@ interface EditModeProps {
 
 function EditMode({ id, data, finishEditMode }: EditModeProps) {
   const categories = useCategory();
-  const resetGroupData = useResetRecoilState(groupDetailState);
 
   const { showPostcodeModal } = useModal();
   const { setMessage } = useSnackbar();
@@ -103,8 +100,6 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
 
     requestEditGroup(groupData, id)
       .then(() => {
-        resetGroupData();
-
         queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
 
         setMessage(GUIDE_MESSAGE.GROUP.SUCCESS_EDIT_REQUEST);
