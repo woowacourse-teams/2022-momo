@@ -1,7 +1,7 @@
-import useHover from 'hooks/useHover';
 import { ScheduleType } from 'types/data';
 import { parsedTime } from 'utils/date';
 
+import useHover from './hooks/useHover';
 import * as S from './index.styled';
 
 interface DateProps {

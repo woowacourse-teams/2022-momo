@@ -49,12 +49,12 @@ function Calendar({
         value={{
           year,
           month,
+          goToPrevMonth,
+          goToNextMonth,
           duration,
           schedules,
           selectDate,
           selectedDate,
-          goToPrevMonth,
-          goToNextMonth,
         }}
       />
     </S.Container>
