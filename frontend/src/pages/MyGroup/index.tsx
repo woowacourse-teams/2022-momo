@@ -38,7 +38,7 @@ function MyGroup() {
   const [selectedGroupType, setSelectedGroupType] =
     useState<SelectableGroup>('participated');
 
-  const { isFetching, data, refetch } = useQuery(
+  const { isFetching, dataUpdatedAt, data, refetch } = useQuery(
     QUERY_KEY.JOINED_GROUP_SUMMARIES,
     requestJoinedGroups(
       selectedGroupType,
@@ -53,7 +53,7 @@ function MyGroup() {
   );
 
   useEffect(() => {
-    if (!data || isFetching) return;
+    if (!data) return;
 
     const { pageNumber, hasNextPage, groups: newGroups } = data;
 
@@ -68,7 +68,7 @@ function MyGroup() {
 
     setGroups(prevState => [...prevState, ...newGroups]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching]);
+  }, [dataUpdatedAt]);
 
   const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
     await setSelectedGroupType(newType);

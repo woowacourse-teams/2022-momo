@@ -25,7 +25,7 @@ function Main() {
     useState(invalidCategoryId);
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
-  const { isFetching, data, refetch } = useQuery(
+  const { isFetching, dataUpdatedAt, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
     requestGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
     {
@@ -46,7 +46,7 @@ function Main() {
   });
 
   useEffect(() => {
-    if (!data || isFetching) return;
+    if (!data) return;
 
     const { pageNumber, hasNextPage, groups: newGroups } = data;
 
@@ -61,7 +61,7 @@ function Main() {
 
     setGroups(prevState => [...prevState, ...newGroups]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching]);
+  }, [dataUpdatedAt]);
 
   const toggleIsExcludeFinished = async () => {
     await setIsExcludeFinished(prevState => !prevState);
