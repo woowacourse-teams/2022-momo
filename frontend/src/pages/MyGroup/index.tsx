@@ -4,9 +4,9 @@ import { useQuery } from 'react-query';
 
 import { requestJoinedGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
+import FilterSection from 'components/FilterSection';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
-import FilterSection from 'pages/Main/FilterSection';
 import theme from 'styles/theme';
 import { CategoryType, GroupList, SelectableGroup } from 'types/data';
 
@@ -39,7 +39,7 @@ function MyGroup() {
     useState<SelectableGroup>('participated');
 
   const { isFetching, data, refetch } = useQuery(
-    QUERY_KEY.GROUP_SUMMARIES,
+    QUERY_KEY.JOINED_GROUP_SUMMARIES,
     requestJoinedGroups(
       selectedGroupType,
       pageNumber,
@@ -53,20 +53,20 @@ function MyGroup() {
   );
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || isFetching) return;
 
-    const { pageNumber, hasNextPage, groups } = data;
+    const { pageNumber, hasNextPage, groups: newGroups } = data;
 
     if (hasNextPage) {
       setPageNumber(pageNumber + 1);
     }
 
-    if (pageNumber === 0) {
-      setGroups(groups);
+    if (pageNumber <= 0) {
+      setGroups(newGroups);
       return;
     }
 
-    setGroups(prevState => [...prevState, ...groups]);
+    setGroups(prevState => [...prevState, ...newGroups]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching]);
 
