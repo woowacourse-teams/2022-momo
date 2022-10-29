@@ -3,9 +3,9 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
 import { CategoryType } from 'types/data';
 
-import Category from '../Category';
-import SearchSection from '../SearchSection';
+import Category from './Category';
 import * as S from './index.styled';
+import SearchSection from './SearchSection';
 
 interface FilterSectionProps {
   search: (keyword: string) => void;

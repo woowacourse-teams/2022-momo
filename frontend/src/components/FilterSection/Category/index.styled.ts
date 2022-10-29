@@ -131,8 +131,11 @@ const Button = styled.button`
     margin-top: 56px;
   }
 
-  svg {
+  img {
     margin-left: -0.25rem;
+
+    width: 30px;
+    aspect-ratio: 1 / 1;
   }
 
   ${({ theme: { colors } }) => `

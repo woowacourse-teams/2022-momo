@@ -1,7 +1,6 @@
 import { BackwardArrowSVG, BeanSVG, ForwardArrowSVG } from 'assets/svg';
 import useCategory from 'hooks/useCategory';
 import { CategoryType } from 'types/data';
-import { getCategoryIcon } from 'utils/category';
 
 import * as S from './index.styled';
 
@@ -32,7 +31,7 @@ function Category({
           </S.Button>
           <p>전체</p>
         </S.ButtonContainer>
-        {categories.map(({ id, name }) => {
+        {categories.map(({ id, name, imageUrl }) => {
           const isSelected = selectedCategoryId === id;
 
           return (
@@ -43,7 +42,7 @@ function Category({
               }
             >
               <S.Button type="button" className={isSelected ? 'select' : ''}>
-                {getCategoryIcon(id, svgSize)}
+                <img src={imageUrl} alt={`${name} category icon`} />
               </S.Button>
               <p>{name}</p>
             </S.ButtonContainer>
