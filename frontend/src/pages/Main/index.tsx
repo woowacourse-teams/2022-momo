@@ -5,27 +5,27 @@ import { useNavigate } from 'react-router-dom';
 
 import { requestGroups } from 'apis/request/group';
 import ErrorBoundary from 'components/ErrorBoundary';
+import FilterSection from 'components/FilterSection';
 import TopButton from 'components/TopButton';
 import { QUERY_KEY } from 'constants/key';
 import { BROWSER_PATH } from 'constants/path';
 import useMount from 'hooks/useMount';
 import { CategoryType, GroupList } from 'types/data';
 
-import FilterSection from './FilterSection';
 import * as S from './index.styled';
 import WholeGroups from './WholeGroups';
 
 const invalidCategoryId = -1;
 
 function Main() {
+  const [pageNumber, setPageNumber] = useState(0);
   const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
     useState(invalidCategoryId);
 
   const [groups, setGroups] = useState<GroupList['groups']>([]);
-  const [pageNumber, setPageNumber] = useState(0);
-  const { isFetching, data, refetch } = useQuery(
+  const { isFetching, dataUpdatedAt, data, refetch } = useQuery(
     QUERY_KEY.GROUP_SUMMARIES,
     requestGroups(pageNumber, isExcludeFinished, keyword, selectedCategoryId),
     {
@@ -48,20 +48,20 @@ function Main() {
   useEffect(() => {
     if (!data) return;
 
-    const { pageNumber, hasNextPage, groups } = data;
+    const { pageNumber, hasNextPage, groups: newGroups } = data;
 
     if (hasNextPage) {
       setPageNumber(pageNumber + 1);
     }
 
-    if (pageNumber === 0) {
-      setGroups(groups);
+    if (pageNumber <= 0) {
+      setGroups(newGroups);
       return;
     }
 
-    setGroups(prevState => [...prevState, ...groups]);
+    setGroups(prevState => [...prevState, ...newGroups]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching]);
+  }, [dataUpdatedAt]);
 
   const toggleIsExcludeFinished = async () => {
     await setIsExcludeFinished(prevState => !prevState);

@@ -16,7 +16,7 @@ import Mobile from './versions/Mobile';
 function Detail() {
   const { id } = useParams();
 
-  const { data } = useQuery(QUERY_KEY.GROUP_DETAILS, () =>
+  const { data } = useQuery(`${QUERY_KEY.GROUP_DETAILS}/${id}`, () =>
     requestGroupDetail(Number(id)),
   );
   const { data: participants } = useQuery<GroupParticipants>(
