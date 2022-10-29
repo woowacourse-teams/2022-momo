@@ -18,4 +18,7 @@ public interface ParticipantRepository extends Repository<Participant, Long> {
     @Modifying
     @Query("delete from Participant p where p.member.id = :memberId and p.group in (:groups)")
     void deleteAllByMemberIdInGroups(@Param("memberId") Long memberId, @Param("groups") List<Group> groups);
+
+    @Query("select distinct p.group.id from Participant p where p.member.id = :memberId")
+    List<Long> findGroupIdWhichParticipated(@Param("memberId") Long memberId);
 }
