@@ -27,7 +27,7 @@ const ImageBox = styled.div`
         &:nth-of-type(2) {
           top: 25%;
           right: calc(40% - 120px);
-          
+
           animation-delay: 0.3s;
         }
 
@@ -40,7 +40,7 @@ const ImageBox = styled.div`
         }
       }
     }
-  
+
     @media only screen and (min-width: ${breakpoints.sm}px) and (max-width: ${breakpoints.md}px) {
       flex-direction: column;
 
@@ -110,11 +110,11 @@ const ImageBox = styled.div`
         &:first-of-type {
           margin-right: -30rem;
         }
-    
+
         &:nth-of-type(2) {
           animation-delay: 0.3s;
         }
-    
+
         &:last-of-type {
           margin-left: -30rem;
           animation-delay: 0.6s;
