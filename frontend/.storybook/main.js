@@ -11,6 +11,11 @@ module.exports = {
   core: {
     builder: 'webpack5',
   },
+  staticDirs: ['../public'],
+  env: config => ({
+    ...config,
+    BASE_URL: '.',
+  }),
   webpackFinal: async config => {
     config.module.rules = config.module.rules.map(rule => {
       if (!rule.test.test('.svg')) {
