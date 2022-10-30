@@ -67,14 +67,7 @@ export interface GroupList {
 export interface GroupSummary
   extends Pick<
     GroupDetailData,
-    | 'name'
-    | 'host'
-    | 'categoryId'
-    | 'deadline'
-    | 'finished'
-    | 'capacity'
-    | 'like'
-    | 'imageUrl'
+    'name' | 'host' | 'deadline' | 'finished' | 'capacity' | 'like' | 'imageUrl'
   > {
   id: number;
   numOfParticipant: number;
