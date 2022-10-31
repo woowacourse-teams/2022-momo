@@ -10,7 +10,8 @@
     "build:prod": "webpack --config ./webpack/webpack.production.js",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=0df509f56570"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,16 @@
   },
   "keywords": [],
   "contributors": [
-    "usage <kyr9389@naver.com> (https://github.com/usageness/)",
-    "halee <lah1203@naver.com> (https://github.com/LAH1203/)"
+    {
+      "name": "usage",
+      "email": "kyr9389@naver.com",
+      "url": "https://github.com/usageness/"
+    },
+    {
+      "name": "halee",
+      "email": "lah1203@naver.com",
+      "url": "https://github.com/LAH1203/"
+    }
   ],
   "license": "ISC",
   "dependencies": {
@@ -54,6 +63,7 @@
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
+    "chromatic": "^6.11.2",
     "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "dotenv": "^16.0.1",
@@ -79,5 +89,11 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/woowacourse-teams/2022-momo/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/woowacourse-teams/2022-momo#readme",
+  "_id": "2022-momo-frontend@2.1.0"
 }

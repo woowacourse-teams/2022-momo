@@ -275,19 +275,64 @@ const groupHandler = [
   }),
 
   // 모임 수정
-  rest.put(`${apiURL}/:groupId`, (req, res, ctx) => {
-    const { groupId } = req.params;
+  rest.put(`${apiURL}/:id`, (req, res, ctx) => {
+    const { id } = req.params;
 
-    if (!groupId) return res(ctx.status(400));
+    if (!id) return res(ctx.status(400));
+
+    return res(ctx.status(200));
+  }),
+
+  // 모임 조기마감
+  rest.post(`${apiURL}/:id/close`, (req, res, ctx) => {
+    const { id } = req.params;
+
+    if (!id) return res(ctx.status(400));
 
     return res(ctx.status(200));
   }),
 
   // 모임 삭제
-  rest.delete(`${apiURL}/:groupId`, (req, res, ctx) => {
-    const { groupId } = req.params;
+  rest.delete(`${apiURL}/:id`, (req, res, ctx) => {
+    const { id } = req.params;
 
-    if (!groupId) return res(ctx.status(400));
+    if (!id) return res(ctx.status(400));
+
+    return res(ctx.status(204));
+  }),
+
+  // 모임 찜하기
+  rest.post(`${apiURL}/:id/like`, (req, res, ctx) => {
+    const { id } = req.params;
+
+    if (!id) return res(ctx.status(400));
+
+    return res(ctx.status(200));
+  }),
+
+  // 모임 찜 취소
+  rest.delete(`${apiURL}/:id/like`, (req, res, ctx) => {
+    const { id } = req.params;
+
+    if (!id) return res(ctx.status(400));
+
+    return res(ctx.status(200));
+  }),
+
+  // 모임 썸네일 변경
+  rest.post(`${apiURL}/:id/thumbnail`, (req, res, ctx) => {
+    const { id } = req.params;
+
+    if (!id) return res(ctx.status(400));
+
+    return res(ctx.status(201));
+  }),
+
+  // 모임 썸네일 초기화
+  rest.delete(`${apiURL}/:id/thumbnail`, (req, res, ctx) => {
+    const { id } = req.params;
+
+    if (!id) return res(ctx.status(400));
 
     return res(ctx.status(204));
   }),

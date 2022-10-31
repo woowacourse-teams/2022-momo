@@ -10,13 +10,6 @@ import GlobalStyle from 'styles/global';
 
 initialize();
 
-if (process.env.NODE_ENV === 'development') {
-  const { worker } = require('mocks/browser');
-  worker.start({
-    onUnhandledRequest: 'bypass',
-  });
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -50,3 +43,10 @@ export const parameters = {
     },
   },
 };
+
+if (typeof global.process === 'undefined') {
+  const { worker } = require('../src/mocks/browser');
+  worker.start({
+    onUnhandledRequest: 'bypass',
+  });
+}

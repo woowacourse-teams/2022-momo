@@ -14,9 +14,9 @@ module.exports = {
   staticDirs: ['../public'],
   env: config => ({
     ...config,
-    BASE_URL: '.',
+    BASE_URL: '',
   }),
-  webpackFinal: async config => {
+  webpackFinal: config => {
     config.module.rules = config.module.rules.map(rule => {
       if (!rule.test.test('.svg')) {
         return rule;
