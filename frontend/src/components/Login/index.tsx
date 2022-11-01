@@ -17,7 +17,7 @@ import { prevLocationProvider } from 'utils/location';
 
 import * as S from './index.styled';
 
-function Login() {
+function Login(): JSX.Element {
   const { setAuth, setLogin } = useAuth();
 
   const userIdRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,7 @@ function Login() {
 
   const location = useLocation();
 
-  const login = (e: React.FormEvent<HTMLFormElement>) => {
+  const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (!userIdRef.current || !passwordRef.current) return;
@@ -55,7 +55,7 @@ function Login() {
       });
   };
 
-  const googleLogin = () => {
+  const googleLogin = (): void => {
     requestGoogleOauthToken()
       .then(oauthLink => {
         prevLocationProvider.set(location.pathname);

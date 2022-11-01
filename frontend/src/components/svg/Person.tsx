@@ -2,7 +2,7 @@ interface PersonSVGProps {
   width: number;
 }
 
-function PersonSVG({ width }: PersonSVGProps) {
+function PersonSVG({ width }: PersonSVGProps): JSX.Element {
   return (
     <svg
       width={width}

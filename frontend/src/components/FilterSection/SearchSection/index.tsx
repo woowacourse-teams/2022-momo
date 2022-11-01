@@ -5,7 +5,7 @@ interface SearchSectionProps {
   search: (keyword: string) => void;
 }
 
-function SearchSection({ search }: SearchSectionProps) {
+function SearchSection({ search }: SearchSectionProps): JSX.Element {
   return (
     <S.Wrapper>
       <SearchForm search={search} />

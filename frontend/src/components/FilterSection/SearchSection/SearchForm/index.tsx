@@ -23,7 +23,7 @@ interface SearchFormProps {
   search: (keyword: string) => void;
 }
 
-function SearchForm({ search }: SearchFormProps) {
+function SearchForm({ search }: SearchFormProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const searchWithPreventSubmitEvent = (e: React.FormEvent) => {

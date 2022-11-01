@@ -2,7 +2,7 @@ import { Spinner } from 'components/Animation';
 
 import * as S from './index.styled';
 
-function Loading() {
+function Loading(): JSX.Element {
   return (
     <S.Wrapper>
       <Spinner />

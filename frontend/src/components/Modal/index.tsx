@@ -12,7 +12,7 @@ interface ModalProps {
 
 const modalAnimationTime = 150;
 
-function Modal({ modalState, children }: ModalProps) {
+function Modal({ modalState, children }: ModalProps): JSX.Element {
   const { setOffModal } = useModal();
   const { isClosing, close } = useClosingState(modalAnimationTime, setOffModal);
 

@@ -1,7 +1,7 @@
 import * as S from './index.styled';
 
-function CategoryFallback() {
-  const refreshPage = () => {
+function CategoryFallback(): JSX.Element {
+  const refreshPage = (): void => {
     window.location.reload();
   };
 

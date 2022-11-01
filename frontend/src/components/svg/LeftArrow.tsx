@@ -3,7 +3,7 @@ interface LeftArrowProps {
   color: string;
 }
 
-function LeftArrow({ width, color }: LeftArrowProps) {
+function LeftArrow({ width, color }: LeftArrowProps): JSX.Element {
   return (
     <svg
       width={width}

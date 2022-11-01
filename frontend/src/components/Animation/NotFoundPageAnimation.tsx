@@ -6,7 +6,7 @@ const style = {
   height: '40%',
 };
 
-function NotFoundPage() {
+function NotFoundPage(): JSX.Element {
   return <Lottie animationData={notFound} style={style} />;
 }
 

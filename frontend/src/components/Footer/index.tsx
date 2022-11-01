@@ -15,7 +15,7 @@ import * as S from './index.styled';
 
 const svgSize = 26;
 
-function Footer() {
+function Footer(): JSX.Element {
   const { isLogin } = useAuth();
 
   const { showLoginModal, showSignupModal } = useModal();

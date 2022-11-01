@@ -23,13 +23,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
     };
   }
 
-  componentDidCatch(error: Error) {
+  componentDidCatch(error: Error): void {
     this.setState({
       error,
     });
   }
 
-  render() {
+  render(): JSX.Element {
     if (!this.state.isError) {
       return <>{this.props.children}</>;
     }

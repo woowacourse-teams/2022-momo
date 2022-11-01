@@ -7,7 +7,7 @@ const style = {
   maxHeight: '5rem',
 };
 
-function Loading() {
+function Loading(): JSX.Element {
   return <Lottie animationData={loading} style={style} />;
 }
 

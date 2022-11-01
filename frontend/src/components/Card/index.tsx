@@ -27,7 +27,7 @@ function Card({
     like,
     imageUrl,
   },
-}: CardProps) {
+}: CardProps): JSX.Element {
   const svgSize = document.body.clientWidth > theme.breakpoints.md ? 30 : 25;
 
   return (

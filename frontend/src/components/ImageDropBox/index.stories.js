@@ -18,7 +18,6 @@ function Template(args) {
 
   useMount(() => {
     showThumbnailModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   return <ImageDropBox {...args} />;

@@ -25,7 +25,7 @@ function FilterSection({
   isExcludeFinished,
   toggleIsExcludeFinished,
   children,
-}: FilterSectionProps) {
+}: FilterSectionProps): JSX.Element {
   return (
     <S.Container>
       <S.ContentContainer>

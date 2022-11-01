@@ -13,11 +13,11 @@ interface PostcodeProps {
   completeFunc: (address: Address) => void;
 }
 
-function Postcode({ completeFunc }: PostcodeProps) {
+function Postcode({ completeFunc }: PostcodeProps): JSX.Element {
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal } = useModal();
 
-  const complete = (address: Address) => {
+  const complete = (address: Address): void => {
     completeFunc(address);
     setOffModal();
   };

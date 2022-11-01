@@ -6,7 +6,7 @@ interface NoResultProps {
   children: React.ReactNode;
 }
 
-function NoResult({ children }: NoResultProps) {
+function NoResult({ children }: NoResultProps): JSX.Element {
   return (
     <S.NoResultContainer>
       <NoResultAnimation />
