@@ -1,4 +1,4 @@
-const preventBubbling = (e: React.MouseEvent<HTMLElement>) => {
+const preventBubbling = (e: React.MouseEvent<HTMLElement>): void => {
   e.stopPropagation();
 };
 

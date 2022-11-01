@@ -5,7 +5,7 @@ const oneMinute = oneSecond * 60;
 const oneHour = oneMinute * 60;
 const oneDay = oneHour * 24;
 
-const convertRemainTime = (deadline: string) => {
+const convertRemainTime = (deadline: string): string | null => {
   const deadlineDate = new Date(deadline);
   const now = new Date();
 
@@ -25,7 +25,9 @@ const convertRemainTime = (deadline: string) => {
   return `${secGap}초`;
 };
 
-const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
+const convertDeadlineToRemainTime = (
+  deadline: GroupDetailData['deadline'],
+): string => {
   const remainTime = convertRemainTime(deadline);
 
   if (!remainTime) return '마감 완료';
@@ -34,10 +36,13 @@ const convertDeadlineToRemainTime = (deadline: GroupDetailData['deadline']) => {
 };
 
 /**
- * 년, 월, 일 데이터를 ISO 8601 형식 문자열로 변환하는 함수입니다.
- * return 'YYYY-MM-DD'
+ * 년, 월, 일 데이터를 YYYY-MM-DD의 ISO 8601 형식 문자열로 변환하는 함수입니다.
  */
-const convertToISOString = (year: number, month: number, date: number) => {
+const convertToYYYYMMDD = (
+  year: number,
+  month: number,
+  date: number,
+): string => {
   return `${year}-${month.toString().padStart(2, '0')}-${date
     .toString()
     .padStart(2, '0')}`;
@@ -52,7 +57,7 @@ const getTimeInKorea = (time: Date = new Date()) => {
  * 현재 시간을 기준으로 인자 단위까지의 ISO 형식 문자열을 생성합니다.
  * @param {string} until - 'day': {YYYY-MM-DD} | 'min': {YYYY-MM-DDTHH:MM}
  */
-const getNewDateString = (until: 'day' | 'min') => {
+const getNewDateString = (until: 'day' | 'min'): string => {
   const timeInKorea = getTimeInKorea();
 
   switch (until) {
@@ -63,19 +68,19 @@ const getNewDateString = (until: 'day' | 'min') => {
   }
 };
 
-const resetDateToStartOfDay = (date: Date) => {
+const resetDateToStartOfDay = (date: Date): Date => {
   const resetDate = new Date(date);
   resetDate.setHours(0, 0, 0, 0);
   return resetDate;
 };
 
-const resetDateToEndOfDay = (date: Date) => {
+const resetDateToEndOfDay = (date: Date): Date => {
   const resetDate = new Date(date);
   resetDate.setHours(23, 59, 59, 999);
   return resetDate;
 };
 
-const parsedDurationDate = (duration: GroupDetailData['duration']) => {
+const parsedDurationDate = (duration: GroupDetailData['duration']): string => {
   const [startYear, startMonth, startDay] = duration.start.split('-');
   const parsedStartDate = `${startYear}년 ${startMonth}월 ${startDay}일`;
   const [endYear, endMonth, endDay] = duration.end.split('-');
@@ -99,13 +104,13 @@ const parsedDurationDate = (duration: GroupDetailData['duration']) => {
   return `${parsedStartDate} ~ ${endDay}일`;
 };
 
-const parsedTime = (time: string) => {
+const parsedTime = (time: string): string => {
   const [hour, minute] = time.split(':');
 
   return Number(minute) === 0 ? `${hour}시` : `${hour}시 ${minute}분`;
 };
 
-const parsedSchedule = (schedule: ScheduleType) => {
+const parsedSchedule = (schedule: ScheduleType): string => {
   const [year, month, date] = schedule.date.split('-');
   const startTime = parsedTime(schedule.startTime);
   const endTime = parsedTime(schedule.endTime);
@@ -113,7 +118,7 @@ const parsedSchedule = (schedule: ScheduleType) => {
   return `${year}년 ${month}월 ${date}일 ${startTime} ~ ${endTime}`;
 };
 
-const isToday = (year: number, month: number, date: number) => {
+const isToday = (year: number, month: number, date: number): boolean => {
   const today = new Date();
 
   return (
@@ -126,7 +131,7 @@ const isToday = (year: number, month: number, date: number) => {
 export {
   convertRemainTime,
   convertDeadlineToRemainTime,
-  convertToISOString,
+  convertToYYYYMMDD,
   getNewDateString,
   getTimeInKorea,
   resetDateToStartOfDay,
