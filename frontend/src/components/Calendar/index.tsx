@@ -29,7 +29,7 @@ function Calendar({
   schedules,
   selectDate,
   selectedDate,
-}: CalendarProps) {
+}: CalendarProps): JSX.Element {
   const theme = useTheme();
 
   return (

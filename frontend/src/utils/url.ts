@@ -2,7 +2,7 @@ interface QueryParams {
   [key: string]: unknown;
 }
 
-const makeUrl = (baseUrl: string, queryParams: QueryParams) => {
+const makeUrl = (baseUrl: string, queryParams: QueryParams): string => {
   const queries = Object.keys(queryParams)
     .map(queryKey => {
       const value = queryParams[queryKey];

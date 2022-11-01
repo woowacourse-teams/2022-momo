@@ -14,7 +14,7 @@ function Calendar({
   schedules,
   selectDate,
   selectedDate,
-}: CalendarProps) {
+}: CalendarProps): JSX.Element {
   const { year, month, goToPrevMonth, goToNextMonth } = useDate();
 
   return (

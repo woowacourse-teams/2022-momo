@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { GroupDetailData } from 'types/data';
 import { GeocoderResult, GeocoderStatus } from 'types/kakaomap';
 
-const useKakaoMap = (location: GroupDetailData['location']) => {
+const useKakaoMap = (location: GroupDetailData['location']): void => {
   useEffect(() => {
-    const getMap = () => {
+    const getMap = (): void => {
       const { kakao } = window;
 
       const options = {
@@ -25,7 +25,7 @@ const useKakaoMap = (location: GroupDetailData['location']) => {
         // 주소로 좌표 검색
         geocoder.addressSearch(
           location.address,
-          function (result: GeocoderResult, status: GeocoderStatus) {
+          function (result: GeocoderResult, status: GeocoderStatus): void {
             if (status === kakao.maps.services.Status.OK) {
               const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 

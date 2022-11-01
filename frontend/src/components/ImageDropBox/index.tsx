@@ -18,7 +18,7 @@ import { GroupSummary } from 'types/data';
 
 import * as S from './index.styled';
 
-function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
+function ImageDropBox({ id }: Pick<GroupSummary, 'id'>): JSX.Element {
   const [file, setFile] = useState<File | null>();
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -29,7 +29,7 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
 
   const queryClient = useQueryClient();
 
-  const updateFile = (newFile: File) => {
+  const updateFile = (newFile: File): void => {
     if (
       newFile.type !== 'image/png' &&
       newFile.type !== 'image/jpg' &&
@@ -42,21 +42,21 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
     setFile(newFile);
   };
 
-  const dragOverOnLabel = (e: React.DragEvent<HTMLLabelElement>) => {
+  const dragOverOnLabel = (e: React.DragEvent<HTMLLabelElement>): void => {
     e.preventDefault();
     e.stopPropagation();
 
     setIsDragOver(true);
   };
 
-  const dragLeaveOnLabel = (e: React.DragEvent<HTMLLabelElement>) => {
+  const dragLeaveOnLabel = (e: React.DragEvent<HTMLLabelElement>): void => {
     e.preventDefault();
     e.stopPropagation();
 
     setIsDragOver(false);
   };
 
-  const dropFile = (e: React.DragEvent) => {
+  const dropFile = (e: React.DragEvent): void => {
     e.preventDefault();
 
     if (!e.dataTransfer?.files || e.dataTransfer?.files.length <= 0) return;
@@ -66,7 +66,7 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
     updateFile(newFile);
   };
 
-  const changeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (!e.target.files || e.target.files.length <= 0) return;
 
     const newFile = e.target.files[0];
@@ -74,7 +74,7 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
     updateFile(newFile);
   };
 
-  const editThumbnail = (e: React.FormEvent) => {
+  const editThumbnail = (e: React.FormEvent): void => {
     e.preventDefault();
 
     if (!file) {
@@ -110,7 +110,7 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>) {
       });
   };
 
-  const resetThumbnail = (e: React.FormEvent) => {
+  const resetThumbnail = (e: React.FormEvent): void => {
     e.preventDefault();
 
     if (!window.confirm(GUIDE_MESSAGE.DELETE.CONFIRM_THUMBNAIL_REQUEST)) return;

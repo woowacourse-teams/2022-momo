@@ -5,9 +5,10 @@ import * as S from '../index.styled';
 import SelectedDate from '../SelectedDate';
 import useCalendar from './hooks/useCalendar';
 
+type DayClassName = 'sat' | 'sun' | '';
 const days = ['일', '월', '화', '수', '목', '금', '토'];
 
-const dayClassNameGenerator = (day: string | number) => {
+const dayClassNameGenerator = (day: string | number): DayClassName => {
   switch (day) {
     case '토':
     case 6:
@@ -44,7 +45,7 @@ function Content({
     selectDate,
     selectedDate,
   },
-}: ContentProps) {
+}: ContentProps): JSX.Element {
   const {
     dates,
     prevDates,

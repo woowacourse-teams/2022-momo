@@ -12,7 +12,7 @@ interface SnackbarProps {
   children: string;
 }
 
-function Snackbar({ isError, children }: SnackbarProps) {
+function Snackbar({ isError, children }: SnackbarProps): JSX.Element {
   const { resetSnackbar } = useSnackbar();
   const { isClosing, close } = useClosingState(SNACKBAR_ANIMATION_TIME, () => {
     resetSnackbar();

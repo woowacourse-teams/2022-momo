@@ -16,13 +16,16 @@ import * as S from './index.styled';
 
 const dropdownAnimationTime = 300;
 
-function User() {
+function User(): JSX.Element {
   const { isLogin, user, resetAuth } = useAuth();
 
   const [isShownDropdown, setIsShownDropdown] = useState(false);
-  const { isClosing, close } = useClosingState(dropdownAnimationTime, () => {
-    setIsShownDropdown(false);
-  });
+  const { isClosing, close } = useClosingState(
+    dropdownAnimationTime,
+    (): void => {
+      setIsShownDropdown(false);
+    },
+  );
 
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
@@ -34,11 +37,11 @@ function User() {
     setIsShownDropdown(false);
   }, [pathname, isLogin]);
 
-  const navigateToLocation = (location: string) => () => {
+  const navigateToLocation = (location: string) => (): void => {
     navigate(location);
   };
 
-  const toggleDropdownState = () => {
+  const toggleDropdownState = (): void => {
     if (isShownDropdown) {
       close();
       return;
@@ -47,7 +50,7 @@ function User() {
     setIsShownDropdown(true);
   };
 
-  const logout = () => {
+  const logout = (): void => {
     if (!window.confirm(GUIDE_MESSAGE.AUTH.CONFIRM_LOGOUT)) return;
 
     requestLogout()

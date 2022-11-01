@@ -18,7 +18,7 @@ function Right({
   duration,
   schedules,
   participants,
-}: RightProps) {
+}: RightProps): JSX.Element {
   return (
     <S.Container>
       <Schedule duration={duration} schedules={schedules} />

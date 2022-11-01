@@ -5,7 +5,10 @@ interface ControlButtonProps {
   finishEditMode: () => void;
 }
 
-function ControlButton({ editGroup, finishEditMode }: ControlButtonProps) {
+function ControlButton({
+  editGroup,
+  finishEditMode,
+}: ControlButtonProps): JSX.Element {
   return (
     <S.Container>
       <S.EditButton type="button" onClick={editGroup}>

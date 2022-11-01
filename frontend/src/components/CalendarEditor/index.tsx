@@ -4,7 +4,7 @@ import { CalendarSVG, ClockSVG } from 'assets/svg';
 import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import useInput from 'hooks/useInput';
 import { CreateGroupData, ScheduleType } from 'types/data';
-import { convertToISOString } from 'utils/date';
+import { convertToYYYYMMDD } from 'utils/date';
 
 import Calendar from './Calendar';
 import * as S from './index.styled';
@@ -28,7 +28,7 @@ function CalendarEditor({
   useScheduleState,
   duration,
   pressEnterToNext = () => {},
-}: CalendarEditorProps) {
+}: CalendarEditorProps): JSX.Element {
   const { schedules, setSchedules, deleteSchedule } = useScheduleState();
 
   const [selectedDate, setSelectedDate] = useState('');
@@ -43,11 +43,11 @@ function CalendarEditor({
     dangerouslySetValue: dangerouslySetEndTime,
   } = useInput('');
 
-  const selectDate = (year: number, month: number, date: number) => {
-    setSelectedDate(convertToISOString(year, month, date));
+  const selectDate = (year: number, month: number, date: number): void => {
+    setSelectedDate(convertToYYYYMMDD(year, month, date));
   };
 
-  const addSchedule = () => {
+  const addSchedule = (): void => {
     if (startTime >= endTime) {
       alert(CLIENT_ERROR_MESSAGE.CREATE.SCHEDULE_TIME);
       return;
@@ -69,7 +69,7 @@ function CalendarEditor({
     dangerouslySetEndTime('');
   };
 
-  const deleteCurrentSchedule = () => {
+  const deleteCurrentSchedule = (): void => {
     const schedule = {
       date: selectedDate,
       startTime,
@@ -82,7 +82,7 @@ function CalendarEditor({
     dangerouslySetEndTime('');
   };
 
-  const getSchedule = (date: string) => {
+  const getSchedule = (date: string): ScheduleType | undefined => {
     return schedules.find(schedule => schedule.date === date);
   };
 

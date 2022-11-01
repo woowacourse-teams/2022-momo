@@ -11,7 +11,7 @@ interface PageProps {
   children: React.ReactNode;
 }
 
-function Page({ children }: PageProps) {
+function Page({ children }: PageProps): JSX.Element {
   const { type, isShowing, message } = useRecoilValue(snackbarState);
 
   return (

@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { BROWSER_PATH } from 'constants/path';
 import useAuth from 'hooks/useAuth';
 
-function PrivateWrapper() {
+function PrivateWrapper(): JSX.Element {
   const { isLogin, accessToken } = useAuth();
 
   const navigate = useNavigate();

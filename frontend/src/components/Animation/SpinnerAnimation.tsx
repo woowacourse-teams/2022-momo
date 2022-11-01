@@ -6,7 +6,7 @@ const style = {
   height: 300,
 };
 
-function Spinner() {
+function Spinner(): JSX.Element {
   return <Lottie animationData={spinner} style={style} />;
 }
 

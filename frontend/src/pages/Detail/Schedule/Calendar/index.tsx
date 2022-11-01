@@ -8,7 +8,7 @@ interface CalendarProps {
   schedules: GroupDetailData['schedules'];
 }
 
-function Calendar({ schedules }: CalendarProps) {
+function Calendar({ schedules }: CalendarProps): JSX.Element {
   const { year, month, goToPrevMonth, goToNextMonth } = useDate();
 
   return (

@@ -6,7 +6,7 @@ import theme from 'styles/theme';
 
 import * as S from './index.styled';
 
-function TopButton() {
+function TopButton(): JSX.Element {
   const svgSize = document.body.clientWidth > theme.breakpoints.md ? 30 : 25;
 
   const throttledScrollToTop = useThrottle(() => {

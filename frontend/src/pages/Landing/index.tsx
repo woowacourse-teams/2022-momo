@@ -3,7 +3,7 @@ import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Divider } from './@shared/index.styled';
 import { Step1, Step2, Step3, Step4, Step5 } from './Steps';
 
-function Landing() {
+function Landing(): JSX.Element {
   const [showedPageNumbers, setShowedPageNumbers] = useState<number[]>([1]);
 
   const target1 = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ function Landing() {
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
-    const onIntersection = (targetIndex: number) => () => {
+    const onIntersection = (targetIndex: number) => (): void => {
       const currentDisplayedSteps = [...Array(targetIndex + 1)].map(
         (_, i) => i + 1,
       );

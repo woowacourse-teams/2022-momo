@@ -1,5 +1,5 @@
-import { GroupDetailData } from 'types/data';
-import { convertToISOString } from 'utils/date';
+import { GroupDetailData, ScheduleType } from 'types/data';
+import { convertToYYYYMMDD } from 'utils/date';
 
 interface CalendarProps {
   year: number;
@@ -10,6 +10,16 @@ interface CalendarProps {
   selectedDate?: string;
 }
 
+interface UseCalendarReturnType {
+  dates: number[];
+  prevDates: number[];
+  nextDates: number[];
+  getSchedule: (date: number) => ScheduleType | undefined;
+  isNotInDuration: (date: number) => boolean;
+  isSelectedDate: (date: number) => boolean;
+  pickDate: (date: number) => () => void;
+}
+
 const useCalendar = ({
   year,
   month,
@@ -17,7 +27,7 @@ const useCalendar = ({
   schedules,
   selectDate,
   selectedDate,
-}: CalendarProps) => {
+}: CalendarProps): UseCalendarReturnType => {
   // 이번 달
   const lastDate = new Date(year, month, 0).getDate();
   const dates = [...Array(lastDate)].map((_, idx) => idx + 1);
@@ -38,7 +48,7 @@ const useCalendar = ({
 
   const getSchedule = (date: number) => {
     return schedules.find(
-      schedule => schedule.date === convertToISOString(year, month, date),
+      schedule => schedule.date === convertToYYYYMMDD(year, month, date),
     );
   };
 
@@ -47,13 +57,13 @@ const useCalendar = ({
       return false;
     }
 
-    const thisDate = convertToISOString(year, month, date);
+    const thisDate = convertToYYYYMMDD(year, month, date);
 
     return thisDate < duration.start || thisDate > duration.end;
   };
 
   const isSelectedDate = (date: number) => {
-    return selectedDate === convertToISOString(year, month, date);
+    return selectedDate === convertToYYYYMMDD(year, month, date);
   };
 
   const pickDate = (date: number) => () => {

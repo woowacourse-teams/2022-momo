@@ -26,12 +26,12 @@ function Step1({
   pressEnterToNext,
   useSelectedCategoryState,
   gotoNextPage,
-}: Step1Props) {
+}: Step1Props): JSX.Element {
   const { name, setName } = useNameState();
   const { selectedCategory, setSelectedCategory } = useSelectedCategoryState();
   const categories = useCategory();
 
-  const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const categoryId = Number(e.target.value);
 
     setSelectedCategory({

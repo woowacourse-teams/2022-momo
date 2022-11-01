@@ -15,7 +15,7 @@ import * as S from './index.styled';
 import Inputs from './Inputs';
 import LiveBean from './LiveBean';
 
-function Info() {
+function Info(): JSX.Element {
   const loginInfo = useRecoilValue(loginState);
 
   const { value: name, setValue: setName } = useInput(
@@ -38,25 +38,26 @@ function Info() {
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
-  const resetPassword = () => {
+  const resetPassword = (): void => {
     dangerouslySetOldPassword('');
     dangerouslySetNewPassword('');
   };
 
-  const editPassword = (oldPassword: string, newPassword: string) => () => {
-    requestChangePassword(oldPassword, newPassword)
-      .then(() => {
-        setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
-        setIsPasswordEditable(false);
-        resetPassword();
-      })
-      .catch(error => {
-        if (!error) {
-          alert(CLIENT_ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
-        }
-        handleError(error);
-      });
-  };
+  const editPassword =
+    (oldPassword: string, newPassword: string) => (): void => {
+      requestChangePassword(oldPassword, newPassword)
+        .then(() => {
+          setMessage(GUIDE_MESSAGE.MEMBER.SUCCESS_PASSWORD_REQUEST);
+          setIsPasswordEditable(false);
+          resetPassword();
+        })
+        .catch(error => {
+          if (!error) {
+            alert(CLIENT_ERROR_MESSAGE.MEMBER.FAILURE_PASSWORD_REQUEST);
+          }
+          handleError(error);
+        });
+    };
 
   return (
     <S.Container>

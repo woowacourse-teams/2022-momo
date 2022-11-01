@@ -5,7 +5,7 @@ interface PortalProps {
   children: React.ReactNode;
 }
 
-function Portal({ to, children }: PortalProps) {
+function Portal({ to, children }: PortalProps): React.ReactPortal {
   const modalElement = document.getElementById('modal') as HTMLElement;
   const snackbarElement = document.getElementById('snackbar') as HTMLElement;
 

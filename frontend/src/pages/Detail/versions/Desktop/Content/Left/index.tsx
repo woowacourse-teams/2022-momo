@@ -7,7 +7,7 @@ import * as S from './index.styled';
 function Left({
   location,
   description,
-}: Pick<GroupDetailData, 'location' | 'description'>) {
+}: Pick<GroupDetailData, 'location' | 'description'>): JSX.Element {
   return (
     <S.Container>
       <Description type="detail">{description}</Description>

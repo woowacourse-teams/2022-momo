@@ -23,7 +23,12 @@ interface CardListProps {
   groups: GroupList['groups'];
 }
 
-function CardList({ isFetching, data, refetch, groups }: CardListProps) {
+function CardList({
+  isFetching,
+  data,
+  refetch,
+  groups,
+}: CardListProps): JSX.Element {
   const target = useRef<HTMLDivElement>(null);
 
   useInfiniteScroll({ target, isFetching, data, refetch, groups });

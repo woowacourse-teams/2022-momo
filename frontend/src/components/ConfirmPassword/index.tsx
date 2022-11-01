@@ -16,11 +16,11 @@ function ConfirmPassword({
   confirmPassword,
   setConfirmPassword,
   editPassword,
-}: ConfirmPasswordProps) {
+}: ConfirmPasswordProps): JSX.Element {
   const modalFlag = useRecoilValue(modalState);
   const { setOffModal } = useModal();
 
-  const handleEditPassword = () => {
+  const handleEditPassword = (): void => {
     editPassword();
     setOffModal();
   };

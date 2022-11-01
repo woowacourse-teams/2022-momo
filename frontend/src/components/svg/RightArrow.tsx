@@ -3,7 +3,7 @@ interface RightArrowProps {
   color: string;
 }
 
-function RightArrow({ width, color }: RightArrowProps) {
+function RightArrow({ width, color }: RightArrowProps): JSX.Element {
   return (
     <svg
       width={width}

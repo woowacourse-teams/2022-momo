@@ -19,7 +19,7 @@ import {
   isValidSignupFormData,
 } from './validate';
 
-function Signup() {
+function Signup(): JSX.Element {
   const modalFlag = useRecoilValue(modalState);
   const { showLoginModal } = useModal();
 
@@ -59,7 +59,7 @@ function Signup() {
     setIsValidName(name.length === 0 || checkValidName(name));
   }, [name]);
 
-  const resetValues = () => {
+  const resetValues = (): void => {
     if (!idRef.current) return;
 
     idRef.current.value = '';
@@ -68,7 +68,7 @@ function Signup() {
     dangerouslySetConfirmPassword('');
   };
 
-  const signup = (e: React.FormEvent<HTMLFormElement>) => {
+  const signup = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (!idRef.current) {

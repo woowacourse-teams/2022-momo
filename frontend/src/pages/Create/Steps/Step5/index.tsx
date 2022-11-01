@@ -9,8 +9,9 @@ interface Step5Props {
   useDescriptionState: CreateStateReturnValues['useDescriptionState'];
 }
 
-function Step5({ useDescriptionState }: Step5Props) {
+function Step5({ useDescriptionState }: Step5Props): JSX.Element {
   const { description, setDescription } = useDescriptionState();
+
   return (
     <Container>
       <SectionContainer>

@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
-const useHover = () => {
+interface UseHoverReturnType {
+  isHover: boolean;
+  changeHoverState: (isHover: boolean) => () => void;
+}
+
+const useHover = (): UseHoverReturnType => {
   const [isHover, setIsHover] = useState(false);
 
-  const changeHoverState = (isHover: boolean) => () => {
+  const changeHoverState = (isHover: boolean) => (): void => {
     setIsHover(isHover);
   };
 

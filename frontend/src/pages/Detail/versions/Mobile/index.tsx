@@ -17,7 +17,7 @@ interface MobileProps {
   participants: GroupParticipants;
 }
 
-function Mobile({ id, data, participants }: MobileProps) {
+function Mobile({ id, data, participants }: MobileProps): JSX.Element {
   const { user } = useRecoilValue(loginState);
 
   const { showThumbnailModal } = useModal();

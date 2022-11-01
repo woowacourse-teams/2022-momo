@@ -7,7 +7,7 @@ interface MapProps {
   location: GroupDetailData['location'];
 }
 
-function Map({ location }: MapProps) {
+function Map({ location }: MapProps): JSX.Element {
   useKakaoMap(location);
 
   return (

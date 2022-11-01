@@ -24,7 +24,7 @@ interface InfoButtonsProps {
   };
 }
 
-function Buttons({ name, password }: InfoButtonsProps) {
+function Buttons({ name, password }: InfoButtonsProps): JSX.Element {
   const [loginInfo, setLoginInfo] = useRecoilState(loginState);
 
   const setModalFlag = useSetRecoilState(modalState);

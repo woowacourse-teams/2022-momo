@@ -4,7 +4,7 @@ import { BeanSVG } from 'assets/svg';
 
 import * as S from './index.styled';
 
-function LiveBean() {
+function LiveBean(): JSX.Element {
   return (
     <S.Box>
       <S.LiveBean className="reverse">

@@ -32,6 +32,7 @@ describe('필수 값과 선택 값들을 넣어 모임을 생성하도록 요청
   it('모임 이름을 입력하지 않은 경우 모임 생성 요청이 가능하지 않아야 한다.', () => {
     // given
     const fulfilledCreateGroupData = copyObject(exampleCreateGroupData);
+    // @ts-expect-error
     delete fulfilledCreateGroupData.name;
     const noNameCreateGroupData = fulfilledCreateGroupData;
 
@@ -73,7 +74,9 @@ describe('필수 값과 선택 값들을 넣어 모임을 생성하도록 요청
     const noEndDateCreateGroupData = copyObject(fulfilledCreateGroupData);
 
     // when
+    // @ts-expect-error
     delete noStartDateCreateGroupData.startDate;
+    // @ts-expect-error
     delete noEndDateCreateGroupData.endDate;
 
     // then
@@ -97,6 +100,7 @@ describe('필수 값과 선택 값들을 넣어 모임을 생성하도록 요청
     const noDeadlineCreateGroupData = copyObject(exampleCreateGroupData);
 
     // when
+    // @ts-expect-error
     delete noDeadlineCreateGroupData.deadline;
 
     // then

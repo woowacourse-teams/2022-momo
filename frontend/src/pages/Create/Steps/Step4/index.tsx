@@ -27,7 +27,7 @@ function Step4({
   useCapacityState,
   useLocationState,
   pressEnterToNext,
-}: Step4Props) {
+}: Step4Props): JSX.Element {
   const { capacity, setCapacity, blurCapacity } = useCapacityState();
   const { location, setLocationAddress, setLocationDetail } =
     useLocationState();

@@ -6,7 +6,11 @@ interface CheckboxProps {
   toggleChecked: () => void;
 }
 
-function Checkbox({ description, checked, toggleChecked }: CheckboxProps) {
+function Checkbox({
+  description,
+  checked,
+  toggleChecked,
+}: CheckboxProps): JSX.Element {
   return (
     <S.Label onClick={toggleChecked}>
       <S.Checkbox className={checked ? 'checked' : ''}>

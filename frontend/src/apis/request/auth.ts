@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios';
+
 import { axios, axiosWithAccessToken, axiosWithRefreshToken } from 'apis/axios';
 import { API_PATH, BROWSER_PATH } from 'constants/path';
 import { OAuth, Token, User } from 'types/user';
@@ -8,15 +10,15 @@ import { makeUrl } from 'utils/url';
  * @ref https://github.com/woowacourse-teams/2022-momo/wiki/%ED%95%A8%EC%88%98-%EC%9D%B4%EB%A6%84-%EA%B7%9C%EC%B9%99
  */
 
-const requestSignup = (userData: User) => {
+const requestSignup = (userData: User): Promise<AxiosResponse<null>> => {
   return axios.post(API_PATH.MEMBER.BASE, userData);
 };
 
-const requestLogin = (userData: Omit<User, 'name'>) => {
+const requestLogin = (userData: Omit<User, 'name'>): Promise<Token> => {
   return axios.post<Token>(API_PATH.AUTH.LOGIN, userData).then(res => res.data);
 };
 
-const requestGoogleOauthToken = () => {
+const requestGoogleOauthToken = (): Promise<OAuth['oauthLink']> => {
   const redirectUrl = `${window.location.origin}${BROWSER_PATH.OAUTH_GOOGLE}`;
 
   return axios
@@ -24,7 +26,7 @@ const requestGoogleOauthToken = () => {
     .then(res => res.data.oauthLink);
 };
 
-const requestGoogleLogin = (code: string) => {
+const requestGoogleLogin = (code: string): Promise<Token> => {
   const redirectUrl = `${window.location.origin}${BROWSER_PATH.OAUTH_GOOGLE}`;
 
   return axios
@@ -32,11 +34,11 @@ const requestGoogleLogin = (code: string) => {
     .then(res => res.data);
 };
 
-const requestLogout = () => {
+const requestLogout = (): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.post(API_PATH.AUTH.LOGOUT);
 };
 
-const requestReissueAccessToken = () => {
+const requestReissueAccessToken = (): Promise<Token['accessToken']> => {
   return axiosWithRefreshToken
     .post<Pick<Token, 'accessToken'>>(API_PATH.AUTH.REFRESH_ACCESS_TOKEN)
     .then(res => res.data.accessToken);

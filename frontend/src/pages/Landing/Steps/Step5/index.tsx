@@ -5,10 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { BeanSVG } from 'assets/svg';
 import { BROWSER_PATH } from 'constants/path';
 
-import { Container } from '../../@shared/index.styled';
 import * as S from './index.styled';
 
-function Step5({ show }: { show: boolean }) {
+function Step5({ show }: { show: boolean }): JSX.Element {
   const navigate = useNavigate();
 
   const goToMainPage = () => {

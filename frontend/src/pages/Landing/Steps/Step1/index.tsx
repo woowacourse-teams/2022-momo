@@ -23,7 +23,7 @@ import {
 } from '../../@shared/index.styled';
 import * as S from './index.styled';
 
-function Step1({ show }: { show: boolean }) {
+function Step1({ show }: { show: boolean }): JSX.Element {
   return (
     <Container>
       <HeadingContainer>

@@ -14,7 +14,7 @@ import { BROWSER_PATH } from 'constants/path';
 
 import PrivateWrapper from './PrivateWrapper';
 
-function Routes() {
+function Routes(): JSX.Element {
   return (
     <BrowserRoutes>
       <Route path={BROWSER_PATH.BASE} element={<Main />} />

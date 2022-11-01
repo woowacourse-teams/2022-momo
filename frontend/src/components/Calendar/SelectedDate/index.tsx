@@ -10,7 +10,7 @@ interface DateProps {
   pickDate: (date: number) => () => void;
 }
 
-function SelectedDate({ date, schedule, pickDate }: DateProps) {
+function SelectedDate({ date, schedule, pickDate }: DateProps): JSX.Element {
   const { isHover, changeHoverState } = useHover();
 
   const showTimeModal = changeHoverState(true);

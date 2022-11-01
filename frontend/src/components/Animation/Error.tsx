@@ -6,7 +6,7 @@ const style = {
   height: 300,
 };
 
-function Error() {
+function Error(): JSX.Element {
   return <Lottie animationData={error} style={style} />;
 }
 

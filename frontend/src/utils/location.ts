@@ -1,13 +1,13 @@
 import { GroupDetailData } from 'types/data';
 
 const prevLocationProvider = {
-  get: () => {
+  get: (): string => {
     return sessionStorage.getItem('location') ?? '';
   },
   set: (location: string) => {
     sessionStorage.setItem('location', location);
   },
-  remove: () => {
+  remove: (): void => {
     sessionStorage.removeItem('location');
   },
 };

@@ -15,7 +15,7 @@ import User from './User';
 
 const svgSize = 30;
 
-function Header() {
+function Header(): JSX.Element {
   const {
     isLogin,
     setLoginInfo,
@@ -42,7 +42,7 @@ function Header() {
         });
     };
 
-    const setUserInfo = () => {
+    const setUserInfo = (): void => {
       requestUserInfo()
         .then(userInfo => {
           setLoginInfo({

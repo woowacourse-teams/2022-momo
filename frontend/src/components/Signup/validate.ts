@@ -10,21 +10,21 @@ interface isValidSignupFormDataProp {
 
 const passwordRegExp = `^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{${MEMBER_RULE.PASSWORD.MIN_LENGTH},${MEMBER_RULE.PASSWORD.MAX_LENGTH}}$`;
 
-const checkValidId = (inputId: string) => {
+const checkValidId = (inputId: string): boolean => {
   return (
     inputId.length >= MEMBER_RULE.ID.MIN_LENGTH &&
     inputId.length <= MEMBER_RULE.ID.MAX_LENGTH
   );
 };
 
-const checkValidName = (name: string) => {
+const checkValidName = (name: string): boolean => {
   return (
     name.length >= MEMBER_RULE.NAME.MIN_LENGTH &&
     name.length <= MEMBER_RULE.NAME.MAX_LENGTH
   );
 };
 
-const checkValidPassword = (password: string) => {
+const checkValidPassword = (password: string): boolean => {
   const regex = new RegExp(passwordRegExp);
 
   return regex.test(password);
@@ -35,7 +35,7 @@ const isValidSignupFormData = ({
   isValidName,
   isValidPassword,
   isValidConfirmPassword,
-}: isValidSignupFormDataProp) => {
+}: isValidSignupFormDataProp): void => {
   if (!checkValidId(inputId)) {
     throw new Error(CLIENT_ERROR_MESSAGE.SIGNUP.INVALID_ID);
   }

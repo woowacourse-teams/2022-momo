@@ -21,7 +21,6 @@ function Template(args) {
 
   useMount(() => {
     showConfirmPasswordModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   return (

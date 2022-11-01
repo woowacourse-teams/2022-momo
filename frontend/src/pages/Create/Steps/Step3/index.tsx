@@ -11,7 +11,11 @@ interface Step3Props {
   pressEnterToNext: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function Step3({ useScheduleState, duration, pressEnterToNext }: Step3Props) {
+function Step3({
+  useScheduleState,
+  duration,
+  pressEnterToNext,
+}: Step3Props): JSX.Element {
   return (
     <Container>
       <SectionContainer>

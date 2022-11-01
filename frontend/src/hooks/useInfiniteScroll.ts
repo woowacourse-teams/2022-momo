@@ -24,14 +24,14 @@ const useInfiniteScroll = ({
   refetch,
   groups,
   data,
-}: useInfiniteScrollProps) => {
+}: useInfiniteScrollProps): void => {
   useEffect(() => {
     let observer: IntersectionObserver;
 
     const onIntersection = async (
       [entry]: IntersectionObserverEntry[],
       observer: IntersectionObserver,
-    ) => {
+    ): Promise<void> => {
       if (!entry.isIntersecting || isFetching || !data?.hasNextPage) return;
 
       refetch().then(() => {

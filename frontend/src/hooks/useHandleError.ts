@@ -3,10 +3,14 @@ import useSnackbar from 'hooks/useSnackbar';
 import { ServerErrorType } from 'types/data';
 import { ObjectKey } from 'types/utils';
 
-const useHandleError = () => {
+interface UseHandleErrorReturnType {
+  handleError: (error: ServerErrorType) => void;
+}
+
+const useHandleError = (): UseHandleErrorReturnType => {
   const { setMessage } = useSnackbar();
 
-  const handleError = (error: ServerErrorType) => {
+  const handleError = (error: ServerErrorType): void => {
     const { message } = error.response.data;
     const splitedMessage = message.split('_');
     const prefix = splitedMessage[0] as ObjectKey<typeof SERVER_ERROR_MESSAGE>;

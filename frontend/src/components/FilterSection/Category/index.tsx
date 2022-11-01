@@ -16,7 +16,7 @@ function Category({
   selectedCategoryId,
   selectCategory,
   resetSelectedCategoryId,
-}: CategoryProps) {
+}: CategoryProps): JSX.Element {
   const categories = useCategory();
 
   return (

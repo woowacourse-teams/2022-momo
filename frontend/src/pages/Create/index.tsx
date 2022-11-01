@@ -24,7 +24,7 @@ const totalPage = [
   { number: 5, content: '설명 입력', required: false },
 ];
 
-function Create() {
+function Create(): JSX.Element {
   const {
     useNameState,
     useSelectedCategoryState,
@@ -44,7 +44,7 @@ function Create() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
-  const gotoNextPage = () => {
+  const gotoNextPage = (): void => {
     if (page >= totalPage.length) {
       return;
     }
@@ -53,13 +53,13 @@ function Create() {
     window.scroll({ top: 0, behavior: 'smooth' });
   };
 
-  const pressEnterToNext = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const pressEnterToNext = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key !== 'Enter') return;
 
     gotoNextPage();
   };
 
-  const createNewGroup = () => {
+  const createNewGroup = (): void => {
     const groupData = getGroupState();
 
     try {
@@ -80,7 +80,7 @@ function Create() {
       });
   };
 
-  const getValidateState = (pageIndex: number) => {
+  const getValidateState = (pageIndex: number): 'invalid' | '' => {
     switch (pageIndex) {
       case 1:
         if (!isEmptyInput.name) return 'invalid';
@@ -98,7 +98,7 @@ function Create() {
     return '';
   };
 
-  const getSubmitAvailableState = () => {
+  const getSubmitAvailableState = (): boolean => {
     return (
       isEmptyInput.name &&
       isEmptyInput.startDate &&

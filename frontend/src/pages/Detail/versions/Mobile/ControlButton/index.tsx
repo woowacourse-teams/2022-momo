@@ -29,7 +29,7 @@ function ControlButton({
   capacity,
   finished,
   participants,
-}: ControlButtonProps) {
+}: ControlButtonProps): JSX.Element {
   const { isLogin, user } = useRecoilValue(loginState);
 
   const { setMessage } = useSnackbar();
@@ -38,14 +38,14 @@ function ControlButton({
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  const refetchGroup = () => {
+  const refetchGroup = (): void => {
     queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
   };
-  const refetchParticipants = () => {
+  const refetchParticipants = (): void => {
     queryClient.invalidateQueries(`${QUERY_KEY.GROUP_PARTICIPANTS}/${id}`);
   };
 
-  const closeGroup = () => {
+  const closeGroup = (): void => {
     if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CLOSE_REQUEST)) return;
 
     requestCloseGroup(id)
@@ -62,7 +62,7 @@ function ControlButton({
       });
   };
 
-  const deleteGroup = () => {
+  const deleteGroup = (): void => {
     if (!window.confirm(GUIDE_MESSAGE.DELETE.CONFIRM_GROUP_REQUEST)) return;
 
     requestDeleteGroup(id)
@@ -79,7 +79,7 @@ function ControlButton({
       });
   };
 
-  const joinGroup = () => {
+  const joinGroup = (): void => {
     if (!isLogin) {
       setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN, true);
 
@@ -99,7 +99,7 @@ function ControlButton({
       });
   };
 
-  const exitGroup = () => {
+  const exitGroup = (): void => {
     if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_EXIT_REQUEST)) return;
 
     requestExitGroup(id)

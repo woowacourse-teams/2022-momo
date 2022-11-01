@@ -6,7 +6,7 @@ const style = {
   width: '100%',
 };
 
-function NoResult() {
+function NoResult(): JSX.Element {
   return <Lottie animationData={noResult} style={style} />;
 }
 

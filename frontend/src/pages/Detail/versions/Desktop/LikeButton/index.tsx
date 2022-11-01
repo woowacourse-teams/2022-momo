@@ -21,18 +21,18 @@ interface LikeButtonProps {
   id: number;
 }
 
-function LikeButton({ like, id }: LikeButtonProps) {
+function LikeButton({ like, id }: LikeButtonProps): JSX.Element {
   const { isLogin } = useAuth();
 
   const { setMessage } = useSnackbar();
   const { handleError } = useHandleError();
 
   const queryClient = useQueryClient();
-  const refetch = () => {
+  const refetch = (): void => {
     queryClient.invalidateQueries(QUERY_KEY.GROUP_DETAILS);
   };
 
-  const toggleLiked = () => {
+  const toggleLiked = (): void => {
     if (!isLogin) {
       setMessage(GUIDE_MESSAGE.AUTH.NEED_LOGIN, true);
       return;

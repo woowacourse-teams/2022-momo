@@ -2,7 +2,7 @@ import * as S from './index.styled';
 import Info from './Info';
 import Withdrawal from './Withdrawal';
 
-function MyInformation() {
+function MyInformation(): JSX.Element {
   return (
     <S.Container>
       <S.InfoSection>
