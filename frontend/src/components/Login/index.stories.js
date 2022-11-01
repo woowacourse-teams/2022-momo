@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-
 import Signup from 'components/Signup';
 import useModal from 'hooks/useModal';
+import useMount from 'hooks/useMount';
 
 import Login from '.';
 
@@ -18,10 +17,10 @@ export default story;
 function Template() {
   const { showLoginModal } = useModal();
 
-  useEffect(() => {
+  useMount(() => {
     showLoginModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <>

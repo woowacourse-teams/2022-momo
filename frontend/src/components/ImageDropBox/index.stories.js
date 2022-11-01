@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-
 import useModal from 'hooks/useModal';
+import useMount from 'hooks/useMount';
 
 import ImageDropBox from '.';
 
@@ -17,10 +16,10 @@ export default story;
 function Template(args) {
   const { showThumbnailModal } = useModal();
 
-  useEffect(() => {
+  useMount(() => {
     showThumbnailModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return <ImageDropBox {...args} />;
 }

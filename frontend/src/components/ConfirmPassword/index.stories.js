@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-
 import useInput from 'hooks/useInput';
 import useModal from 'hooks/useModal';
+import useMount from 'hooks/useMount';
 
 import ConfirmPassword from '.';
 
@@ -20,10 +19,10 @@ function Template(args) {
 
   const { value: confirmPassword, setValue: setConfirmPassword } = useInput('');
 
-  useEffect(() => {
+  useMount(() => {
     showConfirmPasswordModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <ConfirmPassword
