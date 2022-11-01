@@ -3,22 +3,24 @@ import { GROUP_RULE } from 'constants/rule';
 import { CreateGroupData } from 'types/data';
 import { resetDateToStartOfDay, resetDateToEndOfDay } from 'utils/date';
 
-const validateName = (name: CreateGroupData['name']) => () => {
+const validateName = (name: CreateGroupData['name']) => (): boolean => {
   return (
     name.length >= GROUP_RULE.NAME.MIN_LENGTH &&
     name.length <= GROUP_RULE.NAME.MAX_LENGTH
   );
 };
 
-const validateCapacity = (capacity: CreateGroupData['capacity']) => () => {
-  return (
-    !capacity ||
-    (capacity >= GROUP_RULE.CAPACITY.MIN && capacity <= GROUP_RULE.CAPACITY.MAX)
-  );
-};
+const validateCapacity =
+  (capacity: CreateGroupData['capacity']) => (): boolean => {
+    return (
+      !capacity ||
+      (capacity >= GROUP_RULE.CAPACITY.MIN &&
+        capacity <= GROUP_RULE.CAPACITY.MAX)
+    );
+  };
 
 const validateDurationDate =
-  (startDate: Date, endDate: Date, today: Date) => () => {
+  (startDate: Date, endDate: Date, today: Date) => (): boolean => {
     return startDate <= endDate && startDate >= resetDateToStartOfDay(today);
   };
 
@@ -58,7 +60,7 @@ const validateDeadlineDate =
     deadline: CreateGroupData['deadline'],
     schedules: CreateGroupData['schedules'],
   ) =>
-  () => {
+  (): boolean => {
     const parsedDeadline = new Date(deadline);
     const endOfStartDate = resetDateToEndOfDay(new Date(startDate));
 
@@ -68,14 +70,20 @@ const validateDeadlineDate =
     );
   };
 
-const validateLocation = (location: CreateGroupData['location']) => () => {
-  return location.address.length <= GROUP_RULE.LOCATION.MAX_LENGTH;
-};
+const validateLocation =
+  (location: CreateGroupData['location']) => (): boolean => {
+    return location.address.length <= GROUP_RULE.LOCATION.MAX_LENGTH;
+  };
 
 const validateDescription =
-  (description: CreateGroupData['description']) => () => {
+  (description: CreateGroupData['description']) => (): boolean => {
     return description.length <= GROUP_RULE.DESCRIPTION.MAX_LENGTH;
   };
+
+interface GenerateValidatorsReturnType {
+  validator: () => boolean;
+  errorMessage: string;
+}
 
 const generateValidators = ({
   name,
@@ -86,7 +94,7 @@ const generateValidators = ({
   deadline,
   location,
   description,
-}: CreateGroupData) => {
+}: CreateGroupData): GenerateValidatorsReturnType[] => {
   const startDateInMidnight = resetDateToStartOfDay(new Date(startDate));
   const endDateInMidnight = resetDateToEndOfDay(new Date(endDate));
   const todayInMidnight = new Date();
@@ -123,7 +131,7 @@ const generateValidators = ({
   ];
 };
 
-const validateGroupData = (props: CreateGroupData) => {
+const validateGroupData = (props: CreateGroupData): void => {
   const validators = generateValidators(props);
 
   validators.forEach(({ validator, errorMessage }) => {

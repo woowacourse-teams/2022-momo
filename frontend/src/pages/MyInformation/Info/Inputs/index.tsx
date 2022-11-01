@@ -17,7 +17,7 @@ interface InfoInputsProps {
   };
 }
 
-function Inputs({ name, password }: InfoInputsProps) {
+function Inputs({ name, password }: InfoInputsProps): JSX.Element {
   const loginInfo = useRecoilValue(loginState);
 
   return (

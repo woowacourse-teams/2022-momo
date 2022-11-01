@@ -12,7 +12,7 @@ import {
   RightHeadingWrapper,
 } from '../../@shared/index.styled';
 
-function Step3({ show }: { show: boolean }) {
+function Step3({ show }: { show: boolean }): JSX.Element {
   return (
     <Container>
       <HeadingContainer>

@@ -17,20 +17,20 @@ function Navigator({
   setPage,
   totalPage,
   getValidateState,
-}: NavigatorProps) {
+}: NavigatorProps): JSX.Element {
   const [isClosed, setIsClosed] = useState(true);
 
-  const changePage = (newPageNumber: number) => () => {
+  const changePage = (newPageNumber: number) => (): void => {
     setPage(newPageNumber);
     setIsClosed(true);
     window.scroll({ top: 0, behavior: 'smooth' });
   };
 
-  const changeCloseState = () => {
+  const changeCloseState = (): void => {
     setIsClosed(prevState => !prevState);
   };
 
-  const getPageContentBoxClassName = () => {
+  const getPageContentBoxClassName = (): string => {
     const currentStep = `step-${page}`;
     return isClosed ? `closed ${currentStep}` : '';
   };

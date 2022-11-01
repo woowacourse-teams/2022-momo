@@ -14,7 +14,7 @@ interface LocationProps {
   location: GroupDetailData['location'];
 }
 
-function Location({ location }: LocationProps) {
+function Location({ location }: LocationProps): JSX.Element {
   return (
     <>
       {location.address ? (

@@ -8,15 +8,15 @@ import * as S from './index.styled';
 
 const cutLine = 3;
 
-function List({ schedules }: Pick<GroupDetailData, 'schedules'>) {
+function List({ schedules }: Pick<GroupDetailData, 'schedules'>): JSX.Element {
   const previewingSchedules = schedules.slice(0, cutLine);
   const [showingSchedules, setShowingSchedules] = useState(previewingSchedules);
 
-  const showSomeSchedules = () => {
+  const showSomeSchedules = (): void => {
     setShowingSchedules(previewingSchedules);
   };
 
-  const showAllSchedules = () => {
+  const showAllSchedules = (): void => {
     setShowingSchedules(schedules);
   };
 

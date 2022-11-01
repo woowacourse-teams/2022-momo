@@ -2,7 +2,7 @@ import { NotFoundPage } from 'components/Animation';
 
 import * as S from './index.styled';
 
-function NotFound() {
+function NotFound(): JSX.Element {
   return (
     <S.Container>
       <NotFoundPage />

@@ -17,7 +17,7 @@ interface DesktopProps {
   participants: GroupParticipants;
 }
 
-function Desktop({ id, data, participants }: DesktopProps) {
+function Desktop({ id, data, participants }: DesktopProps): JSX.Element {
   const { user } = useRecoilValue(loginState);
 
   const { showThumbnailModal } = useModal();

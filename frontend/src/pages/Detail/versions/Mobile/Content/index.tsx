@@ -30,17 +30,17 @@ interface ContentProps {
   participants: GroupParticipants;
 }
 
-function Content({ id, data, participants }: ContentProps) {
+function Content({ id, data, participants }: ContentProps): JSX.Element {
   const { user } = useRecoilValue(loginState);
   const categories = useCategory();
 
   const [mode, setMode] = useState<'basic' | 'edit'>('basic');
 
-  const showEditMode = () => {
+  const showEditMode = (): void => {
     setMode('edit');
   };
 
-  const finishEditMode = () => {
+  const finishEditMode = (): void => {
     setMode('basic');
   };
 

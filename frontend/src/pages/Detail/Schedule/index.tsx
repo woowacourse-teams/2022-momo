@@ -13,10 +13,10 @@ type SelectedType = 'calendar' | 'list';
 function Schedule({
   duration,
   schedules,
-}: Pick<GroupDetailData, 'duration' | 'schedules'>) {
+}: Pick<GroupDetailData, 'duration' | 'schedules'>): JSX.Element {
   const [selected, setSelected] = useState<SelectedType>('list');
 
-  const changeSelected = (newSelected: SelectedType) => () => {
+  const changeSelected = (newSelected: SelectedType) => (): void => {
     setSelected(newSelected);
   };
 

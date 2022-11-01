@@ -26,7 +26,7 @@ function Step2({
   useDeadlineState,
   pressEnterToNext,
   getValidateState,
-}: Step2Props) {
+}: Step2Props): JSX.Element {
   const { startDate, setStartDate, endDate, setEndDate } = useDateState();
   const { deadline, setDeadline } = useDeadlineState();
 

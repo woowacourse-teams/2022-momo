@@ -30,7 +30,7 @@ const images = [
   },
 ];
 
-function Step2({ show }: { show: boolean }) {
+function Step2({ show }: { show: boolean }): JSX.Element {
   return (
     <Container>
       <HeadingContainer>

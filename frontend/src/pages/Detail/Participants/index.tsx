@@ -14,7 +14,11 @@ interface ParticipantsProps extends Pick<GroupDetailData, 'host' | 'capacity'> {
   participants: GroupParticipants;
 }
 
-function Participants({ host, capacity, participants }: ParticipantsProps) {
+function Participants({
+  host,
+  capacity,
+  participants,
+}: ParticipantsProps): JSX.Element {
   const participantsWithoutHost = participants.slice(1);
 
   const previewingParticipants = participantsWithoutHost.slice(0, cutLine);
@@ -26,11 +30,11 @@ function Participants({ host, capacity, participants }: ParticipantsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
 
-  const showSomeParticipants = () => {
+  const showSomeParticipants = (): void => {
     setShowingParticipants(previewingParticipants);
   };
 
-  const showAllParticipants = () => {
+  const showAllParticipants = (): void => {
     setShowingParticipants(participantsWithoutHost);
   };
 

@@ -23,7 +23,12 @@ interface WholeGroupsProps {
   groups: GroupList['groups'];
 }
 
-function WholeGroups({ isFetching, data, refetch, groups }: WholeGroupsProps) {
+function WholeGroups({
+  isFetching,
+  data,
+  refetch,
+  groups,
+}: WholeGroupsProps): JSX.Element {
   const target = useRef<HTMLDivElement>(null);
 
   useInfiniteScroll({ target, isFetching, data, refetch, groups });

@@ -19,7 +19,6 @@ function BasicTemplate() {
 
   useMount(() => {
     setLogin('basic', { userId: 'lah1203', name: '하리' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   return (
@@ -36,7 +35,6 @@ function OAuthTemplate() {
 
   useMount(() => {
     setLogin('oauth', { userId: 'lah1203', name: '하리' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   return (

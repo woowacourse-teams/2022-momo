@@ -13,7 +13,7 @@ import { GroupParticipants } from 'types/data';
 import Desktop from './versions/Desktop';
 import Mobile from './versions/Mobile';
 
-function Detail() {
+function Detail(): JSX.Element {
   const { id } = useParams();
 
   const { data } = useQuery(`${QUERY_KEY.GROUP_DETAILS}/${id}`, () =>

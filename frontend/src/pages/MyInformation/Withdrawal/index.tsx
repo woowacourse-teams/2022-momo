@@ -17,7 +17,7 @@ function Withdrawal() {
 
   const navigate = useNavigate();
 
-  const withdrawal = () => {
+  const withdrawal = (): void => {
     if (!window.confirm(GUIDE_MESSAGE.MEMBER.CONFIRM_WITHDRAWAL_REQUEST))
       return;
 

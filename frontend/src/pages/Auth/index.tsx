@@ -12,7 +12,7 @@ import { prevLocationProvider } from 'utils/location';
 
 import * as S from './index.styled';
 
-function Auth() {
+function Auth(): JSX.Element {
   const { setAuth, setLogin } = useAuth();
 
   const { setMessage } = useSnackbar();

@@ -27,7 +27,7 @@ const groupTypes: GroupType[] = [
 
 const invalidCategoryId = -1;
 
-function MyGroup() {
+function MyGroup(): JSX.Element {
   const [isExcludeFinished, setIsExcludeFinished] = useState(true);
   const [keyword, setKeyword] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] =
@@ -70,31 +70,33 @@ function MyGroup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataUpdatedAt]);
 
-  const changeSelectedGroupType = (newType: SelectableGroup) => async () => {
-    await setSelectedGroupType(newType);
-    await setPageNumber(0);
-    refetch();
-  };
+  const changeSelectedGroupType =
+    (newType: SelectableGroup) => async (): Promise<void> => {
+      await setSelectedGroupType(newType);
+      await setPageNumber(0);
+      refetch();
+    };
 
-  const toggleIsExcludeFinished = async () => {
+  const toggleIsExcludeFinished = async (): Promise<void> => {
     await setIsExcludeFinished(prevState => !prevState);
     await setPageNumber(0);
     refetch();
   };
 
-  const search = async (keyword: string) => {
+  const search = async (keyword: string): Promise<void> => {
     await setKeyword(keyword);
     await setPageNumber(0);
     refetch();
   };
 
-  const selectCategory = (id: CategoryType['id']) => async () => {
-    await setSelectedCategoryId(id);
-    await setPageNumber(0);
-    refetch();
-  };
+  const selectCategory =
+    (id: CategoryType['id']) => async (): Promise<void> => {
+      await setSelectedCategoryId(id);
+      await setPageNumber(0);
+      refetch();
+    };
 
-  const resetSelectedCategoryId = () => {
+  const resetSelectedCategoryId = (): void => {
     selectCategory(invalidCategoryId)();
   };
 

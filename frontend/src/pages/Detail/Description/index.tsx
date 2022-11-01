@@ -5,7 +5,7 @@ interface DescriptionProps {
   children?: React.ReactNode;
 }
 
-function Description({ type, children }: DescriptionProps) {
+function Description({ type, children }: DescriptionProps): JSX.Element {
   return (
     <>
       {type === 'detail' ? (

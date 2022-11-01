@@ -26,7 +26,7 @@ interface EditModeProps {
   finishEditMode: () => void;
 }
 
-function EditMode({ id, data, finishEditMode }: EditModeProps) {
+function EditMode({ id, data, finishEditMode }: EditModeProps): JSX.Element {
   const categories = useCategory();
 
   const { showPostcodeModal } = useModal();
@@ -84,7 +84,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
     dangerouslySetDescription(data.description);
   });
 
-  const editGroup = () => {
+  const editGroup = (): void => {
     const groupData = getGroupState();
 
     try {
@@ -114,7 +114,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
       });
   };
 
-  const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const categoryId = Number(e.target.value);
 
     setSelectedCategory({
@@ -124,7 +124,8 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
   };
 
   const changeDuration =
-    (type: 'start' | 'end') => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (type: 'start' | 'end') =>
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
       if (!window.confirm(GUIDE_MESSAGE.GROUP.CONFIRM_CHANGE_DURATION)) return;
 
       dangerouslySetSchedules([]);
@@ -137,7 +138,7 @@ function EditMode({ id, data, finishEditMode }: EditModeProps) {
       setEndDate(e);
     };
 
-  const setLocation = (data: Address) => {
+  const setLocation = (data: Address): void => {
     setLocationAddress(data.address, data.buildingName, '');
   };
 

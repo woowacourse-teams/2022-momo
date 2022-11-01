@@ -35,7 +35,7 @@ function CreateSteps({
   getValidateState,
   duration,
   page,
-}: CreateStepsProp) {
+}: CreateStepsProp): JSX.Element {
   switch (page) {
     case 1:
       return (

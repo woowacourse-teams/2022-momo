@@ -12,7 +12,7 @@ import {
   Image,
 } from '../../@shared/index.styled';
 
-function Step4({ show }: { show: boolean }) {
+function Step4({ show }: { show: boolean }): JSX.Element {
   return (
     <Container>
       <HeadingContainer>
