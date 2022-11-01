@@ -58,6 +58,9 @@ export interface CreateGroupData
   selectedCategory: Omit<CategoryType, 'imageUrl'>;
 }
 
+export interface RequestCreateGroupData
+  extends Omit<GroupDetailData, 'host' | 'finished' | 'like' | 'imageUrl'> {}
+
 export interface GroupList {
   pageNumber: number;
   groups: GroupSummary[];

@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
