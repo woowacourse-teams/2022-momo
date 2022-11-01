@@ -1,13 +1,25 @@
 import { useEffect } from 'react';
 
 import { useQueryClient } from 'react-query';
-import { useResetRecoilState, useRecoilState } from 'recoil';
+import { useResetRecoilState, useRecoilState, SetterOrUpdater } from 'recoil';
 
 import { QUERY_KEY } from 'constants/key';
 import { accessTokenState, refreshTokenState, loginState } from 'store/states';
-import { LoginType, Token, UserProfile } from 'types/user';
+import { LoginState, LoginType, Token, UserProfile } from 'types/user';
 
-const useAuth = () => {
+interface UseAuthReturnType {
+  isLogin: boolean;
+  user: UserProfile | undefined;
+  setLoginInfo: SetterOrUpdater<LoginState>;
+  accessToken: string;
+  setAccessToken: SetterOrUpdater<string>;
+  refreshToken: string;
+  setAuth: ({ accessToken, refreshToken }: Token) => void;
+  resetAuth: () => void;
+  setLogin: (loginType: LoginType, userInfo: UserProfile) => void;
+}
+
+const useAuth = (): UseAuthReturnType => {
   const [{ isLogin, user }, setLoginInfo] = useRecoilState(loginState);
   const resetLoginInfo = useResetRecoilState(loginState);
 
@@ -22,12 +34,12 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
-  const setAuth = ({ accessToken, refreshToken }: Token) => {
+  const setAuth = ({ accessToken, refreshToken }: Token): void => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
   };
 
-  const setLogin = (loginType: LoginType, userInfo: UserProfile) => {
+  const setLogin = (loginType: LoginType, userInfo: UserProfile): void => {
     setLoginInfo({
       isLogin: true,
       loginType,
@@ -35,7 +47,7 @@ const useAuth = () => {
     });
   };
 
-  const resetAuth = () => {
+  const resetAuth = (): void => {
     resetLoginInfo();
 
     setAccessToken('');

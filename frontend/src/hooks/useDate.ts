@@ -1,11 +1,18 @@
 import { useState } from 'react';
 
-const useDate = () => {
+interface UseDateReturnType {
+  year: number;
+  month: number;
+  goToPrevMonth: () => void;
+  goToNextMonth: () => void;
+}
+
+const useDate = (): UseDateReturnType => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
 
-  const goToPrevMonth = () => {
+  const goToPrevMonth = (): void => {
     if (month <= 1) {
       setYear(prevState => prevState - 1);
       setMonth(12);
@@ -15,7 +22,7 @@ const useDate = () => {
     setMonth(prevState => prevState - 1);
   };
 
-  const goToNextMonth = () => {
+  const goToNextMonth = (): void => {
     if (month >= 12) {
       setYear(prevState => prevState + 1);
       setMonth(1);

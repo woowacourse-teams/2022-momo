@@ -2,30 +2,39 @@ import { useSetRecoilState } from 'recoil';
 
 import { modalState } from 'store/states';
 
-const useModal = () => {
+interface UseModalReturnType {
+  setOffModal: () => void;
+  showSignupModal: () => void;
+  showLoginModal: () => void;
+  showConfirmPasswordModal: () => void;
+  showPostcodeModal: () => void;
+  showThumbnailModal: () => void;
+}
+
+const useModal = (): UseModalReturnType => {
   const setModalFlag = useSetRecoilState(modalState);
 
-  const setOffModal = () => {
+  const setOffModal = (): void => {
     setModalFlag('off');
   };
 
-  const showSignupModal = () => {
+  const showSignupModal = (): void => {
     setModalFlag('signup');
   };
 
-  const showLoginModal = () => {
+  const showLoginModal = (): void => {
     setModalFlag('login');
   };
 
-  const showConfirmPasswordModal = () => {
+  const showConfirmPasswordModal = (): void => {
     setModalFlag('confirmPassword');
   };
 
-  const showPostcodeModal = () => {
+  const showPostcodeModal = (): void => {
     setModalFlag('postcode');
   };
 
-  const showThumbnailModal = () => {
+  const showThumbnailModal = (): void => {
     setModalFlag('thumbnail');
   };
 

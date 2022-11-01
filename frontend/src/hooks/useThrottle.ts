@@ -1,7 +1,7 @@
 const useThrottle = (func: Function, wait: number): (() => void) => {
   let waiting = false;
 
-  function throttledFunc() {
+  function throttledFunc(): void {
     if (waiting) return;
 
     // eslint-disable-next-line prefer-rest-params

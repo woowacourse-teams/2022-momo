@@ -133,11 +133,11 @@ const useCreateState = (): CreateStateReturnValues => {
 
   const changeSelectedCategory = (
     newSelectedCategory: CreateGroupData['selectedCategory'],
-  ) => {
+  ): void => {
     setSelectedCategory(newSelectedCategory);
   };
 
-  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeCapacity = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newCapacityString = e.target.value;
     if (newCapacityString === '') {
       setCapacity(0);
@@ -159,13 +159,13 @@ const useCreateState = (): CreateStateReturnValues => {
     setCapacity(newCapacity);
   };
 
-  const blurCapacity = (e: React.FocusEvent<HTMLInputElement>) => {
+  const blurCapacity = (e: React.FocusEvent<HTMLInputElement>): void => {
     const replacedCapacity = e.target.value.replace(/[^0-9]/g, '');
 
     setCapacity(Number(replacedCapacity));
   };
 
-  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeStartDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newDate = e.target.value;
 
     setStartDate(e);
@@ -177,7 +177,7 @@ const useCreateState = (): CreateStateReturnValues => {
 
   const changeSchedules = (
     newSchedule: ArrElement<CreateGroupData['schedules']>,
-  ) => {
+  ): void => {
     setSchedules(prevState => {
       if (!prevState.length) return [newSchedule];
 
@@ -185,7 +185,9 @@ const useCreateState = (): CreateStateReturnValues => {
     });
   };
 
-  const dangerouslySetSchedules = (schedules: CreateGroupData['schedules']) => {
+  const dangerouslySetSchedules = (
+    schedules: CreateGroupData['schedules'],
+  ): void => {
     setSchedules([]);
 
     schedules.forEach(schedule => changeSchedules(schedule));
@@ -193,7 +195,7 @@ const useCreateState = (): CreateStateReturnValues => {
 
   const deleteSchedule = (
     targetSchedule: ArrElement<CreateGroupData['schedules']>,
-  ) => {
+  ): void => {
     setSchedules(
       schedules.filter(schedule => isEqualObject(schedule, targetSchedule)),
     );
@@ -203,7 +205,7 @@ const useCreateState = (): CreateStateReturnValues => {
     address: CreateGroupData['location']['address'],
     buildingName: CreateGroupData['location']['buildingName'],
     detail?: CreateGroupData['location']['detail'],
-  ) => {
+  ): void => {
     if (typeof detail === 'string') {
       setLocation({ address, buildingName, detail });
       return;
@@ -212,7 +214,9 @@ const useCreateState = (): CreateStateReturnValues => {
     setLocation({ ...location, address, buildingName });
   };
 
-  const changeLocationDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeLocationDetail = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setLocation({ ...location, detail: e.target.value });
   };
 
