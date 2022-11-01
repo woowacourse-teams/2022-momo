@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios';
+
 import { axios, axiosWithAccessToken } from 'apis/axios';
 import { CLIENT_ERROR_MESSAGE } from 'constants/message';
 import { API_PATH } from 'constants/path';
@@ -10,12 +12,15 @@ import {
   CategoryType,
   SelectableGroup,
   GroupSummary,
+  RequestCreateGroupData,
 } from 'types/data';
 import { makeUrl } from 'utils/url';
 
 interface GroupIdResponse {
   groupId: GroupSummary['id'];
 }
+
+type GroupID = number;
 
 const makeGroupData = ({
   name,
@@ -27,7 +32,7 @@ const makeGroupData = ({
   deadline,
   location,
   description,
-}: CreateGroupData) => {
+}: CreateGroupData): RequestCreateGroupData => {
   return {
     name,
     categoryId: selectedCategory.id === -1 ? 1 : selectedCategory.id,
@@ -53,7 +58,7 @@ const requestCreateGroup = ({
   deadline,
   location,
   description,
-}: CreateGroupData) => {
+}: CreateGroupData): Promise<GroupID> => {
   const data = makeGroupData({
     name,
     selectedCategory,
@@ -92,7 +97,7 @@ const requestEditGroup = (
     description,
   }: CreateGroupData,
   id: GroupSummary['id'],
-) => {
+): Promise<GroupID> => {
   const data = makeGroupData({
     name,
     selectedCategory,
@@ -118,14 +123,19 @@ const requestEditGroup = (
     });
 };
 
-const requestEditThumbnail = (id: GroupSummary['id'], formData: FormData) => {
+const requestEditThumbnail = (
+  id: GroupSummary['id'],
+  formData: FormData,
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.post(
     `${API_PATH.GROUP}/${id}/thumbnail`,
     formData,
   );
 };
 
-const requestResetThumbnail = (id: GroupSummary['id']) => {
+const requestResetThumbnail = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}/thumbnail`);
 };
 
@@ -137,7 +147,7 @@ const requestJoinedGroups =
     keyword: string,
     categoryId: CategoryType['id'],
   ) =>
-  () => {
+  (): Promise<GroupList> => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
@@ -164,7 +174,7 @@ const requestGroups =
     keyword: string,
     categoryId: CategoryType['id'],
   ) =>
-  () => {
+  (): Promise<GroupList> => {
     const queryParams = {
       page: pageNumber,
       excludeFinished,
@@ -177,43 +187,59 @@ const requestGroups =
       .then(response => response.data);
   };
 
-const requestGroupDetail = (id: GroupSummary['id']) => {
+const requestGroupDetail = (
+  id: GroupSummary['id'],
+): Promise<GroupDetailData> => {
   return axiosWithAccessToken
     .get<GroupDetailData>(`${API_PATH.GROUP}/${id}`)
     .then(response => response.data);
 };
 
-const requestDeleteGroup = (id: GroupSummary['id']) => {
+const requestDeleteGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}`);
 };
 
-const requestGroupParticipants = (id: GroupSummary['id']) => {
+const requestGroupParticipants = (
+  id: GroupSummary['id'],
+): Promise<GroupParticipants> => {
   return axios
     .get<GroupParticipants>(`${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`)
     .then(response => response.data);
 };
 
-const requestJoinGroup = (id: GroupSummary['id']) => {
+const requestJoinGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.post(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
   );
 };
 
-const requestExitGroup = (id: GroupSummary['id']) => {
+const requestExitGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.delete(
     `${API_PATH.GROUP}/${id}${API_PATH.PARTICIPANTS}`,
   );
 };
 
-const requestCloseGroup = (id: GroupSummary['id']) => {
+const requestCloseGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.CLOSE}`);
 };
 
-const requestLikeGroup = (id: GroupSummary['id']) => {
+const requestLikeGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.post(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
-const requestUnlikeGroup = (id: GroupSummary['id']) => {
+const requestUnlikeGroup = (
+  id: GroupSummary['id'],
+): Promise<AxiosResponse<null>> => {
   return axiosWithAccessToken.delete(`${API_PATH.GROUP}/${id}${API_PATH.LIKE}`);
 };
 
