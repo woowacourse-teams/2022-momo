@@ -23,14 +23,14 @@ public class ParticipateService {
 
     @Transactional
     public void participate(Long groupId, Long memberId) {
-        Group group = groupFindService.findGroup(groupId);
+        Group group = groupFindService.findByIdForUpdate(groupId);
         Member member = memberFindService.findMember(memberId);
 
         group.participate(member);
     }
 
     public List<MemberResponse> findParticipants(Long groupId) {
-        Group group = groupFindService.findByIdWithHostAndSchedule(groupId);
+        Group group = groupFindService.findGroup(groupId);
         List<Member> participants = group.getParticipants();
 
         return MemberResponseAssembler.memberResponses(participants);

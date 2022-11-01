@@ -26,6 +26,11 @@ public class GroupFindService {
                 .orElseThrow(() -> new GroupException(NOT_EXIST));
     }
 
+    public Group findByIdForUpdate(Long id) {
+        return groupSearchRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new GroupException(NOT_EXIST));
+    }
+
     public Group findByIdWithHostAndSchedule(Long id) {
         return groupSearchRepository.findByIdWithHostAndSchedule(id)
                 .orElseThrow(() -> new GroupException(NOT_EXIST));
