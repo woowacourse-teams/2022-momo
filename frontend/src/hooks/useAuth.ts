@@ -9,7 +9,7 @@ import { LoginState, LoginType, Token, UserProfile } from 'types/user';
 
 interface UseAuthReturnType {
   isLogin: boolean;
-  user: UserProfile | undefined;
+  user?: UserProfile;
   setLoginInfo: SetterOrUpdater<LoginState>;
   accessToken: string;
   setAccessToken: SetterOrUpdater<string>;

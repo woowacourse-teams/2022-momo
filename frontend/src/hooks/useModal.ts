@@ -2,14 +2,15 @@ import { useSetRecoilState } from 'recoil';
 
 import { modalState } from 'store/states';
 
-interface UseModalReturnType {
-  setOffModal: () => void;
-  showSignupModal: () => void;
-  showLoginModal: () => void;
-  showConfirmPasswordModal: () => void;
-  showPostcodeModal: () => void;
-  showThumbnailModal: () => void;
-}
+type UseModalReturnType = Record<
+  | 'setOffModal'
+  | 'showSignupModal'
+  | 'showLoginModal'
+  | 'showConfirmPasswordModal'
+  | 'showPostcodeModal'
+  | 'showThumbnailModal',
+  () => void
+>;
 
 const useModal = (): UseModalReturnType => {
   const setModalFlag = useSetRecoilState(modalState);

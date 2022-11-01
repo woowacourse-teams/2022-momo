@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
-interface UseInputReturnType<T> {
-  value: string | T;
+interface UseInputReturnType {
+  value: string;
   setValue: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
-  dangerouslySetValue: React.Dispatch<React.SetStateAction<string | T>>;
+  dangerouslySetValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const useInput = <T>(initialState: T): UseInputReturnType<T> => {
-  const [value, setValue] = useState<T | string>(initialState);
+const useInput = (initialState: string): UseInputReturnType => {
+  const [value, setValue] = useState<string>(initialState);
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
