@@ -1,6 +1,6 @@
 import Checkbox from 'components/Checkbox';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { CategoryFallback } from 'components/ErrorBoundary/Fallback/Category';
+import CategoryFallback from 'components/ErrorBoundary/Fallback/Category';
 import { CategoryType } from 'types/data';
 
 import Category from './Category';

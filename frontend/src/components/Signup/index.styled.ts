@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
-type InfoMessageProps = {
+interface InfoMessageProps {
   isValid?: boolean;
-};
+}
 
 const Form = styled.form`
   display: flex;

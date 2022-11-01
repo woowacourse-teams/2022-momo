@@ -13,6 +13,7 @@ const Container = styled.div`
   border-radius: 8px;
 
   margin: auto;
+  padding: 1rem;
 `;
 
 export { Container };

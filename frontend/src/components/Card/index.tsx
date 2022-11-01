@@ -19,7 +19,6 @@ function Card({
   group: {
     id,
     name,
-    categoryId,
     host,
     deadline,
     finished,

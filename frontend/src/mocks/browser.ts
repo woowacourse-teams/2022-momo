@@ -1,7 +1,17 @@
 import { setupWorker } from 'msw';
 
-import { groupHandler, categoryHandler } from './handlers';
+import {
+  groupHandler,
+  categoryHandler,
+  userHandler,
+  authHandler,
+} from './handlers';
 
-const worker = setupWorker(...groupHandler, ...categoryHandler);
+const worker = setupWorker(
+  ...categoryHandler,
+  ...groupHandler,
+  ...userHandler,
+  ...authHandler,
+);
 
 export { worker };

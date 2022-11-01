@@ -13,4 +13,4 @@ function CategoryFallback() {
   );
 }
 
-export { CategoryFallback };
+export default CategoryFallback;
