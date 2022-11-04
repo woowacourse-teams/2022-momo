@@ -26,8 +26,9 @@ public interface GroupSearchRepository extends Repository<Group, Long>, GroupSea
 
     @Query("SELECT g FROM Group g "
             + "WHERE g.participants.host = :member "
-            + "OR ( :member IN (SELECT p.member.id FROM Participant p WHERE p.group = g) )")
-    List<Group> findParticipatedGroups(@Param("member") Member member);
+            + "OR g.id IN :participatedGroupIds")
+    List<Group> findParticipatedGroups(@Param("member") Member member,
+                                       @Param("participatedGroupIds") List<Long> participatedGroupIds);
 
     boolean existsById(Long id);
 }

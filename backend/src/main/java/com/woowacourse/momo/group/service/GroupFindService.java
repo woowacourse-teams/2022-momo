@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.woowacourse.momo.group.domain.Group;
+import com.woowacourse.momo.group.domain.participant.ParticipantRepository;
 import com.woowacourse.momo.group.domain.search.GroupSearchRepository;
 import com.woowacourse.momo.group.exception.GroupException;
 import com.woowacourse.momo.member.domain.Member;
@@ -20,6 +21,7 @@ import com.woowacourse.momo.member.domain.Member;
 public class GroupFindService {
 
     private final GroupSearchRepository groupSearchRepository;
+    private final ParticipantRepository participantRepository;
 
     public Group findGroup(Long id) {
         return groupSearchRepository.findById(id)
@@ -32,6 +34,7 @@ public class GroupFindService {
     }
 
     public List<Group> findParticipatedGroups(Member member) {
-        return groupSearchRepository.findParticipatedGroups(member);
+        List<Long> participatedGroupIds = participantRepository.findGroupIdWhichParticipated(member.getId());
+        return groupSearchRepository.findParticipatedGroups(member, participatedGroupIds);
     }
 }

@@ -35,7 +35,7 @@ class MemberValidatorTest {
                 .hasMessage(MEMBER_NOT_EXIST.getMessage());
     }
 
-    @DisplayName("삭제된 않는 회원 id가 아니면 예외를 발생시킨다")
+    @DisplayName("삭제되지 않은 회원 id가 아니면 예외를 발생시킨다")
     @Test
     void validateDeletedMember() {
         Member member = memberRepository.save(MOMO.toMember());
