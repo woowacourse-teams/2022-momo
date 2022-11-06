@@ -15,8 +15,11 @@ import com.woowacourse.momo.member.domain.Member;
 
 public interface GroupSearchRepository extends Repository<Group, Long>, GroupSearchRepositoryCustom {
 
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     Optional<Group> findById(Long id);
+
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
+    @Query("select g from Group g where g.id = :id")
+    Optional<Group> findByIdForUpdate(@Param("id") Long id);
 
     @Query("select g from Group g "
             + "left join fetch g.calendar.schedules "
