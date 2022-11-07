@@ -1,7 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2015",
     "jsx": "react-jsx",
     "module": "esnext",
     "sourceMap": true,
@@ -20,6 +20,6 @@
     "noEmit": true,
     "baseUrl": "./src/"
   },
-  "include": ["./src/", "./src/types/global.d.ts", "./src/types/image.d.ts"],
+  "include": ["./src/"],
   "exclude": ["node_modules/*"]
 }
