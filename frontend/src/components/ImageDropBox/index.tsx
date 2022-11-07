@@ -59,7 +59,7 @@ function ImageDropBox({ id }: Pick<GroupSummary, 'id'>): JSX.Element {
   const dropFile = (e: React.DragEvent): void => {
     e.preventDefault();
 
-    if (!e.dataTransfer?.files || e.dataTransfer?.files.length <= 0) return;
+    if (!e.dataTransfer.files || e.dataTransfer.files.length <= 0) return;
 
     const newFile = e.dataTransfer.files[0];
 
