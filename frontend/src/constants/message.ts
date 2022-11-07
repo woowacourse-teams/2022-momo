@@ -36,7 +36,7 @@ const GUIDE_MESSAGE = {
     SUCCESS_UNLIKE_GROUP: '찜한 모임에서 삭제했어요.',
     SUCCESS_EDIT_THUMBNAIL: '썸네일을 성공적으로 수정했어요.',
   },
-};
+} as const;
 
 const CLIENT_ERROR_MESSAGE = {
   SIGNUP: {
@@ -87,7 +87,7 @@ const CLIENT_ERROR_MESSAGE = {
     NOT_ALLOWED_THUMBNAIL_TYPE: '파일 형식은 jpg, jpeg, png여야 해요.',
   },
   UNHANDLED: '알 수 없는 클라이언트 에러가 발생했어요.',
-};
+} as const;
 
 const SERVER_ERROR_MESSAGE = {
   SIGNUP: {
@@ -158,6 +158,6 @@ const SERVER_ERROR_MESSAGE = {
     VALIDATION_001: '잘못된 요청이에요.',
     UNHANDLED: '알 수 없는 서버 에러가 발생했어요.',
   },
-};
+} as const;
 
 export { GUIDE_MESSAGE, CLIENT_ERROR_MESSAGE, SERVER_ERROR_MESSAGE };

@@ -6,7 +6,7 @@ const BROWSER_PATH = {
   MY_GROUP: '/me/group',
   OAUTH_GOOGLE: '/auth/google',
   LANDING: '/landing',
-};
+} as const;
 
 const API_PATH = {
   GROUP: '/groups',
@@ -30,6 +30,6 @@ const API_PATH = {
     NAME: '/members/name',
     PASSWORD: '/members/password',
   },
-};
+} as const;
 
 export { BROWSER_PATH, API_PATH };

@@ -13,7 +13,7 @@ const GROUP_RULE = {
   DESCRIPTION: {
     MAX_LENGTH: 1000,
   },
-};
+} as const;
 
 const MEMBER_RULE = {
   ID: {
@@ -28,7 +28,7 @@ const MEMBER_RULE = {
     MIN_LENGTH: 8,
     MAX_LENGTH: 16,
   },
-};
+} as const;
 
 const SNACKBAR_ANIMATION_TIME = 500;
 

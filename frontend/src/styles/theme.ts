@@ -5,7 +5,7 @@ const breakpoints = {
   md: 768,
   lg: 1100,
   xl: 1440,
-};
+} as const;
 
 const theme: Theme = {
   breakpoints,
@@ -32,6 +32,6 @@ const theme: Theme = {
   filter: {
     darken001: '#0000004D',
   },
-};
+} as const;
 
 export default theme;
