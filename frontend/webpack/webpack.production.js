@@ -1,4 +1,5 @@
 const CompressionPlugin = require('compression-webpack-plugin');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { merge } = require('webpack-merge');
@@ -13,6 +14,13 @@ require('dotenv').config({
 
 module.exports = merge(common, {
   mode: 'production',
+  optimization: {
+    minimizer: [
+      new ESBuildMinifyPlugin({
+        target: 'es2015',
+      }),
+    ],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'public/index.html',

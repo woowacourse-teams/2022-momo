@@ -1,5 +1,4 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const path = require('path');
 
@@ -52,7 +51,6 @@ module.exports = {
     clean: true,
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {

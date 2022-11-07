@@ -5,6 +5,6 @@ const QUERY_KEY = {
   GROUP_DETAILS: 'groupDetails',
   GROUP_PARTICIPANTS: 'groupParticipants',
   USER_INFO: 'userInfo',
-};
+} as const;
 
 export { QUERY_KEY };
