@@ -4,8 +4,8 @@
   "description": "모두 모여라 프론트엔드 프로젝트입니다 🌸",
   "main": "src/index.tsx",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack/webpack.development.js --open",
-    "start:prod": "webpack-dev-server --config ./webpack/webpack.production.js --open",
+    "start": "tsc && webpack-dev-server --config ./webpack/webpack.development.js --open",
+    "start:prod": "tsc && webpack-dev-server --config ./webpack/webpack.production.js --open",
     "build": "tsc && webpack --config ./webpack/webpack.development.js",
     "build:prod": "tsc && webpack --config ./webpack/webpack.production.js",
     "test": "jest",
