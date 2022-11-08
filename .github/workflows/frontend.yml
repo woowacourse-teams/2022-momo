@@ -1,0 +1,74 @@
+name: frontend CI
+
+on:
+  pull_request:
+    branches:
+      - develop-fe
+      - release-fe
+    paths: "frontend/*"
+
+defaults:
+  run:
+    working-directory: frontend
+
+permissions:
+  contents: read
+  pages: write
+  deployments: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  deployment:
+    name: Deployment-action
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: recursive
+
+      - name: Setting node
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: npm install & build
+        run: |
+          npm install
+          npm run build
+      - name: Deploy to github pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "./frontend/build"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
+      - name: Format comment message
+        id: format_comment_message
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+
+            const comments = [
+              `## 변경사항 미리보기`,
+              `✅ **여기에서 변경사항을 확인하세요** : `
+            ].join('\n');
+
+            core.setOutput('comment', comments);
+
+      - name: comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          message: |
+            ${{ steps.format_comment_message.outputs.comment}}[${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})
