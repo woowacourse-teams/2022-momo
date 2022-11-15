@@ -16,6 +16,7 @@ import com.woowacourse.momo.member.service.MemberFindService;
 import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
 import com.woowacourse.momo.storage.exception.GroupImageErrorCode;
+import com.woowacourse.momo.storage.exception.GroupImageException;
 import com.woowacourse.momo.storage.support.ImageConnector;
 import com.woowacourse.momo.storage.support.ImageProvider;
 
@@ -30,8 +31,12 @@ public class GroupImageService {
     private final ImageConnector imageConnector;
     private final ImageProvider imageProvider;
 
+    private static final int BYTES_FROM_ONE_MB = 1_000_000;
+    private static final int MAXIMUM_FILE_SIZE = 10;
+
     @Transactional
     public String update(Long memberId, Long groupId, MultipartFile multipartFile) {
+        validateFileSizeIsValid(multipartFile);
         validateMemberIsHost(memberId, groupId);
         validateGroupIsProceeding(groupId);
 
@@ -51,6 +56,12 @@ public class GroupImageService {
         String defaultImageName = group.getCategory().getDefaultImageName();
 
         updateGroupImage(groupId, defaultImageName);
+    }
+
+    private void validateFileSizeIsValid(MultipartFile multipartFile) {
+        if (multipartFile.getSize() > MAXIMUM_FILE_SIZE * BYTES_FROM_ONE_MB) {
+            throw new GroupImageException(GroupImageErrorCode.FILE_SIZE_IS_LARGE);
+        }
     }
 
     private void validateMemberIsHost(Long memberId, Long groupId) {

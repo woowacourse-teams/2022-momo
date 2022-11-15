@@ -14,6 +14,8 @@ public enum GroupImageErrorCode implements ErrorCode {
     RESPONSE_IS_4XX(500, "GROUP_IMAGE_002", "이미지 서버에서 4XX 에러가 발생하였습니다."),
     RESPONSE_IS_5XX(500, "GROUP_IMAGE_002", "이미지 서버에서 5XX 에러가 발생하였습니다."),
     RESPONSE_IS_NULL(500, "GROUP_IMAGE_002", "이미지 서버의 응답값이 null 입니다."),
+
+    FILE_SIZE_IS_LARGE(400, "GROUP_IMAGE_003", "이미지 파일의 크기가 기준보다 큽니다."),
     ;
 
     private final int statusCode;
