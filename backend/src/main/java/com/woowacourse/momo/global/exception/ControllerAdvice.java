@@ -11,6 +11,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.woowacourse.momo.global.exception.dto.response.ExceptionResponse;
 import com.woowacourse.momo.global.exception.exception.ErrorCode;
+import com.woowacourse.momo.global.exception.exception.GlobalErrorCode;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.support.logging.UnhandledErrorLogging;
 
