@@ -15,16 +15,16 @@ public enum ImageFixture {
     private final String name;
     private final String originalFilename;
     private final String mediaType;
-    private final byte[] size;
+    private final byte[] content;
 
-    ImageFixture(String name, String originalFilename, String mediaType, byte[] size) {
+    ImageFixture(String name, String originalFilename, String mediaType, byte[] content) {
         this.name = name;
         this.originalFilename = originalFilename;
         this.mediaType = mediaType;
-        this.size = size;
+        this.content = content;
     }
 
     public MockMultipartFile toMultipartFile() {
-        return new MockMultipartFile(name, originalFilename, mediaType, size);
+        return new MockMultipartFile(name, originalFilename, mediaType, content);
     }
 }
