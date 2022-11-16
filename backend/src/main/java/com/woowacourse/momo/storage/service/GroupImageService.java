@@ -59,9 +59,13 @@ public class GroupImageService {
     }
 
     private void validateFileSizeIsValid(MultipartFile multipartFile) {
-        if (multipartFile.getSize() > MAXIMUM_FILE_SIZE * BYTES_FROM_ONE_MB) {
+        if (multipartFile.getSize() > byteToMegaByte(MAXIMUM_FILE_SIZE)) {
             throw new GroupImageException(GroupImageErrorCode.FILE_SIZE_IS_LARGE);
         }
+    }
+
+    private int byteToMegaByte(int megaByte) {
+        return megaByte * BYTES_FROM_ONE_MB;
     }
 
     private void validateMemberIsHost(Long memberId, Long groupId) {
