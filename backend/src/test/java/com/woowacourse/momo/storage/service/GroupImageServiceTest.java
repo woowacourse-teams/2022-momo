@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.momo.auth.support.SHA256Encoder;
+import com.woowacourse.momo.fixture.ImageFixture;
 import com.woowacourse.momo.global.exception.exception.MomoException;
 import com.woowacourse.momo.group.domain.Group;
 import com.woowacourse.momo.group.domain.GroupRepository;
@@ -31,7 +32,6 @@ import com.woowacourse.momo.member.domain.UserId;
 import com.woowacourse.momo.member.domain.UserName;
 import com.woowacourse.momo.storage.domain.GroupImage;
 import com.woowacourse.momo.storage.domain.GroupImageRepository;
-import com.woowacourse.momo.storage.exception.GroupImageException;
 import com.woowacourse.momo.storage.support.ImageConnector;
 
 @Transactional
@@ -100,6 +100,16 @@ class GroupImageServiceTest {
                 () -> assertThat(actual).isEqualTo(expected),
                 () -> assertThat(savedGroupImage.get().getImageName()).isEqualTo("imageName.png")
         );
+    }
+
+    @DisplayName("허용할 수 있는 이미지 크기보다 큰 이미지로 수정할 경우 예외가 발생한다")
+    @Test
+    void updateLargeGroupImage() {
+        MockMultipartFile invalidImage = ImageFixture.LARGE_IMAGE.toMultipartFile();
+
+        assertThatThrownBy(() -> groupImageService.update(savedGroup.getHost().getId(), savedGroup.getId(), invalidImage))
+                .isInstanceOf(MomoException.class)
+                .hasMessage("이미지 파일의 크기가 기준보다 큽니다.");
     }
 
     @DisplayName("모임 이미지를 수정할 때 주최자가 아니면 예외가 발생한다")

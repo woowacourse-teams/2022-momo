@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.woowacourse.momo.global.exception.dto.response.ExceptionResponse;
@@ -28,6 +29,11 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException() {
         return convert(GlobalErrorCode.VALIDATION_ERROR);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ExceptionResponse> handleMaxUploadSizeExceededException() {
+        return convert(GlobalErrorCode.MAX_UPLOAD_SIZE_FILE_ERROR);
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class})
