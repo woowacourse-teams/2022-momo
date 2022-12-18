@@ -2,6 +2,8 @@ package com.woowacourse.momo.favorite.event;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_STUDY;
 import static com.woowacourse.momo.fixture.GroupFixture.MOMO_TRAVEL;
@@ -16,7 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestConstructor;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +31,8 @@ import com.woowacourse.momo.member.domain.Member;
 import com.woowacourse.momo.member.domain.MemberRepository;
 import com.woowacourse.momo.member.service.MemberService;
 
-@Transactional
+@Sql(value = "classpath:init.sql", executionPhase = BEFORE_TEST_METHOD)
+@Sql(value = "classpath:truncate.sql", executionPhase = AFTER_TEST_METHOD)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
