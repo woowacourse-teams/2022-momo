@@ -28,6 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          github-token: ${{secrets.FRONT_SECURITY_TOKEN}}
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: recursive
 
@@ -56,7 +57,7 @@ jobs:
         id: format_comment_message
         uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.FRONT_SECURITY_TOKEN}}
           script: |
 
             const comments = [
@@ -69,6 +70,6 @@ jobs:
       - name: comment PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.FRONT_SECURITY_TOKEN}}
           message: |
             ${{ steps.format_comment_message.outputs.comment}}[${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})
