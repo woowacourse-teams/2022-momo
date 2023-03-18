@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          github-token: ${{secrets.FRONT_SECURITY_TOKEN}}
+          token: ${{secrets.FRONT_SECURITY_TOKEN}}
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: recursive
 
