@@ -12,6 +12,7 @@ import static com.woowacourse.momo.fixture.MemberFixture.MOMO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -62,8 +63,9 @@ class FavoriteDeleteEventListenerTest {
 
     @DisplayName("모임 삭제시 관련된 찜 데이터를 삭제한다")
     @Test
-    void deleteRelatedGroupData() {
+    void deleteRelatedGroupData() throws InterruptedException {
         groupModifyService.delete(momo.getId(), studyGroup.getId());
+        TimeUnit.SECONDS.sleep(1);
 
         Optional<Favorite> actual1 = favoriteRepository.findByGroupIdAndMemberId(studyGroup.getId(), momo.getId());
         Optional<Favorite> actual2 = favoriteRepository.findByGroupIdAndMemberId(studyGroup.getId(), dudu.getId());
