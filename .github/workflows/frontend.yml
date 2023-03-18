@@ -45,6 +45,9 @@ jobs:
           npm run build
       - name: Deploy to github pages
         uses: actions/configure-pages@v2
+      - name: Dump Pages configuration
+        run: |
+          echo PAGE_URL:  ${{ steps.deployment.outputs.page_url }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
