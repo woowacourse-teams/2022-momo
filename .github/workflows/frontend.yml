@@ -45,9 +45,6 @@ jobs:
           npm run build
       - name: Deploy to github pages
         uses: actions/configure-pages@v2
-        with:
-          token: ${{ secrets.FRONT_SECURITY_TOKEN }}
-          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
