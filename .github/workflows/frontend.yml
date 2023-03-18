@@ -47,7 +47,11 @@ jobs:
         uses: actions/configure-pages@v2
       - name: Dump Pages configuration
         run: |
-          echo PAGE_URL:  ${{ steps.deployment.outputs.page_url }}
+          echo PAGES_URL:       ${{ steps.deployment.outputs.page_url }}
+          echo PAGES_BASE_URL:  ${{ steps.pages.outputs.base_url }}
+          echo PAGES_ORIGIN:    ${{ steps.pages.outputs.origin }}
+          echo PAGES_HOST:      ${{ steps.pages.outputs.host }}
+          echo PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
