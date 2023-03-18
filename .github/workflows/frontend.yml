@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          github-token: ${{secrets.FRONT_SECURITY_TOKEN}}
+          token: ${{ secrets.FRONT_SECURITY_TOKEN }}
           ref: ${{ github.event.pull_request.head.sha }}
           submodules: recursive
 
@@ -48,7 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: "./frontend/build"
+          path: ./frontend/dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
@@ -57,7 +57,7 @@ jobs:
         id: format_comment_message
         uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.FRONT_SECURITY_TOKEN}}
+          github-token: ${{ secrets.FRONT_SECURITY_TOKEN }}
           script: |
 
             const comments = [
@@ -70,6 +70,6 @@ jobs:
       - name: comment PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{secrets.FRONT_SECURITY_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.FRONT_SECURITY_TOKEN }}
           message: |
             ${{ steps.format_comment_message.outputs.comment}}[${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})
