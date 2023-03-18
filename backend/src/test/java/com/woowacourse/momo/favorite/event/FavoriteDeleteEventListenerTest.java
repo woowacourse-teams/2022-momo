@@ -56,7 +56,6 @@ class FavoriteDeleteEventListenerTest {
         this.travelGroup = groupRepository.save(MOMO_TRAVEL.toGroup(momo));
         this.dudu = memberRepository.save(DUDU.toMember());
 
-        favoriteRepository.save(new Favorite(studyGroup.getId(), momo.getId()));
         favoriteRepository.save(new Favorite(studyGroup.getId(), dudu.getId()));
         favoriteRepository.save(new Favorite(travelGroup.getId(), dudu.getId()));
     }
