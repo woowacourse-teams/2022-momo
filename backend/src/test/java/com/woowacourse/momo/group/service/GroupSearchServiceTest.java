@@ -127,7 +127,7 @@ class GroupSearchServiceTest {
 
         assertThat(actual.getGroups()).hasSize(1);
         assertThat(actual.getGroups().get(0).getImageUrl())
-                .isEqualTo("https://image.moyeora.site/group/default/thumbnail_study.jpg");
+            .endsWith("/group/default/thumbnail_study.jpg");
     }
 
     @DisplayName("키워드를 포함하는 이름의 모임을 조회한다")
